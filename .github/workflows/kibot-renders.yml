@@ -1,0 +1,64 @@
+name: KiBot PCB renders
+
+on:
+  push:
+    paths:
+      - ".github/workflows/kibot-renders.yml"
+      - ".kibot/**"
+      - "hardware/boards/**"
+      - "hardware/libraries/**"
+  pull_request:
+    paths:
+      - ".github/workflows/kibot-renders.yml"
+      - ".kibot/**"
+      - "hardware/boards/**"
+      - "hardware/libraries/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  render:
+    name: Render ${{ matrix.board }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - board: backplane
+            schematic: hardware/boards/backplane/backplane.kicad_sch
+            pcb: hardware/boards/backplane/backplane.kicad_pcb
+          - board: carrier
+            schematic: hardware/boards/carrier/carrier.kicad_sch
+            pcb: hardware/boards/carrier/carrier.kicad_pcb
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install Podman
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y podman
+
+      - name: Render PCB images
+        run: |
+          mkdir -p "build/kibot/${{ matrix.board }}"
+          podman run --rm \
+            -v "${{ github.workspace }}:/work" \
+            -w /work \
+            ghcr.io/inti-cmnb/kicad10_auto_full:latest \
+            kibot \
+              -c .kibot/kibot-double-sided.yaml \
+              -e "${{ matrix.schematic }}" \
+              -b "${{ matrix.pcb }}" \
+              -d "build/kibot/${{ matrix.board }}" \
+              pcb_top_image pcb_bottom_image
+
+      - name: Upload PCB render artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.board }}-pcb-renders
+          path: build/kibot/${{ matrix.board }}/
