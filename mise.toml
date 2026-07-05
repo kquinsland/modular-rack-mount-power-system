@@ -45,6 +45,13 @@ run = [
   "git submodule update --init --recursive -- kicad-mcp/server",
 ]
 
+[tasks."wt32-eth01:submodule"]
+description = "Initialize and update the WT32-ETH01 KiCad library submodule"
+run = [
+  "git submodule sync --recursive -- hardware/libraries/vendor/wt32-eth01",
+  "git submodule update --init --recursive -- hardware/libraries/vendor/wt32-eth01",
+]
+
 [tasks."kicad-mcp:verify"]
 description = "Verify KiCAD MCP Server build and Python runtime"
 dir = "kicad-mcp/server"
