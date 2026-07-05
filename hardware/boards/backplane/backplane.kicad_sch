@@ -725,6 +725,172 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Device:D_TVS"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 1.016)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "D"
+				(at 0 2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "D_TVS"
+				(at 0 -2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Bidirectional transient-voltage-suppression diode"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "diode TVS thyrector"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "TO-???* *_Diode_* *SingleDiode* D_*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "D_TVS_0_1"
+				(polyline
+					(pts
+						(xy -2.54 1.27) (xy -2.54 -1.27) (xy 2.54 1.27) (xy 2.54 -1.27) (xy -2.54 1.27)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.508 1.27) (xy 0 1.27) (xy 0 -1.27) (xy -0.508 -1.27)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 0) (xy -1.27 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "D_TVS_1_1"
+				(pin passive line
+					(at -3.81 0 0)
+					(length 2.54)
+					(name "A1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 3.81 0 180)
+					(length 2.54)
+					(name "A2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Device:R"
 			(pin_numbers
 				(hide yes)
@@ -2849,7 +3015,7 @@
 			)
 		)
 	)
-	(global_label "SDA_SLOT_1"
+	(global_label "SDA_SLOT_1_CONN"
 		(shape bidirectional)
 		(at 111.76 30.48 0)
 		(effects
@@ -2871,7 +3037,7 @@
 			)
 		)
 	)
-	(global_label "SCL_SLOT_1"
+	(global_label "SCL_SLOT_1_CONN"
 		(shape bidirectional)
 		(at 111.76 27.94 0)
 		(effects
@@ -2893,7 +3059,7 @@
 			)
 		)
 	)
-	(global_label "SDA_SLOT_2"
+	(global_label "SDA_SLOT_2_CONN"
 		(shape bidirectional)
 		(at 111.76 53.34 0)
 		(effects
@@ -2915,7 +3081,7 @@
 			)
 		)
 	)
-	(global_label "SCL_SLOT_2"
+	(global_label "SCL_SLOT_2_CONN"
 		(shape bidirectional)
 		(at 111.76 50.8 0)
 		(effects
@@ -2937,7 +3103,7 @@
 			)
 		)
 	)
-	(global_label "SDA_SLOT_3"
+	(global_label "SDA_SLOT_3_CONN"
 		(shape bidirectional)
 		(at 111.76 76.2 0)
 		(effects
@@ -2959,7 +3125,7 @@
 			)
 		)
 	)
-	(global_label "SCL_SLOT_3"
+	(global_label "SCL_SLOT_3_CONN"
 		(shape bidirectional)
 		(at 111.76 73.66 0)
 		(effects
@@ -2981,7 +3147,7 @@
 			)
 		)
 	)
-	(global_label "SDA_SLOT_4"
+	(global_label "SDA_SLOT_4_CONN"
 		(shape bidirectional)
 		(at 170.18 30.48 0)
 		(effects
@@ -3003,7 +3169,7 @@
 			)
 		)
 	)
-	(global_label "SCL_SLOT_4"
+	(global_label "SCL_SLOT_4_CONN"
 		(shape bidirectional)
 		(at 170.18 27.94 0)
 		(effects
@@ -3025,7 +3191,7 @@
 			)
 		)
 	)
-	(global_label "SDA_SLOT_5"
+	(global_label "SDA_SLOT_5_CONN"
 		(shape bidirectional)
 		(at 170.18 53.34 0)
 		(effects
@@ -3047,7 +3213,7 @@
 			)
 		)
 	)
-	(global_label "SCL_SLOT_5"
+	(global_label "SCL_SLOT_5_CONN"
 		(shape bidirectional)
 		(at 170.18 50.8 0)
 		(effects
@@ -3069,7 +3235,7 @@
 			)
 		)
 	)
-	(global_label "SDA_SLOT_6"
+	(global_label "SDA_SLOT_6_CONN"
 		(shape bidirectional)
 		(at 170.18 76.2 0)
 		(effects
@@ -3091,7 +3257,7 @@
 			)
 		)
 	)
-	(global_label "SCL_SLOT_6"
+	(global_label "SCL_SLOT_6_CONN"
 		(shape bidirectional)
 		(at 170.18 73.66 0)
 		(effects
@@ -5763,7 +5929,7 @@
 		)
 		(uuid "11111111-0000-4000-8000-000000000820")
 	)
-	(text "WS2812B slot indicators: J8 is off-board LED input (1=LED_VDD, 2=DIN, 3=GND). D1-D6 map to slots 1-6; D6 DOUT is unused. Add per-LED decoupling before layout."
+	(text "WS2812B slot indicators: J8 is off-board LED input (1=LED_VDD, 2=DIN, 3=GND). D1-D6 map to slots 1-6; J12 exports D6 DOUT for daisy-chain output. Add per-LED decoupling before layout."
 		(at 35.56 217.17 0)
 		(effects
 			(font
@@ -6564,10 +6730,3056 @@
 		)
 		(uuid "22222222-0000-4000-8000-000000000810")
 	)
-	(no_connect
-		(at 180.34 201.93)
-		(uuid "66666666-0000-4000-8000-000000000801")
+	(text "Daisy-chain connectors: J9 parallels J1 for DC. J10/J11 parallel the upstream I2C bus as GND/SDA/SCL/+3V3. J12 exports LED_VDD, D6 DOUT, and GND."
+		(exclude_from_sim no)
+		(at 198.12 86.36 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "33333333-0000-4000-8000-000000000003")
 	)
+	(symbol
+		(lib_id "Connector_Generic:Conn_01x02")
+		(at 228.6 45.72 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "44444444-0000-4000-8000-000000000901")
+		(property "Reference" "J9"
+			(at 228.6 40.64 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "DC_CHAIN_OUT"
+			(at 228.6 48.26 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "TerminalBlock_Phoenix:TerminalBlock_Phoenix_MKDS-1,5-2-5.08_1x02_P5.08mm_Horizontal"
+			(at 228.6 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 228.6 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Two-position screw terminal for daisy-chained DC output"
+			(at 228.6 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "55555555-0000-4000-8000-000000000901")
+		)
+		(pin "2"
+			(uuid "55555555-0000-4000-8000-000000000902")
+		)
+		(instances
+			(project "backplane"
+				(path "/5e4f3adc-13b5-4625-8ac7-2a60909b6ea0"
+					(reference "J9")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector_Generic:Conn_01x04")
+		(at 228.6 20.32 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "44444444-0000-4000-8000-000000000902")
+		(property "Reference" "J10"
+			(at 228.6 12.7 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "I2C_CHAIN_IN"
+			(at 228.6 27.94 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical"
+			(at 228.6 20.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 228.6 20.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Upstream I2C daisy-chain input header"
+			(at 228.6 20.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "55555555-0000-4000-8000-000000000911")
+		)
+		(pin "2"
+			(uuid "55555555-0000-4000-8000-000000000912")
+		)
+		(pin "3"
+			(uuid "55555555-0000-4000-8000-000000000913")
+		)
+		(pin "4"
+			(uuid "55555555-0000-4000-8000-000000000914")
+		)
+		(instances
+			(project "backplane"
+				(path "/5e4f3adc-13b5-4625-8ac7-2a60909b6ea0"
+					(reference "J10")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector_Generic:Conn_01x04")
+		(at 259.08 20.32 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "44444444-0000-4000-8000-000000000903")
+		(property "Reference" "J11"
+			(at 259.08 12.7 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "I2C_CHAIN_OUT"
+			(at 259.08 27.94 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical"
+			(at 259.08 20.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 259.08 20.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Upstream I2C daisy-chain output header"
+			(at 259.08 20.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "55555555-0000-4000-8000-000000000921")
+		)
+		(pin "2"
+			(uuid "55555555-0000-4000-8000-000000000922")
+		)
+		(pin "3"
+			(uuid "55555555-0000-4000-8000-000000000923")
+		)
+		(pin "4"
+			(uuid "55555555-0000-4000-8000-000000000924")
+		)
+		(instances
+			(project "backplane"
+				(path "/5e4f3adc-13b5-4625-8ac7-2a60909b6ea0"
+					(reference "J11")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector_Generic:Conn_01x03")
+		(at 228.6 63.5 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "44444444-0000-4000-8000-000000000904")
+		(property "Reference" "J12"
+			(at 228.6 55.88 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "LED_EXT_OUT"
+			(at 228.6 71.12 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical"
+			(at 228.6 63.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 228.6 63.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Off-board LED power/data output to the next backplane"
+			(at 228.6 63.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "55555555-0000-4000-8000-000000000931")
+		)
+		(pin "2"
+			(uuid "55555555-0000-4000-8000-000000000932")
+		)
+		(pin "3"
+			(uuid "55555555-0000-4000-8000-000000000933")
+		)
+		(instances
+			(project "backplane"
+				(path "/5e4f3adc-13b5-4625-8ac7-2a60909b6ea0"
+					(reference "J12")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 208.28 45.72) (xy 223.52 45.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "11111111-0000-4000-8000-000000000901")
+	)
+	(label "DC_IN+"
+		(at 208.28 45.72 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "22222222-0000-4000-8000-000000000901")
+	)
+	(wire
+		(pts
+			(xy 208.28 48.26) (xy 223.52 48.26)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "11111111-0000-4000-8000-000000000902")
+	)
+	(label "GND"
+		(at 208.28 48.26 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "22222222-0000-4000-8000-000000000902")
+	)
+	(wire
+		(pts
+			(xy 208.28 17.78) (xy 223.52 17.78)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "11111111-0000-4000-8000-000000000911")
+	)
+	(label "GND"
+		(at 208.28 17.78 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "22222222-0000-4000-8000-000000000911")
+	)
+	(wire
+		(pts
+			(xy 208.28 20.32) (xy 223.52 20.32)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "11111111-0000-4000-8000-000000000912")
+	)
+	(global_label "I2C_UP_SDA"
+		(shape bidirectional)
+		(at 208.28 20.32 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "22222222-0000-4000-8000-000000000912")
+	)
+	(wire
+		(pts
+			(xy 208.28 22.86) (xy 223.52 22.86)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "11111111-0000-4000-8000-000000000913")
+	)
+	(global_label "I2C_UP_SCL"
+		(shape bidirectional)
+		(at 208.28 22.86 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "22222222-0000-4000-8000-000000000913")
+	)
+	(wire
+		(pts
+			(xy 208.28 25.4) (xy 223.52 25.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "11111111-0000-4000-8000-000000000914")
+	)
+	(label "+3V3"
+		(at 208.28 25.4 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "22222222-0000-4000-8000-000000000914")
+	)
+	(wire
+		(pts
+			(xy 238.76 17.78) (xy 254 17.78)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "11111111-0000-4000-8000-000000000921")
+	)
+	(label "GND"
+		(at 238.76 17.78 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "22222222-0000-4000-8000-000000000921")
+	)
+	(wire
+		(pts
+			(xy 238.76 20.32) (xy 254 20.32)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "11111111-0000-4000-8000-000000000922")
+	)
+	(global_label "I2C_UP_SDA"
+		(shape bidirectional)
+		(at 238.76 20.32 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "22222222-0000-4000-8000-000000000922")
+	)
+	(wire
+		(pts
+			(xy 238.76 22.86) (xy 254 22.86)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "11111111-0000-4000-8000-000000000923")
+	)
+	(global_label "I2C_UP_SCL"
+		(shape bidirectional)
+		(at 238.76 22.86 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "22222222-0000-4000-8000-000000000923")
+	)
+	(wire
+		(pts
+			(xy 238.76 25.4) (xy 254 25.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "11111111-0000-4000-8000-000000000924")
+	)
+	(label "+3V3"
+		(at 238.76 25.4 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "22222222-0000-4000-8000-000000000924")
+	)
+	(wire
+		(pts
+			(xy 208.28 60.96) (xy 223.52 60.96)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "11111111-0000-4000-8000-000000000931")
+	)
+	(label "LED_VDD"
+		(at 208.28 60.96 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "22222222-0000-4000-8000-000000000931")
+	)
+	(wire
+		(pts
+			(xy 208.28 63.5) (xy 223.52 63.5)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "11111111-0000-4000-8000-000000000932")
+	)
+	(label "LED_DOUT_EXT"
+		(at 208.28 63.5 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "22222222-0000-4000-8000-000000000932")
+	)
+	(wire
+		(pts
+			(xy 208.28 66.04) (xy 223.52 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "11111111-0000-4000-8000-000000000933")
+	)
+	(label "GND"
+		(at 208.28 66.04 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "22222222-0000-4000-8000-000000000933")
+	)
+	(wire
+		(pts
+			(xy 180.34 201.93) (xy 185.42 201.93)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "11111111-0000-4000-8000-000000000934")
+	)
+	(label "LED_DOUT_EXT"
+		(at 185.42 201.93 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "22222222-0000-4000-8000-000000000934")
+	)
+	(text "Per-slot I2C hot-plug protection: R2-R13 are 47R series resistors. D7-D18 are low-cap TVS placeholders from connector-side nets to GND; final TVS capacitance/clamp TBD."
+		(exclude_from_sim no)
+		(at 198.12 96.52 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "33333333-0000-4000-8000-000000000004")
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 218.44 101.6 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "77000000-0000-4000-8000-000000000002")
+		(property "Reference" "R2"
+			(at 218.44 99.568 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "47R"
+			(at 218.44 101.6 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 218.44 103.378 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 218.44 101.6 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "I2C hot-plug series resistor"
+			(at 218.44 101.6 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "77100000-0000-4000-8000-000000000002")
+		)
+		(pin "2"
+			(uuid "77200000-0000-4000-8000-000000000002")
+		)
+		(instances
+			(project "backplane"
+				(path "/5e4f3adc-13b5-4625-8ac7-2a60909b6ea0"
+					(reference "R2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:D_TVS")
+		(at 247.65 101.6 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "78000000-0000-4000-8000-000000000007")
+		(property "Reference" "D7"
+			(at 247.65 99.06 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "LOW_CAP_TVS"
+			(at 247.65 104.14 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SOD-523"
+			(at 247.65 101.6 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 247.65 101.6 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Low-capacitance TVS placeholder for I2C hot-plug ESD"
+			(at 247.65 101.6 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "78100000-0000-4000-8000-000000000007")
+		)
+		(pin "2"
+			(uuid "78200000-0000-4000-8000-000000000007")
+		)
+		(instances
+			(project "backplane"
+				(path "/5e4f3adc-13b5-4625-8ac7-2a60909b6ea0"
+					(reference "D7")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(global_label "SDA_SLOT_1_CONN"
+		(shape bidirectional)
+		(at 214.63 101.6 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "79000000-0000-4000-8000-000000000100")
+	)
+	(global_label "SDA_SLOT_1"
+		(shape bidirectional)
+		(at 222.25 101.6 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "79000000-0000-4000-8000-000000000200")
+	)
+	(global_label "SDA_SLOT_1_CONN"
+		(shape bidirectional)
+		(at 243.84 101.6 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "79000000-0000-4000-8000-000000000300")
+	)
+	(label "GND"
+		(at 251.46 101.6 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "79000000-0000-4000-8000-000000000400")
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 218.44 106.68 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "77000000-0000-4000-8000-000000000003")
+		(property "Reference" "R3"
+			(at 218.44 104.648 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "47R"
+			(at 218.44 106.68 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 218.44 108.458 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 218.44 106.68 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "I2C hot-plug series resistor"
+			(at 218.44 106.68 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "77100000-0000-4000-8000-000000000003")
+		)
+		(pin "2"
+			(uuid "77200000-0000-4000-8000-000000000003")
+		)
+		(instances
+			(project "backplane"
+				(path "/5e4f3adc-13b5-4625-8ac7-2a60909b6ea0"
+					(reference "R3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:D_TVS")
+		(at 247.65 106.68 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "78000000-0000-4000-8000-000000000008")
+		(property "Reference" "D8"
+			(at 247.65 104.14 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "LOW_CAP_TVS"
+			(at 247.65 109.22 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SOD-523"
+			(at 247.65 106.68 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 247.65 106.68 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Low-capacitance TVS placeholder for I2C hot-plug ESD"
+			(at 247.65 106.68 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "78100000-0000-4000-8000-000000000008")
+		)
+		(pin "2"
+			(uuid "78200000-0000-4000-8000-000000000008")
+		)
+		(instances
+			(project "backplane"
+				(path "/5e4f3adc-13b5-4625-8ac7-2a60909b6ea0"
+					(reference "D8")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(global_label "SCL_SLOT_1_CONN"
+		(shape bidirectional)
+		(at 214.63 106.68 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "79000000-0000-4000-8000-000000000101")
+	)
+	(global_label "SCL_SLOT_1"
+		(shape bidirectional)
+		(at 222.25 106.68 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "79000000-0000-4000-8000-000000000201")
+	)
+	(global_label "SCL_SLOT_1_CONN"
+		(shape bidirectional)
+		(at 243.84 106.68 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "79000000-0000-4000-8000-000000000301")
+	)
+	(label "GND"
+		(at 251.46 106.68 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "79000000-0000-4000-8000-000000000401")
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 218.44 111.76 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "77000000-0000-4000-8000-000000000004")
+		(property "Reference" "R4"
+			(at 218.44 109.728 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "47R"
+			(at 218.44 111.76 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 218.44 113.538 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 218.44 111.76 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "I2C hot-plug series resistor"
+			(at 218.44 111.76 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "77100000-0000-4000-8000-000000000004")
+		)
+		(pin "2"
+			(uuid "77200000-0000-4000-8000-000000000004")
+		)
+		(instances
+			(project "backplane"
+				(path "/5e4f3adc-13b5-4625-8ac7-2a60909b6ea0"
+					(reference "R4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:D_TVS")
+		(at 247.65 111.76 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "78000000-0000-4000-8000-000000000009")
+		(property "Reference" "D9"
+			(at 247.65 109.22 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "LOW_CAP_TVS"
+			(at 247.65 114.3 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SOD-523"
+			(at 247.65 111.76 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 247.65 111.76 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Low-capacitance TVS placeholder for I2C hot-plug ESD"
+			(at 247.65 111.76 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "78100000-0000-4000-8000-000000000009")
+		)
+		(pin "2"
+			(uuid "78200000-0000-4000-8000-000000000009")
+		)
+		(instances
+			(project "backplane"
+				(path "/5e4f3adc-13b5-4625-8ac7-2a60909b6ea0"
+					(reference "D9")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(global_label "SDA_SLOT_2_CONN"
+		(shape bidirectional)
+		(at 214.63 111.76 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "79000000-0000-4000-8000-000000000102")
+	)
+	(global_label "SDA_SLOT_2"
+		(shape bidirectional)
+		(at 222.25 111.76 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "79000000-0000-4000-8000-000000000202")
+	)
+	(global_label "SDA_SLOT_2_CONN"
+		(shape bidirectional)
+		(at 243.84 111.76 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "79000000-0000-4000-8000-000000000302")
+	)
+	(label "GND"
+		(at 251.46 111.76 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "79000000-0000-4000-8000-000000000402")
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 218.44 116.84 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "77000000-0000-4000-8000-000000000005")
+		(property "Reference" "R5"
+			(at 218.44 114.808 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "47R"
+			(at 218.44 116.84 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 218.44 118.618 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 218.44 116.84 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "I2C hot-plug series resistor"
+			(at 218.44 116.84 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "77100000-0000-4000-8000-000000000005")
+		)
+		(pin "2"
+			(uuid "77200000-0000-4000-8000-000000000005")
+		)
+		(instances
+			(project "backplane"
+				(path "/5e4f3adc-13b5-4625-8ac7-2a60909b6ea0"
+					(reference "R5")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:D_TVS")
+		(at 247.65 116.84 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "78000000-0000-4000-8000-000000000010")
+		(property "Reference" "D10"
+			(at 247.65 114.3 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "LOW_CAP_TVS"
+			(at 247.65 119.38 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SOD-523"
+			(at 247.65 116.84 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 247.65 116.84 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Low-capacitance TVS placeholder for I2C hot-plug ESD"
+			(at 247.65 116.84 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "78100000-0000-4000-8000-000000000010")
+		)
+		(pin "2"
+			(uuid "78200000-0000-4000-8000-000000000010")
+		)
+		(instances
+			(project "backplane"
+				(path "/5e4f3adc-13b5-4625-8ac7-2a60909b6ea0"
+					(reference "D10")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(global_label "SCL_SLOT_2_CONN"
+		(shape bidirectional)
+		(at 214.63 116.84 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "79000000-0000-4000-8000-000000000103")
+	)
+	(global_label "SCL_SLOT_2"
+		(shape bidirectional)
+		(at 222.25 116.84 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "79000000-0000-4000-8000-000000000203")
+	)
+	(global_label "SCL_SLOT_2_CONN"
+		(shape bidirectional)
+		(at 243.84 116.84 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "79000000-0000-4000-8000-000000000303")
+	)
+	(label "GND"
+		(at 251.46 116.84 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "79000000-0000-4000-8000-000000000403")
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 218.44 121.92 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "77000000-0000-4000-8000-000000000006")
+		(property "Reference" "R6"
+			(at 218.44 119.888 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "47R"
+			(at 218.44 121.92 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 218.44 123.698 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 218.44 121.92 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "I2C hot-plug series resistor"
+			(at 218.44 121.92 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "77100000-0000-4000-8000-000000000006")
+		)
+		(pin "2"
+			(uuid "77200000-0000-4000-8000-000000000006")
+		)
+		(instances
+			(project "backplane"
+				(path "/5e4f3adc-13b5-4625-8ac7-2a60909b6ea0"
+					(reference "R6")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:D_TVS")
+		(at 247.65 121.92 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "78000000-0000-4000-8000-000000000011")
+		(property "Reference" "D11"
+			(at 247.65 119.38 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "LOW_CAP_TVS"
+			(at 247.65 124.46 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SOD-523"
+			(at 247.65 121.92 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 247.65 121.92 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Low-capacitance TVS placeholder for I2C hot-plug ESD"
+			(at 247.65 121.92 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "78100000-0000-4000-8000-000000000011")
+		)
+		(pin "2"
+			(uuid "78200000-0000-4000-8000-000000000011")
+		)
+		(instances
+			(project "backplane"
+				(path "/5e4f3adc-13b5-4625-8ac7-2a60909b6ea0"
+					(reference "D11")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(global_label "SDA_SLOT_3_CONN"
+		(shape bidirectional)
+		(at 214.63 121.92 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "79000000-0000-4000-8000-000000000104")
+	)
+	(global_label "SDA_SLOT_3"
+		(shape bidirectional)
+		(at 222.25 121.92 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "79000000-0000-4000-8000-000000000204")
+	)
+	(global_label "SDA_SLOT_3_CONN"
+		(shape bidirectional)
+		(at 243.84 121.92 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "79000000-0000-4000-8000-000000000304")
+	)
+	(label "GND"
+		(at 251.46 121.92 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "79000000-0000-4000-8000-000000000404")
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 218.44 127 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "77000000-0000-4000-8000-000000000007")
+		(property "Reference" "R7"
+			(at 218.44 124.968 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "47R"
+			(at 218.44 127 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 218.44 128.778 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 218.44 127 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "I2C hot-plug series resistor"
+			(at 218.44 127 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "77100000-0000-4000-8000-000000000007")
+		)
+		(pin "2"
+			(uuid "77200000-0000-4000-8000-000000000007")
+		)
+		(instances
+			(project "backplane"
+				(path "/5e4f3adc-13b5-4625-8ac7-2a60909b6ea0"
+					(reference "R7")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:D_TVS")
+		(at 247.65 127 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "78000000-0000-4000-8000-000000000012")
+		(property "Reference" "D12"
+			(at 247.65 124.46 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "LOW_CAP_TVS"
+			(at 247.65 129.54 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SOD-523"
+			(at 247.65 127 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 247.65 127 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Low-capacitance TVS placeholder for I2C hot-plug ESD"
+			(at 247.65 127 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "78100000-0000-4000-8000-000000000012")
+		)
+		(pin "2"
+			(uuid "78200000-0000-4000-8000-000000000012")
+		)
+		(instances
+			(project "backplane"
+				(path "/5e4f3adc-13b5-4625-8ac7-2a60909b6ea0"
+					(reference "D12")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(global_label "SCL_SLOT_3_CONN"
+		(shape bidirectional)
+		(at 214.63 127 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "79000000-0000-4000-8000-000000000105")
+	)
+	(global_label "SCL_SLOT_3"
+		(shape bidirectional)
+		(at 222.25 127 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "79000000-0000-4000-8000-000000000205")
+	)
+	(global_label "SCL_SLOT_3_CONN"
+		(shape bidirectional)
+		(at 243.84 127 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "79000000-0000-4000-8000-000000000305")
+	)
+	(label "GND"
+		(at 251.46 127 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "79000000-0000-4000-8000-000000000405")
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 218.44 132.08 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "77000000-0000-4000-8000-000000000008")
+		(property "Reference" "R8"
+			(at 218.44 130.048 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "47R"
+			(at 218.44 132.08 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 218.44 133.858 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 218.44 132.08 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "I2C hot-plug series resistor"
+			(at 218.44 132.08 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "77100000-0000-4000-8000-000000000008")
+		)
+		(pin "2"
+			(uuid "77200000-0000-4000-8000-000000000008")
+		)
+		(instances
+			(project "backplane"
+				(path "/5e4f3adc-13b5-4625-8ac7-2a60909b6ea0"
+					(reference "R8")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:D_TVS")
+		(at 247.65 132.08 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "78000000-0000-4000-8000-000000000013")
+		(property "Reference" "D13"
+			(at 247.65 129.54 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "LOW_CAP_TVS"
+			(at 247.65 134.62 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SOD-523"
+			(at 247.65 132.08 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 247.65 132.08 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Low-capacitance TVS placeholder for I2C hot-plug ESD"
+			(at 247.65 132.08 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "78100000-0000-4000-8000-000000000013")
+		)
+		(pin "2"
+			(uuid "78200000-0000-4000-8000-000000000013")
+		)
+		(instances
+			(project "backplane"
+				(path "/5e4f3adc-13b5-4625-8ac7-2a60909b6ea0"
+					(reference "D13")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(global_label "SDA_SLOT_4_CONN"
+		(shape bidirectional)
+		(at 214.63 132.08 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "79000000-0000-4000-8000-000000000106")
+	)
+	(global_label "SDA_SLOT_4"
+		(shape bidirectional)
+		(at 222.25 132.08 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "79000000-0000-4000-8000-000000000206")
+	)
+	(global_label "SDA_SLOT_4_CONN"
+		(shape bidirectional)
+		(at 243.84 132.08 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "79000000-0000-4000-8000-000000000306")
+	)
+	(label "GND"
+		(at 251.46 132.08 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "79000000-0000-4000-8000-000000000406")
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 218.44 137.16 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "77000000-0000-4000-8000-000000000009")
+		(property "Reference" "R9"
+			(at 218.44 135.128 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "47R"
+			(at 218.44 137.16 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 218.44 138.938 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 218.44 137.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "I2C hot-plug series resistor"
+			(at 218.44 137.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "77100000-0000-4000-8000-000000000009")
+		)
+		(pin "2"
+			(uuid "77200000-0000-4000-8000-000000000009")
+		)
+		(instances
+			(project "backplane"
+				(path "/5e4f3adc-13b5-4625-8ac7-2a60909b6ea0"
+					(reference "R9")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:D_TVS")
+		(at 247.65 137.16 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "78000000-0000-4000-8000-000000000014")
+		(property "Reference" "D14"
+			(at 247.65 134.62 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "LOW_CAP_TVS"
+			(at 247.65 139.7 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SOD-523"
+			(at 247.65 137.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 247.65 137.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Low-capacitance TVS placeholder for I2C hot-plug ESD"
+			(at 247.65 137.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "78100000-0000-4000-8000-000000000014")
+		)
+		(pin "2"
+			(uuid "78200000-0000-4000-8000-000000000014")
+		)
+		(instances
+			(project "backplane"
+				(path "/5e4f3adc-13b5-4625-8ac7-2a60909b6ea0"
+					(reference "D14")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(global_label "SCL_SLOT_4_CONN"
+		(shape bidirectional)
+		(at 214.63 137.16 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "79000000-0000-4000-8000-000000000107")
+	)
+	(global_label "SCL_SLOT_4"
+		(shape bidirectional)
+		(at 222.25 137.16 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "79000000-0000-4000-8000-000000000207")
+	)
+	(global_label "SCL_SLOT_4_CONN"
+		(shape bidirectional)
+		(at 243.84 137.16 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "79000000-0000-4000-8000-000000000307")
+	)
+	(label "GND"
+		(at 251.46 137.16 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "79000000-0000-4000-8000-000000000407")
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 218.44 142.24 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "77000000-0000-4000-8000-000000000010")
+		(property "Reference" "R10"
+			(at 218.44 140.208 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "47R"
+			(at 218.44 142.24 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 218.44 144.018 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 218.44 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "I2C hot-plug series resistor"
+			(at 218.44 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "77100000-0000-4000-8000-000000000010")
+		)
+		(pin "2"
+			(uuid "77200000-0000-4000-8000-000000000010")
+		)
+		(instances
+			(project "backplane"
+				(path "/5e4f3adc-13b5-4625-8ac7-2a60909b6ea0"
+					(reference "R10")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:D_TVS")
+		(at 247.65 142.24 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "78000000-0000-4000-8000-000000000015")
+		(property "Reference" "D15"
+			(at 247.65 139.7 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "LOW_CAP_TVS"
+			(at 247.65 144.78 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SOD-523"
+			(at 247.65 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 247.65 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Low-capacitance TVS placeholder for I2C hot-plug ESD"
+			(at 247.65 142.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "78100000-0000-4000-8000-000000000015")
+		)
+		(pin "2"
+			(uuid "78200000-0000-4000-8000-000000000015")
+		)
+		(instances
+			(project "backplane"
+				(path "/5e4f3adc-13b5-4625-8ac7-2a60909b6ea0"
+					(reference "D15")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(global_label "SDA_SLOT_5_CONN"
+		(shape bidirectional)
+		(at 214.63 142.24 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "79000000-0000-4000-8000-000000000108")
+	)
+	(global_label "SDA_SLOT_5"
+		(shape bidirectional)
+		(at 222.25 142.24 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "79000000-0000-4000-8000-000000000208")
+	)
+	(global_label "SDA_SLOT_5_CONN"
+		(shape bidirectional)
+		(at 243.84 142.24 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "79000000-0000-4000-8000-000000000308")
+	)
+	(label "GND"
+		(at 251.46 142.24 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "79000000-0000-4000-8000-000000000408")
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 218.44 147.32 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "77000000-0000-4000-8000-000000000011")
+		(property "Reference" "R11"
+			(at 218.44 145.288 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "47R"
+			(at 218.44 147.32 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 218.44 149.098 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 218.44 147.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "I2C hot-plug series resistor"
+			(at 218.44 147.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "77100000-0000-4000-8000-000000000011")
+		)
+		(pin "2"
+			(uuid "77200000-0000-4000-8000-000000000011")
+		)
+		(instances
+			(project "backplane"
+				(path "/5e4f3adc-13b5-4625-8ac7-2a60909b6ea0"
+					(reference "R11")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:D_TVS")
+		(at 247.65 147.32 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "78000000-0000-4000-8000-000000000016")
+		(property "Reference" "D16"
+			(at 247.65 144.78 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "LOW_CAP_TVS"
+			(at 247.65 149.86 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SOD-523"
+			(at 247.65 147.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 247.65 147.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Low-capacitance TVS placeholder for I2C hot-plug ESD"
+			(at 247.65 147.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "78100000-0000-4000-8000-000000000016")
+		)
+		(pin "2"
+			(uuid "78200000-0000-4000-8000-000000000016")
+		)
+		(instances
+			(project "backplane"
+				(path "/5e4f3adc-13b5-4625-8ac7-2a60909b6ea0"
+					(reference "D16")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(global_label "SCL_SLOT_5_CONN"
+		(shape bidirectional)
+		(at 214.63 147.32 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "79000000-0000-4000-8000-000000000109")
+	)
+	(global_label "SCL_SLOT_5"
+		(shape bidirectional)
+		(at 222.25 147.32 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "79000000-0000-4000-8000-000000000209")
+	)
+	(global_label "SCL_SLOT_5_CONN"
+		(shape bidirectional)
+		(at 243.84 147.32 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "79000000-0000-4000-8000-000000000309")
+	)
+	(label "GND"
+		(at 251.46 147.32 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "79000000-0000-4000-8000-000000000409")
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 218.44 152.4 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "77000000-0000-4000-8000-000000000012")
+		(property "Reference" "R12"
+			(at 218.44 150.368 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "47R"
+			(at 218.44 152.4 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 218.44 154.178 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 218.44 152.4 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "I2C hot-plug series resistor"
+			(at 218.44 152.4 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "77100000-0000-4000-8000-000000000012")
+		)
+		(pin "2"
+			(uuid "77200000-0000-4000-8000-000000000012")
+		)
+		(instances
+			(project "backplane"
+				(path "/5e4f3adc-13b5-4625-8ac7-2a60909b6ea0"
+					(reference "R12")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:D_TVS")
+		(at 247.65 152.4 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "78000000-0000-4000-8000-000000000017")
+		(property "Reference" "D17"
+			(at 247.65 149.86 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "LOW_CAP_TVS"
+			(at 247.65 154.94 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SOD-523"
+			(at 247.65 152.4 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 247.65 152.4 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Low-capacitance TVS placeholder for I2C hot-plug ESD"
+			(at 247.65 152.4 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "78100000-0000-4000-8000-000000000017")
+		)
+		(pin "2"
+			(uuid "78200000-0000-4000-8000-000000000017")
+		)
+		(instances
+			(project "backplane"
+				(path "/5e4f3adc-13b5-4625-8ac7-2a60909b6ea0"
+					(reference "D17")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(global_label "SDA_SLOT_6_CONN"
+		(shape bidirectional)
+		(at 214.63 152.4 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "79000000-0000-4000-8000-000000000110")
+	)
+	(global_label "SDA_SLOT_6"
+		(shape bidirectional)
+		(at 222.25 152.4 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "79000000-0000-4000-8000-000000000210")
+	)
+	(global_label "SDA_SLOT_6_CONN"
+		(shape bidirectional)
+		(at 243.84 152.4 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "79000000-0000-4000-8000-000000000310")
+	)
+	(label "GND"
+		(at 251.46 152.4 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "79000000-0000-4000-8000-000000000410")
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 218.44 157.48 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "77000000-0000-4000-8000-000000000013")
+		(property "Reference" "R13"
+			(at 218.44 155.448 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "47R"
+			(at 218.44 157.48 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 218.44 159.258 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 218.44 157.48 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "I2C hot-plug series resistor"
+			(at 218.44 157.48 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "77100000-0000-4000-8000-000000000013")
+		)
+		(pin "2"
+			(uuid "77200000-0000-4000-8000-000000000013")
+		)
+		(instances
+			(project "backplane"
+				(path "/5e4f3adc-13b5-4625-8ac7-2a60909b6ea0"
+					(reference "R13")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:D_TVS")
+		(at 247.65 157.48 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "78000000-0000-4000-8000-000000000018")
+		(property "Reference" "D18"
+			(at 247.65 154.94 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "LOW_CAP_TVS"
+			(at 247.65 160.02 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SOD-523"
+			(at 247.65 157.48 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 247.65 157.48 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Low-capacitance TVS placeholder for I2C hot-plug ESD"
+			(at 247.65 157.48 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "78100000-0000-4000-8000-000000000018")
+		)
+		(pin "2"
+			(uuid "78200000-0000-4000-8000-000000000018")
+		)
+		(instances
+			(project "backplane"
+				(path "/5e4f3adc-13b5-4625-8ac7-2a60909b6ea0"
+					(reference "D18")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(global_label "SCL_SLOT_6_CONN"
+		(shape bidirectional)
+		(at 214.63 157.48 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "79000000-0000-4000-8000-000000000111")
+	)
+	(global_label "SCL_SLOT_6"
+		(shape bidirectional)
+		(at 222.25 157.48 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "79000000-0000-4000-8000-000000000211")
+	)
+	(global_label "SCL_SLOT_6_CONN"
+		(shape bidirectional)
+		(at 243.84 157.48 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "79000000-0000-4000-8000-000000000311")
+	)
+	(label "GND"
+		(at 251.46 157.48 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "79000000-0000-4000-8000-000000000411")
+	)
+
 	(sheet_instances
 		(path "/"
 			(page "1")
