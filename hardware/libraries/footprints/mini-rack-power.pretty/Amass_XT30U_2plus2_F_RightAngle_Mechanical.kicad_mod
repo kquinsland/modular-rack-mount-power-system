@@ -3,10 +3,10 @@
 	(generator "codex")
 	(generator_version "1")
 	(layer "F.Cu")
-	(descr "Mechanical envelope only for Amass XT30U(2+2)-F.G.B right-angle female SMT connector. Datasheet does not provide a PCB land pattern.")
-	(tags "Amass XT30 XT30U 2+2 female right-angle smt mechanical envelope")
+	(descr "Mechanical envelope for Amass XT30U(2+2)-F.G.B right-angle female SMT connector. Mating-face outline imported from hardware/mechanical/exports/XT30(2+2).dxf; datasheet does not provide a PCB land pattern.")
+	(tags "Amass XT30 XT30U 2+2 female right-angle smt mechanical mating-face envelope")
 	(property "Reference" "REF**"
-		(at 0 -8.3 0)
+		(at 0 -5 0)
 		(layer "F.SilkS")
 		(effects
 			(font
@@ -16,7 +16,7 @@
 		)
 	)
 	(property "Value" "Amass_XT30U_2plus2_F_RightAngle_Mechanical"
-		(at 0 8.3 0)
+		(at 0 5 0)
 		(layer "F.Fab")
 		(effects
 			(font
@@ -74,9 +74,33 @@
 		)
 	)
 	(attr exclude_from_pos_files exclude_from_bom)
-	(fp_rect
-		(start -6.35 -6.65)
-		(end 6.35 6.65)
+	(fp_poly
+		(pts
+			(xy -3.4505 2.1)
+			(xy -5.771846 2.1)
+			(xy -6.120624 2.1)
+			(xy -6.120624 0.95)
+			(xy -6.620624 0.95)
+			(xy -6.620624 -0.95)
+			(xy -6.120624 -0.95)
+			(xy -6.120624 -2.1)
+			(xy -5.771846 -2.1)
+			(xy -3.4505 -2.1)
+			(xy -3.371094 -2.1)
+			(xy -2.879376 -1.875)
+			(xy -1.729376 -1.875)
+			(xy 1.320624 -1.875)
+			(xy 2.320624 -1.875)
+			(xy 6.120624 -1.875)
+			(xy 6.120624 -0.95)
+			(xy 6.620624 -0.95)
+			(xy 6.620624 0.95)
+			(xy 6.120624 0.95)
+			(xy 6.120624 1.875)
+			(xy -1.729376 1.875)
+			(xy -2.879376 1.875)
+			(xy -3.371094 2.1)
+		)
 		(stroke
 			(width 0.12)
 			(type solid)
@@ -84,9 +108,109 @@
 		(fill no)
 		(layer "F.SilkS")
 	)
-	(fp_rect
-		(start -6.35 -6.65)
-		(end 6.35 6.65)
+	(fp_poly
+		(pts
+			(xy -3.779376 -1.75)
+			(xy -3.779376 -0.25)
+			(xy -5.579376 -0.25)
+			(xy -5.579376 -1.75)
+		)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.SilkS")
+	)
+	(fp_poly
+		(pts
+			(xy -3.779376 0.25)
+			(xy -3.779376 1.75)
+			(xy -5.579376 1.75)
+			(xy -5.579376 0.25)
+		)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.SilkS")
+	)
+	(fp_poly
+		(pts
+			(xy -4.779376 1.25)
+			(xy -4.779376 0.75)
+			(xy -4.279376 0.75)
+			(xy -4.279376 1.25)
+		)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.SilkS")
+	)
+	(fp_poly
+		(pts
+			(xy -4.279376 -0.75)
+			(xy -4.779376 -0.75)
+			(xy -4.779376 -1.25)
+			(xy -4.279376 -1.25)
+		)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.SilkS")
+	)
+	(fp_circle
+		(center 4.320624 0)
+		(end 5.695624 0)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.SilkS")
+	)
+	(fp_circle
+		(center -0.679376 0)
+		(end 0.695624 0)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.SilkS")
+	)
+	(fp_poly
+		(pts
+			(xy -3.4505 2.1)
+			(xy -5.771846 2.1)
+			(xy -6.120624 2.1)
+			(xy -6.120624 0.95)
+			(xy -6.620624 0.95)
+			(xy -6.620624 -0.95)
+			(xy -6.120624 -0.95)
+			(xy -6.120624 -2.1)
+			(xy -5.771846 -2.1)
+			(xy -3.4505 -2.1)
+			(xy -3.371094 -2.1)
+			(xy -2.879376 -1.875)
+			(xy -1.729376 -1.875)
+			(xy 1.320624 -1.875)
+			(xy 2.320624 -1.875)
+			(xy 6.120624 -1.875)
+			(xy 6.120624 -0.95)
+			(xy 6.620624 -0.95)
+			(xy 6.620624 0.95)
+			(xy 6.120624 0.95)
+			(xy 6.120624 1.875)
+			(xy -1.729376 1.875)
+			(xy -2.879376 1.875)
+			(xy -3.371094 2.1)
+		)
 		(stroke
 			(width 0.1)
 			(type solid)
@@ -94,17 +218,84 @@
 		(fill no)
 		(layer "F.Fab")
 	)
-	(fp_line
-		(start -6.35 5.75)
-		(end 6.35 5.75)
+	(fp_poly
+		(pts
+			(xy -3.779376 -1.75)
+			(xy -3.779376 -0.25)
+			(xy -5.579376 -0.25)
+			(xy -5.579376 -1.75)
+		)
 		(stroke
 			(width 0.1)
 			(type solid)
 		)
+		(fill no)
 		(layer "F.Fab")
 	)
-	(fp_text user "MATING SIDE"
-		(at 0 6.2 0)
+	(fp_poly
+		(pts
+			(xy -3.779376 0.25)
+			(xy -3.779376 1.75)
+			(xy -5.579376 1.75)
+			(xy -5.579376 0.25)
+		)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.Fab")
+	)
+	(fp_poly
+		(pts
+			(xy -4.779376 1.25)
+			(xy -4.779376 0.75)
+			(xy -4.279376 0.75)
+			(xy -4.279376 1.25)
+		)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.Fab")
+	)
+	(fp_poly
+		(pts
+			(xy -4.279376 -0.75)
+			(xy -4.779376 -0.75)
+			(xy -4.779376 -1.25)
+			(xy -4.279376 -1.25)
+		)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.Fab")
+	)
+	(fp_circle
+		(center 4.320624 0)
+		(end 5.695624 0)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.Fab")
+	)
+	(fp_circle
+		(center -0.679376 0)
+		(end 0.695624 0)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.Fab")
+	)
+	(fp_text user "MATING FACE"
+		(at 0 3.35 0)
 		(layer "F.Fab")
 		(effects
 			(font
@@ -113,18 +304,8 @@
 			)
 		)
 	)
-	(fp_text user "MECH ONLY"
-		(at 0 -0.4 0)
-		(layer "Cmts.User")
-		(effects
-			(font
-				(size 1 1)
-				(thickness 0.15)
-			)
-		)
-	)
-	(fp_text user "NO LAND PATTERN IN DATASHEET"
-		(at 0 1.1 0)
+	(fp_text user "MECH ONLY - NO PCB LAND PATTERN"
+		(at 0 -3.35 0)
 		(layer "Cmts.User")
 		(effects
 			(font
@@ -144,8 +325,8 @@
 		)
 	)
 	(fp_rect
-		(start -6.85 -7.15)
-		(end 6.85 7.15)
+		(start -7.15 -2.6)
+		(end 7.15 2.6)
 		(stroke
 			(width 0.05)
 			(type solid)
@@ -154,4 +335,15 @@
 		(layer "F.CrtYd")
 	)
 	(embedded_fonts no)
+	(model "${KIPRJMOD}/../../mechanical/exports/XT30(2+2).step"
+		(offset
+			(xyz 34.065115 2.1 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 90 0 0)
+		)
+	)
 )
