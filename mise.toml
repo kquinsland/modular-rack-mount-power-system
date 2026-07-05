@@ -1,0 +1,46 @@
+[settings]
+activate_aggressive = true
+env_cache = true
+exec_auto_install = true
+lockfile = true
+pin = true
+slsa = true
+
+# Don't need windows support, just arm64/x64 mac/linux
+lockfile_platforms = ["macos-arm64", "linux-x64", "linux-arm64"]
+
+[settings.python]
+uv_venv_auto = "create|source" # create .venv if missing, then activate
+
+[settings.pipx]
+uvx = true
+
+# Below we explicitly depend on MarkdownLint CLI 2 which is run via Node.
+[settings.npm]
+package_manager = "bun"
+
+
+[tools]
+prek = "latest"
+uv = "0.11.26"
+bun = "latest"
+node = "26.4.0"
+"pipx:easyeda2kicad" = "1.0.1"
+
+[tasks."kicad-mcp:install"]
+description = "Install KiCAD MCP Server Node and Python dependencies"
+dir = "kicad-mcp/server"
+run = [
+  "npm ci",
+  "uv venv --python /Applications/KiCad/KiCad.app/Contents/Frameworks/Python.framework/Versions/Current/bin/python3 --system-site-packages .venv",
+  "uv pip install --python .venv/bin/python -r requirements.txt",
+  "npm run build",
+]
+
+[tasks."kicad-mcp:verify"]
+description = "Verify KiCAD MCP Server build and Python runtime"
+dir = "kicad-mcp/server"
+run = [
+  "test -f dist/index.js",
+  ".venv/bin/python -c \"import pcbnew, sexpdata, skip, PIL, cairosvg, colorlog, pydantic, dotenv; print(pcbnew.GetBuildVersion())\"",
+]
