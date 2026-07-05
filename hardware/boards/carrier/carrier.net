@@ -1,8 +1,8 @@
 (export
 	(version "E")
 	(design
-		(source "/Users/karl/Projects/mini-rack-power/hardware/boards/carrier/carrier.kicad_sch")
-		(date "2026-07-04T20:18:52")
+		(source "/mnt/sync/Projects/modular-rack-power/hardware/boards/carrier/carrier.kicad_sch")
+		(date "2026-07-05T12:10:06")
 		(tool "Eeschema 10.0.4")
 		(textvar
 			(name "BOARD_NAME") "carrier")
@@ -68,6 +68,8 @@
 				(field
 					(name "MPN") "XT30PW(2+2)-M.G.B")
 				(field
+					(name "Part_source") "LCSC,XXXXXXX")
+				(field
 					(name "Footprint") "mini-rack-power:Amass_XT30PW_2plus2_M_RightAngle_THT")
 				(field
 					(name "Datasheet") "docs/data-sheets/Amass/XT30PW(2+2)-M.G.B.pdf")
@@ -82,6 +84,10 @@
 			(property
 				(name "MPN")
 				(value "XT30PW(2+2)-M.G.B")
+			)
+			(property
+				(name "Part_source")
+				(value "LCSC,XXXXXXX")
 			)
 			(property
 				(name "Sheetname")
@@ -125,23 +131,29 @@
 			)
 		)
 		(comp
-			(ref "J2")
-			(value "DC_IN+_OUT")
-			(footprint "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical")
-			(description "Single-pin breakout for carrier DC input positive")
+			(ref "MOD1")
+			(value "SW3538_140W_Module")
+			(footprint "mini-rack-power:SW3538_140W_Module")
+			(description "SW3538 140W USB-C/PD module with DC input/output, I2C, and IRQ")
 			(fields
 				(field
-					(name "Footprint") "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical")
+					(name "Part_source") "AliExpress:3256808659168317")
+				(field
+					(name "Footprint") "mini-rack-power:SW3538_140W_Module")
 				(field
 					(name "Datasheet")
 				)
 				(field
-					(name "Description") "Single-pin breakout for carrier DC input positive")
+					(name "Description") "SW3538 140W USB-C/PD module with DC input/output, I2C, and IRQ")
 			)
 			(libsource
-				(lib "Connector_Generic")
-				(part "Conn_01x01")
-				(description "Generic connector, single row, 01x01, script generated (kicad-library-utils/schlib/autogen/connector/)")
+				(lib "mini-rack-power")
+				(part "SW3538_140W_Module")
+				(description "SW3538 140W USB-C/PD module with DC input/output, I2C, and IRQ")
+			)
+			(property
+				(name "Part_source")
+				(value "AliExpress:3256808659168317")
 			)
 			(property
 				(name "Sheetname")
@@ -150,14 +162,6 @@
 			(property
 				(name "Sheetfile")
 				(value "carrier.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "connector")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "Connector*:*_1x??_*")
 			)
 			(sheetpath
 				(names "/")
@@ -171,110 +175,23 @@
 						(pin
 							(num "1")
 						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "J3")
-			(value "GND_OUT")
-			(footprint "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical")
-			(description "Single-pin breakout for carrier DC input return")
-			(fields
-				(field
-					(name "Footprint") "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description") "Single-pin breakout for carrier DC input return")
-			)
-			(libsource
-				(lib "Connector_Generic")
-				(part "Conn_01x01")
-				(description "Generic connector, single row, 01x01, script generated (kicad-library-utils/schlib/autogen/connector/)")
-			)
-			(property
-				(name "Sheetname")
-				(value "carrier")
-			)
-			(property
-				(name "Sheetfile")
-				(value "carrier.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "connector")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "Connector*:*_1x??_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "10000000-0000-4000-8000-000000000003")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "J4")
-			(value "I2C_OUT")
-			(footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
-			(description "Two-pin breakout for carrier I2C bus")
-			(fields
-				(field
-					(name "Footprint") "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description") "Two-pin breakout for carrier I2C bus")
-			)
-			(libsource
-				(lib "Connector_Generic")
-				(part "Conn_01x02")
-				(description "Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)")
-			)
-			(property
-				(name "Sheetname")
-				(value "carrier")
-			)
-			(property
-				(name "Sheetfile")
-				(value "carrier.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "connector")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "Connector*:*_1x??_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "10000000-0000-4000-8000-000000000004")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
 						(pin
 							(num "2")
+						)
+						(pin
+							(num "5")
+						)
+						(pin
+							(num "6")
+						)
+						(pin
+							(num "7")
+						)
+						(pin
+							(num "3")
+						)
+						(pin
+							(num "4")
 						)
 					)
 				)
@@ -284,69 +201,6 @@
 	(groups)
 	(variants)
 	(libparts
-		(libpart
-			(lib "Connector_Generic")
-			(part "Conn_01x01")
-			(description "Generic connector, single row, 01x01, script generated (kicad-library-utils/schlib/autogen/connector/)")
-			(footprints
-				(fp "Connector*:*_1x??_*")
-			)
-			(fields
-				(field
-					(name "Reference") "J")
-				(field
-					(name "Value") "Conn_01x01")
-				(field
-					(name "Footprint")
-				)
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description") "Generic connector, single row, 01x01, script generated (kicad-library-utils/schlib/autogen/connector/)")
-			)
-			(pins
-				(pin
-					(num "1")
-					(name "Pin_1")
-					(type "passive")
-				)
-			)
-		)
-		(libpart
-			(lib "Connector_Generic")
-			(part "Conn_01x02")
-			(description "Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)")
-			(footprints
-				(fp "Connector*:*_1x??_*")
-			)
-			(fields
-				(field
-					(name "Reference") "J")
-				(field
-					(name "Value") "Conn_01x02")
-				(field
-					(name "Footprint")
-				)
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description") "Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)")
-			)
-			(pins
-				(pin
-					(num "1")
-					(name "Pin_1")
-					(type "passive")
-				)
-				(pin
-					(num "2")
-					(name "Pin_2")
-					(type "passive")
-				)
-			)
-		)
 		(libpart
 			(lib "Connector_Generic")
 			(part "Conn_01x04")
@@ -391,11 +245,72 @@
 				)
 			)
 		)
+		(libpart
+			(lib "mini-rack-power")
+			(part "SW3538_140W_Module")
+			(description "SW3538 140W USB-C/PD module with DC input/output, I2C, and IRQ")
+			(fields
+				(field
+					(name "Reference") "MOD")
+				(field
+					(name "Value") "SW3538_140W_Module")
+				(field
+					(name "Footprint") "mini-rack-power:SW3538_140W_Module")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "SW3538 140W USB-C/PD module with DC input/output, I2C, and IRQ")
+				(field
+					(name "Part_source") "AliExpress:3256808659168317")
+			)
+			(pins
+				(pin
+					(num "1")
+					(name "DC_IN+")
+					(type "power_in")
+				)
+				(pin
+					(num "2")
+					(name "DC_IN-")
+					(type "power_in")
+				)
+				(pin
+					(num "3")
+					(name "DC_OUT+")
+					(type "power_out")
+				)
+				(pin
+					(num "4")
+					(name "DC_OUT-")
+					(type "power_out")
+				)
+				(pin
+					(num "5")
+					(name "SDA")
+					(type "bidirectional")
+				)
+				(pin
+					(num "6")
+					(name "SCL")
+					(type "bidirectional")
+				)
+				(pin
+					(num "7")
+					(name "IRQ")
+					(type "output")
+				)
+			)
+		)
 	)
 	(libraries
 		(library
 			(logical "Connector_Generic")
 			(uri "${KICAD10_SYMBOL_DIR}/Connector_Generic.kicad_sym")
+		)
+		(library
+			(logical "mini-rack-power")
+			(uri "${KIPRJMOD}/../../libraries/symbols/mini-rack-power.kicad_sym")
 		)
 	)
 	(nets
@@ -410,10 +325,10 @@
 				(pintype "passive")
 			)
 			(node
-				(ref "J2")
+				(ref "MOD1")
 				(pin "1")
-				(pinfunction "Pin_1_1")
-				(pintype "passive")
+				(pinfunction "DC_IN+_1")
+				(pintype "power_in")
 			)
 		)
 		(net
@@ -427,10 +342,10 @@
 				(pintype "passive")
 			)
 			(node
-				(ref "J3")
-				(pin "1")
-				(pinfunction "Pin_1_1")
-				(pintype "passive")
+				(ref "MOD1")
+				(pin "2")
+				(pinfunction "DC_IN-_2")
+				(pintype "power_in")
 			)
 		)
 		(net
@@ -444,10 +359,10 @@
 				(pintype "passive")
 			)
 			(node
-				(ref "J4")
-				(pin "2")
-				(pinfunction "Pin_2_2")
-				(pintype "passive")
+				(ref "MOD1")
+				(pin "6")
+				(pinfunction "SCL_6")
+				(pintype "bidirectional")
 			)
 		)
 		(net
@@ -461,10 +376,43 @@
 				(pintype "passive")
 			)
 			(node
-				(ref "J4")
-				(pin "1")
-				(pinfunction "Pin_1_1")
-				(pintype "passive")
+				(ref "MOD1")
+				(pin "5")
+				(pinfunction "SDA_5")
+				(pintype "bidirectional")
+			)
+		)
+		(net
+			(code "5")
+			(name "unconnected-(MOD1-DC_OUT+-Pad3)")
+			(class "Default")
+			(node
+				(ref "MOD1")
+				(pin "3")
+				(pinfunction "DC_OUT+_3")
+				(pintype "power_out+no_connect")
+			)
+		)
+		(net
+			(code "6")
+			(name "unconnected-(MOD1-DC_OUT--Pad4)")
+			(class "Default")
+			(node
+				(ref "MOD1")
+				(pin "4")
+				(pinfunction "DC_OUT-_4")
+				(pintype "power_out+no_connect")
+			)
+		)
+		(net
+			(code "7")
+			(name "unconnected-(MOD1-IRQ-Pad7)")
+			(class "Default")
+			(node
+				(ref "MOD1")
+				(pin "7")
+				(pinfunction "IRQ_7")
+				(pintype "output+no_connect")
 			)
 		)
 	)
