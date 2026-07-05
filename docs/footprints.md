@@ -18,14 +18,17 @@ The signal pads use 1.60 mm copper with 0.90 mm drill. The power pads use 3.20 m
 
 ## Amass XT30U(2+2)-F.G.B
 
-Footprint: `hardware/libraries/footprints/mini-rack-power.pretty/Amass_XT30U_2plus2_F_RightAngle_Mechanical.kicad_mod`
+Footprint: `hardware/libraries/footprints/mini-rack-power.pretty/Amass_XT30U_2plus2_F.kicad_mod`
 
 Source: `docs/data-sheets/Amass/XT30U(2+2)-F.G.B.pdf`
 
-The available datasheet gives the connector envelope but does not provide a recommended PCB land pattern or exposed solder land dimensions. The project footprint is therefore mechanical-only:
+Mechanical sources:
 
-- No electrical pads.
-- Excluded from BOM and position files.
-- Courtyard and fab/silk outlines are based on the 12.70 mm by 13.30 mm envelope shown in the datasheet.
+- `hardware/mechanical/exports/XT30(2+2).dxf`
+- `hardware/mechanical/exports/XT30(2+2).step`
 
-Replace this with a real SMT land-pattern footprint before routing or manufacturing a board that uses this part electrically.
+The footprint is for the vertical / 180-degree female connector and uses the imported mating-face geometry:
+
+- Power contacts: plated through-hole pads centered on the two circular metal-pin features.
+- Signal contacts: front-side SMT pads centered on the two rectangular solder-foot features.
+- Pad numbering follows the backplane schematic assumption: 1=DC_IN+, 2=GND, 3=SDA, 4=SCL.
