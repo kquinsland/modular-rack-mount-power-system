@@ -1,5 +1,12 @@
+[agents]
+max_threads = 6
+max_depth = 1
+
+# TODO: make path relative
 [mcp_servers.kicad]
-command = "/opt/homebrew/bin/mise"
+#
+# command = "/opt/homebrew/bin/mise"
+command = "mise"
 args = ["exec", "-C", "/Users/karl/Projects/mini-rack-power", "--", "node", "/Users/karl/Projects/mini-rack-power/kicad-mcp/server/dist/index.js"]
 
 [mcp_servers.kicad.env]
