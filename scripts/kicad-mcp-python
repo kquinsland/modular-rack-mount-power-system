@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+can_import_pcbnew() {
+  "$1" -c 'import pcbnew' >/dev/null 2>&1
+}
+
+print_abs_path() {
+  "$1" -c 'import sys; print(sys.executable)'
+}
+
+candidates=()
+
+if [[ -n "${KICAD_PYTHON:-}" ]]; then
+  candidates+=("$KICAD_PYTHON")
+fi
+
+if [[ -x "/Applications/KiCad/KiCad.app/Contents/Frameworks/Python.framework/Versions/Current/bin/python3" ]]; then
+  candidates+=("/Applications/KiCad/KiCad.app/Contents/Frameworks/Python.framework/Versions/Current/bin/python3")
+fi
+
+for path in \
+  /usr/lib/kicad/bin/python3 \
+  /usr/local/lib/kicad/bin/python3 \
+  /opt/kicad/bin/python3 \
+  /usr/bin/python3 \
+  /bin/python3
+do
+  if [[ -x "$path" ]]; then
+    candidates+=("$path")
+  fi
+done
+
+if command -v python3 >/dev/null 2>&1; then
+  candidates+=("$(command -v python3)")
+fi
+
+checked=()
+for candidate in "${candidates[@]}"; do
+  [[ -n "$candidate" ]] || continue
+  if [[ ! -x "$candidate" ]]; then
+    checked+=("$candidate (not executable)")
+    continue
+  fi
+
+  if can_import_pcbnew "$candidate"; then
+    print_abs_path "$candidate"
+    exit 0
+  fi
+
+  checked+=("$candidate")
+done
+
+{
+  echo "Unable to find a Python interpreter that can import KiCad's pcbnew module."
+  echo "Set KICAD_PYTHON to the KiCad Python executable, or install KiCad's Python bindings."
+  echo
+  echo "Checked:"
+  printf '  - %s\n' "${checked[@]}"
+} >&2
+exit 1

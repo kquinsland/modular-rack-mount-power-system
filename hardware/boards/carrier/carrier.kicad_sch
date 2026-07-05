@@ -296,6 +296,193 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Connector_Generic:Conn_01x03"
+			(pin_names
+				(offset 1.016)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "J"
+				(at 0 5.08 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "Conn_01x03"
+				(at 0 -5.08 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "connector"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "Connector*:*_1x??_*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "Conn_01x03_1_1"
+				(rectangle
+					(start -1.27 3.81)
+					(end 1.27 -3.81)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(rectangle
+					(start -1.27 2.667)
+					(end 0 2.413)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 0.127)
+					(end 0 -0.127)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 -2.413)
+					(end 0 -2.667)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(pin passive line
+					(at -5.08 2.54 0)
+					(length 3.81)
+					(name "Pin_1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 0 0)
+					(length 3.81)
+					(name "Pin_2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -2.54 0)
+					(length 3.81)
+					(name "Pin_3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Connector_Generic:Conn_01x04"
 			(pin_names
 				(offset 1.016)
@@ -513,16 +700,45 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "Carrier-side XT30 pin assumption follows backplane: 1=DC_IN+, 2=GND, 3=SDA, 4=SCL. Verify against final mating connector documentation before fab."
+	(text "Carrier-side XT30 pin assumption follows backplane: \n\n1=DC_IN+, 2=GND, 3=SDA, 4=SCL. \n\nVerify against final mating connector documentation before fab."
 		(exclude_from_sim no)
 		(at 35.56 82.55 0)
 		(effects
 			(font
+				(face "JetBrainsMono NF")
 				(size 1.27 1.27)
+				(bold yes)
 			)
 			(justify left bottom)
 		)
 		(uuid "30000000-0000-4000-8000-000000000009")
+	)
+	(text "IQR (NC)"
+		(exclude_from_sim no)
+		(at 110.49 59.69 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "7ced4a75-35a3-4730-93f8-059a44ce7706")
+	)
+	(junction
+		(at 121.92 39.37)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "8caf780c-d459-4a26-871e-6f23b8548286")
+	)
+	(junction
+		(at 121.92 50.8)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "d1f297fd-cda6-4226-bf27-76dc07e0a7e3")
+	)
+	(no_connect
+		(at 121.92 59.69)
+		(uuid "34ace205-6ba3-4a73-a3a3-4ce192aba2f8")
 	)
 	(wire
 		(pts
@@ -566,7 +782,7 @@
 	)
 	(wire
 		(pts
-			(xy 119.38 43.18) (xy 130.81 43.18)
+			(xy 110.49 39.37) (xy 121.92 39.37)
 		)
 		(stroke
 			(width 0)
@@ -576,17 +792,7 @@
 	)
 	(wire
 		(pts
-			(xy 130.81 43.18) (xy 130.81 45.72)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "20000000-0000-4000-8000-000000000009")
-	)
-	(wire
-		(pts
-			(xy 119.38 50.8) (xy 130.81 50.8)
+			(xy 110.49 50.8) (xy 121.92 50.8)
 		)
 		(stroke
 			(width 0)
@@ -596,17 +802,7 @@
 	)
 	(wire
 		(pts
-			(xy 130.81 50.8) (xy 130.81 53.34)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "20000000-0000-4000-8000-000000000010")
-	)
-	(wire
-		(pts
-			(xy 119.38 64.77) (xy 130.81 64.77)
+			(xy 110.49 62.23) (xy 121.92 62.23)
 		)
 		(stroke
 			(width 0)
@@ -616,13 +812,33 @@
 	)
 	(wire
 		(pts
-			(xy 119.38 67.31) (xy 130.81 67.31)
+			(xy 110.49 64.77) (xy 121.92 64.77)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "20000000-0000-4000-8000-000000000008")
+	)
+	(wire
+		(pts
+			(xy 121.92 39.37) (xy 121.92 41.91)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20000000-0000-4000-8000-000000000009")
+	)
+	(wire
+		(pts
+			(xy 121.92 50.8) (xy 121.92 53.34)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20000000-0000-4000-8000-000000000010")
 	)
 	(label "DC_IN+"
 		(at 69.85 48.26 180)
@@ -665,7 +881,7 @@
 		(uuid "30000000-0000-4000-8000-000000000004")
 	)
 	(label "DC_IN+"
-		(at 119.38 43.18 180)
+		(at 110.49 39.37 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -675,7 +891,7 @@
 		(uuid "30000000-0000-4000-8000-000000000005")
 	)
 	(label "GND"
-		(at 119.38 50.8 180)
+		(at 110.49 50.8 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -684,8 +900,8 @@
 		)
 		(uuid "30000000-0000-4000-8000-000000000006")
 	)
-	(label "SDA"
-		(at 119.38 64.77 180)
+	(label "SCL"
+		(at 110.49 62.23 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -694,8 +910,8 @@
 		)
 		(uuid "30000000-0000-4000-8000-000000000007")
 	)
-	(label "SCL"
-		(at 119.38 67.31 180)
+	(label "SDA"
+		(at 110.49 64.77 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -802,7 +1018,7 @@
 	)
 	(symbol
 		(lib_id "Connector_Generic:Conn_01x02")
-		(at 135.89 43.18 0)
+		(at 127 39.37 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -812,7 +1028,7 @@
 		(dnp no)
 		(uuid "10000000-0000-4000-8000-000000000002")
 		(property "Reference" "J2"
-			(at 135.89 40.64 0)
+			(at 127 36.83 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -822,7 +1038,7 @@
 			)
 		)
 		(property "Value" "DC+_OUT"
-			(at 135.89 45.72 0)
+			(at 127 44.958 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -832,7 +1048,7 @@
 			)
 		)
 		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical"
-			(at 135.89 43.18 0)
+			(at 127 39.37 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -843,7 +1059,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 135.89 43.18 0)
+			(at 127 39.37 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -854,7 +1070,7 @@
 			)
 		)
 		(property "Description" "Two-pin breakout for carrier DC input positive"
-			(at 135.89 43.18 0)
+			(at 127 39.37 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -881,7 +1097,7 @@
 	)
 	(symbol
 		(lib_id "Connector_Generic:Conn_01x02")
-		(at 135.89 50.8 0)
+		(at 127 50.8 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -891,7 +1107,7 @@
 		(dnp no)
 		(uuid "10000000-0000-4000-8000-000000000003")
 		(property "Reference" "J3"
-			(at 135.89 48.26 0)
+			(at 127 48.26 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -901,7 +1117,7 @@
 			)
 		)
 		(property "Value" "DC-_OUT"
-			(at 135.89 53.34 0)
+			(at 127 56.388 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -911,7 +1127,7 @@
 			)
 		)
 		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical"
-			(at 135.89 50.8 0)
+			(at 127 50.8 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -922,7 +1138,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 135.89 50.8 0)
+			(at 127 50.8 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -933,7 +1149,7 @@
 			)
 		)
 		(property "Description" "Two-pin breakout for carrier DC input return"
-			(at 135.89 50.8 0)
+			(at 127 50.8 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -959,8 +1175,8 @@
 		)
 	)
 	(symbol
-		(lib_id "Connector_Generic:Conn_01x02")
-		(at 135.89 64.77 0)
+		(lib_id "Connector_Generic:Conn_01x03")
+		(at 127 62.23 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -970,7 +1186,7 @@
 		(dnp no)
 		(uuid "10000000-0000-4000-8000-000000000004")
 		(property "Reference" "J4"
-			(at 135.89 59.69 0)
+			(at 126.746 59.436 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -979,8 +1195,8 @@
 				)
 			)
 		)
-		(property "Value" "I2C_OUT"
-			(at 135.89 62.23 0)
+		(property "Value" "I2C_IQR_OUT"
+			(at 127 68.834 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -989,8 +1205,8 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical"
-			(at 135.89 64.77 0)
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical"
+			(at 127 62.23 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1001,7 +1217,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 135.89 64.77 0)
+			(at 127 62.23 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1011,8 +1227,8 @@
 				)
 			)
 		)
-		(property "Description" "Two-pin breakout for carrier I2C bus"
-			(at 135.89 64.77 0)
+		(property "Description" "Three-pin breakout for carrier I2C bus with reserved IQR"
+			(at 127 62.23 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1027,6 +1243,9 @@
 		)
 		(pin "2"
 			(uuid "40000000-0000-4000-8000-000000000042")
+		)
+		(pin "3"
+			(uuid "40000000-0000-4000-8000-000000000043")
 		)
 		(instances
 			(project "carrier"

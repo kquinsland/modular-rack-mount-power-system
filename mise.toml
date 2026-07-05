@@ -29,12 +29,20 @@ node = "26.4.0"
 
 [tasks."kicad-mcp:install"]
 description = "Install KiCAD MCP Server Node and Python dependencies"
+depends = ["kicad-mcp:submodule"]
 dir = "kicad-mcp/server"
 run = [
   "npm ci",
-  "uv venv --python /Applications/KiCad/KiCad.app/Contents/Frameworks/Python.framework/Versions/Current/bin/python3 --system-site-packages .venv",
+  "uv venv --python \"$(../../scripts/kicad-mcp-python)\" --system-site-packages .venv",
   "uv pip install --python .venv/bin/python -r requirements.txt",
   "npm run build",
+]
+
+[tasks."kicad-mcp:submodule"]
+description = "Initialize and update the KiCAD MCP Server submodule"
+run = [
+  "git submodule sync --recursive -- kicad-mcp/server",
+  "git submodule update --init --recursive -- kicad-mcp/server",
 ]
 
 [tasks."kicad-mcp:verify"]

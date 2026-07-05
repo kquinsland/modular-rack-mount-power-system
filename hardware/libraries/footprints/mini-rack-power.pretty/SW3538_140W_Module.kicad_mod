@@ -1,45 +1,60 @@
 (footprint "SW3538_140W_Module"
 	(version 20260206)
-	(generator "codex")
-	(generator_version "1")
+	(generator "pcbnew")
+	(generator_version "10.0")
 	(layer "F.Cu")
 	(descr "Mechanical/electrical footprint for SW3538 140W USB-C/PD module from hardware/mechanical/exports/SW3538_140W_Module.dxf. Pin assignment assumption: left bottom 1x2=DC input, right bottom 1x2=DC output, side 1x3=SDA/SCL/IRQ; verify against module before fabrication.")
 	(tags "SW3538 USB-C PD module 140W daughterboard")
 	(property "Reference" "REF**"
 		(at 0 -36 0)
 		(layer "F.SilkS")
-		(effects (font (size 1 1) (thickness 0.15)))
+		(uuid "317dc684-30ba-4de5-ac65-6696c220f27a")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
 	)
 	(property "Value" "SW3538_140W_Module"
 		(at 0 36 0)
 		(layer "F.Fab")
-		(effects (font (size 1 1) (thickness 0.15)))
+		(uuid "5b59a0ad-7335-4682-bd5a-1b1f17d0e73a")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
 	)
 	(property "Datasheet" ""
 		(at 0 0 0)
 		(unlocked yes)
 		(layer "F.Fab")
 		(hide yes)
-		(effects (font (size 1.27 1.27) (thickness 0.15)))
+		(uuid "8b201184-0f2d-4dc7-a531-483d99abc9f2")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
 	)
 	(property "Description" "SW3538 140W USB-C/PD module carrier mating footprint"
 		(at 0 0 0)
 		(unlocked yes)
 		(layer "F.Fab")
 		(hide yes)
-		(effects (font (size 1.27 1.27) (thickness 0.15)))
+		(uuid "b39f0c5d-ac5e-4592-afad-a9651977ea86")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
 	)
 	(attr through_hole)
-	(fp_rect
-		(start -16 -32.75)
-		(end 16 32.75)
-		(stroke
-			(width 0.1)
-			(type solid)
-		)
-		(fill no)
-		(layer "F.Fab")
-	)
+	(duplicate_pad_numbers_are_jumpers no)
 	(fp_rect
 		(start -16 -32.75)
 		(end 16 32.75)
@@ -49,36 +64,7 @@
 		)
 		(fill no)
 		(layer "F.SilkS")
-	)
-	(fp_rect
-		(start -13.75 -19.6)
-		(end 3.25 -2.6)
-		(stroke
-			(width 0.1)
-			(type solid)
-		)
-		(fill no)
-		(layer "F.Fab")
-	)
-	(fp_rect
-		(start -5.06 -33.35)
-		(end 5.06 -20.35)
-		(stroke
-			(width 0.1)
-			(type solid)
-		)
-		(fill no)
-		(layer "F.Fab")
-	)
-	(fp_rect
-		(start -12.71 -12.65)
-		(end 12.14 12.2)
-		(stroke
-			(width 0.1)
-			(type solid)
-		)
-		(fill no)
-		(layer "F.Fab")
+		(uuid "5e6f7cea-7470-46ac-92cf-2af5dbd8082d")
 	)
 	(fp_rect
 		(start -17 -34)
@@ -89,74 +75,190 @@
 		)
 		(fill no)
 		(layer "F.CrtYd")
+		(uuid "53fda53b-b7f3-487a-86ea-3ffd9f458573")
 	)
-	(fp_poly
-		(pts
-			(xy -2.875 34.2)
-			(xy -4.4 34.2)
-			(xy -4.4 26.9)
-			(xy -2.875 26.9)
-			(xy 2.875 26.9)
-			(xy 4.4 26.9)
-			(xy 4.4 34.2)
-			(xy 2.875 34.2)
+	(fp_rect
+		(start -16 -32.75)
+		(end 16 32.75)
+		(stroke
+			(width 0.1)
+			(type solid)
 		)
-		(stroke (width 0.1) (type solid))
 		(fill no)
 		(layer "F.Fab")
+		(uuid "d5e1d075-31db-4569-ba2e-0c47848e8de4")
+	)
+	(fp_rect
+		(start -13.75 -19.6)
+		(end 3.25 -2.6)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.Fab")
+		(uuid "9eb54728-1aed-4525-8d08-f665e5eb2e0c")
+	)
+	(fp_rect
+		(start -12.71 -12.65)
+		(end 12.14 12.2)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.Fab")
+		(uuid "6eb752ee-d17c-42c8-a20a-1516b44566aa")
+	)
+	(fp_rect
+		(start -5.06 -33.35)
+		(end 5.06 -20.35)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.Fab")
+		(uuid "ca047c64-df85-41ab-a16a-6fb6907d9df5")
 	)
 	(fp_circle
 		(center -10.8 3.55)
 		(end -6.8 3.55)
-		(stroke (width 0.1) (type solid))
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
 		(fill no)
 		(layer "F.Fab")
+		(uuid "5fc39b30-e566-48ef-a52f-1da9f17fd117")
 	)
 	(fp_circle
 		(center 10.1 -18.25)
 		(end 14.1 -18.25)
-		(stroke (width 0.1) (type solid))
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
 		(fill no)
 		(layer "F.Fab")
+		(uuid "ecc41a18-b111-44f2-b147-9f1043945e52")
 	)
-	(fp_text user "PIN MAP ASSUMPTION - VERIFY"
-		(at 0 -30 0)
-		(layer "Cmts.User")
-		(effects (font (size 1 1) (thickness 0.15)))
+	(fp_poly
+		(pts
+			(xy -2.875 34.2) (xy -4.4 34.2) (xy -4.4 26.9) (xy -2.875 26.9) (xy 2.875 26.9) (xy 4.4 26.9) (xy 4.4 34.2)
+			(xy 2.875 34.2)
+		)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.Fab")
+		(uuid "17f193e2-5e93-430a-90f4-a80ab8ddb2c7")
 	)
-	(fp_text user "1/2 DC_IN  3/4 DC_OUT  5/6/7 SDA/SCL/IRQ"
-		(at 0 -28.2 0)
-		(layer "Cmts.User")
-		(effects (font (size 0.8 0.8) (thickness 0.12)))
+	(fp_text user "GND"
+		(at -11.5 -24 90)
+		(unlocked yes)
+		(layer "F.SilkS" knockout)
+		(uuid "86a3c980-2a57-43f8-a91a-6aa6072a8c85")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+			(justify left bottom)
+		)
+	)
+	(fp_text user "DC+"
+		(at 13 -23.904762 90)
+		(unlocked yes)
+		(layer "F.SilkS" knockout)
+		(uuid "bdbbc033-0fc0-4ab6-8c44-a71a10d2de3d")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+			(justify left bottom)
+		)
+	)
+	(fp_text user "SDA"
+		(at 15 -4.5 90)
+		(unlocked yes)
+		(layer "F.SilkS")
+		(uuid "6c37cb45-cadf-4a2f-a849-73a73407d1b9")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+			(justify left bottom)
+		)
+	)
+	(fp_text user "SCK"
+		(at 15 -1 90)
+		(unlocked yes)
+		(layer "F.SilkS")
+		(uuid "3c53de72-0ce4-4d38-8864-ce6317b610ec")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+			(justify left bottom)
+		)
+	)
+	(fp_text user "IRQ"
+		(at 15 10.5 90)
+		(unlocked yes)
+		(layer "F.SilkS")
+		(uuid "78b3ecca-306d-4ef7-beae-5f8898245bcf")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+			(justify left bottom)
+		)
 	)
 	(fp_text user "${REFERENCE}"
 		(at 0 0 0)
 		(layer "F.Fab")
-		(effects (font (size 1 1) (thickness 0.15)))
+		(uuid "7ace1131-2431-4464-99c0-87316ca2ba22")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
 	)
 	(pad "" np_thru_hole circle
 		(at -14 -30.75)
 		(size 2 2)
 		(drill 2)
 		(layers "*.Cu" "*.Mask")
-	)
-	(pad "" np_thru_hole circle
-		(at 14 -30.75)
-		(size 2 2)
-		(drill 2)
-		(layers "*.Cu" "*.Mask")
+		(uuid "df37ecb1-b18c-4d14-93c0-40e32a7f8a47")
 	)
 	(pad "" np_thru_hole circle
 		(at -14 30.75)
 		(size 2 2)
 		(drill 2)
 		(layers "*.Cu" "*.Mask")
+		(uuid "a43b342d-b733-4c8a-a59f-1c77273f119e")
+	)
+	(pad "" np_thru_hole circle
+		(at 14 -30.75)
+		(size 2 2)
+		(drill 2)
+		(layers "*.Cu" "*.Mask")
+		(uuid "fd4bc7de-a10d-4177-907c-0e935c48dd55")
 	)
 	(pad "" np_thru_hole circle
 		(at 14 30.75)
 		(size 2 2)
 		(drill 2)
 		(layers "*.Cu" "*.Mask")
+		(uuid "6f3c6527-0c53-457e-805c-1759eac79a9f")
 	)
 	(pad "1" thru_hole rect
 		(at -14.39 -24.4)
@@ -164,8 +266,7 @@
 		(drill 1.02)
 		(layers "*.Cu" "*.Mask")
 		(remove_unused_layers no)
-		(pinfunction "DC_IN+")
-		(pintype "power_in")
+		(uuid "bd6df85e-8029-4618-b4b0-b5c508b12b22")
 	)
 	(pad "2" thru_hole circle
 		(at -14.39 -26.94)
@@ -173,8 +274,7 @@
 		(drill 1.02)
 		(layers "*.Cu" "*.Mask")
 		(remove_unused_layers no)
-		(pinfunction "DC_IN-")
-		(pintype "power_in")
+		(uuid "5f78cf8f-e588-4259-be23-52957a5c197f")
 	)
 	(pad "3" thru_hole rect
 		(at 14.39 -24.4)
@@ -182,8 +282,7 @@
 		(drill 1.02)
 		(layers "*.Cu" "*.Mask")
 		(remove_unused_layers no)
-		(pinfunction "DC_OUT+")
-		(pintype "power_out")
+		(uuid "01234c76-978d-40a2-a89b-f14566212a5e")
 	)
 	(pad "4" thru_hole circle
 		(at 14.39 -26.94)
@@ -191,8 +290,7 @@
 		(drill 1.02)
 		(layers "*.Cu" "*.Mask")
 		(remove_unused_layers no)
-		(pinfunction "DC_OUT-")
-		(pintype "power_out")
+		(uuid "6bab950f-96fd-42cd-9e7d-340d40f3cb84")
 	)
 	(pad "5" thru_hole rect
 		(at 14.49 1.16)
@@ -200,8 +298,7 @@
 		(drill 1.02)
 		(layers "*.Cu" "*.Mask")
 		(remove_unused_layers no)
-		(pinfunction "SDA")
-		(pintype "bidirectional")
+		(uuid "992d6abb-59e5-4c0e-893c-08f6d815131e")
 	)
 	(pad "6" thru_hole circle
 		(at 14.49 3.7)
@@ -209,8 +306,7 @@
 		(drill 1.02)
 		(layers "*.Cu" "*.Mask")
 		(remove_unused_layers no)
-		(pinfunction "SCL")
-		(pintype "bidirectional")
+		(uuid "d010172e-965c-4e13-b687-d64897dac2a6")
 	)
 	(pad "7" thru_hole circle
 		(at 14.49 6.24)
@@ -218,13 +314,18 @@
 		(drill 1.02)
 		(layers "*.Cu" "*.Mask")
 		(remove_unused_layers no)
-		(pinfunction "IRQ")
-		(pintype "output")
-	)
-	(model "${KIPRJMOD}/../../mechanical/exports/SW3538_140W_Module.step"
-		(offset (xyz 0 0 0))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
+		(uuid "4ed494a7-255f-4bcc-a99f-270cd8239937")
 	)
 	(embedded_fonts no)
+	(model "${KIPRJMOD}/../../mechanical/exports/SW3538_140W_Module.step"
+		(offset
+			(xyz 0 0 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 0 0)
+		)
+	)
 )

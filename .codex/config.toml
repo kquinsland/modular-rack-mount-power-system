@@ -2,12 +2,10 @@
 max_threads = 6
 max_depth = 1
 
-# TODO: make path relative
 [mcp_servers.kicad]
-#
-# command = "/opt/homebrew/bin/mise"
+# Note, must first run `mise run kicad-mcp:install` to fetch the MCP server (git submodule) and install dependencies.
 command = "mise"
-args = ["exec", "-C", "/Users/karl/Projects/mini-rack-power", "--", "node", "/Users/karl/Projects/mini-rack-power/kicad-mcp/server/dist/index.js"]
+args = ["exec", "-C", ".", "--", "node", "kicad-mcp/server/dist/index.js"]
 
 [mcp_servers.kicad.env]
 LOG_LEVEL = "info"

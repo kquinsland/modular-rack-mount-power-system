@@ -1,4 +1,10 @@
-# Mini Rack Power
+# Modular Rack Power
+
+This is a "side-quest" project on the way to building a small "mini rack" dedicated to hosting GH/A runners.
+
+I'll do the CAD and standalone development here before integrating it into the larger project.
+The goal is to have a modular system of a backplane and multiple carrier modules that can be swapped in and out to provide different power configurations as needed.
+As long as the power supply can handle is, the backplane modules should be daisy-chained to provide more power to the carriers.
 
 KiCad hardware project for a modular mini-rack power system.
 
