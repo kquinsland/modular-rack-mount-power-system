@@ -576,6 +576,16 @@
 	)
 	(wire
 		(pts
+			(xy 130.81 43.18) (xy 130.81 45.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20000000-0000-4000-8000-000000000009")
+	)
+	(wire
+		(pts
 			(xy 119.38 50.8) (xy 130.81 50.8)
 		)
 		(stroke
@@ -583,6 +593,16 @@
 			(type default)
 		)
 		(uuid "20000000-0000-4000-8000-000000000006")
+	)
+	(wire
+		(pts
+			(xy 130.81 50.8) (xy 130.81 53.34)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20000000-0000-4000-8000-000000000010")
 	)
 	(wire
 		(pts
@@ -781,7 +801,7 @@
 		)
 	)
 	(symbol
-		(lib_id "Connector_Generic:Conn_01x01")
+		(lib_id "Connector_Generic:Conn_01x02")
 		(at 135.89 43.18 0)
 		(unit 1)
 		(body_style 1)
@@ -801,7 +821,7 @@
 				)
 			)
 		)
-		(property "Value" "DC_IN+_OUT"
+		(property "Value" "DC+_OUT"
 			(at 135.89 45.72 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -811,7 +831,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical"
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical"
 			(at 135.89 43.18 0)
 			(hide yes)
 			(show_name no)
@@ -833,7 +853,7 @@
 				)
 			)
 		)
-		(property "Description" "Single-pin breakout for carrier DC input positive"
+		(property "Description" "Two-pin breakout for carrier DC input positive"
 			(at 135.89 43.18 0)
 			(hide yes)
 			(show_name no)
@@ -847,6 +867,9 @@
 		(pin "1"
 			(uuid "40000000-0000-4000-8000-000000000021")
 		)
+		(pin "2"
+			(uuid "40000000-0000-4000-8000-000000000022")
+		)
 		(instances
 			(project "carrier"
 				(path "/ee42a069-09cc-4091-bee3-2dd6ab96c98c"
@@ -857,7 +880,7 @@
 		)
 	)
 	(symbol
-		(lib_id "Connector_Generic:Conn_01x01")
+		(lib_id "Connector_Generic:Conn_01x02")
 		(at 135.89 50.8 0)
 		(unit 1)
 		(body_style 1)
@@ -877,7 +900,7 @@
 				)
 			)
 		)
-		(property "Value" "GND_OUT"
+		(property "Value" "DC-_OUT"
 			(at 135.89 53.34 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -887,7 +910,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical"
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical"
 			(at 135.89 50.8 0)
 			(hide yes)
 			(show_name no)
@@ -909,7 +932,7 @@
 				)
 			)
 		)
-		(property "Description" "Single-pin breakout for carrier DC input return"
+		(property "Description" "Two-pin breakout for carrier DC input return"
 			(at 135.89 50.8 0)
 			(hide yes)
 			(show_name no)
@@ -922,6 +945,9 @@
 		)
 		(pin "1"
 			(uuid "40000000-0000-4000-8000-000000000031")
+		)
+		(pin "2"
+			(uuid "40000000-0000-4000-8000-000000000032")
 		)
 		(instances
 			(project "carrier"

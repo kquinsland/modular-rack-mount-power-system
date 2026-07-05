@@ -371,14 +371,14 @@
 		)
 		(embedded_fonts no)
 	)
-	(footprint "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical"
+	(footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical"
 		(layer "F.Cu")
 		(uuid "50000000-0000-4000-8000-000000000002")
 		(at 117.5 102)
-		(descr "Through hole straight pin header, 1x01, 2.54mm pitch, single row")
-		(tags "Through hole pin header THT 1x01 2.54mm single row")
+		(descr "Through hole straight pin header, 1x02, 2.54mm pitch, single row")
+		(tags "Through hole pin header THT 1x02 2.54mm single row")
 		(property "Reference" "J2"
-			(at 0 -2.38 0)
+			(at 2.5 1.27 90)
 			(layer "F.SilkS")
 			(uuid "51000000-0000-4000-8000-000000000006")
 			(effects
@@ -388,8 +388,8 @@
 				)
 			)
 		)
-		(property "Value" "DC_IN+_OUT"
-			(at 0 2.38 0)
+		(property "Value" "DC+_OUT"
+			(at 0 4.92 0)
 			(layer "F.Fab")
 			(uuid "51000000-0000-4000-8000-000000000007")
 			(effects
@@ -410,7 +410,7 @@
 				)
 			)
 		)
-		(property "Description" "Single-pin breakout for carrier DC input positive"
+		(property "Description" "Two-pin breakout for carrier DC input positive"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -430,7 +430,7 @@
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_rect
 			(start -1.77 -1.77)
-			(end 1.77 1.77)
+			(end 1.77 4.32)
 			(stroke
 				(width 0.05)
 				(type solid)
@@ -440,7 +440,7 @@
 			(uuid "52000000-0000-4000-8000-000000000013")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
+			(at 0 1.27 90)
 			(layer "F.Fab")
 			(uuid "52000000-0000-4000-8000-000000000014")
 			(effects
@@ -461,16 +461,27 @@
 			(pintype "passive")
 			(uuid "53000000-0000-4000-8000-000000000005")
 		)
+		(pad "2" thru_hole circle
+			(at 0 2.54)
+			(size 1.7 1.7)
+			(drill 1)
+			(layers "*.Cu" "*.Mask")
+			(remove_unused_layers no)
+			(net "/DC_IN+")
+			(pinfunction "Pin_2")
+			(pintype "passive")
+			(uuid "53000000-0000-4000-8000-000000000009")
+		)
 		(embedded_fonts no)
 	)
-	(footprint "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical"
+	(footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical"
 		(layer "F.Cu")
 		(uuid "50000000-0000-4000-8000-000000000003")
-		(at 117.5 126.5)
-		(descr "Through hole straight pin header, 1x01, 2.54mm pitch, single row")
-		(tags "Through hole pin header THT 1x01 2.54mm single row")
+		(at 117.5 124)
+		(descr "Through hole straight pin header, 1x02, 2.54mm pitch, single row")
+		(tags "Through hole pin header THT 1x02 2.54mm single row")
 		(property "Reference" "J3"
-			(at 0 -2.38 0)
+			(at 2.5 1.27 90)
 			(layer "F.SilkS")
 			(uuid "51000000-0000-4000-8000-000000000008")
 			(effects
@@ -480,8 +491,8 @@
 				)
 			)
 		)
-		(property "Value" "GND_OUT"
-			(at 0 2.38 0)
+		(property "Value" "DC-_OUT"
+			(at 0 4.92 0)
 			(layer "F.Fab")
 			(uuid "51000000-0000-4000-8000-000000000009")
 			(effects
@@ -502,7 +513,7 @@
 				)
 			)
 		)
-		(property "Description" "Single-pin breakout for carrier DC input return"
+		(property "Description" "Two-pin breakout for carrier DC input return"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -522,7 +533,7 @@
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_rect
 			(start -1.77 -1.77)
-			(end 1.77 1.77)
+			(end 1.77 4.32)
 			(stroke
 				(width 0.05)
 				(type solid)
@@ -532,7 +543,7 @@
 			(uuid "52000000-0000-4000-8000-000000000015")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
+			(at 0 1.27 90)
 			(layer "F.Fab")
 			(uuid "52000000-0000-4000-8000-000000000016")
 			(effects
@@ -552,6 +563,17 @@
 			(pinfunction "Pin_1")
 			(pintype "passive")
 			(uuid "53000000-0000-4000-8000-000000000006")
+		)
+		(pad "2" thru_hole circle
+			(at 0 2.54)
+			(size 1.7 1.7)
+			(drill 1)
+			(layers "*.Cu" "*.Mask")
+			(remove_unused_layers no)
+			(net "/GND")
+			(pinfunction "Pin_2")
+			(pintype "passive")
+			(uuid "53000000-0000-4000-8000-000000000010")
 		)
 		(embedded_fonts no)
 	)
@@ -681,7 +703,7 @@
 			(justify left)
 		)
 	)
-	(gr_text "GND"
+	(gr_text "DC-"
 		(at 106 125 0)
 		(layer "F.SilkS")
 		(uuid "54000000-0000-4000-8000-000000000003")
