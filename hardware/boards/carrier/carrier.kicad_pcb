@@ -135,7 +135,7 @@
 		(descr "Mechanical/electrical footprint for SW3538 140W USB-C/PD module from hardware/mechanical/exports/SW3538_140W_Module.dxf. Pin placement follows the module holes: GND/DC- column, DC+ column, and side SDA/SCK/IRQ header; verify against module before fabrication.")
 		(tags "SW3538 USB-C PD module 140W daughterboard")
 		(property "Reference" "MOD1"
-			(at 0 -36 90)
+			(at 0 -15.66 270)
 			(layer "F.SilkS")
 			(uuid "68ce0e2d-10bd-4599-8c5f-197d37623148")
 			(effects
@@ -879,6 +879,17 @@
 			(net "/GND")
 			(pinfunction "DC_IN-")
 			(pintype "power_in")
+			(teardrops
+				(best_length_ratio 0.5)
+				(max_length 1)
+				(best_width_ratio 1)
+				(max_width 2)
+				(curved_edges no)
+				(filter_ratio 0.9)
+				(enabled yes)
+				(allow_two_segments yes)
+				(prefer_zone_connections yes)
+			)
 			(uuid "ccc09010-cd3a-4cb8-bc82-eba7f09d50a3")
 		)
 		(pad "3" thru_hole rect
@@ -1021,7 +1032,7 @@
 		(descr "Amass XT30PW(2+2)-M.G.B right-angle male through-hole connector. Pad locations from manufacturer installation drawing.")
 		(tags "Amass XT30 XT30PW 2+2 male right-angle through-hole power signal")
 		(property "Reference" "J1"
-			(at -4.2 10.4825 180)
+			(at -4.2 10.4825 0)
 			(layer "F.SilkS")
 			(uuid "51000000-0000-4000-8000-000000000001")
 			(effects
@@ -1098,12 +1109,6 @@
 		(path "/10000000-0000-4000-8000-000000000001")
 		(sheetname "/")
 		(sheetfile "carrier.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2" "3" "4")
-			)
-		)
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -1276,6 +1281,17 @@
 			(uuid "53000000-0000-4000-8000-000000000004")
 		)
 		(embedded_fonts no)
+		(model "/mnt/sync/Projects/modular-rack-power/hardware/mechanical/exports/XT30(2+2)PW-M.step"
+			(offset
+				(xyz 4.25 -7.2 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz -0 -0 90)
+			)
+		)
 	)
 	(gr_line
 		(start 100.8 106.5)
@@ -1284,6 +1300,7 @@
 			(width 0.05)
 			(type default)
 		)
+		(locked yes)
 		(layer "Edge.Cuts")
 		(uuid "9333ec66-327d-42cc-9cbd-93381de023be")
 	)
@@ -1294,6 +1311,7 @@
 			(width 0.05)
 			(type default)
 		)
+		(locked yes)
 		(layer "Edge.Cuts")
 		(uuid "42e0efc3-4efb-401b-9af0-5f0883d9c67f")
 	)
@@ -1304,12 +1322,13 @@
 			(width 0.05)
 			(type default)
 		)
+		(locked yes)
 		(layer "Edge.Cuts")
 		(uuid "40edb149-d85a-4c70-a500-2bafa23201f8")
 	)
 	(gr_line
 		(start 115.5 97.5)
-		(end 129.5 97.5)
+		(end 136.2 97.5)
 		(stroke
 			(width 0.05)
 			(type default)
@@ -1338,8 +1357,8 @@
 		(uuid "6902940d-e862-4f09-a7c5-e97ca9aaf327")
 	)
 	(gr_line
-		(start 129.5 97.5)
-		(end 129.5 126.5)
+		(start 135.84 99.77)
+		(end 135.85 126.7)
 		(stroke
 			(width 0.05)
 			(type default)
@@ -1348,8 +1367,18 @@
 		(uuid "dfedb5b7-c818-46c5-8b78-e47f57e72ce0")
 	)
 	(gr_line
-		(start 129.5 126.5)
-		(end 160 126.5)
+		(start 135.84 99.77)
+		(end 162.69 99.77)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "Edge.Cuts")
+		(uuid "d5cc7519-1477-4b18-a2c8-dbf027e370d0")
+	)
+	(gr_line
+		(start 135.85 126.7)
+		(end 162.7 126.7)
 		(stroke
 			(width 0.05)
 			(type default)
@@ -1358,24 +1387,44 @@
 		(uuid "4a4ef843-34b2-4c52-b1a9-3eb93ba4e59f")
 	)
 	(gr_line
-		(start 160 126.5)
-		(end 160 129.5)
+		(start 136.2 97.5)
+		(end 182.252083 97.5)
 		(stroke
 			(width 0.05)
 			(type default)
 		)
 		(layer "Edge.Cuts")
-		(uuid "717f0def-b7ac-4e9e-a6f1-26da34cbf2e9")
+		(uuid "22272569-c1b0-4c35-94bb-cd39277fc4cb")
 	)
 	(gr_line
-		(start 160 129.5)
+		(start 162.7 126.7)
+		(end 162.69 99.77)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "Edge.Cuts")
+		(uuid "2a8c3a0c-b241-4ecb-a154-a747de9b21c3")
+	)
+	(gr_line
+		(start 182.24 129.51)
 		(end 115.5 129.5)
 		(stroke
 			(width 0.05)
 			(type default)
 		)
 		(layer "Edge.Cuts")
-		(uuid "2ddda784-a25b-46b8-84e3-f6c00aa822da")
+		(uuid "35d6f6cb-ada4-48dc-a61e-c5f502fabd1d")
+	)
+	(gr_line
+		(start 182.252083 97.5)
+		(end 182.24 129.51)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "Edge.Cuts")
+		(uuid "50b287c9-79a3-4db7-8ea4-1574522939d0")
 	)
 	(embedded_fonts no)
 )

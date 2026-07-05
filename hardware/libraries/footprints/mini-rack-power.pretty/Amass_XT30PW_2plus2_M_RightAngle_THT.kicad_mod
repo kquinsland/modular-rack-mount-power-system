@@ -1,13 +1,14 @@
 (footprint "Amass_XT30PW_2plus2_M_RightAngle_THT"
 	(version 20260206)
-	(generator "codex")
-	(generator_version "1")
+	(generator "pcbnew")
+	(generator_version "10.0")
 	(layer "F.Cu")
 	(descr "Amass XT30PW(2+2)-M.G.B right-angle male through-hole connector. Pad locations from manufacturer installation drawing.")
 	(tags "Amass XT30 XT30PW 2+2 male right-angle through-hole power signal")
 	(property "Reference" "REF**"
 		(at 4.425 -3.45 0)
 		(layer "F.SilkS")
+		(uuid "28ddc953-0a7a-4c64-bc7a-10f7b1a68104")
 		(effects
 			(font
 				(size 1 1)
@@ -18,6 +19,7 @@
 	(property "Value" "Amass_XT30PW_2plus2_M_RightAngle_THT"
 		(at 4.425 13.05 0)
 		(layer "F.Fab")
+		(uuid "5308734c-770a-41d2-a3ee-113f94f3a5a1")
 		(effects
 			(font
 				(size 1 1)
@@ -30,6 +32,7 @@
 		(unlocked yes)
 		(layer "F.Fab")
 		(hide yes)
+		(uuid "95e94777-b385-45cc-99f1-0990603423a9")
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -42,6 +45,7 @@
 		(unlocked yes)
 		(layer "F.Fab")
 		(hide yes)
+		(uuid "2a090f8f-3cb3-45ea-8cea-17661bc607b9")
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -54,6 +58,7 @@
 		(unlocked yes)
 		(layer "F.Fab")
 		(hide yes)
+		(uuid "6a073fde-c80b-4c34-bebd-684c44bc112c")
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -66,6 +71,7 @@
 		(unlocked yes)
 		(layer "F.Fab")
 		(hide yes)
+		(uuid "489152dc-2b77-4a8a-9750-7bc7810716a5")
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -74,24 +80,7 @@
 		)
 	)
 	(attr through_hole)
-	(fp_line
-		(start -2.69 2.85)
-		(end 7.45 2.85)
-		(stroke
-			(width 0.12)
-			(type solid)
-		)
-		(layer "F.SilkS")
-	)
-	(fp_line
-		(start 10.25 2.85)
-		(end 11.31 2.85)
-		(stroke
-			(width 0.12)
-			(type solid)
-		)
-		(layer "F.SilkS")
-	)
+	(duplicate_pad_numbers_are_jumpers no)
 	(fp_line
 		(start -2.69 2.85)
 		(end -2.69 11.65)
@@ -100,15 +89,17 @@
 			(type solid)
 		)
 		(layer "F.SilkS")
+		(uuid "4678a48d-902b-4dfd-9e50-66780ae3ff79")
 	)
 	(fp_line
-		(start 11.31 2.85)
-		(end 11.31 11.65)
+		(start -2.69 2.85)
+		(end 7.45 2.85)
 		(stroke
 			(width 0.12)
 			(type solid)
 		)
 		(layer "F.SilkS")
+		(uuid "106870d5-37df-4408-bc20-0d1fb876345b")
 	)
 	(fp_line
 		(start -2.69 11.65)
@@ -118,15 +109,7 @@
 			(type solid)
 		)
 		(layer "F.SilkS")
-	)
-	(fp_line
-		(start -2.1 -2.2)
-		(end -0.7 -2.2)
-		(stroke
-			(width 0.12)
-			(type solid)
-		)
-		(layer "F.SilkS")
+		(uuid "ac124d9e-762d-4f80-8515-cb5e25825f54")
 	)
 	(fp_line
 		(start -2.1 -2.2)
@@ -136,45 +119,37 @@
 			(type solid)
 		)
 		(layer "F.SilkS")
-	)
-	(fp_rect
-		(start -2.69 2.85)
-		(end 11.31 11.65)
-		(stroke
-			(width 0.1)
-			(type solid)
-		)
-		(fill no)
-		(layer "F.Fab")
+		(uuid "5216983e-6559-462a-8f87-3beec20c895d")
 	)
 	(fp_line
-		(start -2.69 10.75)
-		(end 11.31 10.75)
+		(start -2.1 -2.2)
+		(end -0.7 -2.2)
 		(stroke
-			(width 0.1)
+			(width 0.12)
 			(type solid)
 		)
-		(layer "F.Fab")
+		(layer "F.SilkS")
+		(uuid "61bcb24f-bf42-4465-80af-ca165df7d342")
 	)
-	(fp_text user "MATING SIDE"
-		(at 4.31 11.2 0)
-		(layer "F.Fab")
-		(effects
-			(font
-				(size 0.8 0.8)
-				(thickness 0.12)
-			)
+	(fp_line
+		(start 10.25 2.85)
+		(end 11.31 2.85)
+		(stroke
+			(width 0.12)
+			(type solid)
 		)
+		(layer "F.SilkS")
+		(uuid "8cc15991-b2c5-4c88-a0ac-03e1a4fae132")
 	)
-	(fp_text user "${REFERENCE}"
-		(at 4.425 7.25 0)
-		(layer "F.Fab")
-		(effects
-			(font
-				(size 1 1)
-				(thickness 0.15)
-			)
+	(fp_line
+		(start 11.31 2.85)
+		(end 11.31 11.65)
+		(stroke
+			(width 0.12)
+			(type solid)
 		)
+		(layer "F.SilkS")
+		(uuid "18302413-808d-40b2-9f9c-ffc3421dc962")
 	)
 	(fp_rect
 		(start -3.25 -2.1)
@@ -185,6 +160,50 @@
 		)
 		(fill no)
 		(layer "F.CrtYd")
+		(uuid "7a958d68-8d55-40c9-9a4c-48d8730c8996")
+	)
+	(fp_line
+		(start -2.69 10.75)
+		(end 11.31 10.75)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "bee0ad20-ff5c-42ae-a142-b767cb97c54d")
+	)
+	(fp_rect
+		(start -2.69 2.85)
+		(end 11.31 11.65)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.Fab")
+		(uuid "e852e531-7373-4b21-a2f7-44dfbad08590")
+	)
+	(fp_text user "MATING SIDE"
+		(at 4.31 11.2 0)
+		(layer "F.Fab")
+		(uuid "961cd780-8eae-41df-a5ed-fade70d720d7")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.12)
+			)
+		)
+	)
+	(fp_text user "${REFERENCE}"
+		(at 4.425 7.25 0)
+		(layer "F.Fab")
+		(uuid "985e3307-237f-46c9-ae54-a6c722fd0c40")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
 	)
 	(pad "1" thru_hole roundrect
 		(at 0 0)
@@ -193,6 +212,7 @@
 		(layers "*.Cu" "*.Mask")
 		(remove_unused_layers no)
 		(roundrect_rratio 0.1)
+		(uuid "ad715ccc-97a3-4145-974e-0a82d2ed3e41")
 	)
 	(pad "2" thru_hole circle
 		(at 5 0)
@@ -200,6 +220,7 @@
 		(drill 1.9)
 		(layers "*.Cu" "*.Mask")
 		(remove_unused_layers no)
+		(uuid "69e8e1b8-efb2-44f9-8a77-1b409937ba5c")
 	)
 	(pad "3" thru_hole circle
 		(at 8.85 1.23)
@@ -207,6 +228,7 @@
 		(drill 0.9)
 		(layers "*.Cu" "*.Mask")
 		(remove_unused_layers no)
+		(uuid "9827c819-f996-4388-8d4e-cf28e290dddc")
 	)
 	(pad "4" thru_hole circle
 		(at 8.85 3.23)
@@ -214,6 +236,18 @@
 		(drill 0.9)
 		(layers "*.Cu" "*.Mask")
 		(remove_unused_layers no)
+		(uuid "ee7b2305-4605-4989-8529-3325d3f9b484")
 	)
 	(embedded_fonts no)
+	(model "/mnt/sync/Projects/modular-rack-power/hardware/mechanical/exports/XT30(2+2)PW-M.step"
+		(offset
+			(xyz 4.25 -7.2 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz -0 -0 90)
+		)
+	)
 )
