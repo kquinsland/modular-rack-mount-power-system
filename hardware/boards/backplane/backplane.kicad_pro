@@ -523,11 +523,11 @@
         "line_style": 0,
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
-        "name": "DC_IN+",
+        "name": "DC",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "priority": 0,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.2,
+        "track_width": 3.0,
         "tuning_profile": "",
         "via_diameter": 0.6,
         "via_drill": 0.3,
@@ -541,7 +541,7 @@
     "netclass_assignments": null,
     "netclass_patterns": [
       {
-        "netclass": "DC_IN+",
+        "netclass": "DC",
         "pattern": "*DC_IN+"
       }
     ]
@@ -674,13 +674,21 @@
         "uuid": "5e4f3adc-13b5-4625-8ac7-2a60909b6ea0"
       }
     ],
-    "used_designators": "#PWR1-11,JP1-3",
+    "used_designators": "J14,#PWR1-12,JP1-3",
     "variants": []
   },
   "sheets": [
     [
       "5e4f3adc-13b5-4625-8ac7-2a60909b6ea0",
       "backplane"
+    ],
+    [
+      "a8c9211f-1a49-5769-b323-15489aad995f",
+      "Slots and LEDs"
+    ],
+    [
+      "4a4b5bce-0ea6-534b-a82c-b056b1c47cff",
+      "Control and Fan"
     ]
   ],
   "text_variables": {
