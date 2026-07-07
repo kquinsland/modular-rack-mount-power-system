@@ -34,3 +34,8 @@ releases/
 ```
 
 `build/` is for generated local outputs. `releases/` is for fabrication packages that should be preserved exactly as sent to a board house.
+
+## Misc
+
+I can't believe that it's STILL such a pain in the ass to use LCSC to search for parts that are stocked by the SMT service.
+https://yaqwsx.github.io/jlcparts/#/
