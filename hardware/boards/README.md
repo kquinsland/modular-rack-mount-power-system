@@ -6,5 +6,6 @@ Current boards:
 
 - `backplane`
 - `carrier`
+- `controller`
 
 Future boards should follow the same pattern: `hardware/boards/<board-name>/<board-name>.kicad_pro`.

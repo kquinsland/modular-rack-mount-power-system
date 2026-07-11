@@ -490,7 +490,7 @@
     "pinned_symbol_libs": []
   },
   "meta": {
-    "filename": "backplane.kicad_pro",
+    "filename": "controller.kicad_pro",
     "version": 3
   },
   "net_settings": {
@@ -669,35 +669,23 @@
     "subpart_id_separator": 0,
     "top_level_sheets": [
       {
-        "filename": "backplane.kicad_sch",
-        "name": "backplane",
-        "uuid": "5e4f3adc-13b5-4625-8ac7-2a60909b6ea0"
+        "filename": "controller.kicad_sch",
+        "name": "controller",
+        "uuid": "c0873e44-b56a-4380-9063-4bd3d2b257a1"
       }
     ],
-    "used_designators": "U2,Q3-4,D7,D19-20,R2,R14,R16,R19-23,JP1-3,J1-8,J11-12,J14-16,#PWR1-19,#PWR30-49",
+    "used_designators": "U1,Q1-2,D1,R1-5,J1-4,#PWR1-20,#FLG1-4",
     "variants": []
   },
   "sheets": [
     [
-      "5e4f3adc-13b5-4625-8ac7-2a60909b6ea0",
-      "backplane"
-    ],
-    [
-      "a8c9211f-1a49-5769-b323-15489aad995f",
-      "Slots and LEDs"
-    ],
-    [
-      "4a4b5bce-0ea6-534b-a82c-b056b1c47cff",
-      "I2C Mux"
-    ],
-    [
-      "5698ff03-f114-43af-a5e6-39dcd6b7663b",
-      "Slot Connectors"
+      "c0873e44-b56a-4380-9063-4bd3d2b257a1",
+      "controller"
     ]
   ],
   "text_variables": {
-    "BOARD_NAME": "backplane",
-    "BOARD_ROLE": "Backplane PCB with XT30-style carrier slots and an I2C mux"
+    "BOARD_NAME": "controller",
+    "BOARD_ROLE": "Central ESP32 controller and fan-control PCB"
   },
   "tuning_profiles": {
     "meta": {

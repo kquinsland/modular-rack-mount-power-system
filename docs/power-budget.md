@@ -10,6 +10,9 @@ Track the system and per-slot power assumptions here.
 | Carrier slot current | TBD | Must match connector, copper, and protection strategy. |
 | Number of carrier slots | TBD | Determines total backplane current. |
 | USB-C PD module max output | TBD | Per carrier. |
+| Controller 5 V input | TBD | WT32 plus all backplane WS2812B LEDs. |
+| Controller 12 V input | TBD | Fan start/stall current and switching margin. |
+| WT32 3.3 V output budget | TBD | Controller logic plus every daisy-chained TCA9548A. |
 
 ## Protection Checklist
 
