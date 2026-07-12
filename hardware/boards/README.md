@@ -5,6 +5,7 @@ Each physical PCB gets its own KiCad project directory.
 Current boards:
 
 - `backplane`
+- `backplane-prototype`
 - `carrier`
 - `controller`
 
