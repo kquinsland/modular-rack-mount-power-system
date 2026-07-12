@@ -32,3 +32,30 @@ The footprint is for the vertical / 180-degree female connector and uses the imp
 - Power contacts: plated through-hole pads centered on the two circular metal-pin features.
 - Signal contacts: front-side SMT pads centered on the two rectangular solder-foot features.
 - Pad numbering follows the backplane schematic assumption: 1=DC_IN+, 2=GND, 3=SDA, 4=SCL.
+
+## DEGSON DG135T-10.16-02P
+
+Footprint: `hardware/libraries/footprints/mini-rack-power.pretty/DEGSON_DG135T-10.16-02P.kicad_mod`
+
+Selected orderable part: DEGSON `DG135T-10.16-02P-14-00A(H)`, LCSC
+`C708738`.
+
+Sources:
+
+- [DEGSON product page](https://www.degson.com/content/details_552_880568.html?lang=en)
+- DEGSON customer drawing `200031772`, revision 01.
+- [LCSC C708738 listing](https://www.lcsc.com/product-detail/C708738.html)
+
+The manufacturer drawing specifies:
+
+- Two poles with two internally common through-hole pins per pole.
+- 10.16 mm pole pitch and 10.16 mm spacing between the two pin rows.
+- 2.40 mm finished PCB holes for 1.60 mm x 1.20 mm terminals.
+- A 20.32 mm x 18.70 mm nominal body envelope for the two-pole variant.
+- A 29.50 mm nominal height above the PCB.
+
+The footprint uses 5.00 mm copper pads around the specified 2.40 mm holes. Pads
+in each front/rear pair intentionally share the same pad number so the generic
+two-pin schematic symbol maps one electrical pin to each screw terminal. The
+fabrication layer identifies the wire-entry side. The body position relative to
+the pin grid was cross-checked against LCSC's EasyEDA model for `C708738`.

@@ -1,5 +1,20 @@
 # Interfaces
 
+## Backplane DC Bus
+
+Backplane `J14` (`DC_IN`) and `J15` (`DC_OUT`) use DEGSON
+`DG135T-10.16-02P-14-00A(H)`, LCSC `C708738`. `J15` repeats the bus for an
+optional downstream backplane.
+
+| Pin | Signal | Direction | Notes |
+| --- | --- | --- | --- |
+| 1 | `GND` | Shared | Common DC return. |
+| 2 | `+24V` | Input/output | Main 24 V bus. |
+
+Each electrical pin maps to the terminal's two internally common through-hole
+pins. The connector is not polarized, so the PCB silkscreen must clearly mark
+`GND` and `+24V` at both connectors.
+
 ## Controller Power Input
 
 Current schematic connector: controller `J4`, 1x03 2.54 mm placeholder.
