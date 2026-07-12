@@ -11,6 +11,212 @@
 		(comment 1 "Mechanical and dimensional verification prototype")
 	)
 	(lib_symbols
+		(symbol "Connector:Screw_Terminal_01x02"
+			(pin_names
+				(offset 1.016)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "J"
+				(at 0 2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "Screw_Terminal_01x02"
+				(at 0 -5.08 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Generic screw terminal, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "screw terminal"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "TerminalBlock*:*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "Screw_Terminal_01x02_1_1"
+				(rectangle
+					(start -1.27 1.27)
+					(end 1.27 -3.81)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(polyline
+					(pts
+						(xy -0.5334 0.3302) (xy 0.3302 -0.508)
+					)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -0.5334 -2.2098) (xy 0.3302 -3.048)
+					)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -0.3556 0.508) (xy 0.508 -0.3302)
+					)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -0.3556 -2.032) (xy 0.508 -2.8702)
+					)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 0 0)
+					(radius 0.635)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 0 -2.54)
+					(radius 0.635)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(pin passive line
+					(at -5.08 0 0)
+					(length 3.81)
+					(name "Pin_1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -2.54 0)
+					(length 3.81)
+					(name "Pin_2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Connector_Generic:Conn_01x03"
 			(pin_names
 				(offset 1.016)
@@ -414,212 +620,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Connector:Screw_Terminal_01x02"
-			(pin_names
-				(offset 1.016)
-				(hide yes)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(in_pos_files yes)
-			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "J"
-				(at 0 2.54 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "Screw_Terminal_01x02"
-				(at 0 -5.08 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Datasheet" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" "Generic screw terminal, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "ki_keywords" "screw terminal"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "ki_fp_filters" "TerminalBlock*:*"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(symbol "Screw_Terminal_01x02_1_1"
-				(rectangle
-					(start -1.27 1.27)
-					(end 1.27 -3.81)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type background)
-					)
-				)
-				(polyline
-					(pts
-						(xy -0.5334 0.3302) (xy 0.3302 -0.508)
-					)
-					(stroke
-						(width 0.1524)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -0.5334 -2.2098) (xy 0.3302 -3.048)
-					)
-					(stroke
-						(width 0.1524)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -0.3556 0.508) (xy 0.508 -0.3302)
-					)
-					(stroke
-						(width 0.1524)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -0.3556 -2.032) (xy 0.508 -2.8702)
-					)
-					(stroke
-						(width 0.1524)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center 0 0)
-					(radius 0.635)
-					(stroke
-						(width 0.1524)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center 0 -2.54)
-					(radius 0.635)
-					(stroke
-						(width 0.1524)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(pin passive line
-					(at -5.08 0 0)
-					(length 3.81)
-					(name "Pin_1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at -5.08 -2.54 0)
-					(length 3.81)
-					(name "Pin_2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "Mechanical:MountingHole_Pad"
 			(pin_numbers
 				(hide yes)
@@ -788,150 +788,18 @@
 			)
 		)
 	)
-	(global_label "+24V"
+	(global_label "SCL_SLOT_4"
 		(shape bidirectional)
-		(at 30.48 109.22 180)
+		(at 147.32 76.2 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify right)
 		)
-		(uuid "b33a6ada-a9ac-5a32-b160-1470953123f3")
+		(uuid "086cb0fe-6848-59c2-b844-44df08a46e0d")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 30.48 109.22 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "+24V"
-		(shape bidirectional)
-		(at 40.64 43.18 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "6a961879-3e65-5757-ab46-66da46b8b648")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 40.64 43.18 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "GND"
-		(shape bidirectional)
-		(at 40.64 45.72 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "bd6b731e-9104-5cc2-9a51-a70cf373d75a")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 40.64 45.72 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "SDA_SLOT_1"
-		(shape bidirectional)
-		(at 40.64 48.26 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "3244e4a6-8b16-5861-b1bd-68ceff1f92d8")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 40.64 48.26 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "SCL_SLOT_1"
-		(shape bidirectional)
-		(at 40.64 50.8 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "b6ef83b7-8446-55e9-9aa9-5446cba6be91")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 40.64 50.8 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "GND"
-		(shape bidirectional)
-		(at 40.64 71.12 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "f0f330d1-0744-509e-995a-e8e172b9b6dc")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 40.64 71.12 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "SDA_SLOT_1"
-		(shape bidirectional)
-		(at 40.64 73.66 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "a6d75c39-47d5-5779-b4be-82415fd93697")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 40.64 73.66 0)
+			(at 147.32 76.2 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -964,18 +832,62 @@
 			)
 		)
 	)
-	(global_label "+24V"
+	(global_label "SCL_SLOT_6"
 		(shape bidirectional)
-		(at 76.2 43.18 180)
+		(at 218.44 50.8 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify right)
 		)
-		(uuid "9e659e26-dd98-577b-a5c3-74a1c78da844")
+		(uuid "0ba3ab5e-a88b-5e48-9d72-5652b56c77ee")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 76.2 43.18 0)
+			(at 218.44 50.8 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
+	(global_label "SDA_SLOT_3"
+		(shape bidirectional)
+		(at 111.76 73.66 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "2fb1f5fc-6b2b-55be-81b6-3c8fa2dd549f")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 111.76 73.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
+	(global_label "SDA_SLOT_1"
+		(shape bidirectional)
+		(at 40.64 48.26 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "3244e4a6-8b16-5861-b1bd-68ceff1f92d8")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 40.64 48.26 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -988,16 +900,16 @@
 	)
 	(global_label "GND"
 		(shape bidirectional)
-		(at 76.2 45.72 180)
+		(at 182.88 43.18 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify right)
 		)
-		(uuid "a784134e-07f3-52bf-a852-4a332fbcc2de")
+		(uuid "35c4bbfd-a096-5c5d-b30b-5b7c70daad61")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 76.2 45.72 0)
+			(at 182.88 43.18 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1008,18 +920,172 @@
 			)
 		)
 	)
-	(global_label "SDA_SLOT_2"
+	(global_label "+24V"
 		(shape bidirectional)
-		(at 76.2 48.26 180)
+		(at 111.76 45.72 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify right)
 		)
-		(uuid "ea1de675-1fc3-5975-8c35-ffe87876510e")
+		(uuid "35dff61f-5ce1-5f07-9b0b-c58c66e3a28a")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 76.2 48.26 0)
+			(at 111.76 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
+	(global_label "GND"
+		(shape bidirectional)
+		(at 198.12 109.22 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "41c931d4-5a3b-5827-bd0e-ad7359f5c824")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 198.12 109.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
+	(global_label "GND"
+		(shape bidirectional)
+		(at 76.2 109.22 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "4d48e229-8937-5b12-99c1-b8d913e82451")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 76.2 109.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
+	(global_label "+24V"
+		(shape bidirectional)
+		(at 182.88 45.72 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "53059e57-e334-5fd1-bff5-70e97537e668")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 182.88 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
+	(global_label "SDA_SLOT_6"
+		(shape bidirectional)
+		(at 218.44 73.66 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "54ff38be-cb7a-574e-99aa-2cea8c8d2bc6")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 218.44 73.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
+	(global_label "SDA_SLOT_3"
+		(shape bidirectional)
+		(at 111.76 48.26 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "617ddf98-15f8-54d4-99a3-b0670ff1a77c")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 111.76 48.26 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
+	(global_label "GND"
+		(shape bidirectional)
+		(at 147.32 43.18 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "668c284a-be3f-5283-8792-cb4a679d1e15")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 147.32 43.18 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
+	(global_label "GND"
+		(shape bidirectional)
+		(at 40.64 43.18 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "67c8dd12-94e2-4e95-9a11-af55df3cb329")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 40.64 43.18 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1052,18 +1118,238 @@
 			)
 		)
 	)
-	(global_label "GND"
+	(global_label "SDA_SLOT_4"
 		(shape bidirectional)
-		(at 76.2 71.12 180)
+		(at 147.32 48.26 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify right)
 		)
-		(uuid "ef8b4245-5ab4-5055-8b4c-e003ef570e12")
+		(uuid "72beb04f-5095-5a14-a612-148d4cfa6aa3")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 76.2 71.12 0)
+			(at 147.32 48.26 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
+	(global_label "+24V"
+		(shape bidirectional)
+		(at 147.32 45.72 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "7359504e-cadb-564c-87f1-197bb7517eff")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 147.32 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
+	(global_label "SCL_SLOT_5"
+		(shape bidirectional)
+		(at 182.88 76.2 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "79acf4c8-5647-55d6-96d9-4a39b13091df")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 182.88 76.2 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
+	(global_label "SCL_SLOT_6"
+		(shape bidirectional)
+		(at 218.44 76.2 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "7e3b1886-d643-571d-870b-d2dba158ccda")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 218.44 76.2 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
+	(global_label "SDA_SLOT_5"
+		(shape bidirectional)
+		(at 182.88 73.66 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "8a70f30f-5d60-5c35-aa6a-9d0fb1c9d83e")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 182.88 73.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
+	(global_label "SDA_SLOT_6"
+		(shape bidirectional)
+		(at 218.44 48.26 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "90169416-3ade-5cad-8080-3ac0421f7fd6")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 218.44 48.26 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
+	(global_label "GND"
+		(shape bidirectional)
+		(at 76.2 43.18 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "9e659e26-dd98-577b-a5c3-74a1c78da844")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 76.2 43.18 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
+	(global_label "GND"
+		(shape bidirectional)
+		(at 147.32 71.12 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "a3164631-cf59-5d87-80a4-0b1b3e7a2b70")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 147.32 71.12 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
+	(global_label "SDA_SLOT_1"
+		(shape bidirectional)
+		(at 40.64 73.66 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "a6d75c39-47d5-5779-b4be-82415fd93697")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 40.64 73.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
+	(global_label "+24V"
+		(shape bidirectional)
+		(at 76.2 45.72 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "a784134e-07f3-52bf-a852-4a332fbcc2de")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 76.2 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
+	(global_label "GND"
+		(shape bidirectional)
+		(at 182.88 71.12 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "aa0973c7-e7c8-5283-9a7c-2a24729b02ed")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 182.88 71.12 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1096,18 +1382,18 @@
 			)
 		)
 	)
-	(global_label "SCL_SLOT_2"
+	(global_label "SCL_SLOT_4"
 		(shape bidirectional)
-		(at 76.2 76.2 180)
+		(at 147.32 50.8 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify right)
 		)
-		(uuid "f8db6a3f-4616-51e1-a72b-93b3d7bc1167")
+		(uuid "b0b6292c-d76f-52e0-aa3d-738f0de7f977")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 76.2 76.2 0)
+			(at 147.32 50.8 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1120,16 +1406,60 @@
 	)
 	(global_label "+24V"
 		(shape bidirectional)
-		(at 111.76 43.18 180)
+		(at 30.48 109.22 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify right)
 		)
-		(uuid "f6647ba6-2300-59ac-9836-fa054ba41074")
+		(uuid "b33a6ada-a9ac-5a32-b160-1470953123f3")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 111.76 43.18 0)
+			(at 30.48 109.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
+	(global_label "SCL_SLOT_1"
+		(shape bidirectional)
+		(at 40.64 50.8 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "b6ef83b7-8446-55e9-9aa9-5446cba6be91")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 40.64 50.8 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
+	(global_label "+24V"
+		(shape bidirectional)
+		(at 40.64 45.72 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "b7af9781-da43-4929-8bd7-c7485304cd1b")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 40.64 45.72 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1142,38 +1472,16 @@
 	)
 	(global_label "GND"
 		(shape bidirectional)
-		(at 111.76 45.72 180)
+		(at 218.44 71.12 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify right)
 		)
-		(uuid "35dff61f-5ce1-5f07-9b0b-c58c66e3a28a")
+		(uuid "bd697bd7-d031-57e0-80c1-421c62edac85")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 111.76 45.72 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "SDA_SLOT_3"
-		(shape bidirectional)
-		(at 111.76 48.26 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "617ddf98-15f8-54d4-99a3-b0670ff1a77c")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 111.76 48.26 0)
+			(at 218.44 71.12 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1228,18 +1536,40 @@
 			)
 		)
 	)
-	(global_label "SDA_SLOT_3"
+	(global_label "GND"
 		(shape bidirectional)
-		(at 111.76 73.66 180)
+		(at 157.48 109.22 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify right)
 		)
-		(uuid "2fb1f5fc-6b2b-55be-81b6-3c8fa2dd549f")
+		(uuid "c92f9372-57b2-5f96-bfe6-9f51fc93cf2a")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 111.76 73.66 0)
+			(at 157.48 109.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
+	(global_label "GND"
+		(shape bidirectional)
+		(at 116.84 109.22 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "d3483338-ad48-56bb-b6c7-9e4b5fd5f1a2")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 116.84 109.22 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1274,16 +1604,16 @@
 	)
 	(global_label "+24V"
 		(shape bidirectional)
-		(at 147.32 43.18 180)
+		(at 218.44 45.72 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify right)
 		)
-		(uuid "668c284a-be3f-5283-8792-cb4a679d1e15")
+		(uuid "df93d743-6501-5215-a89f-da63f1ba8be0")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 147.32 43.18 0)
+			(at 218.44 45.72 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1296,82 +1626,16 @@
 	)
 	(global_label "GND"
 		(shape bidirectional)
-		(at 147.32 45.72 180)
+		(at 218.44 43.18 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify right)
 		)
-		(uuid "7359504e-cadb-564c-87f1-197bb7517eff")
+		(uuid "e2d354ab-d230-5e42-bf2b-eed87f7a5a65")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 147.32 45.72 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "SDA_SLOT_4"
-		(shape bidirectional)
-		(at 147.32 48.26 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "72beb04f-5095-5a14-a612-148d4cfa6aa3")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 147.32 48.26 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "SCL_SLOT_4"
-		(shape bidirectional)
-		(at 147.32 50.8 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "b0b6292c-d76f-52e0-aa3d-738f0de7f977")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 147.32 50.8 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "GND"
-		(shape bidirectional)
-		(at 147.32 71.12 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "a3164631-cf59-5d87-80a4-0b1b3e7a2b70")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 147.32 71.12 0)
+			(at 218.44 43.18 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1404,40 +1668,18 @@
 			)
 		)
 	)
-	(global_label "SCL_SLOT_4"
+	(global_label "SDA_SLOT_2"
 		(shape bidirectional)
-		(at 147.32 76.2 180)
+		(at 76.2 48.26 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify right)
 		)
-		(uuid "086cb0fe-6848-59c2-b844-44df08a46e0d")
+		(uuid "ea1de675-1fc3-5975-8c35-ffe87876510e")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 147.32 76.2 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "+24V"
-		(shape bidirectional)
-		(at 182.88 43.18 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "35c4bbfd-a096-5c5d-b30b-5b7c70daad61")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 182.88 43.18 0)
+			(at 76.2 48.26 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1450,16 +1692,16 @@
 	)
 	(global_label "GND"
 		(shape bidirectional)
-		(at 182.88 45.72 180)
+		(at 76.2 71.12 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify right)
 		)
-		(uuid "53059e57-e334-5fd1-bff5-70e97537e668")
+		(uuid "ef8b4245-5ab4-5055-8b4c-e003ef570e12")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 182.88 45.72 0)
+			(at 76.2 71.12 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1470,18 +1712,18 @@
 			)
 		)
 	)
-	(global_label "SDA_SLOT_5"
+	(global_label "GND"
 		(shape bidirectional)
-		(at 182.88 48.26 180)
+		(at 40.64 71.12 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify right)
 		)
-		(uuid "fc0e001c-b0de-5a8d-97dd-9faf08d26f17")
+		(uuid "f0f330d1-0744-509e-995a-e8e172b9b6dc")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 182.88 48.26 0)
+			(at 40.64 71.12 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1516,16 +1758,38 @@
 	)
 	(global_label "GND"
 		(shape bidirectional)
-		(at 182.88 71.12 180)
+		(at 111.76 43.18 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify right)
 		)
-		(uuid "aa0973c7-e7c8-5283-9a7c-2a24729b02ed")
+		(uuid "f6647ba6-2300-59ac-9836-fa054ba41074")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 182.88 71.12 0)
+			(at 111.76 43.18 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
+	(global_label "SCL_SLOT_2"
+		(shape bidirectional)
+		(at 76.2 76.2 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "f8db6a3f-4616-51e1-a72b-93b3d7bc1167")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 76.2 76.2 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1538,16 +1802,16 @@
 	)
 	(global_label "SDA_SLOT_5"
 		(shape bidirectional)
-		(at 182.88 73.66 180)
+		(at 182.88 48.26 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify right)
 		)
-		(uuid "8a70f30f-5d60-5c35-aa6a-9d0fb1c9d83e")
+		(uuid "fc0e001c-b0de-5a8d-97dd-9faf08d26f17")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 182.88 73.66 0)
+			(at 182.88 48.26 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1558,18 +1822,42 @@
 			)
 		)
 	)
-	(global_label "SCL_SLOT_5"
-		(shape bidirectional)
-		(at 182.88 76.2 180)
-		(effects
-			(font
-				(size 1.27 1.27)
+	(symbol
+		(lib_id "Connector_Generic:Conn_01x03")
+		(at 187.96 73.66 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "1243ad7f-f37a-594b-9348-5b1a835ea950")
+		(property "Reference" "J12"
+			(at 190.5 73.66 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
 			)
-			(justify right)
 		)
-		(uuid "79acf4c8-5647-55d6-96d9-4a39b13091df")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 182.88 76.2 0)
+		(property "Value" "SLOT_5_IO"
+			(at 190.5 76.2 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical"
+			(at 187.96 73.66 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1579,19 +1867,8 @@
 				)
 			)
 		)
-	)
-	(global_label "+24V"
-		(shape bidirectional)
-		(at 218.44 43.18 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "e2d354ab-d230-5e42-bf2b-eed87f7a5a65")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 218.44 43.18 0)
+		(property "Datasheet" ""
+			(at 187.96 73.66 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1601,19 +1878,8 @@
 				)
 			)
 		)
-	)
-	(global_label "GND"
-		(shape bidirectional)
-		(at 218.44 45.72 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "df93d743-6501-5215-a89f-da63f1ba8be0")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 218.44 45.72 0)
+		(property "Description" "Prototype GND/SDA/SCL breakout header"
+			(at 187.96 73.66 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1623,19 +1889,8 @@
 				)
 			)
 		)
-	)
-	(global_label "SDA_SLOT_6"
-		(shape bidirectional)
-		(at 218.44 48.26 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "90169416-3ade-5cad-8080-3ac0421f7fd6")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 218.44 48.26 0)
+		(property "Pinout" "1=GND; 2=SDA; 3=SCL"
+			(at 187.96 73.66 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1645,19 +1900,60 @@
 				)
 			)
 		)
-	)
-	(global_label "SCL_SLOT_6"
-		(shape bidirectional)
-		(at 218.44 50.8 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
+		(pin "1"
+			(uuid "2f0d8996-fb44-5d9f-987b-b13e60ef2322")
 		)
-		(uuid "0ba3ab5e-a88b-5e48-9d72-5652b56c77ee")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 218.44 50.8 0)
+		(pin "2"
+			(uuid "30774855-cac0-5953-9a9f-27ac8ed5fa87")
+		)
+		(pin "3"
+			(uuid "d172b542-4160-5993-94ff-198156f126f8")
+		)
+		(instances
+			(project "backplane-prototype"
+				(path "/348cc909-6345-4013-9bef-98714057a65b"
+					(reference "J12")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Mechanical:MountingHole_Pad")
+		(at 198.12 106.68 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "1a4398ce-61c2-50b2-9f8e-f55353d1288c")
+		(property "Reference" "H4"
+			(at 200.66 106.68 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "MountingHole_Pad"
+			(at 200.66 109.22 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3_Pad_Via"
+			(at 198.12 106.68 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1667,19 +1963,8 @@
 				)
 			)
 		)
-	)
-	(global_label "GND"
-		(shape bidirectional)
-		(at 218.44 71.12 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "bd697bd7-d031-57e0-80c1-421c62edac85")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 218.44 71.12 0)
+		(property "Datasheet" ""
+			(at 198.12 106.68 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1689,19 +1974,8 @@
 				)
 			)
 		)
-	)
-	(global_label "SDA_SLOT_6"
-		(shape bidirectional)
-		(at 218.44 73.66 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "54ff38be-cb7a-574e-99aa-2cea8c8d2bc6")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 218.44 73.66 0)
+		(property "Description" "Grounded M3 mounting hole"
+			(at 198.12 106.68 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1711,19 +1985,54 @@
 				)
 			)
 		)
-	)
-	(global_label "SCL_SLOT_6"
-		(shape bidirectional)
-		(at 218.44 76.2 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
+		(pin "1"
+			(uuid "f6b6c612-f994-50d8-8488-c51573630b3b")
 		)
-		(uuid "7e3b1886-d643-571d-870b-d2dba158ccda")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 218.44 76.2 0)
+		(instances
+			(project "backplane-prototype"
+				(path "/348cc909-6345-4013-9bef-98714057a65b"
+					(reference "H4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector_Generic:Conn_01x03")
+		(at 223.52 73.66 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "2a7c77af-ebb0-50fc-8eb8-665423b34a52")
+		(property "Reference" "J13"
+			(at 226.06 73.66 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "SLOT_6_IO"
+			(at 226.06 76.2 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical"
+			(at 223.52 73.66 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1733,19 +2042,8 @@
 				)
 			)
 		)
-	)
-	(global_label "GND"
-		(shape bidirectional)
-		(at 76.2 109.22 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "4d48e229-8937-5b12-99c1-b8d913e82451")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 76.2 109.22 0)
+		(property "Datasheet" ""
+			(at 223.52 73.66 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1755,19 +2053,8 @@
 				)
 			)
 		)
-	)
-	(global_label "GND"
-		(shape bidirectional)
-		(at 116.84 109.22 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "d3483338-ad48-56bb-b6c7-9e4b5fd5f1a2")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 116.84 109.22 0)
+		(property "Description" "Prototype GND/SDA/SCL breakout header"
+			(at 223.52 73.66 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1777,19 +2064,8 @@
 				)
 			)
 		)
-	)
-	(global_label "GND"
-		(shape bidirectional)
-		(at 157.48 109.22 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "c92f9372-57b2-5f96-bfe6-9f51fc93cf2a")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 157.48 109.22 0)
+		(property "Pinout" "1=GND; 2=SDA; 3=SCL"
+			(at 223.52 73.66 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1799,25 +2075,277 @@
 				)
 			)
 		)
-	)
-	(global_label "GND"
-		(shape bidirectional)
-		(at 198.12 109.22 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
+		(pin "1"
+			(uuid "c7e026a5-8315-5355-a338-b4df0639bff6")
 		)
-		(uuid "41c931d4-5a3b-5827-bd0e-ad7359f5c824")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 198.12 109.22 0)
+		(pin "2"
+			(uuid "2046f9ab-0569-5d52-a77f-06ed10b01d0a")
+		)
+		(pin "3"
+			(uuid "2d57bb08-e646-5eb8-bce9-10aaa75d2464")
+		)
+		(instances
+			(project "backplane-prototype"
+				(path "/348cc909-6345-4013-9bef-98714057a65b"
+					(reference "J13")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector_Generic:Conn_01x04")
+		(at 223.52 45.72 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "534b80d0-44c6-5691-9a48-1466e74a2137")
+		(property "Reference" "J7"
+			(at 226.06 45.72 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "SLOT_6"
+			(at 226.06 48.26 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "mini-rack-power:Amass_XT30U_2plus2_F"
+			(at 223.52 45.72 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 223.52 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Prototype XT30(2+2) slot connector"
+			(at 223.52 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Pinout" "1=GND; 2=+24V; 3=SDA; 4=SCL"
+			(at 223.52 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "2e4db74b-385d-5954-9d88-70f9c0582e99")
+		)
+		(pin "2"
+			(uuid "aad6f26e-fd51-59af-9f15-da4a3aa53242")
+		)
+		(pin "3"
+			(uuid "6095c0fc-e3c6-57cf-8ea0-39c6067ba41f")
+		)
+		(pin "4"
+			(uuid "4a507ae7-ba33-579b-863d-94096689d000")
+		)
+		(instances
+			(project "backplane-prototype"
+				(path "/348cc909-6345-4013-9bef-98714057a65b"
+					(reference "J7")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Mechanical:MountingHole_Pad")
+		(at 116.84 106.68 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "63c095a1-ab82-54ee-a5d9-fe9885e619f0")
+		(property "Reference" "H2"
+			(at 119.38 106.68 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "MountingHole_Pad"
+			(at 119.38 109.22 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3_Pad_Via"
+			(at 116.84 106.68 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 116.84 106.68 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Grounded M3 mounting hole"
+			(at 116.84 106.68 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "04f1fb39-51e5-54c3-a7e3-ad7846a40360")
+		)
+		(instances
+			(project "backplane-prototype"
+				(path "/348cc909-6345-4013-9bef-98714057a65b"
+					(reference "H2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Mechanical:MountingHole_Pad")
+		(at 76.2 106.68 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "6dcac3a6-5362-58e9-a535-2dd78abff814")
+		(property "Reference" "H1"
+			(at 78.74 106.68 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "MountingHole_Pad"
+			(at 78.74 109.22 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3_Pad_Via"
+			(at 76.2 106.68 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 76.2 106.68 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Grounded M3 mounting hole"
+			(at 76.2 106.68 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fc3f4606-9c92-5a42-a5dd-98dc1652ff8e")
+		)
+		(instances
+			(project "backplane-prototype"
+				(path "/348cc909-6345-4013-9bef-98714057a65b"
+					(reference "H1")
+					(unit 1)
 				)
 			)
 		)
@@ -1916,6 +2444,297 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector_Generic:Conn_01x03")
+		(at 116.84 73.66 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "a6762d6f-f9b6-5a97-9312-2707787b0de5")
+		(property "Reference" "J10"
+			(at 119.38 73.66 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "SLOT_3_IO"
+			(at 119.38 76.2 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical"
+			(at 116.84 73.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 116.84 73.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Prototype GND/SDA/SCL breakout header"
+			(at 116.84 73.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Pinout" "1=GND; 2=SDA; 3=SCL"
+			(at 116.84 73.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "17eef2a1-6fee-5918-a73c-e019eea0a7c8")
+		)
+		(pin "2"
+			(uuid "9ad6b2bf-c7fc-5f2e-90ea-26efcf1da61b")
+		)
+		(pin "3"
+			(uuid "69b6f0d8-a90b-5a4e-b787-70abf01d91bc")
+		)
+		(instances
+			(project "backplane-prototype"
+				(path "/348cc909-6345-4013-9bef-98714057a65b"
+					(reference "J10")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector_Generic:Conn_01x03")
+		(at 152.4 73.66 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "a80a32cd-93e0-5871-abac-5d1d06e61b36")
+		(property "Reference" "J11"
+			(at 154.94 73.66 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "SLOT_4_IO"
+			(at 154.94 76.2 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical"
+			(at 152.4 73.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 152.4 73.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Prototype GND/SDA/SCL breakout header"
+			(at 152.4 73.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Pinout" "1=GND; 2=SDA; 3=SCL"
+			(at 152.4 73.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "51a92de7-1435-53a8-a8bc-7a16476bcea7")
+		)
+		(pin "2"
+			(uuid "12e1e842-4e1a-5fc2-bec8-0261661c2e67")
+		)
+		(pin "3"
+			(uuid "9e644623-dc7c-5201-a08e-8427e6d3e8c2")
+		)
+		(instances
+			(project "backplane-prototype"
+				(path "/348cc909-6345-4013-9bef-98714057a65b"
+					(reference "J11")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector_Generic:Conn_01x04")
+		(at 116.84 45.72 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "a90277cb-ea44-5d65-ba53-50ce850615d8")
+		(property "Reference" "J4"
+			(at 119.38 45.72 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "SLOT_3"
+			(at 119.38 48.26 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "mini-rack-power:Amass_XT30U_2plus2_F"
+			(at 116.84 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 116.84 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Prototype XT30(2+2) slot connector"
+			(at 116.84 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Pinout" "1=GND; 2=+24V; 3=SDA; 4=SCL"
+			(at 116.84 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "bc593c2d-bf59-5d74-9563-20262aee81c9")
+		)
+		(pin "2"
+			(uuid "8da43c44-d7d7-5f23-a37f-b95749d29998")
+		)
+		(pin "3"
+			(uuid "3887f5d7-1cd6-5425-ba54-dab4b1fc7774")
+		)
+		(pin "4"
+			(uuid "0a4b0807-722a-57a3-a644-132aec27fd27")
+		)
+		(instances
+			(project "backplane-prototype"
+				(path "/348cc909-6345-4013-9bef-98714057a65b"
+					(reference "J4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Connector_Generic:Conn_01x04")
 		(at 45.72 45.72 0)
 		(unit 1)
@@ -1982,7 +2801,7 @@
 				)
 			)
 		)
-		(property "Pinout" "1=+24V; 2=GND; 3=SDA; 4=SCL"
+		(property "Pinout" "1=GND; 2=+24V; 3=SDA; 4=SCL"
 			(at 45.72 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -2009,6 +2828,201 @@
 			(project "backplane-prototype"
 				(path "/348cc909-6345-4013-9bef-98714057a65b"
 					(reference "J2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector_Generic:Conn_01x04")
+		(at 187.96 45.72 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "ae12ae36-3128-5640-a4fe-ddcf8907f3c6")
+		(property "Reference" "J6"
+			(at 190.5 45.72 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "SLOT_5"
+			(at 190.5 48.26 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "mini-rack-power:Amass_XT30U_2plus2_F"
+			(at 187.96 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 187.96 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Prototype XT30(2+2) slot connector"
+			(at 187.96 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Pinout" "1=GND; 2=+24V; 3=SDA; 4=SCL"
+			(at 187.96 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "3f6c7ea6-19e1-5efa-97f8-22803619e4b9")
+		)
+		(pin "2"
+			(uuid "e499193c-9d4d-5db0-80f0-58d4a271b7e1")
+		)
+		(pin "3"
+			(uuid "1e28b86a-a2d1-5309-8237-f6bf34503ef0")
+		)
+		(pin "4"
+			(uuid "218f3069-a68d-5eaa-9927-a0c972c2d3be")
+		)
+		(instances
+			(project "backplane-prototype"
+				(path "/348cc909-6345-4013-9bef-98714057a65b"
+					(reference "J6")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector_Generic:Conn_01x03")
+		(at 81.28 73.66 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "b8d85999-c28c-58b7-a541-27096271a35c")
+		(property "Reference" "J9"
+			(at 83.82 73.66 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "SLOT_2_IO"
+			(at 83.82 76.2 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical"
+			(at 81.28 73.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 81.28 73.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Prototype GND/SDA/SCL breakout header"
+			(at 81.28 73.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Pinout" "1=GND; 2=SDA; 3=SCL"
+			(at 81.28 73.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "7e858693-f841-56f9-9e5d-16af80ac52fa")
+		)
+		(pin "2"
+			(uuid "2cd8d102-c3e1-5659-b86b-926f84bb11cd")
+		)
+		(pin "3"
+			(uuid "d3dc6fff-6bf3-5632-af37-bea100628c93")
+		)
+		(instances
+			(project "backplane-prototype"
+				(path "/348cc909-6345-4013-9bef-98714057a65b"
+					(reference "J9")
 					(unit 1)
 				)
 			)
@@ -2177,7 +3191,7 @@
 				)
 			)
 		)
-		(property "Pinout" "1=+24V; 2=GND; 3=SDA; 4=SCL"
+		(property "Pinout" "1=GND; 2=+24V; 3=SDA; 4=SCL"
 			(at 81.28 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -2204,297 +3218,6 @@
 			(project "backplane-prototype"
 				(path "/348cc909-6345-4013-9bef-98714057a65b"
 					(reference "J3")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector_Generic:Conn_01x03")
-		(at 81.28 73.66 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "b8d85999-c28c-58b7-a541-27096271a35c")
-		(property "Reference" "J9"
-			(at 83.82 73.66 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "SLOT_2_IO"
-			(at 83.82 76.2 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical"
-			(at 81.28 73.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 81.28 73.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Prototype GND/SDA/SCL breakout header"
-			(at 81.28 73.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Pinout" "1=GND; 2=SDA; 3=SCL"
-			(at 81.28 73.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "7e858693-f841-56f9-9e5d-16af80ac52fa")
-		)
-		(pin "2"
-			(uuid "2cd8d102-c3e1-5659-b86b-926f84bb11cd")
-		)
-		(pin "3"
-			(uuid "d3dc6fff-6bf3-5632-af37-bea100628c93")
-		)
-		(instances
-			(project "backplane-prototype"
-				(path "/348cc909-6345-4013-9bef-98714057a65b"
-					(reference "J9")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector_Generic:Conn_01x04")
-		(at 116.84 45.72 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "a90277cb-ea44-5d65-ba53-50ce850615d8")
-		(property "Reference" "J4"
-			(at 119.38 45.72 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "SLOT_3"
-			(at 119.38 48.26 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "mini-rack-power:Amass_XT30U_2plus2_F"
-			(at 116.84 45.72 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 116.84 45.72 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Prototype XT30(2+2) slot connector"
-			(at 116.84 45.72 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Pinout" "1=+24V; 2=GND; 3=SDA; 4=SCL"
-			(at 116.84 45.72 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "bc593c2d-bf59-5d74-9563-20262aee81c9")
-		)
-		(pin "2"
-			(uuid "8da43c44-d7d7-5f23-a37f-b95749d29998")
-		)
-		(pin "3"
-			(uuid "3887f5d7-1cd6-5425-ba54-dab4b1fc7774")
-		)
-		(pin "4"
-			(uuid "0a4b0807-722a-57a3-a644-132aec27fd27")
-		)
-		(instances
-			(project "backplane-prototype"
-				(path "/348cc909-6345-4013-9bef-98714057a65b"
-					(reference "J4")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector_Generic:Conn_01x03")
-		(at 116.84 73.66 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "a6762d6f-f9b6-5a97-9312-2707787b0de5")
-		(property "Reference" "J10"
-			(at 119.38 73.66 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "SLOT_3_IO"
-			(at 119.38 76.2 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical"
-			(at 116.84 73.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 116.84 73.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Prototype GND/SDA/SCL breakout header"
-			(at 116.84 73.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Pinout" "1=GND; 2=SDA; 3=SCL"
-			(at 116.84 73.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "17eef2a1-6fee-5918-a73c-e019eea0a7c8")
-		)
-		(pin "2"
-			(uuid "9ad6b2bf-c7fc-5f2e-90ea-26efcf1da61b")
-		)
-		(pin "3"
-			(uuid "69b6f0d8-a90b-5a4e-b787-70abf01d91bc")
-		)
-		(instances
-			(project "backplane-prototype"
-				(path "/348cc909-6345-4013-9bef-98714057a65b"
-					(reference "J10")
 					(unit 1)
 				)
 			)
@@ -2567,7 +3290,7 @@
 				)
 			)
 		)
-		(property "Pinout" "1=+24V; 2=GND; 3=SDA; 4=SCL"
+		(property "Pinout" "1=GND; 2=+24V; 3=SDA; 4=SCL"
 			(at 152.4 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -2594,650 +3317,6 @@
 			(project "backplane-prototype"
 				(path "/348cc909-6345-4013-9bef-98714057a65b"
 					(reference "J5")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector_Generic:Conn_01x03")
-		(at 152.4 73.66 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "a80a32cd-93e0-5871-abac-5d1d06e61b36")
-		(property "Reference" "J11"
-			(at 154.94 73.66 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "SLOT_4_IO"
-			(at 154.94 76.2 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical"
-			(at 152.4 73.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 152.4 73.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Prototype GND/SDA/SCL breakout header"
-			(at 152.4 73.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Pinout" "1=GND; 2=SDA; 3=SCL"
-			(at 152.4 73.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "51a92de7-1435-53a8-a8bc-7a16476bcea7")
-		)
-		(pin "2"
-			(uuid "12e1e842-4e1a-5fc2-bec8-0261661c2e67")
-		)
-		(pin "3"
-			(uuid "9e644623-dc7c-5201-a08e-8427e6d3e8c2")
-		)
-		(instances
-			(project "backplane-prototype"
-				(path "/348cc909-6345-4013-9bef-98714057a65b"
-					(reference "J11")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector_Generic:Conn_01x04")
-		(at 187.96 45.72 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "ae12ae36-3128-5640-a4fe-ddcf8907f3c6")
-		(property "Reference" "J6"
-			(at 190.5 45.72 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "SLOT_5"
-			(at 190.5 48.26 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "mini-rack-power:Amass_XT30U_2plus2_F"
-			(at 187.96 45.72 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 187.96 45.72 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Prototype XT30(2+2) slot connector"
-			(at 187.96 45.72 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Pinout" "1=+24V; 2=GND; 3=SDA; 4=SCL"
-			(at 187.96 45.72 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "3f6c7ea6-19e1-5efa-97f8-22803619e4b9")
-		)
-		(pin "2"
-			(uuid "e499193c-9d4d-5db0-80f0-58d4a271b7e1")
-		)
-		(pin "3"
-			(uuid "1e28b86a-a2d1-5309-8237-f6bf34503ef0")
-		)
-		(pin "4"
-			(uuid "218f3069-a68d-5eaa-9927-a0c972c2d3be")
-		)
-		(instances
-			(project "backplane-prototype"
-				(path "/348cc909-6345-4013-9bef-98714057a65b"
-					(reference "J6")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector_Generic:Conn_01x03")
-		(at 187.96 73.66 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "1243ad7f-f37a-594b-9348-5b1a835ea950")
-		(property "Reference" "J12"
-			(at 190.5 73.66 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "SLOT_5_IO"
-			(at 190.5 76.2 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical"
-			(at 187.96 73.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 187.96 73.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Prototype GND/SDA/SCL breakout header"
-			(at 187.96 73.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Pinout" "1=GND; 2=SDA; 3=SCL"
-			(at 187.96 73.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "2f0d8996-fb44-5d9f-987b-b13e60ef2322")
-		)
-		(pin "2"
-			(uuid "30774855-cac0-5953-9a9f-27ac8ed5fa87")
-		)
-		(pin "3"
-			(uuid "d172b542-4160-5993-94ff-198156f126f8")
-		)
-		(instances
-			(project "backplane-prototype"
-				(path "/348cc909-6345-4013-9bef-98714057a65b"
-					(reference "J12")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector_Generic:Conn_01x04")
-		(at 223.52 45.72 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "534b80d0-44c6-5691-9a48-1466e74a2137")
-		(property "Reference" "J7"
-			(at 226.06 45.72 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "SLOT_6"
-			(at 226.06 48.26 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "mini-rack-power:Amass_XT30U_2plus2_F"
-			(at 223.52 45.72 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 223.52 45.72 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Prototype XT30(2+2) slot connector"
-			(at 223.52 45.72 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Pinout" "1=+24V; 2=GND; 3=SDA; 4=SCL"
-			(at 223.52 45.72 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "2e4db74b-385d-5954-9d88-70f9c0582e99")
-		)
-		(pin "2"
-			(uuid "aad6f26e-fd51-59af-9f15-da4a3aa53242")
-		)
-		(pin "3"
-			(uuid "6095c0fc-e3c6-57cf-8ea0-39c6067ba41f")
-		)
-		(pin "4"
-			(uuid "4a507ae7-ba33-579b-863d-94096689d000")
-		)
-		(instances
-			(project "backplane-prototype"
-				(path "/348cc909-6345-4013-9bef-98714057a65b"
-					(reference "J7")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector_Generic:Conn_01x03")
-		(at 223.52 73.66 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "2a7c77af-ebb0-50fc-8eb8-665423b34a52")
-		(property "Reference" "J13"
-			(at 226.06 73.66 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "SLOT_6_IO"
-			(at 226.06 76.2 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical"
-			(at 223.52 73.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 223.52 73.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Prototype GND/SDA/SCL breakout header"
-			(at 223.52 73.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Pinout" "1=GND; 2=SDA; 3=SCL"
-			(at 223.52 73.66 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "c7e026a5-8315-5355-a338-b4df0639bff6")
-		)
-		(pin "2"
-			(uuid "2046f9ab-0569-5d52-a77f-06ed10b01d0a")
-		)
-		(pin "3"
-			(uuid "2d57bb08-e646-5eb8-bce9-10aaa75d2464")
-		)
-		(instances
-			(project "backplane-prototype"
-				(path "/348cc909-6345-4013-9bef-98714057a65b"
-					(reference "J13")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Mechanical:MountingHole_Pad")
-		(at 76.2 106.68 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "6dcac3a6-5362-58e9-a535-2dd78abff814")
-		(property "Reference" "H1"
-			(at 78.74 106.68 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "MountingHole_Pad"
-			(at 78.74 109.22 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3_Pad_Via"
-			(at 76.2 106.68 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 76.2 106.68 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Grounded M3 mounting hole"
-			(at 76.2 106.68 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "fc3f4606-9c92-5a42-a5dd-98dc1652ff8e")
-		)
-		(instances
-			(project "backplane-prototype"
-				(path "/348cc909-6345-4013-9bef-98714057a65b"
-					(reference "H1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Mechanical:MountingHole_Pad")
-		(at 116.84 106.68 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "63c095a1-ab82-54ee-a5d9-fe9885e619f0")
-		(property "Reference" "H2"
-			(at 119.38 106.68 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "MountingHole_Pad"
-			(at 119.38 109.22 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3_Pad_Via"
-			(at 116.84 106.68 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 116.84 106.68 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Grounded M3 mounting hole"
-			(at 116.84 106.68 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "04f1fb39-51e5-54c3-a7e3-ad7846a40360")
-		)
-		(instances
-			(project "backplane-prototype"
-				(path "/348cc909-6345-4013-9bef-98714057a65b"
-					(reference "H2")
 					(unit 1)
 				)
 			)
@@ -3317,85 +3396,6 @@
 			(project "backplane-prototype"
 				(path "/348cc909-6345-4013-9bef-98714057a65b"
 					(reference "H3")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Mechanical:MountingHole_Pad")
-		(at 198.12 106.68 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "1a4398ce-61c2-50b2-9f8e-f55353d1288c")
-		(property "Reference" "H4"
-			(at 200.66 106.68 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "MountingHole_Pad"
-			(at 200.66 109.22 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3_Pad_Via"
-			(at 198.12 106.68 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 198.12 106.68 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Grounded M3 mounting hole"
-			(at 198.12 106.68 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "f6b6c612-f994-50d8-8488-c51573630b3b")
-		)
-		(instances
-			(project "backplane-prototype"
-				(path "/348cc909-6345-4013-9bef-98714057a65b"
-					(reference "H4")
 					(unit 1)
 				)
 			)

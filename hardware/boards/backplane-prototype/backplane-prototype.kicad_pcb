@@ -92,8 +92,6 @@
 			(outputdirectory "")
 		)
 	)
-	(property "BOARD_NAME" "backplane-prototype")
-	(property "BOARD_ROLE" "Simplified XT30 backplane prototype for mechanical and dimensional verification")
 	(footprint "MountingHole:MountingHole_3.2mm_M3_Pad_Via"
 		(layer "F.Cu")
 		(uuid "0786381f-8a88-496c-854a-5dfbf08c9d93")
@@ -326,6 +324,7 @@
 		(property "Value" "SLOT_1_IO"
 			(at 0 7.46 0)
 			(layer "F.Fab")
+			(hide yes)
 			(uuid "b5bd8289-3a7c-4562-acd6-306c1a132622")
 			(effects
 				(font
@@ -1061,7 +1060,7 @@
 				)
 			)
 		)
-		(property "Pinout" "1=+24V; 2=GND; 3=SDA; 4=SCL"
+		(property "Pinout" "1=GND; 2=+24V; 3=SDA; 4=SCL"
 			(at 0 0 0)
 			(layer "F.SilkS")
 			(hide yes)
@@ -1196,7 +1195,7 @@
 			(drill 2.8)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net "+24V")
+			(net "GND")
 			(pinfunction "Pin_1_1")
 			(pintype "passive")
 			(uuid "d780d700-1584-444a-9b78-3dea5929f919")
@@ -1207,7 +1206,7 @@
 			(drill 2.8)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net "GND")
+			(net "+24V")
 			(pinfunction "Pin_2_2")
 			(pintype "passive")
 			(uuid "dab5a302-1dd9-4e96-9118-3473b85007b9")
@@ -1535,7 +1534,7 @@
 				)
 			)
 		)
-		(property "Pinout" "1=+24V; 2=GND; 3=SDA; 4=SCL"
+		(property "Pinout" "1=GND; 2=+24V; 3=SDA; 4=SCL"
 			(at 0 0 0)
 			(layer "F.SilkS")
 			(hide yes)
@@ -1670,7 +1669,7 @@
 			(drill 2.8)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net "+24V")
+			(net "GND")
 			(pinfunction "Pin_1_1")
 			(pintype "passive")
 			(uuid "085f6c8f-3e9d-4bbf-b157-7fe53ff8db78")
@@ -1681,7 +1680,7 @@
 			(drill 2.8)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net "GND")
+			(net "+24V")
 			(pinfunction "Pin_2_2")
 			(pintype "passive")
 			(uuid "5cc5717a-e3fe-42dd-b463-fb8c23f854cc")
@@ -1737,6 +1736,7 @@
 		(property "Value" "SLOT_6_IO"
 			(at 0 7.46 0)
 			(layer "F.Fab")
+			(hide yes)
 			(uuid "501a9746-6a51-40b8-94b9-be80bd86c110")
 			(effects
 				(font
@@ -2048,7 +2048,7 @@
 				)
 			)
 		)
-		(property "Pinout" "1=+24V; 2=GND; 3=SDA; 4=SCL"
+		(property "Pinout" "1=GND; 2=+24V; 3=SDA; 4=SCL"
 			(at 0 0 0)
 			(layer "F.SilkS")
 			(hide yes)
@@ -2183,7 +2183,7 @@
 			(drill 2.8)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net "+24V")
+			(net "GND")
 			(pinfunction "Pin_1_1")
 			(pintype "passive")
 			(uuid "c57178c8-371c-49a3-9cc3-d94bde28113a")
@@ -2194,7 +2194,7 @@
 			(drill 2.8)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net "GND")
+			(net "+24V")
 			(pinfunction "Pin_2_2")
 			(pintype "passive")
 			(uuid "eb4e670c-f0ce-474b-a630-6b9d1605c63c")
@@ -2598,7 +2598,7 @@
 				)
 			)
 		)
-		(property "Pinout" "1=+24V; 2=GND; 3=SDA; 4=SCL"
+		(property "Pinout" "1=GND; 2=+24V; 3=SDA; 4=SCL"
 			(at 0 0 0)
 			(layer "F.SilkS")
 			(hide yes)
@@ -2733,7 +2733,7 @@
 			(drill 2.8)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net "+24V")
+			(net "GND")
 			(pinfunction "Pin_1_1")
 			(pintype "passive")
 			(uuid "6795790b-ffac-4f14-aede-3b76c13a07bb")
@@ -2744,7 +2744,7 @@
 			(drill 2.8)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net "GND")
+			(net "+24V")
 			(pinfunction "Pin_2_2")
 			(pintype "passive")
 			(uuid "bcc113df-fa18-4bc6-8d06-e83ffd5d2c8a")
@@ -2860,7 +2860,7 @@
 				)
 			)
 		)
-		(property "Pinout" "1=+24V; 2=GND; 3=SDA; 4=SCL"
+		(property "Pinout" "1=GND; 2=+24V; 3=SDA; 4=SCL"
 			(at 0 0 0)
 			(layer "F.SilkS")
 			(hide yes)
@@ -2995,7 +2995,7 @@
 			(drill 2.8)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net "+24V")
+			(net "GND")
 			(pinfunction "Pin_1_1")
 			(pintype "passive")
 			(uuid "317495a0-090a-4318-92e2-693ed618e755")
@@ -3006,7 +3006,7 @@
 			(drill 2.8)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net "GND")
+			(net "+24V")
 			(pinfunction "Pin_2_2")
 			(pintype "passive")
 			(uuid "4b2d6ba3-1839-4efb-85c1-30965b8fc16d")
@@ -3122,7 +3122,7 @@
 				)
 			)
 		)
-		(property "Pinout" "1=+24V; 2=GND; 3=SDA; 4=SCL"
+		(property "Pinout" "1=GND; 2=+24V; 3=SDA; 4=SCL"
 			(at 0 0 0)
 			(layer "F.SilkS")
 			(hide yes)
@@ -3257,7 +3257,7 @@
 			(drill 2.8)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net "+24V")
+			(net "GND")
 			(pinfunction "Pin_1_1")
 			(pintype "passive")
 			(uuid "17237410-7234-4901-b273-db2a3cda10a2")
@@ -3268,7 +3268,7 @@
 			(drill 2.8)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net "GND")
+			(net "+24V")
 			(pinfunction "Pin_2_2")
 			(pintype "passive")
 			(uuid "80ef732b-943c-4016-9096-e19351994743")
@@ -3324,6 +3324,7 @@
 		(property "Value" "SLOT_4_IO"
 			(at 0 7.46 0)
 			(layer "F.Fab")
+			(hide yes)
 			(uuid "9d1f8122-73aa-47f2-9b41-e215701e603c")
 			(effects
 				(font
@@ -3575,6 +3576,7 @@
 		(property "Value" "SLOT_3_IO"
 			(at 0 7.46 0)
 			(layer "F.Fab")
+			(hide yes)
 			(uuid "d1efd21c-a077-4243-b057-1246cd7f9981")
 			(effects
 				(font
@@ -3826,6 +3828,7 @@
 		(property "Value" "SLOT_5_IO"
 			(at 0 7.46 0)
 			(layer "F.Fab")
+			(hide yes)
 			(uuid "fa5e56fc-5392-4398-b1e0-cc300d228ec4")
 			(effects
 				(font
@@ -4077,6 +4080,7 @@
 		(property "Value" "SLOT_2_IO"
 			(at 0 7.46 0)
 			(layer "F.Fab")
+			(hide yes)
 			(uuid "ca8ea7cc-fa58-41a6-8e2d-547c724e74aa")
 			(effects
 				(font
