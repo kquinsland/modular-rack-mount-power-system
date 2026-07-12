@@ -1,0 +1,9 @@
+(version 1)
+
+(rule "30 A power-rail clearance"
+    (condition "A.NetClass == 'POWER_30A' || B.NetClass == 'POWER_30A'")
+    (constraint clearance (min 0.5mm)))
+
+(rule "30 A dual-layer power-rail width"
+    (condition "A.NetClass == 'POWER_30A'")
+    (constraint track_width (min 8.0mm)))
