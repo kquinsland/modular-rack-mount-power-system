@@ -13,14 +13,17 @@ The PCB intentionally contains only:
 
 The XT30 connectors are vertical, with their two low-voltage contacts at the
 top, and are arranged in one horizontal row at 19 mm center-to-center spacing.
-The breakout header for each slot is directly above its XT30 connector and uses
-this pinout:
+The bottom-side breakout header for each slot is directly above its XT30
+connector. Each header has matching `GND`, `SDA`, and `SCL` bottom-silkscreen
+labels and uses this pinout:
 
 1. GND
 2. SDA
 3. SCL
 
-The rectangular board outline is 165 mm by 50 mm. The PCB is intentionally
-unrouted: its purpose is CAD and physical-fit verification, not powered use.
-ESD protection, LEDs, control electronics, and the remaining production
-backplane circuitry are deliberately omitted.
+The tightened rectangular board outline is 143.8 mm by 38.5 mm. The mounting
+holes form aligned columns at x = 33.3 mm and x = 169.5 mm, with rows at
+y = 48.0 mm and y = 75.9 mm. The PCB is intentionally unrouted: its purpose is
+CAD and physical-fit verification, not powered use. ESD protection, LEDs,
+control electronics, and the remaining production backplane circuitry are
+deliberately omitted.
