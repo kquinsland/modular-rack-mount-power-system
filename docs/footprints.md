@@ -59,3 +59,23 @@ in each front/rear pair intentionally share the same pad number so the generic
 two-pin schematic symbol maps one electrical pin to each screw terminal. The
 fabrication layer identifies the wire-entry side. The body position relative to
 the pin grid was cross-checked against LCSC's EasyEDA model for `C708738`.
+
+## Adjustable DC-to-DC Module
+
+Symbol: `hardware/libraries/symbols/mini-rack-power.kicad_sym`, symbol
+`Adjustable_DC2DC`.
+
+Footprint: `hardware/libraries/footprints/mini-rack-power.pretty/Adjustable_DC2DC.kicad_mod`
+
+3D model: `hardware/libraries/3dmodels/Adjustable_DC2DC.step`
+
+The symbol, footprint, and STEP model were copied from
+`/mnt/sync/Projects/dog-water-bowl/eCAD`. The four through-hole pins are on a
+2.54 mm pitch and map as 1=EN, 2=V_IN, 3=GND, and 4=V_OUT. The copied STEP file
+has SHA-256
+`e6c9628a6866ffa3286b3e2aab7c6efffb05d5e2a6110392d9e063b4814d6716`.
+
+The local footprint adds a full module-body fabrication outline and courtyard.
+On the backplane, `PS1` takes `+24V` at V_IN and exposes its uncommitted output
+as `ADJ_DC_OUT`; the output is intentionally not tied to an existing rail until
+the module setpoint and destination are selected.
