@@ -23,7 +23,11 @@ labels and uses this pinout:
 
 The tightened rectangular board outline is 143.8 mm by 38.5 mm. The mounting
 holes form aligned columns at x = 33.3 mm and x = 169.5 mm, with rows at
-y = 48.0 mm and y = 75.9 mm. The PCB is intentionally unrouted: its purpose is
-CAD and physical-fit verification, not powered use. ESD protection, LEDs,
-control electronics, and the remaining production backplane circuitry are
-deliberately omitted.
+y = 48.0 mm and y = 75.9 mm.
+
+The `+24V` and `GND` paths are routed as matching solid pours on F.Cu and B.Cu
+for the 30 A input budget. The two outer layers are specified as 2 oz copper,
+and every power-pad connection is solid rather than thermal-relief connected.
+SDA/SCL and the two lower grounded mounting holes remain intentionally
+unrouted. ESD protection, LEDs, control electronics, and the remaining
+production backplane circuitry are deliberately omitted.
