@@ -60,12 +60,20 @@ For an external conductor, `k = 0.048`.
 Solving for width at 30 A gives approximately 644.5 mil, or 16.37 mm, on one external layer.
 KiCad's own [formula notes](https://gitlab.com/kicad/code/kicad/-/blob/10.0/pcb_calculator/tracks_width_versus_current_formula.md) state that the model is valid only up to a 400 mil (10 mm) width, so that single-layer result is an extrapolation and should be treated as a rough engineering estimate.
 
-The prototype therefore uses matching F.Cu and B.Cu rails in parallel. An ideal 50/50 split is 15 A per layer, which requires 247.8 mil or 6.29 mm per layer.
-The `POWER_30A` net class rounds this up to an 8.0 mm per-layer minimum with 0.5 mm clearance.
-The same formula estimates 17.85 A per 8 mm external conductor, or 35.7 A nominal combined capacity before accounting for current sharing and local clearance voids.
+The prototype therefore uses matching F.Cu and B.Cu pours in parallel. An ideal
+50/50 split at 30 A is 15 A per layer, which requires 247.8 mil or 6.29 mm per
+layer. The stated 28.5 A maximum sustained load requires approximately 5.86 mm
+per layer under the same assumptions.
+
+The airflow slots leave 8.0 mm-wide board webs at the top and bottom. After the
+0.5 mm copper-to-edge clearance and zone-fill rounding, the narrowest filled
+copper section is 6.9 mm on each outer layer. The formula estimates 16.04 A per
+6.9 mm conductor, or 32.1 A nominal combined capacity before accounting for
+unequal current sharing, connector-pad transitions, and real thermal
+conditions. The pours connect all input and XT30 power pads solidly on both
+layers; any future non-pad layer transition needs a separately engineered via
+array.
 
 Each 4.7 A slot branch requires approximately 1.27 mm on one 2 oz external
 layer. Solid zone connections provide substantially more copper than that at
-each XT30 pad. The paired rails must remain on both outer layers; any future
-layer transition needs a separately engineered via array rather than a single
-net-class-default via.
+each XT30 pad. The paired rails must remain on both outer layers.

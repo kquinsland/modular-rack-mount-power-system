@@ -31,9 +31,11 @@ y = 71.7 mm, leaving 8.0 mm of material to both the top and bottom board
 edges.
 
 SDA and SCL are routed on F.Cu from each bottom-side header to its matching
-XT30 signal contacts. The two outer layers remain specified as 2 oz copper,
-but the `+24V` and `GND` pours are temporarily removed while the high-current
-routing is revised. The power pads, header GND pins, and grounded mounting
-holes therefore remain intentionally unrouted. ESD protection, LEDs, control
-electronics, and the remaining production backplane circuitry are deliberately
-omitted.
+XT30 signal contacts. The `+24V` and `GND` paths use matching solid pours on
+F.Cu and B.Cu for the 30 A input budget, with both outer layers specified as
+2 oz copper. The airflow-slot clearances leave a 6.9 mm minimum filled-copper
+neck on each layer, with an IPC-2221 estimate of approximately 32.1 A combined
+at a 10 °C rise. Every power-pad connection is solid rather than thermal-relief
+connected. The two lower grounded mounting holes remain intentionally
+unrouted. ESD protection, LEDs, control electronics, and the remaining
+production backplane circuitry are deliberately omitted.
