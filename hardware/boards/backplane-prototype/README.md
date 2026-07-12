@@ -9,7 +9,7 @@ The PCB intentionally contains only:
 - six combined XT30 and two-signal slot connectors (`J2`–`J7`);
 - six 1x3, 2.54 mm-pitch breakout headers (`J8`–`J13`);
 - the main 24 V screw-terminal input (`J1`); and
-- four M3 mounting holes (`H1`–`H4`).
+- three M3 mounting holes (`H1`, `H2`, and `H4`).
 
 The XT30 connectors are vertical, with their two low-voltage contacts at the
 top, and are arranged in one horizontal row at 19 mm center-to-center spacing.
@@ -21,13 +21,14 @@ labels and uses this pinout:
 2. SDA
 3. SCL
 
-The tightened rectangular board outline is 143.8 mm by 36.5 mm. The mounting
-holes form aligned columns at x = 33.3 mm and x = 169.5 mm, with rows at
-y = 48.0 mm and y = 75.9 mm.
+The tightened rectangular board outline is 143.8 mm by 30.8 mm. The left
+mounting hole is centered beside the screw terminal at x = 54.214 mm and
+y = 61.962 mm. The right mounting holes remain at x = 169.5 mm and have been
+pulled inward to y = 51.512 mm and y = 73.7 mm.
 
 Five vertical airflow cutouts are centered between adjacent XT30 connectors.
-Each cutout is an 8.0 mm-wide obround extending from y = 51.2 mm to
-y = 71.7 mm, leaving 8.0 mm of material to both the top and bottom board
+Each cutout is an 8.0 mm-wide obround extending from y = 54.7 mm to
+y = 69.5 mm, leaving 8.0 mm of material to both the top and bottom board
 edges.
 
 SDA and SCL are routed on F.Cu from each bottom-side header to its matching
@@ -36,6 +37,6 @@ F.Cu and B.Cu for the 30 A input budget, with both outer layers specified as
 2 oz copper. The airflow-slot clearances leave a 6.9 mm minimum filled-copper
 neck on each layer, with an IPC-2221 estimate of approximately 32.1 A combined
 at a 10 °C rise. Every power-pad connection is solid rather than thermal-relief
-connected. The two lower grounded mounting holes remain intentionally
+connected. The lower-right grounded mounting hole remains intentionally
 unrouted. ESD protection, LEDs, control electronics, and the remaining
 production backplane circuitry are deliberately omitted.
