@@ -28,15 +28,15 @@ y = 61.962 mm. The right mounting holes are at x = 177.5 mm and y = 51.512 mm
 and y = 73.7 mm, clear of the final horizontal breakout header.
 
 Five vertical airflow cutouts are centered between adjacent XT30 connectors.
-Each cutout is an 8.0 mm-wide obround extending from y = 54.7 mm to
-y = 69.5 mm, leaving 8.0 mm of material to both the top and bottom board
-edges.
+Each cutout is an 8.0 mm-wide by 15.5 mm-tall obround extending from
+y = 54.35 mm to y = 69.85 mm, leaving 7.65 mm of material to both the top and
+bottom board edges.
 
 SDA and SCL are routed on F.Cu from each bottom-side header to its matching
 XT30 signal contacts. The `+24V` and `GND` paths use matching solid pours on
 F.Cu and B.Cu for the 30 A input budget, with both outer layers specified as
-2 oz copper. The airflow-slot clearances leave a 6.9 mm minimum filled-copper
-neck on each layer, with an IPC-2221 estimate of approximately 32.1 A combined
+2 oz copper. The airflow-slot clearances leave a 6.55 mm minimum filled-copper
+neck on each layer, with an IPC-2221 estimate of approximately 30.9 A combined
 at a 10 °C rise. Every power-pad connection is solid rather than thermal-relief
 connected. The lower-right grounded mounting hole remains intentionally
 unrouted. ESD protection, LEDs, control electronics, and the remaining
