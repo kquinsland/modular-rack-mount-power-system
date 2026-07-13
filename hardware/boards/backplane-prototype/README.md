@@ -37,7 +37,10 @@ XT30 signal contacts. The `+24V` and `GND` paths use matching solid pours on
 F.Cu and B.Cu for the 30 A input budget, with both outer layers specified as
 2 oz copper. The airflow-slot clearances leave a 6.55 mm minimum filled-copper
 neck on each layer, with an IPC-2221 estimate of approximately 30.9 A combined
-at a 10 °C rise. Every power-pad connection is solid rather than thermal-relief
-connected. The lower-right grounded mounting hole remains intentionally
-unrouted. ESD protection, LEDs, control electronics, and the remaining
-production backplane circuitry are deliberately omitted.
+at a 10 °C rise. A 0.5 mm gap between the pours is centered at y = 63.920624 mm,
+the exact midpoint between the XT30 ground and 24 V power contacts, so the
+copper distribution is symmetric around each contact pair. Every power-pad
+connection is solid rather than thermal-relief connected. The lower-right
+grounded mounting hole remains intentionally unrouted. ESD protection, LEDs,
+control electronics, and the remaining production backplane circuitry are
+deliberately omitted.
