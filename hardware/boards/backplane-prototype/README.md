@@ -13,18 +13,19 @@ The PCB intentionally contains only:
 
 The XT30 connectors are vertical, with their two low-voltage contacts at the
 top, and are arranged in one horizontal row at 19 mm center-to-center spacing.
-The bottom-side breakout header for each slot is directly above its XT30
-connector. Each header has matching `GND`, `SDA`, and `SCL` bottom-silkscreen
-labels and uses this pinout:
+The bottom-side breakout header for each slot is oriented horizontally and
+sits directly above its XT30 connector. Each header has matching `GND`, `SDA`,
+and `SCL` bottom-silkscreen labels and uses this pinout:
 
 1. GND
 2. SDA
 3. SCL
 
-The tightened rectangular board outline is 143.8 mm by 30.8 mm. The left
+The rectangular board outline is 151.8 mm by 30.8 mm. Every XT30 connector is
+centered at y = 62.1 mm, exactly on the board's horizontal centerline. The left
 mounting hole is centered beside the screw terminal at x = 54.214 mm and
-y = 61.962 mm. The right mounting holes remain at x = 169.5 mm and have been
-pulled inward to y = 51.512 mm and y = 73.7 mm.
+y = 61.962 mm. The right mounting holes are at x = 177.5 mm and y = 51.512 mm
+and y = 73.7 mm, clear of the final horizontal breakout header.
 
 Five vertical airflow cutouts are centered between adjacent XT30 connectors.
 Each cutout is an 8.0 mm-wide obround extending from y = 54.7 mm to
