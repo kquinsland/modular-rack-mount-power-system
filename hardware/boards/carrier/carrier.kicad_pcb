@@ -135,7 +135,7 @@
 		(descr "Mechanical/electrical footprint for SW3538 140W USB-C/PD module from hardware/mechanical/exports/SW3538_140W_Module.dxf. Pin placement follows the module holes: GND/DC- column, DC+ column, and side SDA/SCK/IRQ header; verify against module before fabrication.")
 		(tags "SW3538 USB-C PD module 140W daughterboard")
 		(property "Reference" "MOD1"
-			(at 0 -15.66 270)
+			(at 0 -15.66 90)
 			(layer "F.SilkS")
 			(uuid "68ce0e2d-10bd-4599-8c5f-197d37623148")
 			(effects
@@ -745,6 +745,47 @@
 			(uuid "d233b6a0-77e4-40ea-975e-650ca5ca2fb9")
 		)
 		(fp_rect
+			(start -13.96 -13.45)
+			(end 13.39 13.9)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(fill no)
+			(layer "Edge.Cuts")
+			(uuid "faf85eab-7d95-4c5f-8c9c-a24b624b58a3")
+		)
+		(fp_line
+			(start -5.65 -32.75)
+			(end -5.65 -25.65)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(layer "Edge.Cuts")
+			(uuid "c462bc5c-427e-420d-ad1d-57b29c6ce7f7")
+		)
+		(fp_line
+			(start -5.65 -25.65)
+			(end 5.65 -25.65)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(layer "Edge.Cuts")
+			(uuid "c3c7f2f8-0f88-41d8-b8db-f91250368569")
+		)
+		(fp_line
+			(start 5.65 -25.65)
+			(end 5.65 -32.75)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(layer "Edge.Cuts")
+			(uuid "d213a5e1-8e3d-48b4-a296-66121a24d617")
+		)
+		(fp_rect
 			(start -17 -34.2)
 			(end 17 34.2)
 			(stroke
@@ -879,17 +920,6 @@
 			(net "/GND")
 			(pinfunction "DC_IN-")
 			(pintype "power_in")
-			(teardrops
-				(best_length_ratio 0.5)
-				(max_length 1)
-				(best_width_ratio 1)
-				(max_width 2)
-				(curved_edges no)
-				(filter_ratio 0.9)
-				(enabled yes)
-				(allow_two_segments yes)
-				(prefer_zone_connections yes)
-			)
 			(uuid "ccc09010-cd3a-4cb8-bc82-eba7f09d50a3")
 		)
 		(pad "3" thru_hole rect
@@ -1356,38 +1386,8 @@
 		(uuid "6902940d-e862-4f09-a7c5-e97ca9aaf327")
 	)
 	(gr_line
-		(start 135.84 99.77)
-		(end 135.85 126.7)
-		(stroke
-			(width 0.05)
-			(type default)
-		)
-		(layer "Edge.Cuts")
-		(uuid "dfedb5b7-c818-46c5-8b78-e47f57e72ce0")
-	)
-	(gr_line
-		(start 135.84 99.77)
-		(end 162.69 99.77)
-		(stroke
-			(width 0.05)
-			(type default)
-		)
-		(layer "Edge.Cuts")
-		(uuid "d5cc7519-1477-4b18-a2c8-dbf027e370d0")
-	)
-	(gr_line
-		(start 135.85 126.7)
-		(end 162.7 126.7)
-		(stroke
-			(width 0.05)
-			(type default)
-		)
-		(layer "Edge.Cuts")
-		(uuid "4a4ef843-34b2-4c52-b1a9-3eb93ba4e59f")
-	)
-	(gr_line
 		(start 136.2 97.5)
-		(end 182.252083 97.5)
+		(end 182.25 97.5)
 		(stroke
 			(width 0.05)
 			(type default)
@@ -1396,17 +1396,7 @@
 		(uuid "22272569-c1b0-4c35-94bb-cd39277fc4cb")
 	)
 	(gr_line
-		(start 162.7 126.7)
-		(end 162.69 99.77)
-		(stroke
-			(width 0.05)
-			(type default)
-		)
-		(layer "Edge.Cuts")
-		(uuid "2a8c3a0c-b241-4ecb-a154-a747de9b21c3")
-	)
-	(gr_line
-		(start 182.24 129.51)
+		(start 182.25 129.5)
 		(end 115.5 129.5)
 		(stroke
 			(width 0.05)
@@ -1416,14 +1406,24 @@
 		(uuid "35d6f6cb-ada4-48dc-a61e-c5f502fabd1d")
 	)
 	(gr_line
-		(start 182.252083 97.5)
-		(end 182.24 129.51)
+		(start 182.25 97.5)
+		(end 182.25 107.85)
 		(stroke
 			(width 0.05)
 			(type default)
 		)
 		(layer "Edge.Cuts")
 		(uuid "50b287c9-79a3-4db7-8ea4-1574522939d0")
+	)
+	(gr_line
+		(start 182.25 119.15)
+		(end 182.25 129.5)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "Edge.Cuts")
+		(uuid "d5c93ff5-718f-4d69-bf58-607e9a8d426a")
 	)
 	(embedded_fonts no)
 )
