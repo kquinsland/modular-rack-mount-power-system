@@ -131,7 +131,7 @@
 	(footprint "mini-rack-power:SW3538_140W_Module"
 		(layer "F.Cu")
 		(uuid "12eda2e4-1d48-445d-833e-15ffc5b49f86")
-		(at 149.5 113.5 -90)
+		(at 149 113.5 -90)
 		(descr "Mechanical/electrical footprint for SW3538 140W USB-C/PD module from hardware/mechanical/exports/SW3538_140W_Module.dxf. Pin placement follows the module holes: GND/DC- column, DC+ column, and side SDA/SCK/IRQ header; verify against module before fabrication.")
 		(tags "SW3538 USB-C PD module 140W daughterboard")
 		(property "Reference" "MOD1"
@@ -1356,8 +1356,8 @@
 		(uuid "40edb149-d85a-4c70-a500-2bafa23201f8")
 	)
 	(gr_line
-		(start 136.2 97.5)
-		(end 182.25 97.5)
+		(start 115.5 97.5)
+		(end 181.75 97.5)
 		(stroke
 			(width 0.05)
 			(type default)
@@ -1366,14 +1366,54 @@
 		(uuid "22272569-c1b0-4c35-94bb-cd39277fc4cb")
 	)
 	(gr_line
-		(start 182.25 97.5)
-		(end 182.25 107.85)
+		(start 115.5 106.5)
+		(end 115.5 97.5)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "Edge.Cuts")
+		(uuid "9f848293-2624-4790-86ed-9082b9f78fc9")
+	)
+	(gr_line
+		(start 115.5 129.5)
+		(end 115.5 120.5)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "Edge.Cuts")
+		(uuid "6902940d-e862-4f09-a7c5-e97ca9aaf327")
+	)
+	(gr_line
+		(start 181.75 129.5)
+		(end 115.5 129.5)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "Edge.Cuts")
+		(uuid "35d6f6cb-ada4-48dc-a61e-c5f502fabd1d")
+	)
+	(gr_line
+		(start 181.75 97.5)
+		(end 181.75 107.85)
 		(stroke
 			(width 0.05)
 			(type default)
 		)
 		(layer "Edge.Cuts")
 		(uuid "50b287c9-79a3-4db7-8ea4-1574522939d0")
+	)
+	(gr_line
+		(start 181.75 119.15)
+		(end 181.75 129.5)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "Edge.Cuts")
+		(uuid "d5c93ff5-718f-4d69-bf58-607e9a8d426a")
 	)
 	(embedded_fonts no)
 )
