@@ -3,8 +3,8 @@
 	(generator "pcbnew")
 	(generator_version "10.0")
 	(layer "F.Cu")
-	(descr "Mixed THT/SMT footprint for Amass XT30U(2+2)-F.G.B vertical/180-degree female connector. Mating-face outline imported from hardware/mechanical/exports/XT30(2+2).dxf; power contacts use plated through-holes and signal contacts use SMT pads.")
-	(tags "Amass XT30 XT30U 2+2 female vertical 180-degree smt through-hole power signal")
+	(descr "THT footprint for Amass XT30U(2+2)-F.G.B vertical/180-degree female connector. Mating-face outline imported from hardware/mechanical/exports/XT30(2+2).dxf; power and signal contacts use plated through-holes.")
+	(tags "Amass XT30 XT30U 2+2 female vertical 180-degree through-hole power signal")
 	(property "Reference" "REF**"
 		(at 0 -5 0)
 		(layer "F.SilkS")
@@ -40,7 +40,7 @@
 			)
 		)
 	)
-	(property "Description" "Amass XT30U(2+2)-F.G.B mixed THT/SMT connector footprint with PTH power contacts and SMT signal contacts"
+	(property "Description" "Amass XT30U(2+2)-F.G.B THT connector footprint with PTH power and signal contacts"
 		(at 0 0 0)
 		(unlocked yes)
 		(layer "F.Fab")
@@ -195,7 +195,7 @@
 	(pad "1" thru_hole circle
 		(at -0.679376 0)
 		(size 4 4)
-		(drill 2.8)
+		(drill 2.65)
 		(layers "*.Cu" "*.Mask")
 		(remove_unused_layers no)
 		(uuid "00c8475b-1c44-43b6-8628-71b5031210f0")
@@ -203,21 +203,25 @@
 	(pad "2" thru_hole circle
 		(at 4.320624 0)
 		(size 4 4)
-		(drill 2.8)
+		(drill 2.65)
 		(layers "*.Cu" "*.Mask")
 		(remove_unused_layers no)
 		(uuid "3d03e2b3-0b35-428e-b14d-844f7169b2ef")
 	)
-	(pad "3" smd rect
+	(pad "3" thru_hole circle
 		(at -4.679376 -1)
-		(size 1.8 1.5)
-		(layers "F.Cu" "F.Mask" "F.Paste")
+		(size 1.8 1.8)
+		(drill 1.25)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
 		(uuid "2be8ccd3-048b-4047-8e92-3b431150df2a")
 	)
-	(pad "4" smd rect
+	(pad "4" thru_hole circle
 		(at -4.679376 1)
-		(size 1.8 1.5)
-		(layers "F.Cu" "F.Mask" "F.Paste")
+		(size 1.8 1.8)
+		(drill 1.25)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
 		(uuid "12d1e26b-cdb3-4d2f-a7d8-2873ba3abf10")
 	)
 	(embedded_fonts no)
