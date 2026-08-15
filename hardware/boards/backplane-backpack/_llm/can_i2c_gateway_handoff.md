@@ -4,7 +4,7 @@
 
 Gateway PCB for:
 - one CAN / CAN-FD connection;
-- six external I2C target devices which all use the same I2C address;
+- six external I2C target devices, connected through the backplane mate, which all use the same I2C address;
 - optional 3-wire or 4-wire 12 V PC fan;
 - one addressable RGB status LED;
 - nominal input supply ~20–36 V;
@@ -62,7 +62,7 @@ If a 5 V addressable LED is preferred instead, see Section 12.
 |---|---|
 | J1 | GND/VIN input connector; mechanical series TBD |
 | J2 | GND/CANL/CANH connector; mechanical series TBD |
-| J3-J8 | six I2C connectors; mechanical series TBD |
+| J11 | 2x7, 1.00 mm SMD socket backplane mate; mates with the backplane J8 pin header |
 | J9 | 4-position fan footprint/header; can accept 3-pin or 4-pin fan connector scheme |
 | J10 | SWD programming/debug connector/pads |
 | SJ1 | CAN termination enable solder jumper |
@@ -290,39 +290,35 @@ C2 = 100 nF directly adjacent to U2 supply pins.
 
 ### I2C channel 0
 
-- U2.4 SD0 -> `I2C0_SDA` -> J3.3
-- U2.5 SC0 -> `I2C0_SCL` -> J3.2
-- J3.1 -> GND
+- U2.4 SD0 -> `SDA_SLOT_1` -> J11.13
+- U2.5 SC0 -> `SCL_SLOT_1` -> J11.14
 
 ### I2C channel 1
 
-- U2.6 SD1 -> `I2C1_SDA` -> J4.3
-- U2.7 SC1 -> `I2C1_SCL` -> J4.2
-- J4.1 -> GND
+- U2.6 SD1 -> `SDA_SLOT_2` -> J11.11
+- U2.7 SC1 -> `SCL_SLOT_2` -> J11.12
 
 ### I2C channel 2
 
-- U2.8 SD2 -> `I2C2_SDA` -> J5.3
-- U2.9 SC2 -> `I2C2_SCL` -> J5.2
-- J5.1 -> GND
+- U2.8 SD2 -> `SDA_SLOT_3` -> J11.9
+- U2.9 SC2 -> `SCL_SLOT_3` -> J11.10
 
 ### I2C channel 3
 
-- U2.10 SD3 -> `I2C3_SDA` -> J6.3
-- U2.11 SC3 -> `I2C3_SCL` -> J6.2
-- J6.1 -> GND
+- U2.10 SD3 -> `SDA_SLOT_4` -> J11.7
+- U2.11 SC3 -> `SCL_SLOT_4` -> J11.8
 
 ### I2C channel 4
 
-- U2.13 SD4 -> `I2C4_SDA` -> J7.3
-- U2.14 SC4 -> `I2C4_SCL` -> J7.2
-- J7.1 -> GND
+- U2.13 SD4 -> `SDA_SLOT_5` -> J11.5
+- U2.14 SC4 -> `SCL_SLOT_5` -> J11.6
 
 ### I2C channel 5
 
-- U2.15 SD5 -> `I2C5_SDA` -> J8.3
-- U2.16 SC5 -> `I2C5_SCL` -> J8.2
-- J8.1 -> GND
+- U2.15 SD5 -> `SDA_SLOT_6` -> J11.3
+- U2.16 SC5 -> `SCL_SLOT_6` -> J11.4
+
+J11.1 -> GND. J11.2 -> +3V3.
 
 Per-slot I2C ESD protection and optional downstream pullups are implemented on the backplane PCB. Do not duplicate them on the backpack.
 
@@ -502,12 +498,7 @@ J9.1 -> GND.
        |          |          |
        |          |          +--> L3 CAN CMC -> D1 CAN TVS -> J2
        |          |
-       |          +--> ch0 -> J3 -> backplane slot 1 protection
-       |          +--> ch1 -> J4 -> backplane slot 2 protection
-       |          +--> ch2 -> J5 -> backplane slot 3 protection
-       |          +--> ch3 -> J6 -> backplane slot 4 protection
-       |          +--> ch4 -> J7 -> backplane slot 5 protection
-       |          +--> ch5 -> J8 -> backplane slot 6 protection
+       |          +--> ch0..ch5 -> J11 backplane mate -> per-slot backplane protection
        |
        +--> LED1 WS2812B-MINI-V6
 ```
@@ -519,7 +510,7 @@ J9.1 -> GND.
 - U2 address is fixed to 0x70 with A0/A1/A2 grounded.
 - Firmware must enable only one of channels 0-5 at a time because all six targets share an address.
 - Upstream R1/R2 4.7 k pullups are populated.
-- The downstream mux channels connect directly to J3-J8. Their per-slot ESD protection and optional pullups are on the backplane PCB.
+- The downstream mux channels connect directly to J11. Their per-slot ESD protection and optional pullups are on the backplane PCB.
 - Do not add a common-mode choke to each I2C pair in Rev A. The bus is open-drain and rise-time/capacitance constrained. If a future link becomes long or noisy enough to need stronger conditioning, use a purpose-built I2C buffer/extender rather than an arbitrary CMC.
 
 ---
