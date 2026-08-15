@@ -78,6 +78,8 @@ pub struct Controller {
     emergency_latched_runtime: bool,
     next_operation: u32,
     next_config_revision: u32,
+    emergency_cursor: u8,
+    policy_cursor: u8,
     diagnostics: Diagnostics,
 }
 
@@ -95,6 +97,8 @@ impl Controller {
             emergency_latched_runtime: settings.emergency_latched,
             next_operation: 0,
             next_config_revision: 0,
+            emergency_cursor: PortId::MIN,
+            policy_cursor: PortId::MIN,
             diagnostics: Diagnostics {
                 stale_operation_completions: 0,
                 stale_persistence_completions: 0,
@@ -331,26 +335,46 @@ impl Controller {
     }
 
     fn take_dispatchable_emergency(&mut self) -> Option<PortId> {
-        Self::take_dispatchable(&mut self.pending_emergency, &self.slots)
+        Self::take_dispatchable(
+            &mut self.pending_emergency,
+            &self.slots,
+            &mut self.emergency_cursor,
+        )
     }
 
     fn take_dispatchable_policy(&mut self) -> Option<PortId> {
-        Self::take_dispatchable(&mut self.pending_policy, &self.slots)
+        Self::take_dispatchable(
+            &mut self.pending_policy,
+            &self.slots,
+            &mut self.policy_cursor,
+        )
     }
 
     fn take_dispatchable(
         pending: &mut PortBitmap,
         slots: &[SlotState; MAX_PORTS],
+        cursor: &mut u8,
     ) -> Option<PortId> {
-        for raw_port in PortId::MIN..=PortId::MAX {
-            let port = PortId::new(raw_port).expect("MAX_PORTS defines valid port IDs");
+        let mut raw_port = *cursor;
+        for _ in 0..MAX_PORTS {
+            let port = PortId::new(raw_port).expect("scheduler cursor is always a valid port");
             let slot = &slots[port.index()];
             if pending.contains(port) && slot.online && slot.active_operation.is_none() {
                 pending.remove(port);
+                *cursor = next_port(raw_port);
                 return Some(port);
             }
+            raw_port = next_port(raw_port);
         }
         None
+    }
+}
+
+const fn next_port(port: u8) -> u8 {
+    if port == PortId::MAX {
+        PortId::MIN
+    } else {
+        port + 1
     }
 }
 
@@ -422,6 +446,38 @@ mod tests {
             controller.next_action(),
             Some(Action::PersistConfig { .. })
         ));
+    }
+
+    #[test]
+    fn a_failed_port_does_not_starve_other_pending_ports() {
+        let mut controller = Controller::new(REV_A, PersistentSettings::FACTORY_DEFAULT);
+        controller.module_detected(port(0)).unwrap();
+        controller.module_detected(port(1)).unwrap();
+
+        let Action::Pd {
+            operation,
+            port: first_port,
+            slot_epoch,
+            ..
+        } = controller.next_action().unwrap()
+        else {
+            panic!("module detection must schedule a policy action");
+        };
+        assert_eq!(first_port, port(0));
+        controller.complete_pd_operation(
+            first_port,
+            operation,
+            slot_epoch,
+            CompletionOutcome::Failed,
+        );
+
+        let Action::Pd {
+            port: second_port, ..
+        } = controller.next_action().unwrap()
+        else {
+            panic!("the other pending port must remain dispatchable");
+        };
+        assert_eq!(second_port, port(1));
     }
 
     #[test]

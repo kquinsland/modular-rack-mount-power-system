@@ -3,8 +3,8 @@
  *
  * The final 8 KiB (four expected 2 KiB flash pages) is excluded from the
  * application image for power-fail-safe configuration and emergency-latch
- * records. Confirm the erase geometry against the reference manual before the
- * flash adapter is implemented.
+ * records. The adapter compile-checks Embassy's 2 KiB erase and 8-byte write
+ * geometry; confirm both against the reference manual and silicon during HIL.
  */
 MEMORY
 {

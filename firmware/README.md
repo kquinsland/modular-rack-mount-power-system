@@ -19,3 +19,7 @@ References:
   original detailed design input.
 - [`../docs/interfaces.md`](../docs/interfaces.md): active electrical and logical
   interface contract.
+- [`../docs/pdcan/firmware-architecture.md`](../docs/pdcan/firmware-architecture.md):
+  implemented task/peripheral boundaries.
+- [`../docs/pdcan/hardware-validation.md`](../docs/pdcan/hardware-validation.md):
+  explicit bring-up and HIL checklist.

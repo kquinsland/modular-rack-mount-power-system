@@ -129,6 +129,24 @@ fn run_ci() -> Result<(), String> {
             "warnings",
         ],
     )?;
+    run_command(
+        "cargo",
+        &[
+            "clippy",
+            "--package",
+            FIRMWARE_PACKAGE,
+            "--bin",
+            FIRMWARE_BINARY,
+            "--target",
+            FIRMWARE_TARGET,
+            "--no-default-features",
+            "--features",
+            REV_A_FEATURES,
+            "--",
+            "-D",
+            "warnings",
+        ],
+    )?;
     write_or_check_dbc(true)?;
     build_firmware(true)
 }

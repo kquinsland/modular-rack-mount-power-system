@@ -6,6 +6,9 @@ pub const MAX_PORTS: usize = 8;
 pub const MAX_PORT_VOLTAGE_MV: u16 = 20_000;
 pub const MAX_PORT_CURRENT_MA: u16 = 5_000;
 pub const MAX_PORT_POWER_MW: u32 = 100_000;
+pub const MIN_ENABLED_PORT_VOLTAGE_MV: u16 = 5_000;
+pub const MIN_ENABLED_PORT_CURRENT_MA: u16 = 10;
+pub const MIN_ENABLED_PORT_POWER_MW: u32 = 50;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd)]
 pub struct PortId(u8);
@@ -227,6 +230,15 @@ impl PortPolicy {
         {
             return Err(PolicyValidationError::EnabledLimitIsZero);
         }
+        if self.enabled && self.max_voltage_mv < MIN_ENABLED_PORT_VOLTAGE_MV {
+            return Err(PolicyValidationError::EnabledVoltageBelowUsbMinimum);
+        }
+        if self.enabled && self.max_current_ma < MIN_ENABLED_PORT_CURRENT_MA {
+            return Err(PolicyValidationError::EnabledCurrentNotRepresentable);
+        }
+        if self.enabled && self.max_power_mw < MIN_ENABLED_PORT_POWER_MW {
+            return Err(PolicyValidationError::EnabledPowerNotRepresentable);
+        }
         Ok(self)
     }
 }
@@ -237,6 +249,9 @@ pub enum PolicyValidationError {
     CurrentTooHigh,
     PowerTooHigh,
     EnabledLimitIsZero,
+    EnabledVoltageBelowUsbMinimum,
+    EnabledCurrentNotRepresentable,
+    EnabledPowerNotRepresentable,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -255,6 +270,30 @@ impl PersistentSettings {
         port_policy: [PortPolicy::SAFE_DISABLED; MAX_PORTS],
         emergency_latched: false,
     };
+
+    pub fn validate(self) -> Result<Self, SettingsValidationError> {
+        self.fan
+            .validate()
+            .map_err(|error| SettingsValidationError::Fan(error.0))?;
+        for (index, policy) in self.port_policy.iter().enumerate() {
+            policy
+                .validate()
+                .map_err(|error| SettingsValidationError::PortPolicy {
+                    port: u8::try_from(index).expect("MAX_PORTS fits in a u8"),
+                    error,
+                })?;
+        }
+        Ok(self)
+    }
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum SettingsValidationError {
+    Fan(u8),
+    PortPolicy {
+        port: u8,
+        error: PolicyValidationError,
+    },
 }
 
 impl Default for PersistentSettings {
@@ -341,6 +380,38 @@ mod tests {
             }
             .validate(),
             Err(PolicyValidationError::PowerTooHigh)
+        );
+    }
+
+    #[test]
+    fn enabled_policy_must_represent_a_nonzero_five_volt_pdo() {
+        let enabled = PortPolicy {
+            enabled: true,
+            ..PortPolicy::SAFE_DISABLED
+        };
+        assert_eq!(
+            PortPolicy {
+                max_voltage_mv: MIN_ENABLED_PORT_VOLTAGE_MV - 1,
+                ..enabled
+            }
+            .validate(),
+            Err(PolicyValidationError::EnabledVoltageBelowUsbMinimum)
+        );
+        assert_eq!(
+            PortPolicy {
+                max_current_ma: MIN_ENABLED_PORT_CURRENT_MA - 1,
+                ..enabled
+            }
+            .validate(),
+            Err(PolicyValidationError::EnabledCurrentNotRepresentable)
+        );
+        assert_eq!(
+            PortPolicy {
+                max_power_mw: MIN_ENABLED_PORT_POWER_MW - 1,
+                ..enabled
+            }
+            .validate(),
+            Err(PolicyValidationError::EnabledPowerNotRepresentable)
         );
     }
 
