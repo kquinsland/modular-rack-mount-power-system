@@ -19,7 +19,7 @@ VIN_RAW (~20–36 V)
   |
   +-- U4 LMR51610YDBVR --> +3V3 --> MCU / I2C mux / CAN PHY / RGB LED
   |
-  +-- U5 LMR51610YDBVR --> +12V_FAN --> fan
+  +-- U5 LMR51610YDBVR --> +12V --> fan
 ```
 
 The previous +5 V rail, TLV75533 LDO, and NeoPixel level shifter are intentionally removed from the canonical design. LED1 is a WS2812B-MINI-V6 that operates directly from +3V3.
@@ -206,7 +206,7 @@ R17.2 -> GND. R17 = 22.1 k.
 - C11.2
 - L2.1
 
-`+12V_FAN`
+`+12V`
 - L2.2
 - C12.1
 - C13.1
@@ -224,7 +224,7 @@ C12.2, C13.2, C15.2 -> GND.
 - R20.2
 - R19.1
 
-R20.1 -> +12V_FAN. R20 = 309 k.
+R20.1 -> +12V. R20 = 309 k.
 R19.2 -> GND. R19 = 22.1 k.
 
 ### U1 local/reset/debug
@@ -470,9 +470,9 @@ Q2.2 SOURCE -> GND.
 - R21.2
 - SJ3.THREE_WIRE_PAD
 
-R21.1 -> +12V_FAN. R21 = 22.1 k.
+R21.1 -> +12V. R21 = 22.1 k.
 
-Q1.2 SOURCE -> +12V_FAN
+Q1.2 SOURCE -> +12V
 Q1.3 DRAIN -> `FAN_12V_SW`
 
 `FAN_TACH`
@@ -490,7 +490,7 @@ R16.1 -> +3V3. R16 = 4.7 k.
 - J9.2
 - SJ2.CENTER
 
-SJ2.DIRECT_PAD -> +12V_FAN
+SJ2.DIRECT_PAD -> +12V
 SJ2.SWITCHED_PAD -> FAN_12V_SW
 
 J9.1 -> GND.
@@ -504,7 +504,7 @@ J9.1 -> GND.
 - firmware PWM on PA0 at low supply-PWM frequency; ~30 Hz is a reasonable initial value to validate with the selected fan
 
 #### Fan mode: 4-wire
-- SJ2: center -> direct +12V_FAN
+- SJ2: center -> direct +12V
 - SJ3: center -> four-wire `FAN_PWM`
 - Q2 populated
 - Q1 may be DNP or may remain populated but bypassed
@@ -524,7 +524,7 @@ J9.1 -> GND.
                   |                       |
                 L1 15uH                 L2 15uH
                   |                       |
-                +3V3                   +12V_FAN
+                +3V3                   +12V
                   |                       |
        +----------+----------+            +--> Q1/Q2 -> J9 fan
        |          |          |
