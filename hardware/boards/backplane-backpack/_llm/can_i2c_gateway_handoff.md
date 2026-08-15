@@ -40,7 +40,6 @@ If a 5 V addressable LED is preferred instead, see Section 12.
 | Q1 | 1 | AO3407A | C15155 | SOT-23 | P-MOS high-side 3-wire fan PWM | POP for universal/3-wire; DNP allowed for 4-wire-only |
 | Q2 | 1 | 2N7002,215 | C65189 | SOT-23 | Open-drain fan control / PMOS gate sink | POP |
 | D1 | 1 | PESD2CANFD27V-TR | C552488 | SOT-23 | CAN/CAN-FD TVS | POP |
-| D3-D8 | 6 | PESD5V0S2BT,215 | C49338 | SOT-23 | 2-line bidirectional I2C ESD protection | POP |
 | L1,L2 | 2 | SRN6045TA-150M | C1330797 | 6 x 6 mm | 15 uH buck inductors | POP |
 | L3 | 1 | ACT1210D-101-2P-TL00 | C3039743 | ACT1210 | CAN/CAN-FD common-mode choke | POP |
 
@@ -52,7 +51,6 @@ If a 5 V addressable LED is preferred instead, see Section 12.
 | C5,C9,C17,C18 | 4 | C1206X225K101T | C106051 | 2.2 uF, 100 V, X7R, 1206 | buck/local VIN ceramic + input bulk ceramic |
 | C8,C12-C15 | 5 | CL21A226MAYNNNE | C602037 | 22 uF, 25 V, X5R, 0805 | rail output/local bulk |
 | R1,R2,R15,R16 | 4 | RC0603FR-074K7L | C99782 | 4.7 k, 1%, 0603 | upstream I2C, mux reset, fan tach pullups |
-| R3-R14 | 0-12 | RC0603FR-074K7L | C99782 | 4.7 k, 1%, 0603 | downstream I2C pullups; DNP by default if target supplies pullups |
 | R17,R19,R21,R22 | 4 | RC0603FR-0722K1L | C137768 | 22.1 k, 1%, 0603 | buck FB bottoms + fan gate pulls |
 | R18 | 1 | RC0603FR-0769K8L | C137689 | 69.8 k, 1%, 0603 | +3V3 buck FB top |
 | R20 | 1 | RC0603FR-07309KL | C273754 | 309 k, 1%, 0603 | +12V buck FB top |
@@ -292,70 +290,41 @@ C2 = 100 nF directly adjacent to U2 supply pins.
 
 ### I2C channel 0
 
-`I2C0_SDA_INT`
-- U2.4 SD0
-- R3.2
-- D3.1
-
-`I2C0_SCL_INT`
-- U2.5 SC0
-- R4.2
-- D3.2
-
-D3.3 -> GND.
-
-`I2C0_SDA_CONN`
-- same physical net as D3.1, routed directly to J3.3 after the ESD branch
-- J3.3
-
-`I2C0_SCL_CONN`
-- same physical net as D3.2, routed directly to J3.2 after the ESD branch
-- J3.2
-
-J3.1 -> GND.
-R3.1/R4.1 -> +3V3 if populated.
-
-Important: PESD5V0S2BT is a shunt protection part, not a series-through part. Pins 1 and 2 connect to the two protected lines; pin 3 connects to GND. The protected signal itself continues directly from mux to connector.
+- U2.4 SD0 -> `I2C0_SDA` -> J3.3
+- U2.5 SC0 -> `I2C0_SCL` -> J3.2
+- J3.1 -> GND
 
 ### I2C channel 1
 
-- U2.6 SD1 -> `I2C1_SDA`, R5.2, D4.1, J4.3
-- U2.7 SC1 -> `I2C1_SCL`, R6.2, D4.2, J4.2
-- D4.3 -> GND
-- R5.1/R6.1 -> +3V3 if populated
+- U2.6 SD1 -> `I2C1_SDA` -> J4.3
+- U2.7 SC1 -> `I2C1_SCL` -> J4.2
 - J4.1 -> GND
 
 ### I2C channel 2
 
-- U2.8 SD2 -> `I2C2_SDA`, R7.2, D5.1, J5.3
-- U2.9 SC2 -> `I2C2_SCL`, R8.2, D5.2, J5.2
-- D5.3 -> GND
-- R7.1/R8.1 -> +3V3 if populated
+- U2.8 SD2 -> `I2C2_SDA` -> J5.3
+- U2.9 SC2 -> `I2C2_SCL` -> J5.2
 - J5.1 -> GND
 
 ### I2C channel 3
 
-- U2.10 SD3 -> `I2C3_SDA`, R9.2, D6.1, J6.3
-- U2.11 SC3 -> `I2C3_SCL`, R10.2, D6.2, J6.2
-- D6.3 -> GND
-- R9.1/R10.1 -> +3V3 if populated
+- U2.10 SD3 -> `I2C3_SDA` -> J6.3
+- U2.11 SC3 -> `I2C3_SCL` -> J6.2
 - J6.1 -> GND
 
 ### I2C channel 4
 
-- U2.13 SD4 -> `I2C4_SDA`, R11.2, D7.1, J7.3
-- U2.14 SC4 -> `I2C4_SCL`, R12.2, D7.2, J7.2
-- D7.3 -> GND
-- R11.1/R12.1 -> +3V3 if populated
+- U2.13 SD4 -> `I2C4_SDA` -> J7.3
+- U2.14 SC4 -> `I2C4_SCL` -> J7.2
 - J7.1 -> GND
 
 ### I2C channel 5
 
-- U2.15 SD5 -> `I2C5_SDA`, R13.2, D8.1, J8.3
-- U2.16 SC5 -> `I2C5_SCL`, R14.2, D8.2, J8.2
-- D8.3 -> GND
-- R13.1/R14.1 -> +3V3 if populated
+- U2.15 SD5 -> `I2C5_SDA` -> J8.3
+- U2.16 SC5 -> `I2C5_SCL` -> J8.2
 - J8.1 -> GND
+
+Per-slot I2C ESD protection and optional downstream pullups are implemented on the backplane PCB. Do not duplicate them on the backpack.
 
 ### Spare I2C mux channels
 
@@ -533,12 +502,12 @@ J9.1 -> GND.
        |          |          |
        |          |          +--> L3 CAN CMC -> D1 CAN TVS -> J2
        |          |
-       |          +--> ch0 -> D3 ESD -> J3
-       |          +--> ch1 -> D4 ESD -> J4
-       |          +--> ch2 -> D5 ESD -> J5
-       |          +--> ch3 -> D6 ESD -> J6
-       |          +--> ch4 -> D7 ESD -> J7
-       |          +--> ch5 -> D8 ESD -> J8
+       |          +--> ch0 -> J3 -> backplane slot 1 protection
+       |          +--> ch1 -> J4 -> backplane slot 2 protection
+       |          +--> ch2 -> J5 -> backplane slot 3 protection
+       |          +--> ch3 -> J6 -> backplane slot 4 protection
+       |          +--> ch4 -> J7 -> backplane slot 5 protection
+       |          +--> ch5 -> J8 -> backplane slot 6 protection
        |
        +--> LED1 WS2812B-MINI-V6
 ```
@@ -550,9 +519,8 @@ J9.1 -> GND.
 - U2 address is fixed to 0x70 with A0/A1/A2 grounded.
 - Firmware must enable only one of channels 0-5 at a time because all six targets share an address.
 - Upstream R1/R2 4.7 k pullups are populated.
-- R3-R14 are optional per-channel pullups. Default DNP when each target PCB already contains appropriate pullups.
-- Do not add a common-mode choke to each I2C pair in Rev A. The bus is open-drain and rise-time/capacitance constrained. For the expected short links, use pullups plus ESD shunts. If a future cable becomes long/noisy enough to need stronger conditioning, use a purpose-built I2C buffer/extender rather than an arbitrary CMC.
-- D3-D8 are ground-referenced bidirectional two-line TVS parts, avoiding a clamp path into the +3V3 rail when the gateway is unpowered.
+- The downstream mux channels connect directly to J3-J8. Their per-slot ESD protection and optional pullups are on the backplane PCB.
+- Do not add a common-mode choke to each I2C pair in Rev A. The bus is open-drain and rise-time/capacitance constrained. If a future link becomes long or noisy enough to need stronger conditioning, use a purpose-built I2C buffer/extender rather than an arbitrary CMC.
 
 ---
 
@@ -626,11 +594,9 @@ Provide at minimum:
 - populate all core ICs;
 - populate U4/U5, L1/L2 and all power passives;
 - populate CAN L3, D1 and R24; leave SJ1 open;
-- populate D3-D8 I2C ESD parts;
 - populate Q1/Q2;
 - populate LED1;
 - populate R1/R2/R15/R16;
-- leave R3-R14 DNP unless target-device pullup situation calls for them;
 - choose fan mode with SJ2/SJ3 after assembly;
 - D2/C20 remain DNP until final power-source requirements are locked.
 
@@ -688,7 +654,6 @@ Before symbol/footprint release, compare every library symbol against the curren
 - TI LMR51610 datasheet
 - TDK ACT1210D series datasheet
 - Nexperia PESD2CANFD27V datasheet
-- Nexperia PESD5V0S2BT datasheet
 - Worldsemi WS2812B-MINI-V6 datasheet
 - AOS AO3407A datasheet
 - Nexperia 2N7002 datasheet
