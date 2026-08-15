@@ -62,8 +62,8 @@ If a 5 V addressable LED is preferred instead, see Section 12.
 
 | Ref | Purpose |
 |---|---|
-| J1 | VIN/GND input connector; mechanical series TBD |
-| J2 | CANH/CANL/GND connector; mechanical series TBD |
+| J1 | GND/VIN input connector; mechanical series TBD |
+| J2 | GND/CANL/CANH connector; mechanical series TBD |
 | J3-J8 | six I2C connectors; mechanical series TBD |
 | J9 | 4-position fan footprint/header; can accept 3-pin or 4-pin fan connector scheme |
 | J10 | SWD programming/debug connector/pads |
@@ -112,7 +112,7 @@ This is the schematic connectivity source of truth. Pin numbers are package pins
 ### GND
 
 Connect together:
-- J1.2
+- J1.1
 - U1.5
 - U2.12
 - U3.2
@@ -134,7 +134,7 @@ Use a continuous ground plane wherever possible.
 ### VIN_RAW
 
 Connect:
-- J1.1
+- J1.2
 - U4.5 VIN
 - U4.4 EN
 - U5.5 VIN
@@ -249,8 +249,8 @@ C19.2 -> GND.
 - TP_SPARE_GPIO
 
 J10 suggested logical pinout:
-1 +3V3
-2 GND
+1 GND
+2 +3V3
 3 SWDIO
 4 SWCLK
 5 NRST
@@ -406,7 +406,7 @@ TDK ACT1210D-101-2P-TL00 winding mapping:
 `CANH_BUS`
 - L3.4
 - D1.1
-- J2.1
+- J2.3
 - SJ1.1
 - TP_CANH
 
@@ -427,9 +427,9 @@ R24 = 120 ohm.
 SJ1 open by default; bridge only when this PCB is at a physical CAN bus endpoint.
 
 J2:
-1 CANH_BUS
+1 GND
 2 CANL_BUS
-3 GND
+3 CANH_BUS
 
 Layout order should be approximately U3 -> L3 -> connector region, with D1 located immediately beside J2 and with a very short transient path to the ground plane.
 
@@ -692,4 +692,3 @@ Before symbol/footprint release, compare every library symbol against the curren
 - Worldsemi WS2812B-MINI-V6 datasheet
 - AOS AO3407A datasheet
 - Nexperia 2N7002 datasheet
-
