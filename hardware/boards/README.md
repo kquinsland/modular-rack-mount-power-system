@@ -6,6 +6,7 @@ Current boards:
 
 - `backplane`
 - `backplane-prototype`
+- `backplane-prototype-mate`
 - `carrier`
 - `controller`
 
