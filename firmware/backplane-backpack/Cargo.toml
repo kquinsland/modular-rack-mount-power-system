@@ -1,0 +1,30 @@
+[package]
+name = "backplane-backpack-firmware"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+build = "build.rs"
+
+[features]
+default = []
+board-rev-a = []
+firmware-bin = ["dep:cortex-m", "dep:cortex-m-rt", "dep:panic-halt"]
+
+[dependencies]
+cortex-m = { version = "0.7", optional = true }
+cortex-m-rt = { version = "0.7", optional = true }
+panic-halt = { version = "1", optional = true }
+pdcan-core.workspace = true
+pdcan-drivers.workspace = true
+pdcan-protocol.workspace = true
+pdcan-types.workspace = true
+
+[[bin]]
+name = "backplane-backpack"
+path = "src/main.rs"
+required-features = ["firmware-bin"]
+test = false
+bench = false
+
+[lints]
+workspace = true
