@@ -2,6 +2,15 @@
 
 Everything below describes firmware that will run on the [`backplane-backpack` board](../../hardware/boards/backplane-backpack/README.md) and a host-side CLI for discovery, commissioning, and control.
 
+> [!IMPORTANT]
+> This was the original detailed design input. The reviewed execution plan in
+> [`../plan.md`](../plan.md), accepted decisions under [`docs/decisions/`](../../docs/decisions/),
+> and the eventual generated protocol documentation are authoritative when they
+> differ from this file. In particular, the review resolved Rev A's six-port
+> supported mask, SW3538/100 W scope, persistent policy and emergency latch,
+> multiple requester IDs, exact-version operational compatibility, and repository
+> integration.
+
 ## 1. Purpose
 
 This repository will implement firmware and host-side tooling for a CAN-FD-connected USB-C Power Delivery controller board built around an `STM32C092FCP6`.
@@ -9,13 +18,18 @@ This repository will implement firmware and host-side tooling for a CAN-FD-conne
 Each board:
 
 - exposes one CAN-FD node;
-- controls up to eight identical hot-swappable USB-C PD modules;
+- supports up to eight logical USB-C PD ports; Rev A physically connects six
+  modules on ports 0 through 5;
 - reaches those modules over one STM32 I²C peripheral through a `TCA9548APWR` 8-channel I²C mux;
 - polls each installed PD module for connection state, negotiated contract information, electrical telemetry, temperature, and fault state;
-- can send commands to each PD controller, including enabling/disabling the USB-C port, limiting advertised SPR capabilities, controlling EPR policy, requesting renegotiation, and clearing/resetting faults where supported;
+- can send commands to each PD controller, including enabling/disabling the USB-C
+  port, limiting fixed/PPS capabilities to at most 20 V, 5 A, and 100 W,
+  requesting renegotiation, and clearing/resetting faults where supported; EPR and
+  proprietary 7 A operation are out of scope;
 - drives a NeoPixel-compatible status LED;
 - drives an optional 3-pin or 4-pin fan interface;
-- stores a commissioned CAN node address in internal flash;
+- stores a commissioned CAN node address, fan configuration, per-port desired
+  policies, and the emergency-disable latch in internal flash;
 - remains discoverable by the STM32's factory-programmed 96-bit unique ID before and after commissioning.
 
 The repository also contains a Rust CLI, `pdcan`, for discovery, physical identification, commissioning, status inspection, and port control.
@@ -46,23 +60,24 @@ The implementation team must verify all final pin assignments, timer selections,
 
 ### 2.2 I²C topology
 
-```text
-STM32 I2C
-    |
-    v
-TCA9548APWR
-    |
-    +-- CH0 --> PD module 0
-    +-- CH1 --> PD module 1
-    +-- CH2 --> PD module 2
-    +-- CH3 --> PD module 3
-    +-- CH4 --> PD module 4
-    +-- CH5 --> PD module 5
-    +-- CH6 --> PD module 6
-    `-- CH7 --> PD module 7
+```mermaid
+flowchart TD
+    i2c[STM32 I2C2]
+    mux[TCA9548APWR]
+    i2c --> mux
+    mux -->|CH0| p0[PD module / port 0]
+    mux -->|CH1| p1[PD module / port 1]
+    mux -->|CH2| p2[PD module / port 2]
+    mux -->|CH3| p3[PD module / port 3]
+    mux -->|CH4| p4[PD module / port 4]
+    mux -->|CH5| p5[PD module / port 5]
+    mux -.->|CH6 test pads| p6[Future port 6]
+    mux -.->|CH7 test pads| p7[Future port 7]
 ```
 
-All eight modules are identical and may therefore use the same I²C address.
+The logical design supports eight identical modules using the same I²C address.
+Rev A supports only channels/ports 0 through 5; channels 6 and 7 terminate at test
+pads and firmware must not probe them as ports.
 
 Only one TCA9548 channel should normally be enabled at a time. Preferred transaction pattern:
 
@@ -72,7 +87,8 @@ select channel -> perform one logical module operation -> deselect all channels
 
 This leaves absent, damaged, unpowered, or partially inserted modules isolated from the upstream bus except while actively probing or accessing that slot.
 
-If the TCA9548 reset pin is connected to the STM32, firmware should use it as part of the I²C recovery strategy.
+The TCA9548 reset pin is connected to STM32 PA3 on Rev A and is part of the I²C
+recovery strategy.
 
 ### 2.3 Hot-swappable PD modules
 

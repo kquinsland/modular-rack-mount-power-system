@@ -1,5 +1,11 @@
 # SW3538 USB-C/PD Module Power-Input and Thermal Budget
 
+> **Active product decision:** Backplane Backpack firmware caps every port at
+> 20 V, 5 A, and 100 W. EPR and the SW3538's proprietary 20 V/7 A mode are not
+> supported. Rev A branch hardware is intended for a little over 5 A per port.
+> The 140 W/7 A calculations below document the device/module claim and why it is
+> rejected; they are not the active firmware or backplane requirement.
+
 ## Bottom line
 
 The SW3538 datasheet defines the advertised maximum output as **140 W at 20 V × 7 A**. This rating applies to the USB output side.
