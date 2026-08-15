@@ -1,5 +1,7 @@
-# Backplane Prototype Mate
+# Backplane Backpack
 
-This board is the mechanical mate for `backplane-prototype`. Its outer perimeter exactly matches the prototype backplane at 151.8 mm by 30.8 mm; the prototype's five internal edge-cut slots are intentionally omitted.
+This board mates with the backplane - hench the 'backpack' moniker.
+It shares the same mechanical footprint as the backplane and handles all of the smarts that would otherwise crowd out the high-current traces on the backplane.
 
-The schematic and PCB are intentionally electrically empty. The prototype currently uses a 2x7, 1.00 mm-pitch pin header (`J8`) at `(53.38, 58.9621)` on the back copper side. Its mating connector should be added once the required connector gender, board side, and stacking orientation are confirmed.
+At a very high level, it's a simple CAN ,<-> i2c bridge built around a STM32 micro.
+There is a 3/4 pin header for a standard 12V pc fan and a simple neo pixel ring for status indication.
