@@ -1,4 +1,6 @@
-# PDCAN Firmware and Tooling Implementation Plan
+# Backplane Backpack Firmware and Tooling Implementation Plan
+
+Everything below describes firmware that will run on the [`backplane-backpack` board](../../hardware/boards/backplane-backpack/README.md) and a host-side CLI for discovery, commissioning, and control.
 
 ## 1. Purpose
 
