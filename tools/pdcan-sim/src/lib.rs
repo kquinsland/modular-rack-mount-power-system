@@ -395,6 +395,26 @@ impl SimulatedNode {
                         debug_assert_eq!(completion, PersistCompletion::DurableThrough(revision));
                     }
                 }
+                Action::PowerGate {
+                    operation,
+                    port,
+                    slot_epoch,
+                    enabled,
+                    ..
+                } => self.controller.complete_power_gate_operation(
+                    port,
+                    operation,
+                    slot_epoch,
+                    enabled,
+                    CompletionOutcome::Succeeded,
+                ),
+                Action::PowerOutputs { operation, kind } => {
+                    self.controller.complete_power_outputs_operation(
+                        operation,
+                        kind,
+                        CompletionOutcome::Succeeded,
+                    );
+                }
             }
         }
     }
@@ -458,6 +478,9 @@ impl SimulatedNode {
         if self.controller.emergency_latched() {
             flags |= PortStateFlags::EMERGENCY_LATCHED;
         }
+        if self.controller.port_powered(port)? {
+            flags |= PortStateFlags::INPUT_POWERED;
+        }
         self.state_sequence = self.state_sequence.wrapping_add(1);
         encode_port_state(PortState {
             node,
@@ -491,6 +514,7 @@ pub fn simulator_board(port_count: u8) -> Result<BoardDefinition, String> {
             (port_count == 8).then_some(6),
             (port_count == 8).then_some(7),
         ],
+        power_gate_bit_by_port: [None; pdcan_types::MAX_PORTS],
         default_fan_mode: pdcan_types::FanMode::ThreeWire,
     })
 }

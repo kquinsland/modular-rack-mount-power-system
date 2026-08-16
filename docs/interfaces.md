@@ -44,23 +44,30 @@ bus endpoint. The v1 working network configuration is 1 Mbit/s nominal arbitrati
 2 Mbit/s data phase, and CAN-FD bit-rate switching enabled. The physical CAN segment
 is trusted; v1 provides no authentication or encryption.
 
-## Backpack Downstream I2C Ports
+## Backpack-to-Backplane Control Boundary
 
-Rev A connectors `J3` through `J8` map to logical ports and TCA9548A channels 0
-through 5. Their mechanical series is not yet locked.
+The stable Rev B backplane prototype owns the TCA9548A mux, PCA9554 power
+expander, per-slot FET circuits, slot-local pull-ups/ESD, and every carrier
+connector. Its `J2` (`i2c_backpack`) boundary exposes only the upstream I2C bus
+and logic power:
 
-| Connector | Logical port | Mux channel | Pin 1 | Pin 2 | Pin 3 |
-| --- | ---: | ---: | --- | --- | --- |
-| `J3` | 0 | 0 | `GND` | `I2C0_SCL` | `I2C0_SDA` |
-| `J4` | 1 | 1 | `GND` | `I2C1_SCL` | `I2C1_SDA` |
-| `J5` | 2 | 2 | `GND` | `I2C2_SCL` | `I2C2_SDA` |
-| `J6` | 3 | 3 | `GND` | `I2C3_SCL` | `I2C3_SDA` |
-| `J7` | 4 | 4 | `GND` | `I2C4_SCL` | `I2C4_SDA` |
-| `J8` | 5 | 5 | `GND` | `I2C5_SCL` | `I2C5_SDA` |
+| Pin | Signal | Direction | Notes |
+| ---: | --- | --- | --- |
+| 1 | `GND` | Shared | Logic return, duplicated with pin 3. |
+| 2 | `+3V3` | Backpack to backplane | Backplane control-logic supply, duplicated with pin 4. |
+| 3 | `GND` | Shared | Logic return, duplicated with pin 1. |
+| 4 | `+3V3` | Backpack to backplane | Backplane control-logic supply, duplicated with pin 2. |
+| 5 | `I2C_UP_SDA` | Bidirectional | Upstream data shared by PCA9554 and TCA9548A. |
+| 6 | `I2C_UP_SCL` | Backpack to backplane | Upstream clock from STM32 I2C2. |
 
-Mux channels 6 and 7 terminate at test pads on Rev A and are not supported ports.
-Firmware must never probe them in the Rev A build. Downstream pull-ups are DNP by
-default when the attached SW3538 module supplies appropriate pull-ups.
+No mux-reset, PCA9554 interrupt, per-slot I2C, or per-slot power-control signal
+crosses this connector. The backplane-local TCA9548A reset is held inactive by a
+4.7 kohm pull-up and is not firmware-controlled. The five former shift-register
+GPIOs and legacy PA3 mux-reset signal are unused by Rev B.
+
+TCA9548A channels `0..5` and PCA9554 outputs `P0..P5` map to logical ports
+`0..5`. Mux channels 6 and 7 are not supported ports, and firmware never selects
+them in the six-slot build.
 
 ## Backpack Fan
 
@@ -96,18 +103,20 @@ scope for v1.
 
 ## Backplane to Carrier Slot
 
-The high-current backplane/carrier interface remains separate from the backpack's
-I2C connectors.
+The high-current backplane/carrier interface remains entirely behind the upstream
+backpack boundary.
 
 | Signal | Direction | Notes |
 | --- | --- | --- |
 | `VDC_SLOT` | Backplane to carrier | Nominal 24 V module input. |
 | `GND` | Shared | Power and signal return. |
 | `SDA_SLOT_N` | Bidirectional | Slot-local SW3538 I2C data. |
-| `SCL_SLOT_N` | Backpack to carrier | Slot-local SW3538 I2C clock. |
+| `SCL_SLOT_N` | Backplane to carrier | Slot-local SW3538 I2C clock. |
+| `SLOT_N_PWR_SW` (Rev B) | Backplane to carrier | High-side switched nominal 24 V module input. |
 
-Carrier SW3538 modules use the same I2C address; the backpack mux provides one
-isolated segment per supported port.
+Carrier SW3538 modules use the same I2C address; the main-backplane TCA9548A
+provides one isolated segment per supported port. The PCA9554 power expander is
+also on the upstream bus at `0x20`; its `P0..P5` outputs control slots 0 through 5.
 
 ## Logical Capacity and Board Revisions
 
@@ -118,6 +127,7 @@ bitmap:
 | Board | Supported bitmap | Ports |
 | --- | ---: | --- |
 | Backplane Backpack Rev A | `0x3F` | 0–5 |
+| Backplane Backpack Rev B prototype | `0x3F` | 0–5, individually input-power gated |
 | Future eight-port revision | `0xFF` | 0–7 |
 
 Commands targeting an unsupported port return `UNSUPPORTED`/`INVALID_TARGET`; they

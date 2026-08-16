@@ -8,7 +8,12 @@ Accepted. Supersedes decision 0002.
 
 The active controller is one STM32C092-based Backplane Backpack per managed
 backplane. Backpack nodes communicate with hosts over a trusted CAN-FD bus and own
-their local TCA9548A, downstream SW3538 I2C transactions, fan, and status LED.
+their local upstream I2C path, main-backplane TCA9548A/PCA9554 devices, downstream
+SW3538 transactions, fan, and status LED.
+
+For Rev B, the backpack/backplane control boundary is intentionally only upstream
+SDA/SCL plus duplicated 3.3 V and ground. The backplane owns mux channels, power
+outputs/FETs, slot-local protection and pull-ups, and carrier connectors.
 
 The firmware and PDCAN data model support eight zero-based logical ports. Rev A
 physically exposes ports 0 through 5 and advertises a supported-port bitmap of
@@ -44,4 +49,5 @@ format, core scheduler, and host tooling.
 - Rev A emergency shutdown is best effort through I2C; its persistent latch is not
   a safety-rated independent power cutoff.
 - Rev A cannot guarantee a stored firmware power ceiling before a module has been
-  initialized. A future hardware revision should add per-port high-side isolation.
+  initialized. Per-port high-side isolation for the Rev B prototype is specified
+  by [ADR 0004](0004-revb-slot-power-gates.md).

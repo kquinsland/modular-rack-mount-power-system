@@ -35,19 +35,26 @@ Firmware builds require an explicit board feature:
 
 ```text
 cargo xtask firmware build --board rev-a --release
+cargo xtask firmware build --board rev-b --release
 ```
 
 Rev A embeds hardware revision 1, supported-port mask `0x3F`, mux mappings for ports
 0 through 5, 3-wire fan default, the 1/2 Mbit CAN-FD configuration, and the reserved
-configuration-flash boundary. A future Rev B gets a separate module and mutually
-exclusive build feature only after its electrical definition exists.
+configuration-flash boundary. Rev B embeds hardware revision 2 and the same
+six-port/mux capability plus the prototype's PCA9554 `P0..P5` input-power mapping.
+The TCA9548A mux and PCA9554 power expander both reside on the main backplane and
+share the backpack's upstream I2C2 bus. The Rev B backpack/backplane connector
+carries only duplicated 3.3 V/ground plus SDA/SCL; mux selection, FET control,
+and every slot-local signal remain behind that boundary on the backplane.
 
 ## State-Derived Action Scheduling
 
 The core records pending desired work and the firmware pulls actions while the
-relevant executor has capacity. Emergency disables are selected before persistence,
-which is selected before ordinary policy application. Each port has at most one
-in-flight PD operation.
+relevant executor has capacity. Rev B all-off PCA9554 work is selected first,
+followed by per-port gate-off, Rev A I2C emergency work, persistence, all-off
+expander initialization, gate-on, and ordinary policy application. Gate-on work
+which enables a newly changed policy cannot run until persistence durably covers
+that change. Each port has at most one correlated gate or PD operation.
 
 Operations carry an `OperationId` and `SlotEpoch`. Removing/replacing a module
 increments its epoch; a late completion can no longer mutate current state and is
@@ -75,9 +82,9 @@ latched, and stale operation completion handling.
 
 The embedded binary now cross-compiles the intended STM32C092FCP6 resource map:
 
-| Owner | Rev A resources | Responsibility |
+| Owner | Resources | Responsibility |
 | --- | --- | --- |
-| `pd_bus_task` | I2C2, DMA1 ch. 1/2, PA3 | Mux and PD bus |
+| `pd_bus_task` | I2C2, DMA1 ch. 1/2; legacy Rev A also uses PA3 | Upstream PCA9554 power control, TCA9548A selection, and PD transactions; Rev B has no mux-reset GPIO |
 | `can_task` | FDCAN1, PA11/PA12, PA4 | CAN-FD RX/TX and codec boundary |
 | `config_task` | final 8 KiB of flash | Durable journal |
 | `fan_task` | TIM2/PA0, TIM17/PA1 | fan PWM and tach capture |
@@ -115,11 +122,29 @@ not forever. Emergency work has a separate queue that is always polled first.
 The logical controller uses independent round-robin cursors for emergency and
 ordinary policy work so a failed low-numbered port cannot monopolize retries.
 
-Expected NACKs from empty slots do not pulse mux reset. Other transport failures
-take the explicit TCA9548A reset path. A mux reset does not reset the downstream
-SW3538; if an interrupted transaction leaves its register bank unknown, firmware
-preserves the last presence state and fails operations rather than guessing. A
-safe bank-recovery sequence is an explicit one-port HIL blocker.
+Expected NACKs from empty slots are not bus-recovery events. Legacy Rev A may
+pulse its PA3-connected TCA9548A reset after other transport failures. Rev B has
+no reset signal across the backpack boundary, so it can only deselect channels,
+allow the bounded I2C transaction to fail, and retry through normal scheduling.
+Neither mechanism resets a downstream SW3538; if an interrupted transaction
+leaves its register bank unknown, firmware preserves the last presence state and
+fails operations rather than guessing. Safe backplane-local mux and SW3538 bank
+recovery remain HIL blockers.
+
+On Rev B, the bus task publishes a port as probeable only after its provisional
+10 ms rail-settling delay. Gated-off ports are skipped because removing module
+input power also removes the SW3538 and I2C response. The first NACK after a new
+power-on is an initialization failure, not an ordinary empty-slot observation;
+the controller responds by scheduling gate-off. Policy-application failures and
+later removal/NACK transitions also fail closed.
+
+The PCA9554 driver writes its output latch to zero before configuring `P0..P5` as
+outputs; `P6/P7` remain inputs. It keeps an eight-bit shadow and writes the whole
+output register for every transition. Emergency handling is selected ahead of
+other queued bus work and can preempt an in-progress rail-settling delay, but it
+cannot preempt an I2C transaction already in progress. The expander has no `/OE`
+or reset pin, so a wedged upstream bus can prevent cutoff and an MCU-only reset can
+leave prior outputs active until startup successfully writes all-off.
 
 ## Persistence Journal
 

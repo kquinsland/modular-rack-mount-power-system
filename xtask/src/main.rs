@@ -16,6 +16,7 @@ const FIRMWARE_PACKAGE: &str = "backplane-backpack-firmware";
 const FIRMWARE_BINARY: &str = "backplane-backpack";
 const FIRMWARE_TARGET: &str = "thumbv6m-none-eabi";
 const REV_A_FEATURES: &str = "board-rev-a,firmware-bin";
+const REV_B_FEATURES: &str = "board-rev-b,firmware-bin";
 const APPLICATION_FLASH_BYTES: u64 = 248 * 1024;
 const SRAM_BYTES: u64 = 30 * 1024;
 const MAX_FLASH_BYTES: u64 = APPLICATION_FLASH_BYTES * 9 / 10;
@@ -49,18 +50,18 @@ fn run(arguments: impl Iterator<Item = String>) -> Result<(), String> {
             if firmware == "firmware"
                 && build == "build"
                 && board_flag == "--board"
-                && board == "rev-a" =>
+                && matches!(board.as_str(), "rev-a" | "rev-b") =>
         {
-            build_firmware(false)
+            build_firmware(board, false)
         }
         [firmware, build, board_flag, board, release]
             if firmware == "firmware"
                 && build == "build"
                 && board_flag == "--board"
-                && board == "rev-a"
+                && matches!(board.as_str(), "rev-a" | "rev-b")
                 && release == "--release" =>
         {
-            build_firmware(true)
+            build_firmware(board, true)
         }
         _ => Err("unsupported arguments; run `cargo xtask --help`".into()),
     }
@@ -74,7 +75,7 @@ Repository automation
 Usage:
   cargo xtask ci
   cargo xtask dbc [--check]
-  cargo xtask firmware build --board rev-a [--release]
+  cargo xtask firmware build --board <rev-a|rev-b> [--release]
 "
     );
 }
@@ -92,18 +93,8 @@ fn run_ci() -> Result<(), String> {
         "cargo",
         &["test", "--workspace", "--exclude", FIRMWARE_PACKAGE],
     )?;
-    run_command(
-        "cargo",
-        &[
-            "test",
-            "--package",
-            FIRMWARE_PACKAGE,
-            "--lib",
-            "--no-default-features",
-            "--features",
-            "board-rev-a",
-        ],
-    )?;
+    test_firmware_lib("board-rev-a")?;
+    test_firmware_lib("board-rev-b")?;
     run_command(
         "cargo",
         &[
@@ -117,6 +108,31 @@ fn run_ci() -> Result<(), String> {
             "warnings",
         ],
     )?;
+    clippy_firmware_lib("board-rev-a")?;
+    clippy_firmware_lib("board-rev-b")?;
+    clippy_firmware_bin(REV_A_FEATURES)?;
+    clippy_firmware_bin(REV_B_FEATURES)?;
+    write_or_check_dbc(true)?;
+    build_firmware("rev-a", true)?;
+    build_firmware("rev-b", true)
+}
+
+fn test_firmware_lib(board_feature: &str) -> Result<(), String> {
+    run_command(
+        "cargo",
+        &[
+            "test",
+            "--package",
+            FIRMWARE_PACKAGE,
+            "--lib",
+            "--no-default-features",
+            "--features",
+            board_feature,
+        ],
+    )
+}
+
+fn clippy_firmware_lib(board_feature: &str) -> Result<(), String> {
     run_command(
         "cargo",
         &[
@@ -126,12 +142,15 @@ fn run_ci() -> Result<(), String> {
             "--lib",
             "--no-default-features",
             "--features",
-            "board-rev-a",
+            board_feature,
             "--",
             "-D",
             "warnings",
         ],
-    )?;
+    )
+}
+
+fn clippy_firmware_bin(features: &str) -> Result<(), String> {
     run_command(
         "cargo",
         &[
@@ -144,17 +163,20 @@ fn run_ci() -> Result<(), String> {
             FIRMWARE_TARGET,
             "--no-default-features",
             "--features",
-            REV_A_FEATURES,
+            features,
             "--",
             "-D",
             "warnings",
         ],
-    )?;
-    write_or_check_dbc(true)?;
-    build_firmware(true)
+    )
 }
 
-fn build_firmware(release: bool) -> Result<(), String> {
+fn build_firmware(board: &str, release: bool) -> Result<(), String> {
+    let features = match board {
+        "rev-a" => REV_A_FEATURES,
+        "rev-b" => REV_B_FEATURES,
+        _ => return Err(format!("unsupported firmware board {board:?}")),
+    };
     let mut arguments = vec![
         "build",
         "--package",
@@ -165,19 +187,19 @@ fn build_firmware(release: bool) -> Result<(), String> {
         FIRMWARE_TARGET,
         "--no-default-features",
         "--features",
-        REV_A_FEATURES,
+        features,
     ];
     if release {
         arguments.push("--release");
     }
     run_command("cargo", &arguments)?;
     if release {
-        report_firmware_size()?;
+        report_firmware_size(board)?;
     }
     Ok(())
 }
 
-fn report_firmware_size() -> Result<(), String> {
+fn report_firmware_size(board: &str) -> Result<(), String> {
     let sysroot = Command::new("rustc")
         .args(["--print", "sysroot"])
         .output()
@@ -225,7 +247,7 @@ fn report_firmware_size() -> Result<(), String> {
     let flash = text.saturating_add(data);
     let ram = data.saturating_add(bss);
     println!(
-        "firmware size: flash={flash}/{APPLICATION_FLASH_BYTES} bytes (budget {MAX_FLASH_BYTES}), ram={ram}/{SRAM_BYTES} bytes (budget {MAX_RAM_BYTES})"
+        "firmware {board} size: flash={flash}/{APPLICATION_FLASH_BYTES} bytes (budget {MAX_FLASH_BYTES}), ram={ram}/{SRAM_BYTES} bytes (budget {MAX_RAM_BYTES})"
     );
     if flash > MAX_FLASH_BYTES {
         return Err(format!(

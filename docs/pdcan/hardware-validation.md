@@ -1,6 +1,6 @@
 # Backplane Backpack Hardware Validation
 
-- Status: waiting for Rev A hardware
+- Status: waiting for Rev A and Rev B prototype hardware
 - Scope: items that cross-compilation, pure tests, fake buses, and simulated
   flash cannot prove
 
@@ -16,6 +16,24 @@ recorded observation from the target board; successful compilation is not enough
   policy is applied.
 - [ ] Confirm and document that Rev A cannot hard-limit a port during that
   initialization interval.
+- [ ] On Rev B cold power-up, verify PCA9554 `P0..P5` remain effectively low
+  through the input-to-output initialization sequence and every FET remains off
+  through flash loading and a persisted emergency boot.
+- [ ] On Rev B MCU-only reset, measure how long previously enabled PCA9554 outputs
+  remain active before startup all-off; verify and document that the expander has
+  no reset-time hardware cutoff.
+- [ ] Measure the Rev B input rail rise and replace the provisional 10 ms
+  settling delay with a reviewed bound.
+- [ ] Measure the SW3538 default behavior between Rev B FET-on and successful
+  policy application; confirm that whole-module switching does not eliminate
+  this interval.
+- [ ] Measure emergency-command-to-PCA9554-write, expander-output-to-gate, and
+  gate-to-module-rail shutdown under idle, I2C-busy, rail-settling, and watchdog-
+  reset conditions.
+- [ ] Verify PCA9554 `P0..P5` map to logical ports `0..5`, `P6/P7` remain inputs,
+  and whole-register updates do not glitch another port.
+- [ ] Verify sequential restored-policy startup keeps aggregate inrush within
+  the backplane and regulator limits.
 - [ ] Verify a persisted emergency latch survives full power loss and watchdog reset.
 - [ ] Verify explicit CLI acknowledgement clears the latch durably without
   enabling any port.
@@ -44,14 +62,26 @@ recorded observation from the target board; successful compilation is not enough
 
 ## I2C, Mux, and Hot-Swap
 
-- [ ] Confirm I2C2 pin mapping, 100/400 kHz operation, pull-ups, and TCA9548A
-  address/reset timing.
+- [ ] Confirm the Rev B `i2c_backpack` boundary carries only duplicated 3.3 V,
+  duplicated ground, upstream SDA, and upstream SCL with the documented pinout.
+- [ ] Confirm I2C2 pin mapping, 100/400 kHz operation, upstream/downstream
+  pull-ups, and TCA9548A address/power-on timing.
+- [ ] Confirm the upstream PCA9554 responds at `0x20`, the TCA9548A responds at
+  `0x70`, and the assembled topology contains one of each on the backplane.
+- [ ] Confirm TCA9548A reset is locally pulled high and that no reset, interrupt,
+  channel, or FET-control signal crosses the backpack boundary.
+- [ ] Inject stuck upstream SDA/SCL while one or more FETs are on; record that
+  firmware cannot guarantee cutoff and verify fault/status reporting.
 - [ ] Demonstrate that ports 6 and 7 are never selected on Rev A.
+- [ ] Demonstrate that Rev B never probes a gated-off port and reports physical
+  presence as unknown until an explicit enable powers the module.
+- [ ] Verify an initial Rev B NACK, policy failure, or later module-removal NACK
+  turns the affected FET off without starving other ports.
 - [ ] Characterize an empty-slot NACK and insertion/removal during every
   transaction phase.
 - [ ] Verify Embassy I2C cancellation/timeout behavior leaves the peripheral reusable.
 - [ ] Inject stuck SDA/SCL upstream and downstream of the mux and record bounded
-  recovery.
+  recovery, including Rev B's lack of a firmware-controlled mux reset.
 - [ ] Define and validate safe SW3538 bank recovery after MCU reset or an
   interrupted banked write.
 - [ ] Confirm one failed/stuck port cannot starve probes or operations on

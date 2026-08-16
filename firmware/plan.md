@@ -92,6 +92,7 @@ pub struct BoardDefinition {
     pub hardware_revision: HardwareRevision,
     pub supported_ports: PortBitmap,
     pub mux_channel_by_port: [Option<u8>; MAX_PORTS],
+    pub power_gate_bit_by_port: [Option<u8>; MAX_PORTS],
     pub default_fan_mode: FanMode,
 }
 
@@ -108,6 +109,7 @@ pub const REV_A: BoardDefinition = BoardDefinition {
         None,
         None,
     ],
+    power_gate_bit_by_port: [None; MAX_PORTS],
     default_fan_mode: FanMode::ThreeWire,
 };
 ```
@@ -121,18 +123,19 @@ modules, for example:
 firmware/backplane-backpack/src/board/
 ├── mod.rs
 ├── rev_a.rs
-└── rev_b.rs            # added when Rev B is electrically defined
+└── rev_b.rs            # six-slot PCA9554/FET prototype
 ```
 
-`board-rev-a` selects `REV_A`; a future `board-rev-b` selects `REV_B`; selecting
+`board-rev-a` selects `REV_A`; `board-rev-b` selects `REV_B`; selecting
 neither or both is a compile error. `cargo xtask firmware build --board rev-a`
 translates the human-facing board name into the correct feature and target flags.
 Each image embeds its hardware revision and supported-port bitmap so `pdcan info`
 can report them and firmware can reject a mismatched board configuration.
 
-CI must build every defined board feature. Until Rev B exists, the eight-port core
-and protocol paths are covered by host/simulator tests rather than a speculative
-Rev B pin map.
+CI builds and lints both defined board features. Rev B currently describes the
+six-slot power-switch prototype: mux channels `0..5` and PCA9554 outputs `P0..P5`
+map to logical ports `0..5`; `P6/P7` remain inputs and unsupported. The eight-port core and protocol
+paths remain covered by host/simulator tests.
 
 ### 2.3 Required behavior
 
@@ -145,6 +148,18 @@ On Rev A:
 - `BOARD_INFO` should include a supported-port bitmap or equivalent capability field;
 - commands for ports 6 and 7 return `INVALID_TARGET` or `UNSUPPORTED`, not `NO_MODULE`; and
 - the CLI should present the board as a six-port board.
+
+On the Rev B prototype:
+
+- ports `0..5` remain the supported logical ports;
+- PCA9554 outputs `P0..P5` map directly to ports `0..5`;
+- unused `P6/P7` remain configured as inputs and output-shadow bits `6..7` stay low;
+- an unpowered port is not probed and its physical module presence is unknown;
+- an enabled policy is persisted before its input FET may be turned on;
+- ports are energized and initialized sequentially;
+- a failed initial probe or failed policy application removes input power; and
+- `EMERGENCY_DISABLE` sends an upstream PCA9554 all-off write before SW3538
+  cleanup, subject to shared-I2C availability.
 
 Core and simulator tests should still exercise eight supported ports so a future hardware revision can use all mux channels without redesigning the protocol.
 
@@ -178,7 +193,7 @@ modular-rack-power/
 │   ├── pdcan-types/
 │   ├── pdcan-core/
 │   ├── pdcan-protocol/
-│   └── pdcan-drivers/
+│   └── pdcan-drivers/       # includes SW3538, mux, flash record, and PCA9554
 │
 ├── firmware/
 │   ├── README.md
@@ -190,7 +205,10 @@ modular-rack-power/
 │       ├── backplane-plan.md
 │       └── src/
 │           ├── main.rs
-│           ├── board.rs
+│           ├── board/
+│           │   ├── mod.rs
+│           │   ├── rev_a.rs
+│           │   └── rev_b.rs
 │           ├── channels.rs
 │           ├── action_executor.rs
 │           ├── can.rs
@@ -199,6 +217,7 @@ modular-rack-power/
 │               ├── mod.rs
 │               ├── controller.rs
 │               ├── pd_bus.rs
+│               ├── power.rs
 │               ├── can.rs
 │               ├── fan.rs
 │               ├── status.rs
@@ -571,6 +590,8 @@ allows standard `ip` and `can-utils` tools to inspect the same bus independently
 Limit this crate to hardware mechanisms that gain real value from generic `embedded-hal`/`embedded-hal-async` testing:
 
 - TCA9548A selection/reset-independent protocol;
+- PCA9554 output-latch-first initialization, masked shadow updates, and all-off
+  sequencing;
 - the selected PD-controller register driver;
 - PD raw-value scaling and semantic conversions; and
 - possibly the persistent-record format and CRC logic.
@@ -596,7 +617,7 @@ The proposed small set of long-lived Embassy tasks is appropriate:
 | Task | Exclusive responsibility |
 |---|---|
 | `controller_task` | Own core state; accept events; dispatch actions |
-| `pd_bus_task` | Own I2C2, TCA9548A, mux reset, and all PD transactions |
+| `pd_bus_task` | Own I2C2, upstream PCA9554/TCA9548A transactions, and all PD operations; only legacy Rev A owns PA3 mux reset |
 | `can_task` or CAN RX/TX halves | Own FDCAN and protocol adaptation |
 | `fan_task` | Own fan PWM/tach mechanism |
 | `status_task` | Own LED rendering/timing mechanism |
@@ -698,13 +719,17 @@ all per-port policy.
 
 ## 6. I2C, mux, and hot-swap behavior
 
-### 6.1 TCA reset is present on Rev A
+### 6.1 TCA reset is board-specific
 
-The hardware handoff connects `I2C_MUX_RESET_N` to STM32 PA3. The source plan should therefore treat mux reset as a Rev A capability, not a conditional possibility.
+Legacy Rev A connects `I2C_MUX_RESET_N` to STM32 PA3. The stable Rev B
+backplane does not export reset: its six-pin backpack boundary contains only two
+grounds, two 3.3 V pins, upstream SDA, and upstream SCL. Rev B leaves PA3 unused
+and treats the mux's local pull-up/power-on reset as a hardware-only mechanism.
 
 ### 6.2 Recovery ordering
 
-The proposed recovery order begins by issuing an I2C command to deselect mux channels. That command may be impossible if a selected downstream device holds SDA low.
+Recovery begins by issuing an I2C command to deselect mux channels. That command
+may be impossible if a selected downstream device holds SDA low.
 
 The recovery design should account for this explicitly:
 
@@ -712,10 +737,10 @@ The recovery design should account for this explicitly:
 transaction error/timeout
     -> abort or reinitialize the STM32 I2C transaction safely
     -> attempt deselect if the bus is still operational
-    -> otherwise assert TCA9548A RESET_N to isolate downstream buses
+    -> on legacy Rev A only, assert TCA9548A RESET_N if needed
+    -> on Rev B, report failure and retry; no mux reset crosses the boundary
     -> restore upstream I2C peripheral/pins
     -> perform GPIO/SCL recovery if the upstream side still requires it
-    -> release/reset the mux into all-channels-disabled state
     -> resume bounded probing
 ```
 
@@ -737,7 +762,7 @@ Driver fake tests alone cannot prove peripheral cancellation behavior; this also
 - maximum stuck-slot service delay;
 - maximum control-command dispatch latency;
 - absence/recovery thresholds;
-- maximum time before healthy ports resume after mux reset; and
+- maximum time before healthy ports resume after bus/mux recovery; and
 - maximum boot-to-discovery time.
 
 These numbers should then appear in tests and the definition of done.
@@ -768,10 +793,69 @@ bring-up should measure the boot/insertion-to-policy-applied interval and record
 SW3538 power-on behavior, but eliminating the interval is not a v1 firmware
 requirement.
 
-A future hardware revision should prioritize an MCU-controlled high-side FET (or
-equivalent independent isolation) per port. That would allow hardware to hold a
-port off until its policy is installed and would provide a shutdown path independent
-of the SW3538 and shared I2C bus.
+The Rev B prototype adds one backplane-side high-side FET per slot, driven by a
+PCA9554 I2C GPIO expander at address `0x20`. The TCA9548A mux has moved onto the
+main backplane and remains at `0x70`; both devices share the upstream I2C bus, but
+the expander is upstream of the mux and never requires channel selection. Each
+FET disconnects the complete module input, including the SW3538.
+
+This provides deterministic cold-boot-off through the PCA9554 power-on input
+state and external gate pull-downs. It provides shutdown independent of SW3538
+responsiveness, but **not** independent of upstream I2C health. The PCA9554 has no
+asynchronous output-enable or reset pin. A stuck bus can prevent a cutoff write,
+and an MCU-only watchdog reset can leave previously enabled outputs active until
+startup firmware successfully writes all-off. Complete power loss returns the
+expander pins to inputs and the pull-downs turn every slot off. A future hardware
+revision needs a separate disable/reset signal if shutdown during a bus fault or
+MCU reset must be guaranteed.
+
+The FET still does **not** let firmware configure the controller while its source
+path remains isolated. After a FET is enabled, the SW3538 must boot before I2C
+configuration can begin, so its hardware/default behavior exists during that
+shorter initialization interval. Eliminating that interval would require a
+separate controller supply/source inhibit or verified-safe reset defaults.
+
+Rev B uses this state sequence:
+
+```text
+PoweredOff -> SwitchingOn -> PowerSettling -> Probing -> ApplyingPolicy -> Ready
+```
+
+The implementation uses a provisional `10 ms` rail-settling delay which must be
+measured and replaced during HIL bring-up. A newly enabled policy is durably
+persisted before `SwitchingOn`. The I2C task does not probe a gated-off port; it
+cannot distinguish an installed module from an empty connector until the port is
+intentionally energized. The first failed probe, a later removal/NACK, or a failed
+policy application schedules physical power-off rather than leaving an
+unconfigured controller energized.
+
+The prototype control contract is:
+
+| Device/register | Value | Function |
+|---|---|---|
+| PCA9554 address | `0x20` | A2:A0 are all low |
+| Output register | initialize to `0x00` | all slot enables off before direction changes |
+| Configuration register | `0xC0` | `P0..P5` outputs; unused `P6/P7` inputs |
+| TCA9548A address | `0x70` | six SW3538 channel paths on the main backplane |
+
+The stable physical boundary is:
+
+| Backplane `J2` pins | Signals | Ownership |
+|---|---|---|
+| `1`, `3` | `GND` | shared logic return |
+| `2`, `4` | `+3V3` | supplied by backpack to backplane logic |
+| `5`, `6` | `I2C_UP_SDA`, `I2C_UP_SCL` | STM32 upstream bus |
+
+The backpack owns the I2C peripheral and scheduling. The backplane owns the one
+TCA9548A, one PCA9554, every mux channel, FET gate, slot pull-up/protection
+circuit, and carrier connector. No per-slot signal, mux reset, expander interrupt,
+or power-control GPIO crosses the boundary.
+
+The PCA9554 power-on default is all inputs with an output-latch default of high.
+External gate pull-downs keep the FETs off while the pins are inputs. Firmware
+must write the output register to zero **before** writing configuration `0xC0`;
+reversing that order can pulse every slot on. Output bit `0` maps to port `0`
+through bit `5` to port `5`. The five former shift-register GPIOs remain unused.
 
 ### 6.6 V1 SW3538 policy ceiling
 
@@ -1064,6 +1148,13 @@ For Rev A, the protocol and documentation must describe this as a best-effort,
 highest-priority all-port disable. It is not a safety-rated emergency stop and no
 guaranteed shutdown latency should be claimed before it is measured on hardware.
 
+For Rev B, `EMERGENCY_DISABLE` first routes to the dedicated high-priority power
+channel consumed by the single I2C owner. The task writes the PCA9554 all-zero
+output register before attempting SW3538 cleanup. An emergency received during
+the provisional power-settling delay preempts that delay. It cannot preempt an
+I2C transaction already in progress, and a wedged upstream bus can prevent the
+cutoff write; no safety rating or numeric latency is claimed.
+
 > RPLY: At this time, it is latched and must be cleared by the host. Once cleared, ports may be re-enabled individually.
 > This is different from the typical "power down/up" command that can be sent to an individual port.
 
@@ -1080,9 +1171,11 @@ behavior is:
   has been durably committed; until that response, a host must treat persistence as
   unconfirmed and may retry;
 - boot reads the latch before applying any stored port-enable policy;
-- while latched, firmware repeatedly attempts to make present ports safe, applies
-  the disabled state to modules discovered later, continues health/status
-  reporting, and rejects commands that would enable or renegotiate power;
+- while latched, Rev A repeatedly attempts to make present ports safe through
+  I2C; Rev B repeatedly requests a zero PCA9554 output register and does not
+  intentionally enable any port; both continue
+  health/status reporting and reject commands that would enable or renegotiate
+  power;
 - ordinary fault clearing and per-port power cycling never clear the backpack-wide
   latch; and
 - clearing requires a dedicated, explicit operator-acknowledgment command from
@@ -1410,7 +1503,7 @@ Deliverables:
 - SWD flashing/logging path;
 - basic clocks, watchdog, and reset-reason reporting;
 - FDCAN initialization and loopback/basic bus traffic;
-- I2C2 and mux selection/reset proof;
+- I2C2 and mux-selection proof, including Rev B operation without a mux-reset GPIO;
 - status LED proof; and
 - initial memory-size report.
 
@@ -1432,7 +1525,7 @@ Before protocol freeze, prove against a real module:
   unavailable through firmware policy;
 - renegotiation;
 - fault read/clear/reset; and
-- removal during an active transaction plus mux reset recovery.
+- removal during an active transaction plus board-appropriate bus/mux recovery.
 
 Record unsupported or ambiguous operations rather than designing protocol commands around hoped-for register behavior.
 
@@ -1654,8 +1747,11 @@ is not safety-rated. The backpack-wide condition is persistently latched across
 watchdog reset and complete power loss. Only the dedicated pdcan operator-
 acknowledgment command may clear it, and clearing does not itself enable ports.
 
-A future hardware revision should add a per-port high-side FET or equivalent
-independent shutdown/isolation path.
+The Rev B prototype implements six high-side input FETs driven by PCA9554 outputs
+`P0..P5`. This makes cutoff independent of SW3538 responsiveness, but the revised
+hardware no longer has a bus-independent `/OE` path: all-off requires a successful
+upstream I2C write. Because each FET also removes SW3538 power, the controller
+still has a post-power-on default-state window before firmware can configure it.
 ```
 
 ### 14.7 Protocol freeze point
@@ -1726,11 +1822,16 @@ Before implementation begins in earnest:
 - [x] Update the source plan with the Rev A initialization-window limitation and
       persistent emergency-latch semantics.
 - [x] Convert known Rev A facts, such as the mux reset connection, from open assumptions into hardware-contract entries.
+- [x] Define the Rev B backpack boundary as upstream I2C plus duplicated 3.3 V and
+      ground; keep muxing, GPIO expansion, FET control, and slot wiring on the backplane.
 - [x] Correct the CAN connector typo in the hardware handoff.
 - [x] Remove the obsolete WT32/controller architecture from active documentation
       without deleting its existing hardware source files.
 - [x] Add the new architecture decision using the existing `docs/decisions/` sequence.
 - [x] Scaffold the root Cargo workspace without a global embedded build target.
+- [x] Add the Rev B PCA9554/FET board definition and generic driver, integrate
+      power priority into the single I2C owner, retain the status flag and dual-
+      board CI builds, and add fail-closed host tests.
 - [ ] Run the one-port PD-controller capability spike on Rev A hardware before
       freezing protocol commands. The SW3538 driver, register-sequence fakes, and
       draft semantic boundary are implemented; physical semantics remain the
@@ -1740,15 +1841,21 @@ Before implementation begins in earnest:
 
 The repository now contains the integrated workspace, strict pre-v1 codecs and
 generated DBC, pure controller/commissioning state, power-fail-tested persistence,
-generic TCA9548A/SW3538 mechanisms, Rev A Embassy task wiring, six/eight-port
-simulator models, and the SocketCAN CLI. Host and isolated-`vcan` tests exercise
+generic TCA9548A/SW3538/PCA9554 mechanisms, Rev A and Rev B Embassy task wiring,
+six/eight-port simulator models, and the SocketCAN CLI. Host and isolated-`vcan`
+tests exercise
 commissioning, request deduplication, policy/fan persistence, status, emergency
-latch/acknowledgement, unsupported ports, and duplicate-node recovery. The release
-firmware is cross-compiled and held to explicit flash/RAM budgets.
+latch/acknowledgement, unsupported ports, duplicate-node recovery, persistence-
+before-power ordering, sequential power-up, emergency settle-delay preemption, and stale
+power-operation completion rejection. Both release firmware variants are cross-
+compiled and held to explicit flash/RAM budgets.
 
-The next feature work now depends on observations from Rev A hardware: confirming
+The next feature work now depends on observations from hardware: confirming
 SW3538 enable/disable/contract/fault/telemetry semantics, measuring initialization
 and flash/watchdog timing, validating mux/I2C hot-swap recovery, confirming
 CAN-FD/HSI margins and bus-off behavior, and validating fan/tach and WS2812
-electrical behavior. Those results intentionally gate telemetry emission,
-renegotiation/fault commands, final watchdog limits, and the protocol v1 freeze.
+electrical behavior. Rev B additionally needs measurement of rail settling,
+SW3538 power-on defaults, PCA9554-write-to-FET emergency latency, behavior across
+MCU-only reset and stuck upstream I2C, and inrush under staggered startup. Those results intentionally gate
+telemetry emission, renegotiation/fault commands, final timing/watchdog limits,
+and the protocol v1 freeze.

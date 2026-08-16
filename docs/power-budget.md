@@ -31,6 +31,12 @@ no MCU-controlled high-side switch, so this is a soft ceiling after SW3538
 initialization rather than an independent protection device. Provision the backpack,
 install modules, persist policy, and only then attach loads.
 
+The Rev B prototype's PCA9554-controlled per-slot FETs provide input isolation,
+not overcurrent protection. Firmware persists an enable policy before turning on
+its FET and restores enabled ports sequentially to reduce aggregate inrush. A
+cutoff depends on the shared upstream I2C bus, and the 100 W ceiling still depends
+on SW3538 configuration after power-on.
+
 As the 100W figure is the "at the C port" figure, we must account for losses.
 The datasheet's greater-than-95% figure is measured at a much lighter 12 V to 5 V, 25 W operating point, so it should not be used for the 24 V to 20 V full-load budget.
 

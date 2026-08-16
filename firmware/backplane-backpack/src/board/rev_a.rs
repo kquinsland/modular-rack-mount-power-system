@@ -13,6 +13,7 @@ pub const REV_A: BoardDefinition = BoardDefinition {
         None,
         None,
     ],
+    power_gate_bit_by_port: [None; pdcan_types::MAX_PORTS],
     default_fan_mode: FanMode::ThreeWire,
 };
 
@@ -22,6 +23,7 @@ pub const CAN_BIT_RATE_SWITCHING: bool = true;
 pub const EMBASSY_TIME_DRIVER: &str = "TIM3";
 pub const CONFIG_FLASH_START: u32 = 0x0803_E000;
 pub const CONFIG_FLASH_LENGTH: u32 = 8 * 1024;
+pub const MUX_RESET_AVAILABLE: bool = true;
 
 const _: () = assert!(REV_A.supported_ports.bits() == 0x3F);
 const _: () = assert!(REV_A.mux_channel_by_port[6].is_none());
@@ -47,6 +49,7 @@ mod tests {
         assert_eq!(CAN_DATA_BITRATE, 2_000_000);
         assert!(CAN_BIT_RATE_SWITCHING);
         assert_eq!(EMBASSY_TIME_DRIVER, "TIM3");
+        assert!(MUX_RESET_AVAILABLE);
         assert_eq!(CONFIG_FLASH_START + CONFIG_FLASH_LENGTH, 0x0804_0000);
     }
 }

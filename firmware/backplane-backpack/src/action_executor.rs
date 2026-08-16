@@ -1,4 +1,4 @@
-use pdcan_core::{Action, CompletionOutcome, PdActionKind};
+use pdcan_core::{Action, CompletionOutcome, PdActionKind, PowerOutputsActionKind};
 use pdcan_types::{ConfigRevision, OperationId, PersistentSettings, PortId, SlotEpoch};
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -16,9 +16,32 @@ pub struct PersistCommand {
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct PowerGateCommand {
+    pub operation: OperationId,
+    pub port: PortId,
+    pub slot_epoch: SlotEpoch,
+    pub output_bit: u8,
+    pub enabled: bool,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct PowerOutputsCommand {
+    pub operation: OperationId,
+    pub kind: PowerOutputsActionKind,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum PowerCommand {
+    Gate(PowerGateCommand),
+    Outputs(PowerOutputsCommand),
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum ExecutorCommand {
     Pd(PdBusCommand),
     Persist(PersistCommand),
+    PowerGate(PowerGateCommand),
+    PowerOutputs(PowerOutputsCommand),
 }
 
 impl From<Action> for ExecutorCommand {
@@ -38,6 +61,22 @@ impl From<Action> for ExecutorCommand {
             Action::PersistConfig { revision, settings } => {
                 Self::Persist(PersistCommand { revision, settings })
             }
+            Action::PowerGate {
+                operation,
+                port,
+                slot_epoch,
+                output_bit,
+                enabled,
+            } => Self::PowerGate(PowerGateCommand {
+                operation,
+                port,
+                slot_epoch,
+                output_bit,
+                enabled,
+            }),
+            Action::PowerOutputs { operation, kind } => {
+                Self::PowerOutputs(PowerOutputsCommand { operation, kind })
+            }
         }
     }
 }
@@ -52,6 +91,18 @@ pub enum ControllerCompletion {
     },
     Persist {
         revision: ConfigRevision,
+        outcome: CompletionOutcome,
+    },
+    PowerGate {
+        operation: OperationId,
+        port: PortId,
+        slot_epoch: SlotEpoch,
+        enabled: bool,
+        outcome: CompletionOutcome,
+    },
+    PowerOutputs {
+        operation: OperationId,
+        kind: PowerOutputsActionKind,
         outcome: CompletionOutcome,
     },
 }
@@ -92,6 +143,26 @@ mod tests {
             ExecutorCommand::Persist(PersistCommand {
                 revision: ConfigRevision(8),
                 settings,
+            })
+        );
+    }
+
+    #[test]
+    fn power_gate_mapping_preserves_output_and_epoch() {
+        assert_eq!(
+            ExecutorCommand::from(Action::PowerGate {
+                operation: OperationId(3),
+                port: PortId::new(2).unwrap(),
+                slot_epoch: SlotEpoch(4),
+                output_bit: 5,
+                enabled: true,
+            }),
+            ExecutorCommand::PowerGate(PowerGateCommand {
+                operation: OperationId(3),
+                port: PortId::new(2).unwrap(),
+                slot_epoch: SlotEpoch(4),
+                output_bit: 5,
+                enabled: true,
             })
         );
     }

@@ -1,16 +1,19 @@
 use backplane_backpack_firmware::BOARD;
-use backplane_backpack_firmware::action_executor::{ControllerCompletion, ExecutorCommand};
+use backplane_backpack_firmware::action_executor::{
+    ControllerCompletion, ExecutorCommand, PowerCommand,
+};
 use backplane_backpack_firmware::command_service::{CommandService, ServiceOutput};
 use backplane_backpack_firmware::status::{StatusCommand, StatusState};
 use embassy_futures::select::{Either, select};
 use embassy_time::{Duration, Instant, Timer};
-use pdcan_core::{Controller, PdActionKind};
+use pdcan_core::{Controller, PdActionKind, PowerOutputsActionKind};
 use pdcan_protocol::{ControlCommand, ResetFlags};
 use pdcan_types::{CommissioningState, FirmwareVersion, NodeUid, PersistentSettings};
 
 use crate::channels::{
     CAN_TX, CONTROLLER_EVENTS, CONTROLLER_PROGRESS, ControllerEvent, FAN_REQUEST, FanRequest,
-    PD_EMERGENCY_COMMANDS, PD_POLICY_COMMANDS, PERSIST_COMMANDS, STATUS_REQUEST, advance,
+    PD_EMERGENCY_COMMANDS, PD_POLICY_COMMANDS, PERSIST_COMMANDS, POWER_COMMANDS,
+    POWER_EMERGENCY_COMMANDS, POWER_OFF_COMMANDS, STATUS_REQUEST, advance,
 };
 
 const CLAIM_WINDOW_MS: u64 = 500;
@@ -126,6 +129,23 @@ async fn dispatch_ready_actions(controller: &mut Controller) {
                 PdActionKind::ApplyPolicy(_) => PD_POLICY_COMMANDS.send(command).await,
             },
             ExecutorCommand::Persist(command) => PERSIST_COMMANDS.send(command).await,
+            ExecutorCommand::PowerGate(command) => {
+                let command = PowerCommand::Gate(command);
+                if matches!(command, PowerCommand::Gate(command) if !command.enabled) {
+                    POWER_OFF_COMMANDS.send(command).await;
+                } else {
+                    POWER_COMMANDS.send(command).await;
+                }
+            }
+            ExecutorCommand::PowerOutputs(command) => {
+                let emergency = matches!(command.kind, PowerOutputsActionKind::EmergencyDisableAll);
+                let command = PowerCommand::Outputs(command);
+                if emergency {
+                    POWER_EMERGENCY_COMMANDS.send(command).await;
+                } else {
+                    POWER_COMMANDS.send(command).await;
+                }
+            }
         }
     }
 }
@@ -148,6 +168,24 @@ fn apply_event(
         ControllerEvent::Completion(ControllerCompletion::Persist { revision, outcome }) => {
             let completion = controller.complete_persist(revision, outcome);
             service.complete_persist(completion)
+        }
+        ControllerEvent::Completion(ControllerCompletion::PowerGate {
+            operation,
+            port,
+            slot_epoch,
+            enabled,
+            outcome,
+        }) => {
+            controller.complete_power_gate_operation(port, operation, slot_epoch, enabled, outcome);
+            ServiceOutput::EMPTY
+        }
+        ControllerEvent::Completion(ControllerCompletion::PowerOutputs {
+            operation,
+            kind,
+            outcome,
+        }) => {
+            controller.complete_power_outputs_operation(operation, kind, outcome);
+            ServiceOutput::EMPTY
         }
         ControllerEvent::ModuleDetected(port) => {
             let _ = controller.module_detected(port);

@@ -189,6 +189,7 @@ pub struct ConfigRevision(pub u32);
 #[repr(u8)]
 pub enum HardwareRevision {
     RevA = 1,
+    RevB = 2,
     Simulator = 0xFE,
 }
 
@@ -197,6 +198,13 @@ pub struct BoardDefinition {
     pub hardware_revision: HardwareRevision,
     pub supported_ports: PortBitmap,
     pub mux_channel_by_port: [Option<u8>; MAX_PORTS],
+    /// Power-controller output bit controlling input power for each logical port.
+    ///
+    /// `None` means that the board has no firmware-controlled input-power
+    /// switch for that port. The bit number is deliberately independent from
+    /// the mux channel so future boards do not have to preserve either wiring
+    /// order.
+    pub power_gate_bit_by_port: [Option<u8>; MAX_PORTS],
     pub default_fan_mode: FanMode,
 }
 
@@ -207,6 +215,35 @@ impl BoardDefinition {
 
     pub const fn mux_channel(self, port: PortId) -> Option<u8> {
         self.mux_channel_by_port[port.index()]
+    }
+
+    pub const fn power_gate_bit(self, port: PortId) -> Option<u8> {
+        self.power_gate_bit_by_port[port.index()]
+    }
+
+    pub const fn has_power_gates(self) -> bool {
+        let mut index = 0;
+        while index < MAX_PORTS {
+            if self.power_gate_bit_by_port[index].is_some() {
+                return true;
+            }
+            index += 1;
+        }
+        false
+    }
+
+    pub const fn power_gate_mask(self) -> u8 {
+        let mut mask = 0;
+        let mut index = 0;
+        while index < MAX_PORTS {
+            if let Some(bit) = self.power_gate_bit_by_port[index]
+                && bit < 8
+            {
+                mask |= 1 << bit;
+            }
+            index += 1;
+        }
+        mask
     }
 }
 

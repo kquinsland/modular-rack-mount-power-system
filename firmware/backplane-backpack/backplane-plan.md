@@ -63,8 +63,14 @@ The implementation team must verify all final pin assignments, timer selections,
 ```mermaid
 flowchart TD
     i2c[STM32 I2C2]
-    mux[TCA9548APWR]
-    i2c --> mux
+    boundary[Backpack boundary: SDA/SCL + 3.3 V/GND]
+    mux[Backplane TCA9548APWR]
+    gpio[Backplane PCA9554PWR]
+    gates[Slot 0..5 input FETs]
+    i2c --> boundary
+    boundary --> mux
+    boundary --> gpio
+    gpio --> gates
     mux -->|CH0| p0[PD module / port 0]
     mux -->|CH1| p1[PD module / port 1]
     mux -->|CH2| p2[PD module / port 2]
@@ -76,8 +82,14 @@ flowchart TD
 ```
 
 The logical design supports eight identical modules using the same I²C address.
-Rev A supports only channels/ports 0 through 5; channels 6 and 7 terminate at test
-pads and firmware must not probe them as ports.
+The stable six-slot backplane owns the mux, GPIO expander, input FETs, downstream
+pull-ups/protection, and carrier connectors. Its backpack connector carries only
+duplicated ground, duplicated 3.3 V, upstream SDA, and upstream SCL. Firmware owns
+the bus and device scheduling, not per-slot electrical signals across that
+boundary.
+
+The six-slot builds support only channels/ports 0 through 5; channels 6 and 7 are
+not ports and firmware must not probe them.
 
 Only one TCA9548 channel should normally be enabled at a time. Preferred transaction pattern:
 
@@ -87,8 +99,9 @@ select channel -> perform one logical module operation -> deselect all channels
 
 This leaves absent, damaged, unpowered, or partially inserted modules isolated from the upstream bus except while actively probing or accessing that slot.
 
-The TCA9548 reset pin is connected to STM32 PA3 on Rev A and is part of the I²C
-recovery strategy.
+The TCA9548 reset pin is connected to STM32 PA3 only on legacy Rev A. The stable
+Rev B backplane holds reset inactive locally and does not export it; Rev B bus
+recovery must not assume an MCU-controlled mux reset.
 
 ### 2.3 Hot-swappable PD modules
 
@@ -1254,7 +1267,8 @@ CI should build/test host crates and build the STM32 release target.
 
 Before Rev A release validate all six supported slots populated and partially
 populated; rapid insertion/removal; removal during active I²C transactions;
-abnormal SDA/SCL behavior; TCA reset recovery; multiple CAN nodes; duplicate IDs;
+abnormal SDA/SCL behavior; legacy Rev A TCA reset recovery; Rev B recovery without
+a mux-reset GPIO; multiple CAN nodes; duplicate IDs;
 CAN bus-off/recovery; fan modes; NeoPixel identify; and power-cycle persistence.
 Eight-port behavior remains a pure-core/simulator requirement until a later board
 physically exposes ports 6 and 7.
@@ -1833,7 +1847,8 @@ and complete power loss after the durable commit.
    the exact production module.
 2. Exact controller semantics required to disable CC1/CC2, limit SPR, permit/deny EPR, request renegotiation, read the negotiated contract, read V/I/P/temperature, clear faults, and reset the controller.
 3. Final STM32 pin map and alternate-function verification on Rev A hardware.
-4. TCA9548 reset timing and electrical recovery behavior; reset is routed to PA3.
+4. Board-specific TCA9548 recovery: validate PA3 reset timing on legacy Rev A and
+   bounded recovery without a mux-reset GPIO on Rev B.
 5. Electrical I²C hot-swap behavior, including downstream pull-ups, behavior while modules are unpowered, SDA/SCL isolation, and protection components.
 6. Physical validation of the selected 1 Mbit/s nominal, 2 Mbit/s data, BRS-enabled
    CAN-FD timing.

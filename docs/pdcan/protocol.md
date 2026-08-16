@@ -213,10 +213,14 @@ re-latched state is durable.
 | `3` | emergency latched |
 | `4` | USB connected |
 | `5` | contract valid |
+| `6` | module input power successfully commanded on (not rail readback) |
 
 The current firmware populates desired enable, module presence, policy-pending,
-emergency state, monotonic uptime, and generation. Connection, contract, active
-profile, and full fault observation await verified SW3538 semantics.
+emergency state, confirmed commanded input-power state, monotonic uptime, and generation.
+Connection, contract, active profile, and full fault observation await verified
+SW3538 semantics. On boards without a controllable input-power switch, every
+supported port reports input power enabled. Rev B has no FET/rail readback, so bit
+6 does not prove the physical rail state after an I2C or expander fault.
 
 ### `PORT_POWER`
 
@@ -370,6 +374,16 @@ operator declares the danger resolved. Clear success also waits for durability.
 Rev A shutdown uses the ordinary I2C/SW3538 path and is not a safety-rated
 independent cutoff. It cannot guarantee the 100 W policy during the controller's
 pre-configuration power-on interval because Rev A lacks a high-side disconnect.
+
+Rev B sends an all-zero output-register write to the upstream PCA9554 before any
+SW3538 cleanup. This cuts module input power independently of SW3538
+responsiveness, but still depends on a functioning upstream I2C bus. The PCA9554
+has no asynchronous output-enable or reset input, so MCU-only reset can also leave
+previously enabled ports on until startup firmware successfully writes all-off.
+Because each FET powers down the SW3538 itself, a shorter default-state interval
+still exists after an individual port is powered and before its stored policy can
+be applied. No numeric or safety-rated shutdown guarantee is claimed before HIL
+measurement.
 
 ## Generated DBC
 

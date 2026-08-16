@@ -8,6 +8,12 @@ business logic, protocol code, and drivers live in the repository's root
 
 The firmware and PDCAN protocol support eight logical ports. Backplane Backpack
 Rev A exposes ports 0 through 5 and reports ports 6 and 7 as unsupported.
+The Rev B prototype exposes the same six logical ports and adds per-slot input
+power control through a PCA9554/high-side-FET stage on the shared upstream I2C
+bus. The backpack connector carries only SDA/SCL plus duplicated 3.3 V and
+ground; the backplane owns both I2C devices and all slot-local circuitry. Build
+it explicitly with
+`cargo xtask firmware build --board rev-b --release`.
 
 The former WT32 controller firmware architecture is superseded and is not an
 implementation target.

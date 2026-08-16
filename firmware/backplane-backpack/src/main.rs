@@ -4,7 +4,9 @@
 mod channels;
 mod tasks;
 
-use backplane_backpack_firmware::board::{CAN_DATA_BITRATE, CAN_NOMINAL_BITRATE};
+use backplane_backpack_firmware::board::{
+    CAN_DATA_BITRATE, CAN_NOMINAL_BITRATE, MUX_RESET_AVAILABLE,
+};
 use backplane_backpack_firmware::config_store::ConfigStore;
 use backplane_backpack_firmware::config_store::stm32::Stm32ConfigFlash;
 use backplane_backpack_firmware::fan::{FanDrive, THREE_WIRE_FREQUENCY_HZ_PROVISIONAL};
@@ -58,11 +60,18 @@ async fn main(spawner: Spawner) -> ! {
     let p = embassy_stm32::init(config);
     let reset_flags = capture_reset_flags();
 
-    // Establish safety-oriented pin states before loading flash or starting tasks.
-    let mut mux_reset = Output::new(p.PA3, Level::Low, Speed::Low);
+    // Rev B presents only upstream I2C, 3.3 V, and ground at the backplane
+    // boundary. Its backplane-local TCA9548A reset is not MCU-controlled, and
+    // the PCA9554 gate pull-downs hold every slot off at cold power-on.
+    let mux_reset = if MUX_RESET_AVAILABLE {
+        let mut reset = Output::new(p.PA3, Level::Low, Speed::Low);
+        Timer::after_millis(1).await;
+        reset.set_high();
+        Some(reset)
+    } else {
+        None
+    };
     let can_standby = Output::new(p.PA4, Level::High, Speed::Low);
-    Timer::after_millis(1).await;
-    mux_reset.set_high();
 
     let mut fan_pwm = SimplePwm::new(
         p.TIM2,
@@ -136,8 +145,8 @@ async fn main(spawner: Spawner) -> ! {
     spawner.spawn(tasks::fan::fan_task(fan_pwm, fan_tach).unwrap());
     spawner.spawn(tasks::config::config_task(config_store).unwrap());
     let uid = NodeUid::from_bytes(embassy_stm32::uid::uid());
-    spawner.spawn(tasks::controller::controller_task(settings, uid, reset_flags).unwrap());
     spawner.spawn(tasks::pd_bus::pd_bus_task(pd_bus, mux_reset).unwrap());
+    spawner.spawn(tasks::controller::controller_task(settings, uid, reset_flags).unwrap());
     spawner.spawn(tasks::can::can_task(can, can_standby).unwrap());
     spawner.spawn(tasks::supervisor::supervisor_task(watchdog).unwrap());
 

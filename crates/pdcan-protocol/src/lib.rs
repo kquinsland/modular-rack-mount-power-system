@@ -796,12 +796,17 @@ impl PortStateFlags {
     pub const EMERGENCY_LATCHED: u16 = 1 << 3;
     pub const USB_CONNECTED: u16 = 1 << 4;
     pub const CONTRACT_VALID: u16 = 1 << 5;
+    /// Firmware has successfully commanded the module input on. This is not
+    /// physical rail readback. On boards without a controllable input switch it
+    /// is true for every supported port.
+    pub const INPUT_POWERED: u16 = 1 << 6;
     const KNOWN_MASK: u16 = Self::ENABLED
         | Self::MODULE_PRESENT
         | Self::POLICY_PENDING
         | Self::EMERGENCY_LATCHED
         | Self::USB_CONNECTED
-        | Self::CONTRACT_VALID;
+        | Self::CONTRACT_VALID
+        | Self::INPUT_POWERED;
 
     pub const fn from_bits(bits: u16) -> Self {
         Self(bits)

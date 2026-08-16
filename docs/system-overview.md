@@ -10,15 +10,20 @@ flowchart LR
     can[Trusted CAN-FD bus]
     backpack1[Backplane Backpack node]
     backpack2[Additional Backpack node]
+    boundary[Upstream I2C + 3.3 V/GND boundary]
+    backplane[Backplane control and 24 V distribution]
+    pca[PCA9554 slot power]
     mux[TCA9548A]
     modules[SW3538 modules / ports 0..5]
-    backplane[24 V backplane and carriers]
     fan[3-wire or 4-wire fan]
 
     host <--> can
     can <--> backpack1
     can <--> backpack2
-    backpack1 --> mux
+    backpack1 <--> boundary
+    boundary <--> pca
+    boundary <--> mux
+    pca --> backplane
     mux <--> modules
     backplane --> modules
     backpack1 --> fan
@@ -33,7 +38,8 @@ outside scope.
 The active controller is based on an STM32C092FCP6 and provides:
 
 - CAN-FD through a TCAN3413 transceiver;
-- one TCA9548A mux and exclusive ownership of the downstream I2C bus;
+- exclusive ownership of the upstream I2C bus shared by the main-backplane
+  PCA9554 power expander and TCA9548A mux;
 - discovery, policy, monitoring, and best-effort control of SW3538 PD modules;
 - configurable 3-wire/4-wire fan control and tachometer monitoring;
 - a status LED; and
@@ -45,9 +51,12 @@ advertises support for ports 0 through 5 and rejects ports 6 and 7 as unsupporte
 
 ## Backplane and Carrier
 
-The backplane distributes the nominal 24 V supply to carrier slots. Each carrier
-hosts one fixed-address SW3538 module. The backpack's I2C mux isolates those
-identical addresses so only one downstream segment is selected at a time.
+The backpack/backplane control connector carries only upstream SDA/SCL plus
+duplicated 3.3 V and ground. The backplane owns both I2C devices, FET controls,
+slot-local protection/pull-ups, carrier connectors, and nominal 24 V distribution.
+Each carrier hosts one fixed-address SW3538 module. The backplane's I2C mux
+isolates those identical addresses so only one downstream segment is selected at
+a time.
 
 Module presence and USB-C partner/contract state are separate. A healthy
 backpack may have no installed modules or may report failures for every module
@@ -59,6 +68,12 @@ Firmware rejects port policies above 20 V, 5 A, or 100 W and does not expose EPR
 or the SW3538's proprietary 7 A mode. Rev A has no per-port MCU-controlled
 high-side switch, so this is a firmware soft ceiling after module initialization,
 not independent overcurrent protection.
+
+The Rev B prototype adds per-slot high-side input switches driven by a PCA9554.
+They can remove module power independently of SW3538 responsiveness, but a cutoff
+still requires a functioning upstream I2C bus. Those switches are not current
+limiters, and because they also power the SW3538, its reset/default state still
+exists briefly between FET-on and policy application.
 
 The supported deployment sequence is to provision the backpack, install modules,
 persist port policy, and only then attach loads. Emergency disable is a

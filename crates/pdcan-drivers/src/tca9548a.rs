@@ -113,6 +113,7 @@ mod tests {
             None,
             None,
         ],
+        power_gate_bit_by_port: [None; pdcan_types::MAX_PORTS],
         default_fan_mode: FanMode::ThreeWire,
     };
 

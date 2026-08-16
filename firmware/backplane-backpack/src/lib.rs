@@ -3,8 +3,10 @@
 #[cfg(test)]
 extern crate std;
 
-#[cfg(not(feature = "board-rev-a"))]
-compile_error!("select exactly one board feature; currently supported: board-rev-a");
+#[cfg(not(any(feature = "board-rev-a", feature = "board-rev-b")))]
+compile_error!("select exactly one board feature: board-rev-a or board-rev-b");
+#[cfg(all(feature = "board-rev-a", feature = "board-rev-b"))]
+compile_error!("board-rev-a and board-rev-b are mutually exclusive");
 
 pub mod action_executor;
 pub mod board;

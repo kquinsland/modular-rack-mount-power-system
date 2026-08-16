@@ -31,7 +31,6 @@ impl StalledSubsystems {
     pub const CONTROLLER: u8 = 1 << 0;
     pub const PD_BUS: u8 = 1 << 1;
     pub const CAN: u8 = 1 << 2;
-
     pub const fn bits(self) -> u8 {
         self.0
     }
@@ -107,7 +106,6 @@ impl Supervisor {
         {
             stalled |= StalledSubsystems::CAN;
         }
-
         let stalled = StalledSubsystems(stalled);
         if stalled.is_empty() {
             SupervisorDecision::FeedWatchdog

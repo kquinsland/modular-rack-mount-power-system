@@ -701,6 +701,9 @@ impl CommandService {
         if controller.emergency_latched() {
             flags |= PortStateFlags::EMERGENCY_LATCHED;
         }
+        if controller.port_powered(port)? {
+            flags |= PortStateFlags::INPUT_POWERED;
+        }
         self.state_sequence = self.state_sequence.wrapping_add(1);
         let generation = controller.slot_epoch(port)?.0.to_le_bytes()[0];
         encode_port_state(PortState {
@@ -876,6 +879,7 @@ mod tests {
             None,
             None,
         ],
+        power_gate_bit_by_port: [None; pdcan_types::MAX_PORTS],
         default_fan_mode: FanMode::ThreeWire,
     };
     const UID: NodeUid = NodeUid::from_bytes([0x44; NodeUid::LENGTH]);
@@ -918,6 +922,25 @@ mod tests {
                         controller.complete_persist(revision, CompletionOutcome::Succeeded);
                     return service.complete_persist(completion);
                 }
+                Action::PowerGate {
+                    operation,
+                    port,
+                    slot_epoch,
+                    enabled,
+                    ..
+                } => controller.complete_power_gate_operation(
+                    port,
+                    operation,
+                    slot_epoch,
+                    enabled,
+                    CompletionOutcome::Succeeded,
+                ),
+                Action::PowerOutputs { operation, kind } => controller
+                    .complete_power_outputs_operation(
+                        operation,
+                        kind,
+                        CompletionOutcome::Succeeded,
+                    ),
             }
         }
     }
@@ -1226,6 +1249,7 @@ mod tests {
         assert_eq!(state.uptime_seconds, 42);
         assert_ne!(state.flags.bits() & PortStateFlags::MODULE_PRESENT, 0);
         assert_ne!(state.flags.bits() & PortStateFlags::POLICY_PENDING, 0);
+        assert_ne!(state.flags.bits() & PortStateFlags::INPUT_POWERED, 0);
     }
 
     #[test]
