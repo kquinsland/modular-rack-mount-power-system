@@ -1437,7 +1437,7 @@
 		)
 		(uuid "36f190e3-50ce-4fbf-af6a-04d2ec667778")
 	)
-	(text "U1 uses the internal HSI clock.\nPCA9554 power control uses the existing I2C bus; the five former shift-register GPIOs are intentionally NC."
+	(text "U1 uses the internal HSI clock.\nBackplane slot muxing and power control use the shared I2C bus; PA3 is intentionally NC."
 		(exclude_from_sim no)
 		(at 25.4 25.4 0)
 		(effects
@@ -1472,7 +1472,6 @@
 		)
 		(uuid "348b04ad-90f6-44c7-aa7d-b0ef434871a2")
 	)
-
 	(wire
 		(pts
 			(xy 152.4 96.52) (xy 152.4 93.98)
@@ -1625,29 +1624,6 @@
 			)
 		)
 	)
-
-	(global_label "I2C_MUX_RESET_N"
-		(shape bidirectional)
-		(at 116.84 88.9 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "21c9a5fe-31cf-4778-9fda-67364c1d627e")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 116.84 88.9 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
 	(global_label "I2C_UP_SDA"
 		(shape bidirectional)
 		(at 116.84 96.52 0)
@@ -1670,7 +1646,6 @@
 			)
 		)
 	)
-
 	(global_label "CAN_RX"
 		(shape bidirectional)
 		(at 86.36 101.6 180)
@@ -1693,9 +1668,6 @@
 			)
 		)
 	)
-
-
-
 	(global_label "CAN_STB"
 		(shape bidirectional)
 		(at 116.84 91.44 0)
@@ -1784,7 +1756,6 @@
 			)
 		)
 	)
-
 	(global_label "FAN_CTRL"
 		(shape bidirectional)
 		(at 116.84 83.82 0)
@@ -1807,7 +1778,7 @@
 			)
 		)
 	)
-		(no_connect
+	(no_connect
 		(at 116.84 93.98)
 		(uuid "4554025b-ba22-4192-8ba2-d489f446a92a")
 	)
@@ -2936,6 +2907,10 @@
 				)
 			)
 		)
+	)
+	(no_connect
+		(at 116.84 88.9)
+		(uuid "4fe0e83f-8fae-4dfd-85ee-c7c55f513da7")
 	)
 	(sheet_instances
 		(path "/"
