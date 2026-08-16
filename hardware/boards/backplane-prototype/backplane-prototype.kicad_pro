@@ -526,10 +526,18 @@
         "wire_width": 6
       },
       {
+        "name": "3v3",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "priority": 0,
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 0.5,
+        "tuning_profile": ""
+      },
+      {
         "clearance": 0.5,
         "name": "HIGH_CURRENT_DC",
         "pcb_color": "rgb(194, 0, 0)",
-        "priority": 0,
+        "priority": 1,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
         "track_width": 13.0,
         "tuning_profile": "",
@@ -545,6 +553,10 @@
       {
         "netclass": "HIGH_CURRENT_DC",
         "pattern": "+24V"
+      },
+      {
+        "netclass": "3v3",
+        "pattern": "+3V3"
       }
     ]
   },
@@ -677,7 +689,7 @@
         "uuid": "348cc909-6345-4013-9bef-98714057a65b"
       }
     ],
-    "used_designators": "#FLG101-102,H3,H5-6,J8,J14,#PWR1-9,#PWR312,#PWR325-326,D3,R3-4",
+    "used_designators": "Q1-12,U1-2,#FLG1-3,#FLG101-102,H1-6,J1-8,J14,#PWR1-58,#PWR301-302,#PWR308,#PWR312,#PWR321,#PWR325-326,#PWR337-339,C1-2,D1-12,TP1-8,TP13-20,JP1-7,R1-39",
     "variants": []
   },
   "sheets": [
