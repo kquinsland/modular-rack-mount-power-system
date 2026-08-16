@@ -103,6 +103,48 @@ impl NodeId {
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct InvalidNodeId(pub u8);
 
+/// The STM32 factory-programmed 96-bit unique device identifier.
+///
+/// This is deliberately named a UID rather than a UUID: the silicon value does
+/// not have UUID variant or version semantics.
+#[derive(Clone, Copy, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub struct NodeUid([u8; Self::LENGTH]);
+
+impl NodeUid {
+    pub const LENGTH: usize = 12;
+
+    pub const fn from_bytes(bytes: [u8; Self::LENGTH]) -> Self {
+        Self(bytes)
+    }
+
+    pub const fn to_bytes(self) -> [u8; Self::LENGTH] {
+        self.0
+    }
+
+    pub const fn as_bytes(&self) -> &[u8; Self::LENGTH] {
+        &self.0
+    }
+}
+
+impl fmt::Debug for NodeUid {
+    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+        formatter.write_str("NodeUid(")?;
+        for byte in self.0 {
+            write!(formatter, "{byte:02x}")?;
+        }
+        formatter.write_str(")")
+    }
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[repr(u8)]
+pub enum CommissioningState {
+    Uncommissioned = 0,
+    Claiming = 1,
+    Commissioned = 2,
+    AddressConflict = 3,
+}
+
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd)]
 pub struct RequesterId(u8);
 

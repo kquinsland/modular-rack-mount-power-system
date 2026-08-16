@@ -27,7 +27,8 @@ use embassy_stm32::timer::simple_pwm::{PwmPin, SimplePwm};
 use embassy_stm32::wdg::IndependentWatchdog;
 use embassy_time::{Duration, Timer};
 use panic_halt as _;
-use pdcan_types::PersistentSettings;
+use pdcan_protocol::ResetFlags;
+use pdcan_types::{NodeUid, PersistentSettings};
 use static_cell::StaticCell;
 
 const I2C_FREQUENCY_HZ: u32 = 100_000;
@@ -55,6 +56,7 @@ async fn main(spawner: Spawner) -> ! {
         ker_div: HsiKerDiv::DIV1,
     });
     let p = embassy_stm32::init(config);
+    let reset_flags = capture_reset_flags();
 
     // Establish safety-oriented pin states before loading flash or starting tasks.
     let mut mux_reset = Output::new(p.PA3, Level::Low, Speed::Low);
@@ -133,7 +135,8 @@ async fn main(spawner: Spawner) -> ! {
     spawner.spawn(tasks::status::status_task(status_output).unwrap());
     spawner.spawn(tasks::fan::fan_task(fan_pwm, fan_tach).unwrap());
     spawner.spawn(tasks::config::config_task(config_store).unwrap());
-    spawner.spawn(tasks::controller::controller_task(settings).unwrap());
+    let uid = NodeUid::from_bytes(embassy_stm32::uid::uid());
+    spawner.spawn(tasks::controller::controller_task(settings, uid, reset_flags).unwrap());
     spawner.spawn(tasks::pd_bus::pd_bus_task(pd_bus, mux_reset).unwrap());
     spawner.spawn(tasks::can::can_task(can, can_standby).unwrap());
     spawner.spawn(tasks::supervisor::supervisor_task(watchdog).unwrap());
@@ -141,4 +144,34 @@ async fn main(spawner: Spawner) -> ! {
     loop {
         Timer::after_secs(60).await;
     }
+}
+
+fn capture_reset_flags() -> ResetFlags {
+    let register = stm32_metapac::RCC.csr2().read();
+    let mut flags = 0;
+    if register.oblrstf() {
+        flags |= ResetFlags::OPTION_BYTE;
+    }
+    if register.pinrstf() {
+        flags |= ResetFlags::PIN;
+    }
+    if register.pwrrstf() {
+        flags |= ResetFlags::POWER;
+    }
+    if register.sftrstf() {
+        flags |= ResetFlags::SOFTWARE;
+    }
+    if register.iwdgrstf() {
+        flags |= ResetFlags::INDEPENDENT_WATCHDOG;
+    }
+    if register.wwdgrstf() {
+        flags |= ResetFlags::WINDOW_WATCHDOG;
+    }
+    if register.lpwrrstf() {
+        flags |= ResetFlags::LOW_POWER;
+    }
+    stm32_metapac::RCC
+        .csr2()
+        .modify(|register| register.set_rmvf(true));
+    ResetFlags::from_bits(flags)
 }

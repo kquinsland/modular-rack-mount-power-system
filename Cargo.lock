@@ -46,6 +46,7 @@ dependencies = [
  "embassy-stm32",
  "embassy-sync",
  "embassy-time",
+ "embedded-can",
  "panic-halt",
  "pdcan-core",
  "pdcan-drivers",
@@ -53,6 +54,7 @@ dependencies = [
  "pdcan-types",
  "portable-atomic",
  "static_cell",
+ "stm32-metapac",
 ]
 
 [[package]]
@@ -776,6 +778,7 @@ name = "pdcan"
 version = "0.1.0"
 dependencies = [
  "pdcan-protocol",
+ "pdcan-sim",
  "pdcan-types",
  "socketcan",
 ]
@@ -808,7 +811,9 @@ name = "pdcan-sim"
 version = "0.1.0"
 dependencies = [
  "pdcan-core",
+ "pdcan-protocol",
  "pdcan-types",
+ "socketcan",
 ]
 
 [[package]]

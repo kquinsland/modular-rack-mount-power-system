@@ -1002,7 +1002,7 @@ pub enum NodeState {
 
 Persistent records contain a magic value, format version, payload, and CRC. Invalid/absent records mean `Uncommissioned`; do not rely solely on erased `0xFF`.
 
-### 15.3 UUID-addressed provisioning
+### 15.3 UID-addressed provisioning
 
 Commissioning operations use the full UID and remain available after assignment:
 
@@ -1024,12 +1024,15 @@ Multiple boards may respond simultaneously, so they must not use one common resp
 Recommended approach:
 
 1. host sends `DISCOVER` with a nonce;
-2. each board computes `CRC32(UID || nonce)`;
-3. a truncated token is incorporated into the commissioning arbitration ID;
+2. each board hashes the UID, folds in the nonce, and applies a nonlinear avalanche
+   finalizer (plain truncated `CRC32(UID || nonce)` cannot rotate an existing
+   pairwise CRC collision away);
+3. the low 12-bit token is incorporated into the commissioning arbitration ID;
 4. the full 96-bit UID remains authoritative in the CAN-FD payload;
 5. the CLI may perform multiple rounds with different nonces and merge results.
 
-The exact commissioning ID layout must be frozen in `docs/protocol.md`.
+The executable pre-v1 layout is documented in `docs/pdcan/protocol.md` and remains
+unfrozen until Rev A HIL acceptance.
 
 ### 15.5 Identify
 
@@ -1071,7 +1074,9 @@ At startup, commissioned boards should use a UID-derived `NODE_CLAIM` phase. If 
 
 ## 16. Persistent configuration
 
-At minimum, persist the Node ID.
+Persist the Node ID, all eight logical port policies, fan mode/duty, and the
+emergency-disable latch. Avoid a flash write when the encoded settings are
+unchanged.
 
 Future-safe logical shape:
 
@@ -1081,10 +1086,14 @@ pub struct PersistentConfig {
     pub commissioning: CommissioningConfig,
     pub port_defaults: [PortPolicy; 8],
     pub fan: FanConfig,
+    pub emergency_latched: bool,
 }
 ```
 
-Whether per-port policy is persistent in v1 remains a product decision. Normal transient control must not implicitly write flash.
+The implemented record is versioned, CRC-protected, committed last, and alternates
+between slots so a torn replacement leaves the previous record authoritative.
+Emergency clear takes effect only after the cleared record is durable and only the
+dedicated operator acknowledgement command can request it.
 
 The storage layer must use a dedicated flash region, include format version/integrity checking, tolerate interrupted writes, expose semantic `load()`/`save()` APIs, and hide raw flash addresses from application logic.
 
@@ -1243,7 +1252,12 @@ CI should build/test host crates and build the STM32 release target.
 
 ### 21.6 Hardware-in-the-loop
 
-Before release validate all eight slots populated and partially populated; rapid insertion/removal; removal during active I²C transactions; abnormal SDA/SCL behavior; TCA reset recovery; multiple CAN nodes; duplicate IDs; CAN bus-off/recovery; fan modes; NeoPixel identify; and power-cycle persistence.
+Before Rev A release validate all six supported slots populated and partially
+populated; rapid insertion/removal; removal during active I²C transactions;
+abnormal SDA/SCL behavior; TCA reset recovery; multiple CAN nodes; duplicate IDs;
+CAN bus-off/recovery; fan modes; NeoPixel identify; and power-cycle persistence.
+Eight-port behavior remains a pure-core/simulator requirement until a later board
+physically exposes ports 6 and 7.
 
 ---
 
@@ -1789,38 +1803,49 @@ There is one source of truth for the wire interface.
 
 ---
 
-## ADR-0022: Persistent port-policy behavior is deferred
+## ADR-0022: Persist explicit port policy and safety configuration
 
-**Status:** Proposed / pending product decision
+**Status:** Accepted
 
 ### Context
 
-The Node ID must persist. It is not yet necessary to decide whether ordinary per-port runtime policy changes survive reboot.
+The operator expects desired port policy, fan setup, and the emergency latch to
+survive reboot. Policy changes are expected only a few dozen times over product
+life.
 
 ### Decision
 
-Design the configuration format to support persistent per-port defaults, but initially persist only explicitly required settings. Ordinary control commands must not implicitly write flash.
+Persist the Node ID, explicit policies for all eight logical slots, fan mode/duty,
+and emergency latch in one power-fail-safe record. Skip unchanged values. Clearing
+the emergency latch requires its dedicated operator acknowledgement command.
 
 ### Consequences
 
-Flash wear and policy semantics remain predictable, while persistent defaults can be added without redesigning storage.
+Flash wear remains negligible at the expected write frequency. Replacement modules
+inherit the stored logical-slot policy, and emergency state survives watchdog reset
+and complete power loss after the durable commit.
 
 ---
 
 ## 28. Open items the implementation team must resolve
 
-1. Exact USB-C PD controller part number and complete register map.
+1. Hardware validation of the SW3538 register map revision `RG108_3_v1.2` against
+   the exact production module.
 2. Exact controller semantics required to disable CC1/CC2, limit SPR, permit/deny EPR, request renegotiation, read the negotiated contract, read V/I/P/temperature, clear faults, and reset the controller.
-3. Final STM32 pin map and alternate-function verification.
-4. TCA9548 reset-pin availability.
+3. Final STM32 pin map and alternate-function verification on Rev A hardware.
+4. TCA9548 reset timing and electrical recovery behavior; reset is routed to PA3.
 5. Electrical I²C hot-swap behavior, including downstream pull-ups, behavior while modules are unpowered, SDA/SCL isolation, and protection components.
-6. CAN nominal/data bitrate and whether BRS is enabled.
-7. Exact v1 CAN class/type values and commissioning-ID bit allocation.
-8. Whether per-port default policy is persisted in v1.
-9. Exact fan pin/tach capability and whether 3-pin/4-pin behavior is compile-time selected.
-10. Exact LED status-pattern definitions.
-11. Watchdog timeout and subsystem liveness criteria.
-12. CI/HIL environment and flashing/debug tooling.
+6. Physical validation of the selected 1 Mbit/s nominal, 2 Mbit/s data, BRS-enabled
+   CAN-FD timing.
+7. Final v1 freeze of the executable pre-v1 class/type and commissioning allocation
+   after HIL.
+8. Measured flash erase/program timing and emergency-latch interruption behavior.
+9. Fan PWM/tach electrical validation for persisted 3-wire/4-wire selection.
+10. Physical validation of the defined LED colors, identify overlay, and WS2812
+    waveform timing.
+11. Measured watchdog timeout and subsystem liveness criteria.
+12. HIL fixtures plus validation of SWD flashing/debug tooling on the assembled
+    board; workspace CI is implemented.
 
 ---
 

@@ -338,4 +338,26 @@ mod tests {
         assert_eq!(next_slot(Some(JournalSlot::A)), JournalSlot::B);
         assert_eq!(next_slot(Some(JournalSlot::B)), JournalSlot::A);
     }
+
+    #[test]
+    fn every_byte_boundary_of_a_torn_replacement_preserves_the_old_record() {
+        let old_settings = populated_settings();
+        let old = committed(10, old_settings);
+        let replacement = committed(11, PersistentSettings::FACTORY_DEFAULT);
+
+        for written_prefix in 0..RECORD_SIZE {
+            let mut torn = [u8::MAX; RECORD_SIZE];
+            torn[..written_prefix].copy_from_slice(&replacement[..written_prefix]);
+            let selected = select_newest(&old, &torn).expect("old record remains valid");
+            assert_eq!(
+                selected.record.settings, old_settings,
+                "torn prefix length {written_prefix} became authoritative"
+            );
+        }
+
+        assert_eq!(
+            select_newest(&old, &replacement).unwrap().record.sequence,
+            11
+        );
+    }
 }

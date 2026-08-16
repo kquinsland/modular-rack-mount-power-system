@@ -1,9 +1,95 @@
 #![no_std]
 
 use pdcan_types::{
-    BoardDefinition, ConfigRevision, MAX_PORTS, OperationId, PersistentSettings,
-    PolicyValidationError, PortBitmap, PortId, PortPolicy, SlotEpoch,
+    BoardDefinition, CommissioningState, ConfigRevision, FanConfig, MAX_PORTS, NodeId, NodeUid,
+    OperationId, PersistentSettings, PolicyValidationError, PortBitmap, PortId, PortPolicy,
+    SlotEpoch,
 };
+
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+pub struct Mutation {
+    /// The configuration revision which must be durably committed before a
+    /// requester may be told that the mutation succeeded.
+    pub persist_revision: Option<ConfigRevision>,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum PersistCompletion {
+    IgnoredStale,
+    RetryScheduled,
+    DurableThrough(ConfigRevision),
+}
+
+/// Pure commissioning/duplicate-address state. Persistence is intentionally
+/// handled by [`Controller`]; this type only decides whether ordinary Node-ID
+/// traffic is safe to emit.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct Commissioning {
+    uid: NodeUid,
+    node_id: Option<NodeId>,
+    state: CommissioningState,
+    conflicting_uid: Option<NodeUid>,
+}
+
+impl Commissioning {
+    pub const fn new(uid: NodeUid, node_id: Option<NodeId>) -> Self {
+        Self {
+            uid,
+            node_id,
+            state: if node_id.is_some() {
+                CommissioningState::Claiming
+            } else {
+                CommissioningState::Uncommissioned
+            },
+            conflicting_uid: None,
+        }
+    }
+
+    pub const fn uid(&self) -> NodeUid {
+        self.uid
+    }
+
+    pub const fn node_id(&self) -> Option<NodeId> {
+        self.node_id
+    }
+
+    pub const fn state(&self) -> CommissioningState {
+        self.state
+    }
+
+    pub const fn conflicting_uid(&self) -> Option<NodeUid> {
+        self.conflicting_uid
+    }
+
+    pub const fn normal_traffic_allowed(&self) -> bool {
+        matches!(self.state, CommissioningState::Commissioned)
+    }
+
+    /// Observe an authoritative full-UID claim. A conflict never erases the
+    /// persisted address; it must remain diagnosable and UID-addressable.
+    pub fn observe_claim(&mut self, uid: NodeUid, node_id: NodeId) {
+        if self.node_id == Some(node_id) && uid != self.uid {
+            self.state = CommissioningState::AddressConflict;
+            self.conflicting_uid = Some(uid);
+        }
+    }
+
+    pub fn claim_window_complete(&mut self) {
+        if self.state == CommissioningState::Claiming {
+            self.state = CommissioningState::Commissioned;
+        }
+    }
+
+    pub fn apply_persisted_node_id(&mut self, node_id: Option<NodeId>) {
+        self.node_id = node_id;
+        self.conflicting_uid = None;
+        self.state = if node_id.is_some() {
+            CommissioningState::Claiming
+        } else {
+            CommissioningState::Uncommissioned
+        };
+    }
+}
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum PdActionKind {
@@ -38,6 +124,7 @@ pub struct Diagnostics {
 pub enum ControllerError {
     UnsupportedPort(PortId),
     InvalidPolicy(PolicyValidationError),
+    InvalidFanDuty(u8),
     EmergencyLatched,
     EmergencyAlreadyClear,
     EmergencyClearInProgress,
@@ -125,6 +212,55 @@ impl Controller {
         self.emergency_latched_runtime
     }
 
+    pub const fn port_online(&self, port: PortId) -> Option<bool> {
+        if self.board.supports(port) {
+            Some(self.slots[port.index()].online)
+        } else {
+            None
+        }
+    }
+
+    pub const fn slot_epoch(&self, port: PortId) -> Option<SlotEpoch> {
+        if self.board.supports(port) {
+            Some(self.slots[port.index()].epoch)
+        } else {
+            None
+        }
+    }
+
+    pub fn port_policy_pending(&self, port: PortId) -> Option<bool> {
+        if !self.board.supports(port) {
+            return None;
+        }
+        let slot = self.slots[port.index()];
+        Some(
+            self.pending_policy.contains(port)
+                || matches!(slot.active_kind, Some(PdActionKind::ApplyPolicy(_))),
+        )
+    }
+
+    pub fn online_ports(&self) -> PortBitmap {
+        let mut ports = PortBitmap::EMPTY;
+        for raw in PortId::MIN..=PortId::MAX {
+            let port = PortId::new(raw).expect("MAX_PORTS defines valid port IDs");
+            if self.board.supports(port) && self.slots[port.index()].online {
+                ports.insert(port);
+            }
+        }
+        ports
+    }
+
+    pub fn enabled_ports(&self) -> PortBitmap {
+        let mut ports = PortBitmap::EMPTY;
+        for raw in PortId::MIN..=PortId::MAX {
+            let port = PortId::new(raw).expect("MAX_PORTS defines valid port IDs");
+            if self.board.supports(port) && self.settings.port_policy[port.index()].enabled {
+                ports.insert(port);
+            }
+        }
+        ports
+    }
+
     pub fn module_detected(&mut self, port: PortId) -> Result<SlotEpoch, ControllerError> {
         self.require_supported(port)?;
         let slot = &mut self.slots[port.index()];
@@ -154,7 +290,7 @@ impl Controller {
         &mut self,
         port: PortId,
         policy: PortPolicy,
-    ) -> Result<(), ControllerError> {
+    ) -> Result<Mutation, ControllerError> {
         self.require_supported(port)?;
         policy.validate().map_err(ControllerError::InvalidPolicy)?;
         if self.emergency_latched_runtime && policy.enabled {
@@ -163,9 +299,7 @@ impl Controller {
 
         let changed = self.settings.port_policy[port.index()] != policy;
         self.settings.port_policy[port.index()] = policy;
-        if changed {
-            self.request_persist();
-        }
+        let persist_revision = changed.then(|| self.request_persist());
         if self.slots[port.index()].online {
             if self.emergency_latched_runtime {
                 self.pending_emergency.insert(port);
@@ -173,16 +307,18 @@ impl Controller {
                 self.pending_policy.insert(port);
             }
         }
-        Ok(())
+        Ok(Mutation { persist_revision })
     }
 
-    pub fn emergency_disable(&mut self) {
+    pub fn emergency_disable(&mut self) -> Mutation {
         self.emergency_latched_runtime = true;
         self.clearing_emergency_at = None;
-        if !self.settings.emergency_latched {
+        let persist_revision = if self.settings.emergency_latched {
+            None
+        } else {
             self.settings.emergency_latched = true;
-            self.request_persist();
-        }
+            Some(self.request_persist())
+        };
 
         for raw_port in PortId::MIN..=PortId::MAX {
             let port = PortId::new(raw_port).expect("MAX_PORTS defines valid port IDs");
@@ -191,6 +327,29 @@ impl Controller {
                 self.pending_policy.remove(port);
             }
         }
+        Mutation { persist_revision }
+    }
+
+    pub fn set_node_id(&mut self, node_id: Option<NodeId>) -> Mutation {
+        let persist_revision = if self.settings.node_id == node_id {
+            None
+        } else {
+            self.settings.node_id = node_id;
+            Some(self.request_persist())
+        };
+        Mutation { persist_revision }
+    }
+
+    pub fn set_fan_config(&mut self, fan: FanConfig) -> Result<Mutation, ControllerError> {
+        fan.validate()
+            .map_err(|error| ControllerError::InvalidFanDuty(error.0))?;
+        let persist_revision = if self.settings.fan == fan {
+            None
+        } else {
+            self.settings.fan = fan;
+            Some(self.request_persist())
+        };
+        Ok(Mutation { persist_revision })
     }
 
     pub fn acknowledge_emergency_resolved(&mut self) -> Result<ConfigRevision, ControllerError> {
@@ -272,13 +431,17 @@ impl Controller {
         }
     }
 
-    pub fn complete_persist(&mut self, revision: ConfigRevision, outcome: CompletionOutcome) {
+    pub fn complete_persist(
+        &mut self,
+        revision: ConfigRevision,
+        outcome: CompletionOutcome,
+    ) -> PersistCompletion {
         if self.persist_in_flight != Some(revision) {
             self.diagnostics.stale_persistence_completions = self
                 .diagnostics
                 .stale_persistence_completions
                 .saturating_add(1);
-            return;
+            return PersistCompletion::IgnoredStale;
         }
         self.persist_in_flight = None;
 
@@ -287,18 +450,18 @@ impl Controller {
                 .diagnostics
                 .failed_persistence_operations
                 .saturating_add(1);
-            if self.clearing_emergency_at == Some(revision) {
-                self.settings.emergency_latched = true;
-                self.clearing_emergency_at = None;
-            }
             self.request_persist();
-            return;
+            return PersistCompletion::RetryScheduled;
         }
 
-        if self.clearing_emergency_at == Some(revision) {
+        if self
+            .clearing_emergency_at
+            .is_some_and(|clear_revision| revision_covers(revision, clear_revision))
+        {
             self.clearing_emergency_at = None;
             self.emergency_latched_runtime = false;
         }
+        PersistCompletion::DurableThrough(revision)
     }
 
     fn require_supported(&mut self, port: PortId) -> Result<(), ControllerError> {
@@ -376,6 +539,13 @@ const fn next_port(port: u8) -> u8 {
     } else {
         port + 1
     }
+}
+
+/// Returns true when a successful coalesced write at `durable` includes the
+/// settings mutation requested at `required`. This uses the same half-range
+/// wrapping ordering as the on-flash journal sequence.
+pub const fn revision_covers(durable: ConfigRevision, required: ConfigRevision) -> bool {
+    durable.0 == required.0 || durable.0.wrapping_sub(required.0) < 0x8000_0000
 }
 
 #[cfg(test)]
@@ -581,5 +751,100 @@ mod tests {
             controller.set_port_policy(port(0), enabled_policy()),
             Err(ControllerError::EmergencyLatched)
         );
+    }
+
+    #[test]
+    fn coalesced_write_durably_covers_every_earlier_mutation() {
+        let mut controller = Controller::new(REV_A, PersistentSettings::FACTORY_DEFAULT);
+        let first = controller
+            .set_port_policy(port(0), enabled_policy())
+            .unwrap()
+            .persist_revision
+            .unwrap();
+        let second = controller
+            .set_node_id(Some(pdcan_types::NodeId::new(9).unwrap()))
+            .persist_revision
+            .unwrap();
+
+        let Action::PersistConfig { revision, .. } = controller.next_action().unwrap() else {
+            panic!("expected the coalesced configuration write");
+        };
+        assert_eq!(revision, second);
+        assert!(revision_covers(revision, first));
+        assert_eq!(
+            controller.complete_persist(revision, CompletionOutcome::Succeeded),
+            PersistCompletion::DurableThrough(second)
+        );
+    }
+
+    #[test]
+    fn failed_emergency_clear_remains_latched_and_retries_the_clear() {
+        let mut settings = PersistentSettings::FACTORY_DEFAULT;
+        settings.emergency_latched = true;
+        let mut controller = Controller::new(REV_A, settings);
+        let requested = controller.acknowledge_emergency_resolved().unwrap();
+
+        let Action::PersistConfig { revision, settings } = controller.next_action().unwrap() else {
+            panic!("expected clear persistence");
+        };
+        assert_eq!(revision, requested);
+        assert!(!settings.emergency_latched);
+        assert_eq!(
+            controller.complete_persist(revision, CompletionOutcome::Failed),
+            PersistCompletion::RetryScheduled
+        );
+        assert!(controller.emergency_latched());
+        assert!(!controller.settings().emergency_latched);
+
+        let Action::PersistConfig {
+            revision: retry,
+            settings,
+        } = controller.next_action().unwrap()
+        else {
+            panic!("expected retried clear persistence");
+        };
+        assert!(!settings.emergency_latched);
+        assert!(revision_covers(retry, requested));
+        assert_eq!(
+            controller.complete_persist(retry, CompletionOutcome::Succeeded),
+            PersistCompletion::DurableThrough(retry)
+        );
+        assert!(!controller.emergency_latched());
+    }
+
+    #[test]
+    fn duplicate_claim_keeps_persisted_id_but_suppresses_normal_traffic() {
+        let own_uid = NodeUid::from_bytes([1; NodeUid::LENGTH]);
+        let other_uid = NodeUid::from_bytes([2; NodeUid::LENGTH]);
+        let node = pdcan_types::NodeId::new(7).unwrap();
+        let mut commissioning = Commissioning::new(own_uid, Some(node));
+
+        assert_eq!(commissioning.state(), CommissioningState::Claiming);
+        assert!(!commissioning.normal_traffic_allowed());
+        commissioning.claim_window_complete();
+        assert!(commissioning.normal_traffic_allowed());
+
+        commissioning.observe_claim(other_uid, node);
+        assert_eq!(commissioning.state(), CommissioningState::AddressConflict);
+        assert_eq!(commissioning.node_id(), Some(node));
+        assert_eq!(commissioning.conflicting_uid(), Some(other_uid));
+        assert!(!commissioning.normal_traffic_allowed());
+    }
+
+    #[test]
+    fn assigning_or_clearing_a_node_restarts_commissioning_state() {
+        let uid = NodeUid::from_bytes([3; NodeUid::LENGTH]);
+        let node = pdcan_types::NodeId::new(42).unwrap();
+        let mut commissioning = Commissioning::new(uid, None);
+        assert_eq!(commissioning.state(), CommissioningState::Uncommissioned);
+
+        commissioning.apply_persisted_node_id(Some(node));
+        assert_eq!(commissioning.state(), CommissioningState::Claiming);
+        commissioning.claim_window_complete();
+        assert_eq!(commissioning.state(), CommissioningState::Commissioned);
+
+        commissioning.apply_persisted_node_id(None);
+        assert_eq!(commissioning.state(), CommissioningState::Uncommissioned);
+        assert!(!commissioning.normal_traffic_allowed());
     }
 }

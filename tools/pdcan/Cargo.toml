@@ -9,5 +9,8 @@ pdcan-protocol.workspace = true
 pdcan-types.workspace = true
 socketcan = { version = "3.6.2", default-features = false }
 
+[dev-dependencies]
+pdcan-sim = { path = "../pdcan-sim" }
+
 [lints]
 workspace = true

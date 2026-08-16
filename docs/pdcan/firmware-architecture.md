@@ -22,6 +22,7 @@ flowchart TD
     types --> cli
     protocol --> cli
     core --> simulator
+    protocol --> simulator
 ```
 
 `pdcan-core` has no Embassy, hardware, SocketCAN, flash, wall-clock, or logging
@@ -59,9 +60,16 @@ durable latch uses a versioned configuration action. Runtime clearing occurs onl
 after the matching persistence completion succeeds. Stale persistence completions
 are ignored and counted. A failed clear leaves the runtime latch active.
 
+Ordinary persistent host mutations are serialized so each success describes the
+value that actually became durable. Emergency disable may preempt an in-flight
+clear. In that case the clear receives `EMERGENCY_LATCHED`, runtime remains
+latched, and a new durable-latch write is queued. As with every flash-backed event,
+power loss before that new write completes can only recover the last committed
+record; no emergency success response is emitted before the re-latch is durable.
+
 The initial core tests cover emergency priority, durable-clear ordering,
-unsupported Rev A ports, blocked enable policy while latched, and stale operation
-completion handling.
+clear/re-latch overlap, unsupported Rev A ports, blocked enable policy while
+latched, and stale operation completion handling.
 
 ## Hardware Bring-Up Boundary
 
@@ -70,7 +78,7 @@ The embedded binary now cross-compiles the intended STM32C092FCP6 resource map:
 | Owner | Rev A resources | Responsibility |
 | --- | --- | --- |
 | `pd_bus_task` | I2C2, DMA1 ch. 1/2, PA3 | Mux and PD bus |
-| `can_task` | FDCAN1, PA11/PA12, PA4 | CAN-FD receive |
+| `can_task` | FDCAN1, PA11/PA12, PA4 | CAN-FD RX/TX and codec boundary |
 | `config_task` | final 8 KiB of flash | Durable journal |
 | `fan_task` | TIM2/PA0, TIM17/PA1 | fan PWM and tach capture |
 | `status_task` | TIM15/PA2, DMA1 channel 3 | WS2812 GRB waveform output |
@@ -79,9 +87,20 @@ The embedded binary now cross-compiles the intended STM32C092FCP6 resource map:
 
 TIM3 is reserved for Embassy timekeeping. The firmware configures the 48 MHz HSI,
 FDCAN at 1 Mbit/s nominal and 2 Mbit/s data with BRS, I2C2 at 100 kHz, a
-full-speed three-wire fan boot state, and the checked-in flash boundary. The CAN
-task is receive-only in this slice; operational command decoding remains behind
-the one-port protocol-freeze spike.
+full-speed three-wire fan boot state, and the checked-in flash boundary.
+
+The CAN task rejects non-FD/non-BRS traffic, strictly decodes control and
+commissioning frames, and sends transport-neutral frames produced by the
+controller service. The service reads the STM32 factory UID, performs the draft
+claim window, suppresses normal traffic until commissioned/conflict-free, retains
+a bounded request cache, and correlates persistent responses with configuration
+revisions. Persistent success is never sent before flash completion.
+
+The status task maintains a base health indication plus a bounded identify blink
+overlay. The controller emits approximately 1 Hz heartbeats and requested port
+state snapshots. Heartbeats carry the sticky RCC reset-cause flags captured at
+boot plus monotonic uptime. Fields that depend on unverified SW3538 observation
+remain unknown/zero rather than being inferred from hoped-for register semantics.
 
 These statements describe checked and cross-compiled configuration, not measured
 hardware behavior. The required measurements and fault tests are tracked in

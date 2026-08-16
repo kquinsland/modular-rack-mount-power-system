@@ -961,6 +961,14 @@ The commissioning specification must therefore define:
 
 Multiple discovery rounds are useful, but the retry behavior must be part of the protocol rather than only a CLI implementation detail.
 
+Implementation note: the executable draft does not use a directly truncated
+`CRC32(UID || nonce)`. CRC linearity makes a pairwise collision persist when the
+same nonce is appended to both UIDs. The implemented token hashes the UID, folds
+the nonce into both halves, applies a nonlinear avalanche finalizer, and takes the
+low 12 bits. A property test constructs a real round-1 collision and verifies that
+the next nonce separates it. `NODE_CLAIM` applies the same mixer with a
+domain-separated Node ID and claim-round nonce.
+
 ### 8.3 Duplicate node claims
 
 `NODE_CLAIM` has the same collision concern. Two boards with one commissioned Node ID must not transmit an identical claim arbitration ID with different UID payloads indefinitely.
@@ -1714,13 +1722,33 @@ required provision/configure-before-load workflow and measure the interval in HI
 Before implementation begins in earnest:
 
 - [x] Review and resolve the product decisions in Section 14.
-- [ ] Update the source plan to distinguish eight-port capacity from six-port Rev A support.
-- [ ] Update the source plan with the Rev A initialization-window limitation and
+- [x] Update the source plan to distinguish eight-port capacity from six-port Rev A support.
+- [x] Update the source plan with the Rev A initialization-window limitation and
       persistent emergency-latch semantics.
-- [ ] Convert known Rev A facts, such as the mux reset connection, from open assumptions into hardware-contract entries.
-- [ ] Correct the CAN connector typo in the hardware handoff.
-- [ ] Remove the obsolete WT32/controller architecture from active documentation
+- [x] Convert known Rev A facts, such as the mux reset connection, from open assumptions into hardware-contract entries.
+- [x] Correct the CAN connector typo in the hardware handoff.
+- [x] Remove the obsolete WT32/controller architecture from active documentation
       without deleting its existing hardware source files.
-- [ ] Add the new architecture decision using the existing `docs/decisions/` sequence.
-- [ ] Scaffold the root Cargo workspace without a global embedded build target.
-- [ ] Establish the one-port PD-controller capability spike before freezing protocol commands.
+- [x] Add the new architecture decision using the existing `docs/decisions/` sequence.
+- [x] Scaffold the root Cargo workspace without a global embedded build target.
+- [ ] Run the one-port PD-controller capability spike on Rev A hardware before
+      freezing protocol commands. The SW3538 driver, register-sequence fakes, and
+      draft semantic boundary are implemented; physical semantics remain the
+      blocker.
+
+## 16. Software-only implementation checkpoint
+
+The repository now contains the integrated workspace, strict pre-v1 codecs and
+generated DBC, pure controller/commissioning state, power-fail-tested persistence,
+generic TCA9548A/SW3538 mechanisms, Rev A Embassy task wiring, six/eight-port
+simulator models, and the SocketCAN CLI. Host and isolated-`vcan` tests exercise
+commissioning, request deduplication, policy/fan persistence, status, emergency
+latch/acknowledgement, unsupported ports, and duplicate-node recovery. The release
+firmware is cross-compiled and held to explicit flash/RAM budgets.
+
+The next feature work now depends on observations from Rev A hardware: confirming
+SW3538 enable/disable/contract/fault/telemetry semantics, measuring initialization
+and flash/watchdog timing, validating mux/I2C hot-swap recovery, confirming
+CAN-FD/HSI margins and bus-off behavior, and validating fan/tach and WS2812
+electrical behavior. Those results intentionally gate telemetry emission,
+renegotiation/fault commands, final watchdog limits, and the protocol v1 freeze.

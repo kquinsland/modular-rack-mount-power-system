@@ -16,9 +16,11 @@ firmware-bin = [
     "dep:embassy-stm32",
     "dep:embassy-sync",
     "dep:embassy-time",
+    "dep:embedded-can",
     "dep:panic-halt",
     "dep:portable-atomic",
     "dep:static_cell",
+    "dep:stm32-metapac",
 ]
 
 [dependencies]
@@ -29,9 +31,11 @@ embassy-futures = { version = "0.1", optional = true }
 embassy-stm32 = { version = "0.6", default-features = false, features = ["rt", "stm32c092fc", "time", "time-driver-tim3"], optional = true }
 embassy-sync = { version = "0.8", optional = true }
 embassy-time = { version = "0.5", optional = true }
+embedded-can = { version = "0.4.1", optional = true }
 panic-halt = { version = "1", optional = true }
 portable-atomic = { version = "1.15", features = ["critical-section"], optional = true }
 static_cell = { version = "2.1", optional = true }
+stm32-metapac = { version = "21", features = ["stm32c092fc"], optional = true }
 pdcan-core.workspace = true
 pdcan-drivers.workspace = true
 pdcan-protocol.workspace = true

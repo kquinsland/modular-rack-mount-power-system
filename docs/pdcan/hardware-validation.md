@@ -19,6 +19,10 @@ recorded observation from the target board; successful compilation is not enough
 - [ ] Verify a persisted emergency latch survives full power loss and watchdog reset.
 - [ ] Verify explicit CLI acknowledgement clears the latch durably without
   enabling any port.
+- [ ] Reassert emergency during clear erase, payload, and commit phases; verify
+  the clear is rejected, runtime stays latched, and no emergency success is
+  reported before the re-latch record is durable. Cut power at each boundary and
+  record which last-committed state boots.
 
 ## Clock, CAN, and Watchdog
 
@@ -26,10 +30,15 @@ recorded observation from the target board; successful compilation is not enough
   1/2 Mbit CAN-FD timing margins.
 - [ ] Verify 29-bit extended CAN-FD traffic with BRS on a physical bus and a
   second node.
+- [ ] Validate the provisional 500 ms `NODE_CLAIM` window with startup skew,
+  duplicate Node IDs, collision-token retries, and representative bus load.
+- [ ] Confirm firmware rejects classic/non-BRS traffic and transmits every draft
+  payload length (`8`, `12`, `16`, `20`, `24`, and `32` bytes) correctly.
 - [ ] Exercise error-passive, bus-off, recovery, congestion, and transceiver
   standby behavior.
-- [ ] Record reset reason and confirm every mandatory stalled task causes
-  watchdog reset.
+- [ ] Trigger and verify each reachable RCC reset-cause flag, then confirm every
+  mandatory stalled task causes an independent-watchdog reset reported in the
+  next heartbeat.
 - [ ] Replace provisional watchdog/progress windows with measured, reviewed limits.
 - [ ] Measure worst-case interrupt latency and task stack high-water marks.
 

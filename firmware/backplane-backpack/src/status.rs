@@ -32,6 +32,18 @@ pub enum StatusState {
     Fault,
 }
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum StatusCommand {
+    SetBase(StatusState),
+    IdentifySeconds(u16),
+}
+
+pub const IDENTIFY_COLOR: Rgb = Rgb {
+    red: 24,
+    green: 24,
+    blue: 24,
+};
+
 pub const fn render(state: StatusState) -> Rgb {
     match state {
         StatusState::Booting => Rgb {
