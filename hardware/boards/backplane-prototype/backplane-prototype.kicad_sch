@@ -1898,7 +1898,7 @@
 		)
 		(uuid "f1d4acd9-4193-5bf3-b5d4-0fac01de008b")
 	)
-	(text "Slot connectors: pin 1 = GND, pin 3 = SDA, pin 4 = SCL. J2 pin 2 is switched +24V; J3-J7 pin 2 is direct +24V."
+	(text "Slot connectors: pin 1 = GND, pin 2 = per-slot switched +24V, pin 3 = SDA, pin 4 = SCL."
 		(exclude_from_sim no)
 		(at 25.4 25.4 0)
 		(effects
@@ -2533,7 +2533,7 @@
 			)
 		)
 	)
-	(global_label "+24V"
+	(global_label "SLOT_3_PWR_SW"
 		(shape bidirectional)
 		(at 111.76 45.72 180)
 		(effects
@@ -2665,7 +2665,7 @@
 			)
 		)
 	)
-	(global_label "+24V"
+	(global_label "SLOT_5_PWR_SW"
 		(shape bidirectional)
 		(at 182.88 45.72 180)
 		(effects
@@ -2841,7 +2841,7 @@
 			)
 		)
 	)
-	(global_label "+24V"
+	(global_label "SLOT_4_PWR_SW"
 		(shape bidirectional)
 		(at 147.32 45.72 180)
 		(effects
@@ -3062,7 +3062,7 @@
 			)
 		)
 	)
-	(global_label "+24V"
+	(global_label "SLOT_2_PWR_SW"
 		(shape bidirectional)
 		(at 76.2 45.72 180)
 		(effects
@@ -3349,7 +3349,7 @@
 			)
 		)
 	)
-	(global_label "+24V"
+	(global_label "SLOT_6_PWR_SW"
 		(shape bidirectional)
 		(at 218.44 45.72 180)
 		(effects
@@ -5745,7 +5745,7 @@
 				)
 			)
 		)
-		(property "Pinout" "1=GND; 2=+24V; 3=SDA; 4=SCL"
+		(property "Pinout" "1=GND; 2=SLOT_6_PWR_SW; 3=SDA; 4=SCL"
 			(at 223.52 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -7244,7 +7244,7 @@
 				)
 			)
 		)
-		(property "Pinout" "1=GND; 2=+24V; 3=SDA; 4=SCL"
+		(property "Pinout" "1=GND; 2=SLOT_3_PWR_SW; 3=SDA; 4=SCL"
 			(at 116.84 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -7442,7 +7442,7 @@
 				)
 			)
 		)
-		(property "Pinout" "1=GND; 2=+24V; 3=SDA; 4=SCL"
+		(property "Pinout" "1=GND; 2=SLOT_5_PWR_SW; 3=SDA; 4=SCL"
 			(at 187.96 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -8311,7 +8311,7 @@
 				)
 			)
 		)
-		(property "Pinout" "1=GND; 2=+24V; 3=SDA; 4=SCL"
+		(property "Pinout" "1=GND; 2=SLOT_2_PWR_SW; 3=SDA; 4=SCL"
 			(at 81.28 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -8488,7 +8488,7 @@
 				)
 			)
 		)
-		(property "Pinout" "1=GND; 2=+24V; 3=SDA; 4=SCL"
+		(property "Pinout" "1=GND; 2=SLOT_4_PWR_SW; 3=SDA; 4=SCL"
 			(at 152.4 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -9108,7 +9108,7 @@
 			(color 0 0 0 0)
 		)
 		(uuid "ec3c44d8-d9d2-43be-bb72-fd3a79a51f47")
-		(property "Sheetname" "Slot 1 Power Switch"
+		(property "Sheetname" "Slot Power Switches"
 			(at 230 114.2884 0)
 			(show_name no)
 			(do_not_autoplace no)
