@@ -3155,28 +3155,7 @@
 			)
 		)
 	)
-	(global_label "PWR_SR_OE_N"
-		(shape bidirectional)
-		(at 157.48 33.02 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "5e86277e-c369-4986-9a40-b3e7c13ff593")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 157.48 33.02 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
+
 	(global_label "I2C_UP_SDA"
 		(shape bidirectional)
 		(at 48.26 91.44 180)
@@ -3243,29 +3222,8 @@
 			)
 		)
 	)
-	(global_label "PWR_SR_LATCH"
-		(shape bidirectional)
-		(at 157.48 35.56 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "a49987ad-b751-47da-a051-f1034701f366")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 157.48 35.56 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "PWR_SR_DATA"
+
+	(global_label "I2C_UP_SDA"
 		(shape bidirectional)
 		(at 157.48 38.1 0)
 		(effects
@@ -3287,7 +3245,7 @@
 			)
 		)
 	)
-	(global_label "PWR_SR_CLK"
+	(global_label "I2C_UP_SCL"
 		(shape bidirectional)
 		(at 144.78 38.1 180)
 		(effects
@@ -3331,27 +3289,18 @@
 			)
 		)
 	)
-	(global_label "PWR_SR_RESET_N"
-		(shape bidirectional)
-		(at 144.78 35.56 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "f12e398d-1091-4221-b08d-019aed6c15b3")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 144.78 35.56 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
+
+		(no_connect
+		(at 157.48 33.02)
+		(uuid "4c3a6cd0-6be3-42de-89ce-73f423f9a8b2")
+	)
+	(no_connect
+		(at 157.48 35.56)
+		(uuid "a2e77c0a-ef4d-4a26-b5fb-2d67d27107be")
+	)
+	(no_connect
+		(at 144.78 35.56)
+		(uuid "abb8b96d-1205-46f6-98c4-49400a15a2b2")
 	)
 	(symbol
 		(lib_id "power:GND")
