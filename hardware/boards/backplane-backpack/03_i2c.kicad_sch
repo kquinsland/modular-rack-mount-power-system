@@ -2723,6 +2723,16 @@
 	)
 	(wire
 		(pts
+			(xy 144.78 33.02) (xy 127 33.02)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a82e6aad-61f5-41e4-9c31-52acf5021465")
+	)
+	(wire
+		(pts
 			(xy 21.59 57.15) (xy 21.59 58.42)
 		)
 		(stroke
@@ -2800,16 +2810,6 @@
 			(type default)
 		)
 		(uuid "fc850400-101d-4ae0-9d7e-eda6084d52b2")
-	)
-	(wire
-		(pts
-			(xy 144.78 33.02) (xy 127 33.02)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a82e6aad-61f5-41e4-9c31-52acf5021465")
 	)
 	(label "SDA_SLOT_3"
 		(at 86.36 101.6 0)
@@ -3155,6 +3155,28 @@
 			)
 		)
 	)
+	(global_label "PWR_SR_OE_N"
+		(shape bidirectional)
+		(at 157.48 33.02 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "5e86277e-c369-4986-9a40-b3e7c13ff593")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 157.48 33.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
 	(global_label "I2C_UP_SDA"
 		(shape bidirectional)
 		(at 48.26 91.44 180)
@@ -3221,18 +3243,18 @@
 			)
 		)
 	)
-	(global_label "I2C_MUX_RESET_N"
+	(global_label "PWR_SR_LATCH"
 		(shape bidirectional)
-		(at 21.59 58.42 0)
+		(at 157.48 35.56 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify left)
 		)
-		(uuid "e8f5d56d-8910-4ff3-934e-117e4e86e28d")
+		(uuid "a49987ad-b751-47da-a051-f1034701f366")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 21.59 58.42 0)
+			(at 157.48 35.56 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3287,18 +3309,18 @@
 			)
 		)
 	)
-	(global_label "PWR_SR_LATCH"
+	(global_label "I2C_MUX_RESET_N"
 		(shape bidirectional)
-		(at 157.48 35.56 0)
+		(at 21.59 58.42 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify left)
 		)
-		(uuid "a49987ad-b751-47da-a051-f1034701f366")
+		(uuid "e8f5d56d-8910-4ff3-934e-117e4e86e28d")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 157.48 35.56 0)
+			(at 21.59 58.42 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3331,29 +3353,6 @@
 			)
 		)
 	)
-	(global_label "PWR_SR_OE_N"
-		(shape bidirectional)
-		(at 157.48 33.02 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "5e86277e-c369-4986-9a40-b3e7c13ff593")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 157.48 33.02 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-
 	(symbol
 		(lib_id "power:GND")
 		(at 157.48 55.88 0)
@@ -4204,6 +4203,84 @@
 			(project "backplane-backpack"
 				(path "/76314aad-fff2-4237-8c4a-2dbd4e06a2e1/ab8a1052-e2e8-4dde-ab61-e7465378221c"
 					(reference "#PWR011")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 127 33.02 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "45e66c09-ebd4-44dc-9d3f-e67b923758fb")
+		(property "Reference" "#PWR0399"
+			(at 127 39.37 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 127 38.1 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 127 33.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 127 33.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 127 33.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "2ba43c5d-6517-4501-985a-fb4186ad308d")
+		)
+		(instances
+			(project "backplane-backpack"
+				(path "/76314aad-fff2-4237-8c4a-2dbd4e06a2e1/ab8a1052-e2e8-4dde-ab61-e7465378221c"
+					(reference "#PWR0399")
 					(unit 1)
 				)
 			)
@@ -5287,84 +5364,6 @@
 			(project "backplane-backpack"
 				(path "/76314aad-fff2-4237-8c4a-2dbd4e06a2e1/ab8a1052-e2e8-4dde-ab61-e7465378221c"
 					(reference "#PWR0329")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 127 33.02 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "45e66c09-ebd4-44dc-9d3f-e67b923758fb")
-		(property "Reference" "#PWR0399"
-			(at 127 39.37 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 127 38.1 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 127 33.02 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 127 33.02 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 127 33.02 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "2ba43c5d-6517-4501-985a-fb4186ad308d")
-		)
-		(instances
-			(project "backplane-backpack"
-				(path "/76314aad-fff2-4237-8c4a-2dbd4e06a2e1/ab8a1052-e2e8-4dde-ab61-e7465378221c"
-					(reference "#PWR0399")
 					(unit 1)
 				)
 			)

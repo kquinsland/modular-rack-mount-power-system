@@ -1474,6 +1474,16 @@
 	)
 	(wire
 		(pts
+			(xy 118.11 93.98) (xy 116.84 93.98)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "51e00bb6-fb17-4edd-89ee-3159e34a9347")
+	)
+	(wire
+		(pts
 			(xy 152.4 96.52) (xy 152.4 93.98)
 		)
 		(stroke
@@ -1602,94 +1612,6 @@
 		)
 		(uuid "e9b972f3-9143-4b80-b22d-96198266ed9e")
 	)
-	(global_label "PWR_SR_OE_N"
-		(shape output)
-		(at 86.36 83.82 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "2ce7c610-d3e5-42a9-838b-4e3cd9818615")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 86.36 83.82 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "PWR_SR_RESET_N"
-		(shape output)
-		(at 86.36 86.36 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "4b7c7b20-91f5-4ca2-8136-f6dfc6a0972e")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 86.36 86.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "PWR_SR_LATCH"
-		(shape output)
-		(at 86.36 111.76 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "60f792dc-c0b5-4df4-8b55-c72473b9b054")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 86.36 111.76 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "PWR_SR_DATA"
-		(shape output)
-		(at 86.36 114.3 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "ac66b104-a5b7-4328-809f-7ff44e54d239")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 86.36 114.3 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
 	(global_label "I2C_UP_SCL"
 		(shape bidirectional)
 		(at 116.84 99.06 0)
@@ -1714,7 +1636,7 @@
 	)
 	(global_label "PWR_SR_CLK"
 		(shape output)
-		(at 116.84 93.98 0)
+		(at 118.11 93.98 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -1723,7 +1645,7 @@
 		)
 		(uuid "1cd5eb84-0689-4763-8f6b-0761b1c995d4")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 116.84 93.98 0)
+			(at 118.11 93.98 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1778,6 +1700,28 @@
 			)
 		)
 	)
+	(global_label "PWR_SR_OE_N"
+		(shape output)
+		(at 86.36 83.82 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "2ce7c610-d3e5-42a9-838b-4e3cd9818615")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 86.36 83.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
 	(global_label "CAN_RX"
 		(shape bidirectional)
 		(at 86.36 101.6 180)
@@ -1790,6 +1734,50 @@
 		(uuid "3e0b8b75-017f-46a3-b443-72696c84a0b2")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 86.36 101.6 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
+	(global_label "PWR_SR_RESET_N"
+		(shape output)
+		(at 86.36 86.36 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "4b7c7b20-91f5-4ca2-8136-f6dfc6a0972e")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 86.36 86.36 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
+	(global_label "PWR_SR_LATCH"
+		(shape output)
+		(at 86.36 111.76 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "60f792dc-c0b5-4df4-8b55-c72473b9b054")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 86.36 111.76 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1900,6 +1888,28 @@
 		(uuid "8cf24b89-e459-4cc2-a7d1-05cf62c25425")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 116.84 86.36 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
+	(global_label "PWR_SR_DATA"
+		(shape output)
+		(at 86.36 114.3 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "ac66b104-a5b7-4328-809f-7ff44e54d239")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 86.36 114.3 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
