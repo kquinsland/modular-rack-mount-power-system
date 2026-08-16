@@ -15,12 +15,9 @@
 
 # The board uses 2 oz outer copper. JLCPCB specifies a 0.254 mm PTH
 # annular ring for 2 oz copper, so use a slightly conservative 0.255 mm.
-(rule "JLCPCB 2 oz PTH annular ring"
+(rule "JLCPCB 2 oz PTH fabrication"
     (condition "A.Type == 'Pad' && A.Pad_Type == 'Through-hole'")
-    (constraint annular_width (min 0.255mm)))
-
-(rule "JLCPCB PTH hole to copper clearance"
-    (condition "A.Type == 'Pad' && A.Pad_Type == 'Through-hole'")
+    (constraint annular_width (min 0.255mm))
     (constraint hole_clearance (min 0.3mm)))
 
 (rule "JLCPCB pad hole to hole clearance"
@@ -45,5 +42,5 @@
     (constraint text_thickness (min 0.15mm)))
 
 (rule "JLCPCB legend graphic line width"
-    (condition "A.Type == 'Graphic' && (A.Layer == 'F.Silkscreen' || A.Layer == 'B.Silkscreen') && !A.Filled")
+    (condition "A.Type == 'Graphic' && (A.Layer == 'F.Silkscreen' || A.Layer == 'B.Silkscreen') && A.Line_Width > 0mm")
     (constraint assertion "A.Line_Width >= 0.15mm"))
