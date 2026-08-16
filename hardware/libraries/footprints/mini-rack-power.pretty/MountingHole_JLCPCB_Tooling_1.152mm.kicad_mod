@@ -1,0 +1,67 @@
+(footprint "MountingHole_JLCPCB_Tooling_1.152mm"
+	(version 20260206)
+	(generator "pcbnew")
+	(layer "F.Cu")
+	(descr "JLCPCB PCBA tooling hole: 1.152 mm round NPTH with 0.148 mm solder-mask expansion")
+	(tags "mountinghole tooling JLCPCB PCBA NPTH 1.152mm")
+	(property "Reference" "H?"
+		(at 0 -2.25 0)
+		(layer "F.SilkS")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Value" "MountingHole_JLCPCB_Tooling_1.152mm"
+		(at 0 2.25 0)
+		(layer "F.Fab")
+		(hide yes)
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr exclude_from_pos_files exclude_from_bom)
+	(fp_circle
+		(center 0 0)
+		(end 0.576 0)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.Fab")
+	)
+	(fp_circle
+		(center 0 0)
+		(end 0.826 0)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.CrtYd")
+	)
+	(fp_text user "${REFERENCE}"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(effects
+			(font
+				(size 0.6 0.6)
+				(thickness 0.1)
+			)
+		)
+	)
+	(pad "" np_thru_hole circle
+		(at 0 0)
+		(size 1.152 1.152)
+		(drill 1.152)
+		(layers "*.Cu" "*.Mask")
+		(solder_mask_margin 0.148)
+	)
+	(embedded_fonts no)
+)
