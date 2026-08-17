@@ -41,5 +41,6 @@
     (constraint text_height (min 1.0mm))
     (constraint text_thickness (min 0.15mm)))
 
-# No minimum graphic stroke width is asserted for silkscreen artwork.
-# Stock KiCad footprints commonly use 0.12 mm silkscreen strokes.
+(rule "JLCPCB legend graphic line width"
+    (condition "A.Type == 'Graphic' && (A.Layer == 'F.Silkscreen' || A.Layer == 'B.Silkscreen') && A.Line_Width > 0mm")
+    (constraint assertion "A.Line_Width >= 0.15mm"))
