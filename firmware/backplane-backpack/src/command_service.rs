@@ -2,10 +2,10 @@ use pdcan_core::{
     Commissioning, Controller, ControllerError, Mutation, PersistCompletion, revision_covers,
 };
 use pdcan_protocol::{
-    CommandResponse, CommandResult, CommissioningMessage, ControlCommand, ControlRequest,
-    DiscoveryInfo, Heartbeat, PortState, PortStateFlags, ResetFlags, WireFrame,
-    commissioning_opcode, encode_command_response, encode_commissioning, encode_heartbeat,
-    encode_port_state,
+    BoardTemperature, CommandResponse, CommandResult, CommissioningMessage, ControlCommand,
+    ControlRequest, DiscoveryInfo, Heartbeat, PortState, PortStateFlags, ResetFlags, WireFrame,
+    commissioning_opcode, encode_board_temperature, encode_command_response, encode_commissioning,
+    encode_heartbeat, encode_port_state,
 };
 use pdcan_types::{
     BoardDefinition, CommissioningState, ConfigRevision, FaultFlags, FirmwareVersion, NodeId,
@@ -612,6 +612,25 @@ impl CommandService {
         output
     }
 
+    pub fn board_temperature(&self, sequence: u16, temperature_centi_c: i16) -> ServiceOutput {
+        let mut output = ServiceOutput::EMPTY;
+        let Some(node_id) = self.commissioning.node_id() else {
+            return output;
+        };
+        if !self.commissioning.normal_traffic_allowed() {
+            return output;
+        }
+        let report = BoardTemperature {
+            node: node_id.get(),
+            sequence,
+            temperature_centi_c,
+        };
+        if let Ok(frame) = encode_board_temperature(report) {
+            output.push(frame);
+        }
+        output
+    }
+
     fn enqueue(&mut self, pending: PendingResponse) {
         if let Some(slot) = self.pending.iter_mut().find(|slot| slot.is_none()) {
             *slot = Some(pending);
@@ -861,7 +880,9 @@ fn pending_matches_commissioning(
 mod tests {
     use super::*;
     use pdcan_core::{Action, CompletionOutcome};
-    use pdcan_protocol::{decode_command_response, decode_commissioning, decode_heartbeat};
+    use pdcan_protocol::{
+        decode_board_temperature, decode_command_response, decode_commissioning, decode_heartbeat,
+    };
     use pdcan_types::{
         FanMode, HardwareRevision, PersistentSettings, PortBitmap, PortId, PortPolicy,
     };
@@ -1269,6 +1290,27 @@ mod tests {
         assert_eq!(heartbeat.supported_ports, 0x3f);
         assert_eq!(heartbeat.reset_flags, reset_flags);
         assert_eq!(heartbeat.uptime_seconds, 123);
+    }
+
+    #[test]
+    fn board_temperature_is_reported_only_after_commissioning() {
+        let node = NodeId::new(3).unwrap();
+        let (_, mut service) = setup(Some(node));
+        assert!(
+            service
+                .board_temperature(7, 2_513)
+                .frames
+                .iter()
+                .all(Option::is_none)
+        );
+
+        service.claim_window_complete();
+        let output = service.board_temperature(7, 2_513);
+        let frame = output.frames[0].unwrap();
+        let report = decode_board_temperature(frame.id(), frame.payload()).unwrap();
+        assert_eq!(report.node, node.get());
+        assert_eq!(report.sequence, 7);
+        assert_eq!(report.temperature_centi_c, 2_513);
     }
 
     #[test]

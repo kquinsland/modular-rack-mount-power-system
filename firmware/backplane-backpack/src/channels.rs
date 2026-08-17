@@ -35,6 +35,12 @@ pub struct FanRequest {
     pub force_full_speed: bool,
 }
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct BoardTemperatureSample {
+    pub sequence: u16,
+    pub temperature_centi_c: i16,
+}
+
 pub static PD_EMERGENCY_COMMANDS: Channel<
     CriticalSectionRawMutex,
     PdBusCommand,
@@ -67,6 +73,10 @@ pub static CONTROLLER_EVENTS: Channel<
 pub static CAN_TX: Channel<CriticalSectionRawMutex, WireFrame, CAN_TX_CAPACITY> = Channel::new();
 pub static FAN_REQUEST: Signal<CriticalSectionRawMutex, FanRequest> = Signal::new();
 pub static STATUS_REQUEST: Signal<CriticalSectionRawMutex, StatusCommand> = Signal::new();
+/// Latest-value handoff: routine temperature reporting must never block the
+/// shared I2C task behind controller or CAN congestion.
+pub static BOARD_TEMPERATURE: Signal<CriticalSectionRawMutex, BoardTemperatureSample> =
+    Signal::new();
 
 pub static CONTROLLER_PROGRESS: AtomicU32 = AtomicU32::new(0);
 pub static PD_BUS_PROGRESS: AtomicU32 = AtomicU32::new(0);

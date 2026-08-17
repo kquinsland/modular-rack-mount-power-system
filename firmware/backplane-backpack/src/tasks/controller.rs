@@ -4,16 +4,16 @@ use backplane_backpack_firmware::action_executor::{
 };
 use backplane_backpack_firmware::command_service::{CommandService, ServiceOutput};
 use backplane_backpack_firmware::status::{StatusCommand, StatusState};
-use embassy_futures::select::{Either, select};
+use embassy_futures::select::{Either3, select3};
 use embassy_time::{Duration, Instant, Timer};
 use pdcan_core::{Controller, PdActionKind, PowerOutputsActionKind};
 use pdcan_protocol::{ControlCommand, ResetFlags};
 use pdcan_types::{CommissioningState, FirmwareVersion, NodeUid, PersistentSettings};
 
 use crate::channels::{
-    CAN_TX, CONTROLLER_EVENTS, CONTROLLER_PROGRESS, ControllerEvent, FAN_REQUEST, FanRequest,
-    PD_EMERGENCY_COMMANDS, PD_POLICY_COMMANDS, PERSIST_COMMANDS, POWER_COMMANDS,
-    POWER_EMERGENCY_COMMANDS, POWER_OFF_COMMANDS, STATUS_REQUEST, advance,
+    BOARD_TEMPERATURE, CAN_TX, CONTROLLER_EVENTS, CONTROLLER_PROGRESS, ControllerEvent,
+    FAN_REQUEST, FanRequest, PD_EMERGENCY_COMMANDS, PD_POLICY_COMMANDS, PERSIST_COMMANDS,
+    POWER_COMMANDS, POWER_EMERGENCY_COMMANDS, POWER_OFF_COMMANDS, STATUS_REQUEST, advance,
 };
 
 const CLAIM_WINDOW_MS: u64 = 500;
@@ -54,8 +54,14 @@ pub async fn controller_task(settings: PersistentSettings, uid: NodeUid, reset_f
         dispatch_ready_actions(&mut controller).await;
         advance(&CONTROLLER_PROGRESS);
 
-        match select(CONTROLLER_EVENTS.receive(), Timer::after_millis(100)).await {
-            Either::First(event) => {
+        match select3(
+            CONTROLLER_EVENTS.receive(),
+            BOARD_TEMPERATURE.wait(),
+            Timer::after_millis(100),
+        )
+        .await
+        {
+            Either3::First(event) => {
                 service.set_uptime_seconds(
                     u32::try_from((Instant::now() - started_at).as_secs()).unwrap_or(u32::MAX),
                 );
@@ -77,7 +83,11 @@ pub async fn controller_task(settings: PersistentSettings, uid: NodeUid, reset_f
                     });
                 }
             }
-            Either::Second(()) => {}
+            Either3::Second(sample) => {
+                let output = service.board_temperature(sample.sequence, sample.temperature_centi_c);
+                dispatch_service_output(&output).await;
+            }
+            Either3::Third(()) => {}
         }
 
         if service.commissioning().state() == CommissioningState::Claiming

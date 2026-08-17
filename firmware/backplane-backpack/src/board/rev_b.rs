@@ -40,6 +40,9 @@ pub const MUX_RESET_AVAILABLE: bool = false;
 /// measured on Rev B hardware.
 pub const POWER_GATE_SETTLE_MS_PROVISIONAL: u64 = 10;
 pub const POWER_EXPANDER_ADDRESS: u8 = 0x20;
+/// The backplane TMP102 has ADD0 strapped low and is connected directly to the
+/// upstream I2C bus rather than to a TCA9548A downstream channel.
+pub const BOARD_TEMPERATURE_SENSOR_ADDRESS: u8 = 0x48;
 
 const _: () = assert!(REV_B.supported_ports.bits() == 0x3F);
 const _: () = assert!(REV_B.power_gate_mask() == 0x3F);
@@ -78,6 +81,10 @@ mod tests {
             pdcan_drivers::tca9548a::DEFAULT_ADDRESS
         );
         assert_eq!(POWER_GATE_SETTLE_MS_PROVISIONAL, 10);
+        assert_eq!(
+            BOARD_TEMPERATURE_SENSOR_ADDRESS,
+            pdcan_drivers::tmp102::DEFAULT_ADDRESS
+        );
         assert_eq!(CONFIG_FLASH_START + CONFIG_FLASH_LENGTH, 0x0804_0000);
     }
 }

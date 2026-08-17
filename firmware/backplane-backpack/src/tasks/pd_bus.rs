@@ -6,7 +6,7 @@ use backplane_backpack_firmware::action_executor::{
 };
 #[cfg(feature = "board-rev-b")]
 use backplane_backpack_firmware::board::{
-    POWER_EXPANDER_ADDRESS, POWER_GATE_SETTLE_MS_PROVISIONAL,
+    BOARD_TEMPERATURE_SENSOR_ADDRESS, POWER_EXPANDER_ADDRESS, POWER_GATE_SETTLE_MS_PROVISIONAL,
 };
 #[cfg(feature = "board-rev-b")]
 use embassy_futures::select::{Either, select};
@@ -22,12 +22,13 @@ use pdcan_core::{CompletionOutcome, PdActionKind};
 use pdcan_drivers::pca9554::Pca9554;
 use pdcan_drivers::sw3538::{DEFAULT_ADDRESS, Error as Sw3538Error, FixedPdoPlan, Sw3538};
 use pdcan_drivers::tca9548a::Tca9548a;
+use pdcan_drivers::tmp102::Tmp102;
 use pdcan_types::{MAX_PORTS, PortId, PortPolicy};
 use portable_atomic::Ordering;
 
 use crate::channels::{
-    CONTROLLER_EVENTS, ControllerEvent, PD_BUS_PROGRESS, PD_EMERGENCY_COMMANDS, PD_POLICY_COMMANDS,
-    POWERED_PORTS, advance,
+    BOARD_TEMPERATURE, BoardTemperatureSample, CONTROLLER_EVENTS, ControllerEvent, PD_BUS_PROGRESS,
+    PD_EMERGENCY_COMMANDS, PD_POLICY_COMMANDS, POWERED_PORTS, advance,
 };
 #[cfg(feature = "board-rev-b")]
 use crate::channels::{POWER_COMMANDS, POWER_EMERGENCY_COMMANDS, POWER_OFF_COMMANDS};
@@ -35,6 +36,7 @@ use crate::channels::{POWER_COMMANDS, POWER_EMERGENCY_COMMANDS, POWER_OFF_COMMAN
 const PROBE_INTERVAL_MS_PROVISIONAL: u64 = 250;
 const MUX_RESET_PULSE_MS: u64 = 1;
 const FAILURE_RETRY_DELAY_MS_PROVISIONAL: u64 = 100;
+const BOARD_TEMPERATURE_INTERVAL_MS: u64 = 1_000;
 
 struct ProbeState {
     present: [bool; MAX_PORTS],
@@ -68,19 +70,19 @@ pub async fn pd_bus_task(
     let mux = Tca9548a::default_address();
     #[cfg(feature = "board-rev-b")]
     let mut power = Pca9554::new(POWER_EXPANDER_ADDRESS);
+    let temperature_sensor = board_temperature_sensor();
+    let mut temperature_sequence = 0_u16;
     let mut devices: [Sw3538; MAX_PORTS] =
         core::array::from_fn(|_| Sw3538::assuming_base_bank(DEFAULT_ADDRESS));
     let mut probe_state = ProbeState::INITIAL;
     let mut probe_deadline = Instant::now() + Duration::from_millis(PROBE_INTERVAL_MS_PROVISIONAL);
+    let mut temperature_deadline =
+        Instant::now() + Duration::from_millis(BOARD_TEMPERATURE_INTERVAL_MS);
 
-    POWERED_PORTS.store(0, Ordering::Release);
     #[cfg(feature = "board-rev-b")]
-    let _ = power
-        .initialize_outputs_low(&mut bus, BOARD.power_gate_mask())
-        .await;
-    if mux.deselect_all(&mut bus).await.is_err() {
-        reset_mux_if_available(&mut mux_reset).await;
-    }
+    initialize_shared_bus(&mut bus, mux, &mut mux_reset, &mut power).await;
+    #[cfg(feature = "board-rev-a")]
+    initialize_shared_bus(&mut bus, mux, &mut mux_reset).await;
     advance(&PD_BUS_PROGRESS);
 
     loop {
@@ -101,21 +103,39 @@ pub async fn pd_bus_task(
             advance(&PD_BUS_PROGRESS);
             continue;
         }
-        if Instant::now() >= probe_deadline {
-            probe_deadline = next_probe_deadline();
-            probe_next_port(
-                &mut bus,
-                mux,
-                &mut mux_reset,
-                &mut devices,
-                &mut probe_state,
-            )
-            .await;
+        if read_board_temperature_if_due(
+            &mut bus,
+            mux,
+            &mut mux_reset,
+            temperature_sensor,
+            &mut temperature_deadline,
+            &mut temperature_sequence,
+        )
+        .await
+        {
+            advance(&PD_BUS_PROGRESS);
+            continue;
+        }
+        if probe_if_due(
+            &mut bus,
+            mux,
+            &mut mux_reset,
+            &mut devices,
+            &mut probe_state,
+            &mut probe_deadline,
+        )
+        .await
+        {
             advance(&PD_BUS_PROGRESS);
             continue;
         }
 
-        match next_bus_event(probe_deadline).await {
+        match next_bus_event(
+            probe_deadline,
+            temperature_sensor.map(|_| temperature_deadline),
+        )
+        .await
+        {
             BusEvent::Pd(command) => {
                 process_command(&mut bus, mux, &mut mux_reset, &mut devices, command).await;
             }
@@ -124,15 +144,26 @@ pub async fn pd_bus_task(
                 process_power_command(&mut bus, &mut power, command).await;
             }
             BusEvent::Probe => {
-                probe_deadline = next_probe_deadline();
-                probe_next_port(
+                if !read_board_temperature_if_due(
                     &mut bus,
                     mux,
                     &mut mux_reset,
-                    &mut devices,
-                    &mut probe_state,
+                    temperature_sensor,
+                    &mut temperature_deadline,
+                    &mut temperature_sequence,
                 )
-                .await;
+                .await
+                {
+                    let _ = probe_if_due(
+                        &mut bus,
+                        mux,
+                        &mut mux_reset,
+                        &mut devices,
+                        &mut probe_state,
+                        &mut probe_deadline,
+                    )
+                    .await;
+                }
             }
         }
         advance(&PD_BUS_PROGRESS);
@@ -140,7 +171,49 @@ pub async fn pd_bus_task(
 }
 
 #[cfg(feature = "board-rev-a")]
-async fn next_bus_event(probe_deadline: Instant) -> BusEvent {
+const fn board_temperature_sensor() -> Option<Tmp102> {
+    None
+}
+
+#[cfg(feature = "board-rev-b")]
+#[allow(clippy::unnecessary_wraps)]
+const fn board_temperature_sensor() -> Option<Tmp102> {
+    Some(Tmp102::new(BOARD_TEMPERATURE_SENSOR_ADDRESS))
+}
+
+#[cfg(feature = "board-rev-a")]
+async fn initialize_shared_bus(
+    bus: &mut I2c<'static, Async, Master>,
+    mux: Tca9548a,
+    mux_reset: &mut Option<Output<'static>>,
+) {
+    POWERED_PORTS.store(0, Ordering::Release);
+    if mux.deselect_all(bus).await.is_err() {
+        reset_mux_if_available(mux_reset).await;
+    }
+}
+
+#[cfg(feature = "board-rev-b")]
+async fn initialize_shared_bus(
+    bus: &mut I2c<'static, Async, Master>,
+    mux: Tca9548a,
+    mux_reset: &mut Option<Output<'static>>,
+    power: &mut Pca9554,
+) {
+    POWERED_PORTS.store(0, Ordering::Release);
+    let _ = power
+        .initialize_outputs_low(bus, BOARD.power_gate_mask())
+        .await;
+    if mux.deselect_all(bus).await.is_err() {
+        reset_mux_if_available(mux_reset).await;
+    }
+}
+
+#[cfg(feature = "board-rev-a")]
+async fn next_bus_event(
+    probe_deadline: Instant,
+    _temperature_deadline: Option<Instant>,
+) -> BusEvent {
     match select3(
         PD_EMERGENCY_COMMANDS.receive(),
         PD_POLICY_COMMANDS.receive(),
@@ -154,7 +227,17 @@ async fn next_bus_event(probe_deadline: Instant) -> BusEvent {
 }
 
 #[cfg(feature = "board-rev-b")]
-async fn next_bus_event(probe_deadline: Instant) -> BusEvent {
+async fn next_bus_event(
+    probe_deadline: Instant,
+    temperature_deadline: Option<Instant>,
+) -> BusEvent {
+    let periodic_deadline = temperature_deadline.map_or(probe_deadline, |temperature_deadline| {
+        if temperature_deadline < probe_deadline {
+            temperature_deadline
+        } else {
+            probe_deadline
+        }
+    });
     match select(
         select3(
             POWER_EMERGENCY_COMMANDS.receive(),
@@ -164,7 +247,7 @@ async fn next_bus_event(probe_deadline: Instant) -> BusEvent {
         select3(
             POWER_COMMANDS.receive(),
             PD_POLICY_COMMANDS.receive(),
-            Timer::at(probe_deadline),
+            Timer::at(periodic_deadline),
         ),
     )
     .await
@@ -321,6 +404,70 @@ async fn process_command(
 
 fn next_probe_deadline() -> Instant {
     Instant::now() + Duration::from_millis(PROBE_INTERVAL_MS_PROVISIONAL)
+}
+
+fn next_temperature_deadline() -> Instant {
+    Instant::now() + Duration::from_millis(BOARD_TEMPERATURE_INTERVAL_MS)
+}
+
+async fn read_board_temperature(
+    bus: &mut I2c<'static, Async, Master>,
+    mux: Tca9548a,
+    mux_reset: &mut Option<Output<'static>>,
+    sensor: Tmp102,
+    sequence: &mut u16,
+) {
+    // The sensor sits on the direct/upstream bus. Deselect every downstream
+    // channel first so a module with the same address cannot contend with it.
+    if mux.deselect_all(bus).await.is_err() {
+        reset_mux_if_available(mux_reset).await;
+        return;
+    }
+    match sensor.read_temperature_centi_c(bus).await {
+        Ok(temperature_centi_c) => {
+            BOARD_TEMPERATURE.signal(BoardTemperatureSample {
+                sequence: *sequence,
+                temperature_centi_c,
+            });
+            *sequence = (*sequence).wrapping_add(1);
+        }
+        Err(_) => reset_mux_if_available(mux_reset).await,
+    }
+}
+
+async fn read_board_temperature_if_due(
+    bus: &mut I2c<'static, Async, Master>,
+    mux: Tca9548a,
+    mux_reset: &mut Option<Output<'static>>,
+    sensor: Option<Tmp102>,
+    deadline: &mut Instant,
+    sequence: &mut u16,
+) -> bool {
+    let Some(sensor) = sensor else {
+        return false;
+    };
+    if Instant::now() < *deadline {
+        return false;
+    }
+    *deadline = next_temperature_deadline();
+    read_board_temperature(bus, mux, mux_reset, sensor, sequence).await;
+    true
+}
+
+async fn probe_if_due(
+    bus: &mut I2c<'static, Async, Master>,
+    mux: Tca9548a,
+    mux_reset: &mut Option<Output<'static>>,
+    devices: &mut [Sw3538; MAX_PORTS],
+    state: &mut ProbeState,
+    deadline: &mut Instant,
+) -> bool {
+    if Instant::now() < *deadline {
+        return false;
+    }
+    *deadline = next_probe_deadline();
+    probe_next_port(bus, mux, mux_reset, devices, state).await;
+    true
 }
 
 async fn probe_next_port(
