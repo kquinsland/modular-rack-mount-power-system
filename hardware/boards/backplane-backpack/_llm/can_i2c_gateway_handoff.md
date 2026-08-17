@@ -120,10 +120,10 @@ Connect together:
 - Q2.2
 - D1.3
 - D3.3 through D8.3
-- J2.3
+- J2.1
 - J3.1 through J8.1
 - J9.1
-- J10.2
+- J10.1
 - all capacitor ground terminals identified below
 - all resistor ground terminals identified below
 
@@ -180,7 +180,7 @@ C5/C6 must sit immediately at U4 VIN/GND. C9/C10 must sit immediately at U5 VIN/
 - R15.1
 - R16.1
 - R3.1 through R14.1 if those resistors are populated
-- J10.1
+- J10.2
 - TP_3V3
 
 C8.2, C14.2, C1.2, C2.2, C3.2, C4.2, C16.2 -> GND.
@@ -480,27 +480,35 @@ J9.1 -> GND.
 
 ## 5. High-level topology
 
-```
-                         VIN_RAW 20–36 V
-                              |
-                  +-----------+-----------+
-                  |                       |
-             U4 LMR51610              U5 LMR51610
-                  |                       |
-                L1 15uH                 L2 15uH
-                  |                       |
-                +3V3                   +12V
-                  |                       |
-       +----------+----------+            +--> Q1/Q2 -> J9 fan
-       |          |          |
-      U1         U2         U3
-   STM32C092   TCA9548A   TCAN3413
-       |          |          |
-       |          |          +--> L3 CAN CMC -> D1 CAN TVS -> J2
-       |          |
-       |          +--> ch0..ch5 -> J11 backplane mate -> per-slot backplane protection
-       |
-       +--> LED1 WS2812B-MINI-V6
+```mermaid
+flowchart TD
+    vin[VIN_RAW 20–36 V]
+    buck3v3[U4 LMR51610 + L1]
+    buck12[U5 LMR51610 + L2]
+    rail3v3[+3V3]
+    rail12[+12V]
+    mcu[U1 STM32C092]
+    mux[U2 TCA9548A]
+    canphy[U3 TCAN3413]
+    canio[L3 CMC + D1 TVS + J2]
+    fan[Q1/Q2 + J9 fan]
+    led[LED1 WS2812B-MINI-V6]
+
+    vin --> buck3v3 --> rail3v3
+    vin --> buck12 --> rail12 --> fan
+    rail3v3 --> mcu
+    rail3v3 --> mux
+    rail3v3 --> canphy --> canio
+    mcu --> mux
+    mcu --> canphy
+    mcu --> fan
+    mcu --> led
+    mux -->|channel 0 / D3| J3
+    mux -->|channel 1 / D4| J4
+    mux -->|channel 2 / D5| J5
+    mux -->|channel 3 / D6| J6
+    mux -->|channel 4 / D7| J7
+    mux -->|channel 5 / D8| J8
 ```
 
 ---

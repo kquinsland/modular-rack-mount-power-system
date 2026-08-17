@@ -1,7 +1,22 @@
 # Backplane Backpack
 
-This board mates with the backplane - hench the 'backpack' moniker.
-It shares the same mechanical footprint as the backplane and handles all of the smarts that would otherwise crowd out the high-current traces on the backplane.
+This board mates with the backplane—hence the "backpack" name. It shares the
+backplane's mechanical footprint and contains the control electronics that would
+otherwise displace high-current routing.
 
-At a very high level, it's a simple CAN ,<-> i2c bridge built around a STM32 micro.
-There is a 3/4 pin header for a standard 12V pc fan and a simple neo pixel ring for status indication.
+Rev A is a CAN-FD-to-I2C/PD controller built around an STM32C092FCP6. It includes:
+
+- a TCAN3413 CAN-FD transceiver;
+- a TCA9548A mux with six populated downstream I2C connectors and two test-pad
+  channels;
+- support for a configurable 3-wire or 4-wire 12 V PC fan; and
+- one WS2812-compatible status LED.
+
+Firmware and protocol capacity is eight zero-based logical ports. Rev A supports
+ports 0 through 5; ports 6 and 7 are explicitly unsupported rather than absent.
+
+Rev A has no MCU-controlled high-side switch per PD module. Firmware policy is
+therefore a soft limit that applies after module discovery/configuration, and the
+emergency-disable operation is best effort through I2C. See
+[`firmware/plan.md`](../../../firmware/plan.md) for the accepted limitations and
+future-hardware recommendation.

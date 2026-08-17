@@ -10,9 +10,11 @@ Responsibilities:
 - Carry the slot-status LED chain.
 - Define slot numbering and slot-local net naming.
 
-The ESP32 and fan circuit are intentionally located on the separate `controller`
-board. The upstream I2C header carries 3.3 V logic power; the separate LED header
-carries 5 V.
+The controller/I2C-mux/LED arrangement represented by this board revision predates
+the active Backplane Backpack architecture. Preserve the source as hardware history,
+but reconcile it with the backpack interface before using it as a manufacturing
+source. The active controller, mux, fan, and status LED now live on the
+`backplane-backpack` board.
 
 Relevant docs:
 

@@ -1,45 +1,88 @@
 # System Overview
 
-Mini Rack Power uses one central controller PCB, one or more backplane PCBs, and
-one carrier PCB per populated slot.
+Mini Rack Power uses one or more Backplane Backpack controllers on a trusted
+CAN-FD network. Each backpack manages the USB-C PD modules associated with one
+backplane while the backplane carries the high-current nominal 24 V distribution.
 
-```text
-                         +--> 12 V fan
-                         |
-Controller -- I2C/3V3 --+--> Backplane -- slot DC/I2C --> Carrier(s)
-           `- LED/5V -------'       `-- daisy-chain --> more backplanes
+```mermaid
+flowchart LR
+    host[Linux pdcan or embedded CAN host]
+    can[Trusted CAN-FD bus]
+    backpack1[Backplane Backpack node]
+    backpack2[Additional Backpack node]
+    boundary[Upstream I2C + 3.3 V/GND boundary]
+    backplane[Backplane control and 24 V distribution]
+    pca[PCA9554 slot power]
+    mux[TCA9548A]
+    modules[SW3538 modules / ports 0..5]
+    fan[3-wire or 4-wire fan]
+
+    host <--> can
+    can <--> backpack1
+    can <--> backpack2
+    backpack1 <--> boundary
+    boundary <--> pca
+    boundary <--> mux
+    pca --> backplane
+    mux <--> modules
+    backplane --> modules
+    backpack1 --> fan
 ```
 
-## Controller
+The repository implements the backpack firmware, shared PDCAN protocol/domain
+crates, a simulator, and the Linux `pdcan` tool. Firmware for other CAN hosts is
+outside scope.
 
-The single controller PCB provides:
+## Backplane Backpack
 
-- A WT32-ETH01 ESP32/Ethernet module.
-- High-side supply PWM and tachometer input for one 3-wire 12 V fan.
-- The upstream I2C bus and 3.3 V logic rail for the backplane mux.
-- Addressable-LED data and 5 V for the backplane LED chain.
-- A regulated 5 V/12 V power-input header.
+The active controller is based on an STM32C092FCP6 and provides:
 
-## Backplane
+- CAN-FD through a TCAN3413 transceiver;
+- exclusive ownership of the upstream I2C bus shared by the main-backplane
+  PCA9554 power expander and TCA9548A mux;
+- discovery, policy, monitoring, and best-effort control of SW3538 PD modules;
+- configurable 3-wire/4-wire fan control and tachometer monitoring;
+- a status LED; and
+- SWD programming/debug access.
 
-The backplane provides the shared slot infrastructure:
+Firmware, protocol, persistent configuration, and simulation support eight
+zero-based logical ports. Rev A has six physical downstream connectors, so it
+advertises support for ports 0 through 5 and rejects ports 6 and 7 as unsupported.
 
-- XT30-style or hybrid mating connectors for carrier boards.
-- DC distribution to each carrier slot.
-- I2C fanout through a mux, currently expected to be a TI TCA9548A-family part.
-- One isolated I2C channel per carrier slot so fixed-address DC/USB-C PD modules can be reused.
-- Slot-status LEDs and daisy-chain headers for I2C and LED data.
+## Backplane and Carrier
 
-## Carrier
+The backpack/backplane control connector carries only upstream SDA/SCL plus
+duplicated 3.3 V and ground. The backplane owns both I2C devices, FET controls,
+slot-local protection/pull-ups, carrier connectors, and nominal 24 V distribution.
+Each carrier hosts one fixed-address SW3538 module. The backplane's I2C mux
+isolates those identical addresses so only one downstream segment is selected at
+a time.
 
-Each carrier PCB plugs into one backplane slot and hosts one fixed-address DC/USB-C PD module. The carrier should expose only the slot-local DC and I2C interface to the backplane.
+Module presence and USB-C partner/contract state are separate. A healthy
+backpack may have no installed modules or may report failures for every module
+while its controller, PD bus, and CAN reporting remain operational.
 
-## Open Items
+## Safety and Policy Boundary
 
-- Exact XT30-style connector part number and contact allocation.
-- Slot count.
-- DC voltage and current rating per slot.
-- Whether carrier detection, interrupt, enable, or fault pins are needed in addition to DC and I2C.
-- Final keyed connector families for controller power, I2C, LED, and fan wiring.
-- Verified 3.3 V current budget for the WT32 output and all daisy-chained backplane muxes.
-- Board outlines, mounting, placement refinement, and routing.
+Firmware rejects port policies above 20 V, 5 A, or 100 W and does not expose EPR
+or the SW3538's proprietary 7 A mode. Rev A has no per-port MCU-controlled
+high-side switch, so this is a firmware soft ceiling after module initialization,
+not independent overcurrent protection.
+
+The Rev B prototype adds per-slot high-side input switches driven by a PCA9554.
+They can remove module power independently of SW3538 responsiveness, but a cutoff
+still requires a functioning upstream I2C bus. Those switches are not current
+limiters, and because they also power the SW3538, its reset/default state still
+exists briefly between FET-on and policy application.
+
+The supported deployment sequence is to provision the backpack, install modules,
+persist port policy, and only then attach loads. Emergency disable is a
+highest-priority best-effort I2C operation. Its backpack-wide latch persists across
+watchdog reset and complete power loss and requires an explicit operator
+acknowledgment through `pdcan` before normal operation may resume.
+
+## Superseded Architecture
+
+The former central WT32 controller and daisy-chained I2C/LED controller
+topology is superseded. Its hardware sources remain as project history, but
+active firmware and interface documentation do not target it.

@@ -2,17 +2,16 @@
 
 Track the system and per-slot power assumptions here.
 
-| Item                       | Value | Notes                                                    |
-| -------------------------- | ----- | -------------------------------------------------------- |
-| Backplane input voltage    | TBD   | Define nominal and max.                                  |
-| Backplane input current    | TBD   | Include connector, copper, and fuse limits.              |
-| Carrier slot voltage       | TBD   | Usually same as input unless converted on the backplane. |
-| Carrier slot current       | TBD   | Must match connector, copper, and protection strategy.   |
-| Number of carrier slots    | TBD   | Determines total backplane current.                      |
-| USB-C PD module max output | TBD   | Per carrier.                                             |
-| Controller 5 V input       | TBD   | WT32 plus all backplane WS2812B LEDs.                    |
-| Controller 12 V input      | TBD   | Fan start/stall current and switching margin.            |
-| WT32 3.3 V output budget   | TBD   | Controller logic plus every daisy-chained TCA9548A.      |
+| Item | Working value | Notes |
+| --- | ---: | --- |
+| Backplane nominal input | 24 V | Final supply tolerance remains to be documented. |
+| Backplane sustained load target | Approximately 30 A | Six ports near 4.7 A input plus system margin. |
+| Carrier slot voltage | Nominal 24 V | Direct high-current backplane feed. |
+| Carrier slot input target | Approximately 4.7 A | 100 W output at 90% efficiency is approximately 4.63 A input. |
+| Rev A carrier slots | 6 | Firmware/protocol logical capacity remains 8. |
+| USB-C PD policy ceiling | 100 W | Maximum 20 V, 5 A; no EPR or proprietary 7 A mode. |
+| Backpack logic rail | 3.3 V | Local LMR51610 supplies MCU, mux, CAN PHY, and status LED. |
+| Backpack fan rail | 12 V | Local LMR51610; final fan start/stall budget remains open. |
 
 ## Protection Checklist
 
@@ -27,8 +26,16 @@ Track the system and per-slot power assumptions here.
 It turns out that the [SW3538 modules](https://github.com/happyme531/h1_SW35xx/issues/13#issuecomment-4361605621) use a non-standard configuration to reach their advertised "140W" spec; proprietary 20 V at 7 A mode.
 Standard USB PD 3.0 tops out at 20 V at 5 A (100 W) which is already _plenty_ for my intended loads (they top out at around 70W!).
 
-I don't have any cable/load that can even negotiate above 100W so we can treat this as the power ceiling.
-To add an extra layer, I can limit them to 100W in software (probably...) and that will be plenty for my intended uses.
+Firmware enforces 100 W as the maximum accepted/programmed port policy. Rev A has
+no MCU-controlled high-side switch, so this is a soft ceiling after SW3538
+initialization rather than an independent protection device. Provision the backpack,
+install modules, persist policy, and only then attach loads.
+
+The Rev B prototype's PCA9554-controlled per-slot FETs provide input isolation,
+not overcurrent protection. Firmware persists an enable policy before turning on
+its FET and restores enabled ports sequentially to reduce aggregate inrush. A
+cutoff depends on the shared upstream I2C bus, and the 100 W ceiling still depends
+on SW3538 configuration after power-on.
 
 As the 100W figure is the "at the C port" figure, we must account for losses.
 The datasheet's greater-than-95% figure is measured at a much lighter 12 V to 5 V, 25 W operating point, so it should not be used for the 24 V to 20 V full-load budget.

@@ -25,8 +25,21 @@ prek = "latest"
 uv = "0.12.5"
 bun = "latest"
 node = "26.7.0"
+rust = "1.97.1"
 "pipx:easyeda2kicad" = "1.0.1"
 ripgrep = "15.2.0"
+
+[tasks."firmware:check"]
+description = "Run the host tests, generated-file checks, and Rev A firmware build"
+run = "cargo xtask ci"
+
+[tasks."firmware:build"]
+description = "Build the Backplane Backpack Rev A firmware"
+run = "cargo xtask firmware build --board rev-a --release"
+
+[tasks."firmware:dbc"]
+description = "Regenerate the PDCAN DBC from protocol definitions"
+run = "cargo xtask dbc"
 
 [tasks."kicad-mcp:install"]
 description = "Install KiCAD MCP Server Node and Python dependencies"
