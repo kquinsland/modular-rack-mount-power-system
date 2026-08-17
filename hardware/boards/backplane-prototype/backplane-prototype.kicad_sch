@@ -1569,6 +1569,19 @@
 			(embedded_fonts no)
 		)
 	)
+	(text "Marked as DNP so it's not exported in the BOM for JLC Assembly.\nThese are hand-solder after the boards come back"
+		(exclude_from_sim no)
+		(at 132.08 22.86 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+				(thickness 0.22)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+		(uuid "8b5918d8-31e8-4c52-b801-c16bdb83f77e")
+	)
 	(text "Per-slot 4.7 k I2C pullups bias each isolated TCA9548A channel after the slot ESD protection."
 		(exclude_from_sim no)
 		(at 26.416 32.258 0)
@@ -1590,6 +1603,19 @@
 			(justify left)
 		)
 		(uuid "f1d4acd9-4193-5bf3-b5d4-0fac01de008b")
+	)
+	(text "For SMT/A services, need at least three mount/holding holes."
+		(exclude_from_sim no)
+		(at 21.336 158.496 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+				(thickness 0.22)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+		(uuid "f2e9d1c5-bd35-4328-9eed-2e60d11baf80")
 	)
 	(text "Slot connectors: pin 1 = GND, pin 2 = per-slot switched +24V, pin 3 = SDA, pin 4 = SCL.\nJ8 pins 15/16 carry upstream SDA/SCL; pins 3-14 and 17-19 are spare."
 		(exclude_from_sim no)
@@ -2905,6 +2931,80 @@
 		)
 	)
 	(symbol
+		(lib_id "Mechanical:MountingHole")
+		(at 34.29 165.1 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files no)
+		(dnp no)
+		(uuid "01f1d5fd-6922-458c-a3bb-ade69dde5e3d")
+		(property "Reference" "H8"
+			(at 34.29 161.29 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "ToolingHole_1.152mm"
+			(at 34.29 168.275 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "mini-rack-power:MountingHole_JLCPCB_Tooling_1.152mm"
+			(at 34.29 165.1 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://jlcpcb.com/help/article/how-to-add-tooling-holes-for-pcb-assembly-order"
+			(at 34.29 165.1 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "JLCPCB PCBA tooling hole, 1.152 mm round NPTH with 0.148 mm solder-mask expansion"
+			(at 34.29 165.1 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "backplane-prototype"
+				(path "/348cc909-6345-4013-9bef-98714057a65b"
+					(reference "H8")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "backplane-backpack:PESD_Dual_SOT23")
 		(at 41.91 78.74 270)
 		(unit 1)
@@ -3036,84 +3136,6 @@
 			(project "backplane-prototype"
 				(path "/348cc909-6345-4013-9bef-98714057a65b"
 					(reference "D1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 142.24 185.42 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "0d29c430-dbfe-4439-9bd2-9ea7bd318138")
-		(property "Reference" "#PWR014"
-			(at 142.24 191.77 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 142.24 190.5 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 142.24 185.42 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 142.24 185.42 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 142.24 185.42 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "5b83b37c-e09e-4f62-944c-2af359d2848f")
-		)
-		(instances
-			(project "backplane-prototype"
-				(path "/348cc909-6345-4013-9bef-98714057a65b"
-					(reference "#PWR014")
 					(unit 1)
 				)
 			)
@@ -3935,84 +3957,6 @@
 			(project "backplane-prototype"
 				(path "/348cc909-6345-4013-9bef-98714057a65b"
 					(reference "#FLG03")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:PWR_FLAG")
-		(at 52.07 120.65 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "be9c6cc4-529a-4fdb-a977-7d0a4c9fee13")
-		(property "Reference" "#FLG02"
-			(at 52.07 127 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "PWR_FLAG"
-			(at 52.578 115.316 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 52.07 120.65 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 52.07 120.65 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Special symbol for telling ERC where power comes from"
-			(at 52.07 120.65 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "7be470ee-7623-423b-9678-97a2672e1573")
-		)
-		(instances
-			(project "backplane-prototype"
-				(path "/348cc909-6345-4013-9bef-98714057a65b"
-					(reference "#FLG02")
 					(unit 1)
 				)
 			)
@@ -6172,86 +6116,6 @@
 	)
 	(symbol
 		(lib_id "Mechanical:MountingHole_Pad")
-		(at 142.24 182.88 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files no)
-		(dnp yes)
-		(fields_autoplaced yes)
-		(uuid "81adc75b-1884-42ab-93a7-514881668051")
-		(property "Reference" "H4"
-			(at 144.78 181.6099 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "MountingHole_Pad"
-			(at 144.78 185.42 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "mini-rack-power:MountingHole_2.2mm_M2_Pad_Via_JLC"
-			(at 142.24 182.88 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 142.24 182.88 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Grounded M3 mounting hole"
-			(at 142.24 182.88 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "309ce516-3aaa-4fc7-9a7f-a36fe4f2bae8")
-		)
-		(instances
-			(project "backplane-prototype"
-				(path "/348cc909-6345-4013-9bef-98714057a65b"
-					(reference "H4")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Mechanical:MountingHole_Pad")
 		(at 157.48 182.88 0)
 		(unit 1)
 		(body_style 1)
@@ -7502,6 +7366,232 @@
 		)
 	)
 	(symbol
+		(lib_id "Mechanical:MountingHole")
+		(at 44.45 165.1 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files no)
+		(dnp no)
+		(uuid "b1d92d00-1e93-4777-aba1-28f8f3a204ef")
+		(property "Reference" "H9"
+			(at 44.45 161.29 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "ToolingHole_1.152mm"
+			(at 44.45 168.275 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "mini-rack-power:MountingHole_JLCPCB_Tooling_1.152mm"
+			(at 44.45 165.1 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://jlcpcb.com/help/article/how-to-add-tooling-holes-for-pcb-assembly-order"
+			(at 44.45 165.1 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "JLCPCB PCBA tooling hole, 1.152 mm round NPTH with 0.148 mm solder-mask expansion"
+			(at 44.45 165.1 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "backplane-prototype"
+				(path "/348cc909-6345-4013-9bef-98714057a65b"
+					(reference "H9")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Mechanical:MountingHole")
+		(at 24.13 165.1 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files no)
+		(dnp no)
+		(uuid "b7c5e3d9-ec9e-4861-80d4-3f2b264c07b8")
+		(property "Reference" "H7"
+			(at 24.13 161.29 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "ToolingHole_1.152mm"
+			(at 24.13 168.275 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "mini-rack-power:MountingHole_JLCPCB_Tooling_1.152mm"
+			(at 24.13 165.1 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://jlcpcb.com/help/article/how-to-add-tooling-holes-for-pcb-assembly-order"
+			(at 24.13 165.1 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "JLCPCB PCBA tooling hole, 1.152 mm round NPTH with 0.148 mm solder-mask expansion"
+			(at 24.13 165.1 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "backplane-prototype"
+				(path "/348cc909-6345-4013-9bef-98714057a65b"
+					(reference "H7")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:PWR_FLAG")
+		(at 52.07 120.65 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "be9c6cc4-529a-4fdb-a977-7d0a4c9fee13")
+		(property "Reference" "#FLG02"
+			(at 52.07 127 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "PWR_FLAG"
+			(at 52.578 115.316 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 52.07 120.65 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 52.07 120.65 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Special symbol for telling ERC where power comes from"
+			(at 52.07 120.65 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "7be470ee-7623-423b-9678-97a2672e1573")
+		)
+		(instances
+			(project "backplane-prototype"
+				(path "/348cc909-6345-4013-9bef-98714057a65b"
+					(reference "#FLG02")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:R")
 		(at 99.06 66.04 0)
 		(unit 1)
@@ -8511,228 +8601,6 @@
 			(project "backplane-prototype"
 				(path "/348cc909-6345-4013-9bef-98714057a65b"
 					(reference "#PWR022")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Mechanical:MountingHole")
-		(at 91.44 168.91 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files no)
-		(dnp no)
-		(uuid "b7c5e3d9-ec9e-4861-80d4-3f2b264c07b8")
-		(property "Reference" "H7"
-			(at 91.44 165.1 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "ToolingHole_1.152mm"
-			(at 91.44 172.085 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "mini-rack-power:MountingHole_JLCPCB_Tooling_1.152mm"
-			(at 91.44 168.91 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "https://jlcpcb.com/help/article/how-to-add-tooling-holes-for-pcb-assembly-order"
-			(at 91.44 168.91 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "JLCPCB PCBA tooling hole, 1.152 mm round NPTH with 0.148 mm solder-mask expansion"
-			(at 91.44 168.91 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(instances
-			(project "backplane-prototype"
-				(path "/348cc909-6345-4013-9bef-98714057a65b"
-					(reference "H7")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Mechanical:MountingHole")
-		(at 101.6 168.91 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files no)
-		(dnp no)
-		(uuid "01f1d5fd-6922-458c-a3bb-ade69dde5e3d")
-		(property "Reference" "H8"
-			(at 101.6 165.1 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "ToolingHole_1.152mm"
-			(at 101.6 172.085 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "mini-rack-power:MountingHole_JLCPCB_Tooling_1.152mm"
-			(at 101.6 168.91 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "https://jlcpcb.com/help/article/how-to-add-tooling-holes-for-pcb-assembly-order"
-			(at 101.6 168.91 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "JLCPCB PCBA tooling hole, 1.152 mm round NPTH with 0.148 mm solder-mask expansion"
-			(at 101.6 168.91 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(instances
-			(project "backplane-prototype"
-				(path "/348cc909-6345-4013-9bef-98714057a65b"
-					(reference "H8")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Mechanical:MountingHole")
-		(at 111.76 168.91 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files no)
-		(dnp no)
-		(uuid "b1d92d00-1e93-4777-aba1-28f8f3a204ef")
-		(property "Reference" "H9"
-			(at 111.76 165.1 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "ToolingHole_1.152mm"
-			(at 111.76 172.085 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "mini-rack-power:MountingHole_JLCPCB_Tooling_1.152mm"
-			(at 111.76 168.91 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "https://jlcpcb.com/help/article/how-to-add-tooling-holes-for-pcb-assembly-order"
-			(at 111.76 168.91 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "JLCPCB PCBA tooling hole, 1.152 mm round NPTH with 0.148 mm solder-mask expansion"
-			(at 111.76 168.91 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(instances
-			(project "backplane-prototype"
-				(path "/348cc909-6345-4013-9bef-98714057a65b"
-					(reference "H9")
 					(unit 1)
 				)
 			)
