@@ -52,7 +52,9 @@ Firmware validates again and rejects Rev A ports 6 and 7 as unsupported.
 
 `status` waits for both its correlated command result and the matching typed
 `PORT_STATE` snapshot. Desired/module/emergency fields are available now; contract,
-telemetry, and detailed SW3538 fault fields remain hardware-spike work.
+port-power telemetry and detailed SW3538 fault fields remain hardware-spike
+work. `monitor` decodes `BOARD_TEMPERATURE` reports as PCB temperature in
+degrees Celsius (and as signed centi-degrees Celsius in JSON mode).
 
 ## Emergency Operations
 

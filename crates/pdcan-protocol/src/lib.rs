@@ -34,6 +34,7 @@ pub mod state_opcode {
 
 pub mod telemetry_opcode {
     pub const PORT_POWER: u8 = 0;
+    pub const BOARD_TEMPERATURE: u8 = 1;
 }
 
 pub mod management_opcode {
@@ -314,6 +315,17 @@ pub const MESSAGE_DEFINITIONS: &[MessageDefinition] = &[
         priority: 4,
         target: TargetKind::Port,
         payload_len: 16,
+        requester_scoped: false,
+        has_request_id: false,
+        sender: MessageSender::Backpack,
+    },
+    MessageDefinition {
+        name: "BOARD_TEMPERATURE",
+        class: MessageClass::Telemetry,
+        opcode: telemetry_opcode::BOARD_TEMPERATURE,
+        priority: 4,
+        target: TargetKind::Board,
+        payload_len: 4,
         requester_scoped: false,
         has_request_id: false,
         sender: MessageSender::Backpack,
@@ -944,6 +956,52 @@ pub fn decode_port_power(id: ExtendedId, payload: &[u8]) -> Result<PortPower, Co
         temperature_centi_c: read_i16(payload, 10),
         contract_voltage_mv: read_u16(payload, 12),
         contract_current_ma: read_u16(payload, 14),
+    })
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct BoardTemperature {
+    pub node: u8,
+    pub sequence: u16,
+    pub temperature_centi_c: i16,
+}
+
+pub fn encode_board_temperature(temperature: BoardTemperature) -> Result<WireFrame, CodecError> {
+    require_operational_node(temperature.node)?;
+    let header = Header::new(
+        4,
+        MessageClass::Telemetry,
+        temperature.node,
+        BOARD_TARGET,
+        RequesterId::PROTOCOL,
+        telemetry_opcode::BOARD_TEMPERATURE,
+    )?;
+    let mut payload = [0u8; 4];
+    payload[..2].copy_from_slice(&temperature.sequence.to_le_bytes());
+    payload[2..4].copy_from_slice(&temperature.temperature_centi_c.to_le_bytes());
+    WireFrame::new(header.encode(), &payload).map_err(Into::into)
+}
+
+pub fn decode_board_temperature(
+    id: ExtendedId,
+    payload: &[u8],
+) -> Result<BoardTemperature, CodecError> {
+    let header = Header::decode(id)?;
+    if header.class != MessageClass::Telemetry {
+        return Err(CodecError::UnexpectedClass(header.class as u8));
+    }
+    if header.opcode != telemetry_opcode::BOARD_TEMPERATURE {
+        return Err(CodecError::UnknownOpcode(header.opcode));
+    }
+    require_priority(header.priority, 4)?;
+    require_operational_node(header.node)?;
+    require_protocol_requester(header.requester)?;
+    require_target(header.target, BOARD_TARGET)?;
+    require_len(payload, 4)?;
+    Ok(BoardTemperature {
+        node: header.node,
+        sequence: read_u16(payload, 0),
+        temperature_centi_c: read_i16(payload, 2),
     })
 }
 
@@ -2070,6 +2128,18 @@ mod tests {
         assert_eq!(
             decode_port_power(power_frame.id(), power_frame.payload()),
             Ok(power)
+        );
+
+        let board_temperature = BoardTemperature {
+            node: 3,
+            sequence: 9,
+            temperature_centi_c: -625,
+        };
+        let temperature_frame = encode_board_temperature(board_temperature).unwrap();
+        assert_eq!(temperature_frame.payload(), [9, 0, 143, 253]);
+        assert_eq!(
+            decode_board_temperature(temperature_frame.id(), temperature_frame.payload()),
+            Ok(board_temperature)
         );
 
         let heartbeat = Heartbeat {

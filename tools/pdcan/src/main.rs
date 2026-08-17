@@ -11,11 +11,11 @@ use std::{
 };
 
 use pdcan_protocol::{
-    CommandResponse, CommandResult, CommissioningHeader, CommissioningMessage, ControlCommand,
-    ControlRequest, DecodedHeader, DiscoveryInfo, ExtendedId, Header, MessageClass, PROTOCOL_MAJOR,
-    PROTOCOL_MINOR, PortState, WireFrame, commissioning_opcode, decode_command_response,
-    decode_commissioning, decode_header, decode_port_state, encode_commissioning,
-    encode_control_request,
+    BoardTemperature, CommandResponse, CommandResult, CommissioningHeader, CommissioningMessage,
+    ControlCommand, ControlRequest, DecodedHeader, DiscoveryInfo, ExtendedId, Header, MessageClass,
+    PROTOCOL_MAJOR, PROTOCOL_MINOR, PortState, WireFrame, commissioning_opcode,
+    decode_board_temperature, decode_command_response, decode_commissioning, decode_header,
+    decode_port_state, encode_commissioning, encode_control_request, telemetry_opcode,
 };
 use pdcan_types::{
     FanConfig, FanMode, NodeId, NodeUid, PortId, PortPolicy, RequestId, RequesterId,
@@ -948,6 +948,15 @@ const fn header_requester(header: DecodedHeader) -> RequesterId {
 }
 
 fn print_header(id: ExtendedId, header: DecodedHeader, data: &[u8], json: bool) {
+    if let DecodedHeader::Operational(operational) = header
+        && operational.class == MessageClass::Telemetry
+        && operational.opcode == telemetry_opcode::BOARD_TEMPERATURE
+        && let Ok(temperature) = decode_board_temperature(id, data)
+    {
+        print_board_temperature(temperature, json);
+        return;
+    }
+
     let mut payload = String::with_capacity(data.len() * 2);
     for byte in data {
         write!(&mut payload, "{byte:02x}").expect("writing to a String cannot fail");
@@ -958,6 +967,22 @@ fn print_header(id: ExtendedId, header: DecodedHeader, data: &[u8], json: bool) 
         DecodedHeader::Commissioning(header) => {
             print_commissioning_header(id, header, &payload, json);
         }
+    }
+}
+
+fn print_board_temperature(temperature: BoardTemperature, json: bool) {
+    if json {
+        println!(
+            "{{\"kind\":\"board_temperature\",\"node\":{},\"sequence\":{},\"temperature_centi_c\":{}}}",
+            temperature.node, temperature.sequence, temperature.temperature_centi_c,
+        );
+    } else {
+        println!(
+            "node={} board_temperature={:.2} C sequence={}",
+            temperature.node,
+            f64::from(temperature.temperature_centi_c) / 100.0,
+            temperature.sequence,
+        );
     }
 }
 

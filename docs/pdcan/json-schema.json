@@ -6,6 +6,7 @@
     { "$ref": "#/$defs/discovery" },
     { "$ref": "#/$defs/commandResponse" },
     { "$ref": "#/$defs/portState" },
+    { "$ref": "#/$defs/boardTemperature" },
     { "$ref": "#/$defs/commissioningResult" },
     { "$ref": "#/$defs/operationalFrame" },
     { "$ref": "#/$defs/commissioningFrame" }
@@ -69,6 +70,17 @@
         "uptime_seconds": { "type": "integer", "minimum": 0, "maximum": 4294967295 },
         "active_profile": { "type": "integer", "minimum": 0, "maximum": 255 },
         "slot_generation": { "type": "integer", "minimum": 0, "maximum": 255 }
+      }
+    },
+    "boardTemperature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "node", "sequence", "temperature_centi_c"],
+      "properties": {
+        "kind": { "const": "board_temperature" },
+        "node": { "$ref": "#/$defs/node" },
+        "sequence": { "type": "integer", "minimum": 0, "maximum": 65535 },
+        "temperature_centi_c": { "type": "integer", "minimum": -32768, "maximum": 32767 }
       }
     },
     "commissioningResult": {

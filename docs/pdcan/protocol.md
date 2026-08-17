@@ -116,6 +116,7 @@ snapshot from falsely acknowledging two mutually superseding requested values.
 | Response | `0` | `COMMAND_RESPONSE` | board | 16 | backpack |
 | State | `0` | `PORT_STATE` | port | 16 | backpack |
 | Telemetry | `0` | `PORT_POWER` | port | 16 | backpack |
+| Telemetry | `1` | `BOARD_TEMPERATURE` | board | 4 | backpack |
 | Management | `0` | `HEARTBEAT` | board | 24 | backpack |
 | Management | `1` | `BOARD_INFO` | board | 24 | backpack |
 
@@ -236,6 +237,18 @@ supported port reports input power enabled. Rev B has no FET/rail readback, so b
 
 The codec and golden vectors exist; physical telemetry emission remains blocked
 on the one-port SW3538 validation spike.
+
+### `BOARD_TEMPERATURE`
+
+| Bytes | Type | Field |
+| --- | --- | --- |
+| `0..2` | `u16` | successful sample sequence |
+| `2..4` | `i16` | PCB temperature, centi-degrees Celsius |
+
+Rev B reads the backplane TMP102 at approximately 1 Hz from the direct upstream
+I2C bus. Firmware emits only successful samples; it does not configure or use
+the TMP102 alert and threshold registers. The sample sequence wraps naturally
+and increments only after a successful read.
 
 ### `HEARTBEAT`
 
