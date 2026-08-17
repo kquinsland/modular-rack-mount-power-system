@@ -804,7 +804,7 @@
 						)
 					)
 				)
-				(pin power_out line
+				(pin power_in line
 					(at 15.24 7.62 180)
 					(length 5.08)
 					(name "GND"
@@ -840,7 +840,7 @@
 						)
 					)
 				)
-				(pin power_out line
+				(pin power_in line
 					(at 15.24 5.08 180)
 					(length 5.08)
 					(name "GND"
@@ -1031,7 +1031,7 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "Carrier-side XT30 pin assumption follows backplane: \n\n1=DC_IN+, 2=GND, 3=SDA, 4=SCL. \n\nVerify against final mating connector documentation before fab."
+	(text "BACKPLANE/CARRIER XT30 POWER-PIN RELEASE CHECK:\n\nCurrent carrier: 1=DC_IN+, 2=GND, 3=SDA, 4=SCL.\nBackplane-prototype currently maps the two power pins oppositely.\nThis may be a male/female footprint-numbering mirror; do not assume it is.\n\nBEFORE FABRICATION:\n1. Verify the mated contacts from manufacturer drawings and by continuity.\n2. Make symbol pins, footprint pads, net assignments, and notes consistent.\n3. Audit every backplane and carrier project.\n\nLabel PCB-side and mating-face views explicitly; they are easy to confuse."
 		(exclude_from_sim no)
 		(at 35.56 82.55 0)
 		(effects
