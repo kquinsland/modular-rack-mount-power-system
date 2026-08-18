@@ -107,7 +107,7 @@ recorded observation from the target board; successful compilation is not enough
   material and silicon.
 - [ ] Measure erase/program duration and interrupt/watchdog interaction.
 - [ ] Interrupt power during erase, payload programming, and commit-marker programming.
-- [ ] Validate 3-wire and 4-wire fan polarity/frequency, boot state, tach
+- [ ] Validate 3-wire fan supply-PWM polarity/frequency, boot state, tach
   scaling, and stall detection.
 - [ ] Measure the TIM15/DMA WS2812 waveform and reset interval at PA2/LED input.
 

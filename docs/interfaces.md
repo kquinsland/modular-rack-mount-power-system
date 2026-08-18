@@ -71,19 +71,18 @@ them in the six-slot build.
 
 ## Backpack Fan
 
-Rev A `J9` accepts the standard four-position PC-fan pinout and can be configured
-electrically for a 3-wire or 4-wire fan with `SJ2` and `SJ3`.
+Rev A `J9` is a standard three-position PC-fan header. The fan supply is always
+the PMOS-switched 12 V rail; there are no fan-mode selection jumpers.
 
 | Pin | Signal | Direction | Notes |
 | ---: | --- | --- | --- |
 | 1 | `GND` | Backpack to fan | Fan return. |
-| 2 | `FAN_V+` | Backpack to fan | Switched or direct 12 V according to `SJ2`. |
+| 2 | `FAN_12V_SW` | Backpack to fan | Supply-PWM switched 12 V from Q1. |
 | 3 | `FAN_TACH` | Fan to backpack | 3.3 V pull-up; PA1/TIM17 capture. |
-| 4 | `FAN_PWM` | Backpack to fan | Open-drain PWM; unused for 3-wire. |
 
-Firmware defaults to 3-wire mode and full speed. `pdcan` can persist the
-selected electrical mode and requested duty. Boot and safety/fault behavior
-always start or override to the mode-appropriate full-speed state.
+PA0 controls Q2 and the Q1 high-side PMOS at the low supply-PWM frequency used
+by 3-wire fans. Boot and safety/fault behavior start or override the fan to full
+speed.
 
 ## Backpack SWD
 

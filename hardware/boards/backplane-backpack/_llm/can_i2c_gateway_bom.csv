@@ -4,7 +4,7 @@ U2,1,TCA9548APWR,C130026,8-channel I2C mux,TSSOP-24,POP,address 0x70
 U3,1,TCAN3413DR,C22433320,3.3V CAN-FD transceiver,SOIC-8,POP,VCC=VIO=3V3
 U4 U5,2,LMR51610YDBVR,C22427220,1A 65V synchronous buck,SOT-23-6,POP,3V3 and 12V rails
 LED1,1,WS2812B-MINI-V6,C52941386,3.3V addressable RGB LED,SMD3535-4P,POP,no level shifter required
-Q1,1,AO3407A,C15155,P-channel MOSFET,SOT-23,POP/DNP,3-wire fan high-side switch; may DNP in 4-wire-only build
+Q1,1,AO3407A,C15155,P-channel MOSFET,SOT-23,POP,3-wire fan high-side supply-PWM switch
 Q2,1,"2N7002,215",C65189,N-channel MOSFET,SOT-23,POP,fan open-drain / PMOS gate drive
 D1,1,PESD2CANFD27V-TR,C552488,CAN-FD TVS,SOT-23,POP,place at CAN connector
 L1 L2,2,SRN6045TA-150M,C1330797,15uH power inductor,6x6mm,POP,common part for both bucks
@@ -20,10 +20,8 @@ R24 R25,2,RC0603FR-07120RL,C114640,120 ohm 1%,0603,POP,CAN termination + LED ser
 J1,1,TBD,,GND/VIN input connector,TBD,TBD,
 J2,1,TBD,,GND/CANL/CANH connector,TBD,TBD,
 J11,1,TBD,,2x7 backplane mate,1.00mm SMD socket,POP,mates with backplane J8 pin header
-J9,1,TBD,,4-position fan connector,TBD,TBD,3-pin fan can omit pin4
+J9,1,TBD,,3-position PC-fan connector,Connector:FanPinHeader_1x03_P2.54mm_Vertical,POP,fixed 3-wire pinout: GND / switched 12V / tach
 J10,1,TBD,,SWD connector/pads,TBD,TBD,
 SJ1,1,PCB feature,,CAN termination jumper,PCB copper,OPEN default,
-SJ2,1,PCB feature,,fan power mode selector,PCB copper,CONFIGURE,
-SJ3,1,PCB feature,,fan control mode selector,PCB copper,CONFIGURE,
 D2,1,TBD,,VIN TVS,TBD,DNP,select after final supply tolerance known
 C20,1,TBD,,10-47uF >=63/100V input bulk,TBD,DNP,footprint only until power source fixed

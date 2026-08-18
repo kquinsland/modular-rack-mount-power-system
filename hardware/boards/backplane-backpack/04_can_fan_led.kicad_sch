@@ -3206,7 +3206,7 @@
 		)
 		(uuid "019aa10f-5732-4b56-a32f-06432734dbcd")
 	)
-	(text "Support 3 or 4 wire configuration.\n3-wire: SJ2 center→switched, SJ3 center→PMOS gate. \n4-wire: SJ2 center→direct, SJ3 center→fan PWM."
+	(text "Fixed 3-wire PC-fan interface.\nPin 2 uses switched 12 V; pin 3 is tachometer feedback."
 		(exclude_from_sim no)
 		(at 173.482 152.908 0)
 		(effects
@@ -3217,7 +3217,7 @@
 		)
 		(uuid "1a7d3d3d-4263-42e7-8454-faeaeb6d2adb")
 	)
-	(text "FAN CONTROL — CONFIGURE SJ2 AND SJ3 AFTER ASSEMBLY"
+	(text "3-WIRE FAN CONTROL"
 		(exclude_from_sim no)
 		(at 111.76 91.44 0)
 		(effects
@@ -3311,7 +3311,7 @@
 	)
 	(wire
 		(pts
-			(xy 148.59 128.27) (xy 148.59 130.81)
+			(xy 148.59 124.46) (xy 148.59 130.81)
 		)
 		(stroke
 			(width 0)
@@ -3411,7 +3411,7 @@
 	)
 	(wire
 		(pts
-			(xy 130.81 124.46) (xy 143.51 124.46)
+			(xy 130.81 124.46) (xy 148.59 124.46)
 		)
 		(stroke
 			(width 0)
@@ -3491,16 +3491,6 @@
 	)
 	(wire
 		(pts
-			(xy 187.96 139.7) (xy 210.82 139.7)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c9505a94-7175-48ee-80aa-5f36519df2e7")
-	)
-	(wire
-		(pts
 			(xy 53.34 45.72) (xy 55.88 45.72)
 		)
 		(stroke
@@ -3568,16 +3558,6 @@
 			(justify left bottom)
 		)
 		(uuid "624ea754-4e55-4129-bc23-3d09495ba637")
-	)
-	(label "FAN_PWM"
-		(at 187.96 134.62 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "65471921-7b2d-4824-80e4-2497307abe8b")
 	)
 	(label "CANH_BUS"
 		(at 167.64 58.42 180)
@@ -3650,24 +3630,14 @@
 		(uuid "b7a0014d-7018-4fd9-8998-1645cc52f4ca")
 	)
 	(label "FAN_12V_SW"
-		(at 214.63 144.78 0)
+		(at 187.96 139.7 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left bottom)
+			(justify left)
 		)
 		(uuid "c3a2d4c6-fe45-4396-bf4f-24bd4071e896")
-	)
-	(label "FAN_PWM"
-		(at 153.67 124.46 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "cd71c246-e9fc-406b-ba02-f86e6127740e")
 	)
 	(label "CANL_BUS"
 		(at 167.64 60.96 180)
@@ -4120,138 +4090,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Jumper:SolderJumper_3_Open")
-		(at 214.63 139.7 270)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "1fbe492f-0971-49f0-993a-dbc57ee1819b")
-		(property "Reference" "SJ2"
-			(at 222.25 139.7 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "FAN POWER MODE"
-			(at 225.552 136.906 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Jumper:SolderJumper-3_P1.3mm_Open_Pad1.0x1.5mm"
-			(at 214.63 139.7 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 229.87 139.7 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Solder Jumper, 3-pole, open"
-			(at 227.33 139.7 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "PCB feature"
-			(at 214.63 139.7 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" ""
-			(at 214.63 139.7 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Package" "3-pad solder selector"
-			(at 214.63 139.7 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Population" "CONFIGURE"
-			(at 214.63 139.7 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "c0045b16-769d-427f-b983-6767c0a99b10")
-		)
-		(pin "2"
-			(uuid "e2911270-6200-4c1b-bde4-0ebd5e21c98c")
-		)
-		(pin "3"
-			(uuid "65df3106-5ee0-4ced-94c6-48ff2bf71701")
-		)
-		(instances
-			(project "backplane-backpack"
-				(path "/76314aad-fff2-4237-8c4a-2dbd4e06a2e1/ca945800-30c4-4174-8f18-f8602dd80706"
-					(reference "SJ2")
-					(unit 1)
-				)
-			)
-			(project "backplane-prototype-mate"
-				(path "/dd8bed11-6ded-418a-9899-3ea813254917"
-					(reference "SJ2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 167.64 63.5 0)
 		(mirror y)
@@ -4526,138 +4364,6 @@
 			(project "backplane-backpack"
 				(path "/76314aad-fff2-4237-8c4a-2dbd4e06a2e1/ca945800-30c4-4174-8f18-f8602dd80706"
 					(reference "TP9")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Jumper:SolderJumper_3_Open")
-		(at 148.59 124.46 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "3fd502d9-4d95-4022-baa3-16f3edd76407")
-		(property "Reference" "SJ3"
-			(at 148.59 120.142 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "FAN CONTROL MODE"
-			(at 148.59 115.57 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Jumper:SolderJumper-3_P1.3mm_Open_Pad1.0x1.5mm"
-			(at 148.59 124.46 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 148.59 109.22 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Solder Jumper, 3-pole, open"
-			(at 148.59 111.76 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "PCB feature"
-			(at 148.59 124.46 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" ""
-			(at 148.59 124.46 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Package" "3-pad solder selector"
-			(at 148.59 124.46 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Population" "CONFIGURE"
-			(at 148.59 124.46 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "bd886f5f-9dfb-4891-a984-a9e0120254a8")
-		)
-		(pin "2"
-			(uuid "40491bbe-a654-463a-a67b-0eb92351e8d5")
-		)
-		(pin "3"
-			(uuid "b798b350-2b91-428e-b48b-46c9c17dddfc")
-		)
-		(instances
-			(project "backplane-backpack"
-				(path "/76314aad-fff2-4237-8c4a-2dbd4e06a2e1/ca945800-30c4-4174-8f18-f8602dd80706"
-					(reference "SJ3")
-					(unit 1)
-				)
-			)
-			(project "backplane-prototype-mate"
-				(path "/dd8bed11-6ded-418a-9899-3ea813254917"
-					(reference "SJ3")
 					(unit 1)
 				)
 			)
@@ -5288,85 +4994,6 @@
 			(project "backplane-backpack"
 				(path "/76314aad-fff2-4237-8c4a-2dbd4e06a2e1/ca945800-30c4-4174-8f18-f8602dd80706"
 					(reference "R21")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:+12V")
-		(at 214.63 134.62 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "61614b4b-c2f4-48be-96f5-729a4607bf2b")
-		(property "Reference" "#PWR0418"
-			(at 214.63 138.43 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "+12V"
-			(at 216.535 133.3499 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" ""
-			(at 214.63 134.62 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 214.63 134.62 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+12V\""
-			(at 214.63 134.62 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "1e7b845c-ecde-47a0-a851-b04a99a391f7")
-		)
-		(instances
-			(project "backplane-backpack"
-				(path "/76314aad-fff2-4237-8c4a-2dbd4e06a2e1/ca945800-30c4-4174-8f18-f8602dd80706"
-					(reference "#PWR0418")
 					(unit 1)
 				)
 			)
@@ -7986,7 +7613,7 @@
 		)
 	)
 	(symbol
-		(lib_id "Connector_Generic:Conn_01x04")
+		(lib_id "Connector_Generic:Conn_01x03")
 		(at 182.88 139.7 180)
 		(unit 1)
 		(body_style 1)
@@ -8016,7 +7643,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Connector:FanPinHeader_1x03_P2.54mm_Vertical"
 			(at 182.88 139.7 0)
 			(hide yes)
 			(show_name no)
@@ -8038,7 +7665,7 @@
 				)
 			)
 		)
-		(property "Description" "Generic connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)"
+		(property "Description" "Fixed 3-wire 12 V PC-fan connector: ground, switched supply, tachometer"
 			(at 182.88 139.7 0)
 			(hide yes)
 			(show_name no)
@@ -8071,7 +7698,7 @@
 				)
 			)
 		)
-		(property "Package" "TBD"
+		(property "Package" "3-pin 2.54 mm PC-fan header"
 			(at 182.88 139.7 0)
 			(hide yes)
 			(show_name no)
@@ -8082,7 +7709,7 @@
 				)
 			)
 		)
-		(property "Population" "TBD"
+		(property "Population" "POP"
 			(at 182.88 139.7 0)
 			(hide yes)
 			(show_name no)
@@ -8101,9 +7728,6 @@
 		)
 		(pin "3"
 			(uuid "8218b603-b747-4802-8cbb-3a562ed65d89")
-		)
-		(pin "4"
-			(uuid "a5c5d54f-8bd6-400f-b3a2-795bb27d23c2")
 		)
 		(instances
 			(project "backplane-backpack"
@@ -8341,7 +7965,7 @@
 				)
 			)
 		)
-		(property "Population" "POP/DNP"
+		(property "Population" "POP"
 			(at 123.19 124.46 0)
 			(hide yes)
 			(show_name no)

@@ -5,7 +5,7 @@
 Gateway PCB for:
 - one CAN / CAN-FD connection;
 - six external I2C target devices, connected through the backplane mate, which all use the same I2C address;
-- optional 3-wire or 4-wire 12 V PC fan;
+- one fixed 3-wire 12 V PC fan with supply-PWM speed control;
 - one addressable RGB status LED;
 - nominal input supply ~20–36 V;
 - minimum unique pick/place BOM where reasonable.
@@ -37,7 +37,7 @@ If a 5 V addressable LED is preferred instead, see Section 12.
 | U3 | 1 | TCAN3413DR | C22433320 | SOIC-8 | 3.3 V CAN-FD transceiver | POP |
 | U4,U5 | 2 | LMR51610YDBVR | C22427220 | SOT-23-6 | 3.3 V and 12 V bucks | POP |
 | LED1 | 1 | WS2812B-MINI-V6 | C52941386 | SMD3535-4P | 3.3 V addressable RGB status LED | POP |
-| Q1 | 1 | AO3407A | C15155 | SOT-23 | P-MOS high-side 3-wire fan PWM | POP for universal/3-wire; DNP allowed for 4-wire-only |
+| Q1 | 1 | AO3407A | C15155 | SOT-23 | P-MOS high-side 3-wire fan PWM | POP |
 | Q2 | 1 | 2N7002,215 | C65189 | SOT-23 | Open-drain fan control / PMOS gate sink | POP |
 | D1 | 1 | PESD2CANFD27V-TR | C552488 | SOT-23 | CAN/CAN-FD TVS | POP |
 | L1,L2 | 2 | SRN6045TA-150M | C1330797 | 6 x 6 mm | 15 uH buck inductors | POP |
@@ -63,11 +63,9 @@ If a 5 V addressable LED is preferred instead, see Section 12.
 | J1 | GND/VIN input connector; mechanical series TBD |
 | J2 | GND/CANL/CANH connector; mechanical series TBD |
 | J11 | 2x7, 1.00 mm SMD socket backplane mate; mates with the backplane J8 pin header |
-| J9 | 4-position fan footprint/header; can accept 3-pin or 4-pin fan connector scheme |
+| J9 | Standard 3-position, 2.54 mm PC-fan header; supplier MPN TBD |
 | J10 | SWD programming/debug connector/pads |
 | SJ1 | CAN termination enable solder jumper |
-| SJ2 | fan power mode 3-pad solder selector |
-| SJ3 | fan control mode 3-pad solder selector |
 | TP* | test pads |
 | D2 | VIN TVS footprint, DNP/TBD until final supply max/tolerance is known |
 | C20 | 10-47 uF, >=63 V input electrolytic footprint, DNP/TBD |
@@ -212,7 +210,6 @@ R17.2 -> GND. R17 = 22.1 k.
 - R20.1
 - Q1.2 SOURCE
 - R21.1
-- SJ2.DIRECT_PAD
 - TP_12V
 
 C12.2, C13.2, C15.2 -> GND.
@@ -416,7 +413,7 @@ LED1.4 DIN -> LED_DIN
 C16 100 nF from +3V3 to GND, directly adjacent to LED1.
 R25 = 120 ohm.
 
-### Fan control — common circuit
+### Fan control — fixed 3-wire circuit
 
 `FAN_CTRL`
 - U1.7 PA0
@@ -426,14 +423,10 @@ R25 = 120 ohm.
 R22.2 -> GND. R22 = 22.1 k.
 Q2.2 SOURCE -> GND.
 
-`FAN_OD`
-- Q2.3 DRAIN
-- SJ3.CENTER
-
 `FAN_PGATE`
+- Q2.3 DRAIN
 - Q1.1 GATE
 - R21.2
-- SJ3.THREE_WIRE_PAD
 
 R21.1 -> +12V. R21 = 22.1 k.
 
@@ -447,33 +440,16 @@ Q1.3 DRAIN -> `FAN_12V_SW`
 
 R16.1 -> +3V3. R16 = 4.7 k.
 
-`FAN_PWM`
-- J9.4
-- SJ3.FOUR_WIRE_PAD
-
-`FAN_V+`
+`FAN_12V_SW`
 - J9.2
-- SJ2.CENTER
-
-SJ2.DIRECT_PAD -> +12V
-SJ2.SWITCHED_PAD -> FAN_12V_SW
+- Q1.3 DRAIN
 
 J9.1 -> GND.
 
-#### Fan mode: 3-wire
-- SJ2: center -> switched (`FAN_12V_SW`)
-- SJ3: center -> three-wire (`FAN_PGATE`)
+#### Fan operation
 - Q1 populated
 - Q2 populated
-- J9 pin 4 unused
 - firmware PWM on PA0 at low supply-PWM frequency; ~30 Hz is a reasonable initial value to validate with the selected fan
-
-#### Fan mode: 4-wire
-- SJ2: center -> direct +12V
-- SJ3: center -> four-wire `FAN_PWM`
-- Q2 populated
-- Q1 may be DNP or may remain populated but bypassed
-- firmware drives ~25 kHz open-drain PWM through Q2
 - J9 pin 3 provides tach feedback
 
 ---
@@ -589,27 +565,20 @@ Provide at minimum:
 
 ## 10. Population matrix
 
-### Default universal assembly
+### Default assembly
 - populate all core ICs;
 - populate U4/U5, L1/L2 and all power passives;
 - populate CAN L3, D1 and R24; leave SJ1 open;
 - populate Q1/Q2;
 - populate LED1;
 - populate R1/R2/R15/R16;
-- choose fan mode with SJ2/SJ3 after assembly;
 - D2/C20 remain DNP until final power-source requirements are locked.
 
-### 3-wire fan configuration
+### 3-wire fan circuit
 - Q1 POP
 - Q2 POP
-- SJ2 -> switched
-- SJ3 -> PMOS gate
-
-### 4-wire fan configuration
-- Q2 POP
-- Q1 may remain POP for one universal BOM or DNP for a dedicated 4-wire variant
-- SJ2 -> direct
-- SJ3 -> fan PWM
+- J9 pin 2 permanently connected to `FAN_12V_SW`
+- Q2 drain permanently connected to the Q1 gate
 
 ---
 

@@ -15,7 +15,7 @@ flowchart LR
     pca[PCA9554 slot power]
     mux[TCA9548A]
     modules[SW3538 modules / ports 0..5]
-    fan[3-wire or 4-wire fan]
+    fan[3-wire fan]
 
     host <--> can
     can <--> backpack1
@@ -41,7 +41,7 @@ The active controller is based on an STM32C092FCP6 and provides:
 - exclusive ownership of the upstream I2C bus shared by the main-backplane
   PCA9554 power expander and TCA9548A mux;
 - discovery, policy, monitoring, and best-effort control of SW3538 PD modules;
-- configurable 3-wire/4-wire fan control and tachometer monitoring;
+- fixed 3-wire fan supply-PWM control and tachometer monitoring;
 - a status LED; and
 - SWD programming/debug access.
 

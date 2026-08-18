@@ -9,7 +9,8 @@ Rev A is a CAN-FD-to-I2C/PD controller built around an STM32C092FCP6. It include
 - a TCAN3413 CAN-FD transceiver;
 - a TCA9548A mux with six populated downstream I2C connectors and two test-pad
   channels;
-- support for a configurable 3-wire or 4-wire 12 V PC fan; and
+- support for a fixed 3-wire 12 V PC fan with supply-PWM speed control and
+  tachometer feedback; and
 - one WS2812-compatible status LED.
 
 Firmware and protocol capacity is eight zero-based logical ports. Rev A supports
