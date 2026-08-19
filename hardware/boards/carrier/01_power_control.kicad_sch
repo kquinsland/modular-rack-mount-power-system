@@ -4094,7 +4094,7 @@
 	)
 	(text "Q1 SOA RELEASE GATE\nProve IPB020N10N5LF at the hot corner: approximately 66 W inferred maximum power limit and 66.5 ms maximum TIMER interval.\nDo not substitute Q1 using RDS(on) alone. Validate current/power limits and startup on hardware."
 		(exclude_from_sim no)
-		(at 292.1 94 0)
+		(at 179.578 16.002 0)
 		(effects
 			(font
 				(size 1 1)
@@ -4215,6 +4215,12 @@
 		(uuid "8fa1a357-c8dd-4cab-a4a9-f607292400b7")
 	)
 	(junction
+		(at 265.43 137.16)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "a388f71f-8fd5-458b-89e4-b415c55643ef")
+	)
+	(junction
 		(at 264.16 35.56)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -4250,17 +4256,6 @@
 		(color 0 0 0 0)
 		(uuid "fe9e23b1-abf7-480f-a0fa-6d39e4d52536")
 	)
-	(hierarchical_label "PD_IRQ"
-		(shape output)
-		(at 358.14 50.8 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "1dfed7d4-8180-48c9-b65a-a1c65ea36418")
-	)
 	(wire
 		(pts
 			(xy 168.91 55.88) (xy 168.91 64.77)
@@ -4280,6 +4275,16 @@
 			(type default)
 		)
 		(uuid "18954776-bde1-43f1-ac68-7eb1dd5c9a8f")
+	)
+	(wire
+		(pts
+			(xy 265.43 137.16) (xy 270.51 137.16)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1e5e06b9-06c7-4d3a-a17a-083e1987f490")
 	)
 	(wire
 		(pts
@@ -4350,6 +4355,16 @@
 			(type default)
 		)
 		(uuid "64a48e8f-cc3b-4ee1-b90d-6473e9f6ec48")
+	)
+	(wire
+		(pts
+			(xy 248.92 137.16) (xy 265.43 137.16)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "70f0c521-363f-4fd9-9c59-69532077b2ee")
 	)
 	(wire
 		(pts
@@ -4440,6 +4455,16 @@
 			(type default)
 		)
 		(uuid "ad4bcc6d-58b9-422a-9963-2529cdc0023c")
+	)
+	(wire
+		(pts
+			(xy 265.43 129.54) (xy 265.43 116.84)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b59a7941-d405-469b-b9d8-eb9de613ae0d")
 	)
 	(wire
 		(pts
@@ -4691,9 +4716,20 @@
 		)
 		(uuid "ef61038a-6bfd-4ffb-85b6-6f9158da261d")
 	)
+	(hierarchical_label "PD_IRQ"
+		(shape output)
+		(at 358.14 50.8 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "1dfed7d4-8180-48c9-b65a-a1c65ea36418")
+	)
 	(hierarchical_label "INA_ALERT"
 		(shape bidirectional)
-		(at 248.92 137.16 0)
+		(at 270.51 137.16 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -4745,17 +4781,6 @@
 			(justify right bottom)
 		)
 		(uuid "790fc558-5c7c-4c23-b8d1-8ff963591310")
-	)
-	(hierarchical_label "INA_ALERT"
-		(shape bidirectional)
-		(at 271.78 151.13 270)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "852660c4-2760-4ffe-a36d-20853798c506")
 	)
 	(hierarchical_label "PD_I2C_SCL"
 		(shape bidirectional)
@@ -6367,7 +6392,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 271.78 147.32 0)
+		(at 265.43 133.35 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -6377,7 +6402,7 @@
 		(dnp no)
 		(uuid "70bba404-27dc-450c-bd8c-96686656a85d")
 		(property "Reference" "R19"
-			(at 274.828 145.542 0)
+			(at 268.478 131.572 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6387,7 +6412,7 @@
 			)
 		)
 		(property "Value" "10k"
-			(at 275.082 149.352 0)
+			(at 268.732 135.382 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6397,7 +6422,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 270.002 147.32 90)
+			(at 263.652 133.35 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6408,7 +6433,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 271.78 147.32 0)
+			(at 265.43 133.35 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6419,7 +6444,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 271.78 147.32 0)
+			(at 265.43 133.35 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7259,7 +7284,7 @@
 	)
 	(symbol
 		(lib_id "power:+3V3")
-		(at 271.78 143.51 0)
+		(at 265.43 116.84 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -7270,7 +7295,7 @@
 		(fields_autoplaced yes)
 		(uuid "9f40798c-25ed-4de6-9add-b75beb74fbb8")
 		(property "Reference" "#PWR18"
-			(at 271.78 147.32 0)
+			(at 265.43 120.65 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7281,7 +7306,7 @@
 			)
 		)
 		(property "Value" "+3V3"
-			(at 271.78 138.43 0)
+			(at 265.43 111.76 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7291,7 +7316,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 271.78 143.51 0)
+			(at 265.43 116.84 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7302,7 +7327,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 271.78 143.51 0)
+			(at 265.43 116.84 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7313,7 +7338,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+3V3\""
-			(at 271.78 143.51 0)
+			(at 265.43 116.84 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
