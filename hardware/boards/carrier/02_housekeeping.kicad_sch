@@ -4100,6 +4100,17 @@
 		)
 		(uuid "b9d90243-26a0-418d-8457-08d366067a56")
 	)
+	(text "PD_IRQ (PA5/EXTI5), active low.\nR30 provides the 3.3 V pull-up."
+		(exclude_from_sim no)
+		(at 104.14 91.44 0)
+		(effects
+			(font
+				(size 0.9 0.9)
+			)
+			(justify left bottom)
+		)
+		(uuid "c3a863d4-9fb4-4ca8-a540-6f72442c1734")
+	)
 	(text "STM32 HOUSEKEEPING, RESET, SWD, STATUS LED"
 		(exclude_from_sim no)
 		(at 20 15 0)
@@ -4151,10 +4162,6 @@
 		(uuid "53a70dc9-39fe-4b26-a859-2d86a653fe33")
 	)
 	(no_connect
-		(at 93.98 63.5)
-		(uuid "68291a42-bfcd-417d-9121-237e8602ba31")
-	)
-	(no_connect
 		(at 58.42 73.66)
 		(uuid "6d9701cf-c4dd-47c4-be38-0952bafa35ae")
 	)
@@ -4199,6 +4206,16 @@
 			(type default)
 		)
 		(uuid "85ac4e0d-0bf1-4f87-bb52-2246d8777bde")
+	)
+	(wire
+		(pts
+			(xy 93.98 63.5) (xy 110.49 63.5)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "611bdc67-d0e7-46ad-9a0a-21f339cc5e29")
 	)
 	(label "SWCLK"
 		(at 163.83 68.58 0)
@@ -4389,6 +4406,174 @@
 			(justify left bottom)
 		)
 		(uuid "f2a32ea7-a30e-4cf5-80b7-bc5e21459c15")
+	)
+	(hierarchical_label "PD_IRQ"
+		(shape input)
+		(at 93.98 63.5 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "08a8810f-6a70-41f2-b63c-47ab2da3b167")
+	)
+	(symbol
+		(lib_id "power:+3V3")
+		(at 110.49 55.88 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "f2a5a506-e438-4988-aa11-55328619f9e4")
+		(property "Reference" "#PWR67"
+			(at 110.49 59.69 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 110.49 50.8 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 110.49 55.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 110.49 55.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3V3\""
+			(at 110.49 55.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "e84e8911-8345-4f46-9d8e-d71aa61a32c5")
+		)
+		(instances
+			(project "carrier"
+				(path "/ee42a069-09cc-4091-bee3-2dd6ab96c98c/64ed744c-f0e1-4d20-9137-f6a463447101"
+					(reference "#PWR67")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 110.49 59.69 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "56775791-fda0-47eb-9f8e-dc9b9a6a2230")
+		(property "Reference" "R30"
+			(at 113.538 57.912 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "10k"
+			(at 113.792 61.722 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 108.712 59.69 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 110.49 59.69 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 110.49 59.69 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "121165a3-ab71-42ff-9184-706cdfe45ff6")
+		)
+		(pin "2"
+			(uuid "8435ffcf-ac2d-432e-88de-ee657b72da32")
+		)
+		(instances
+			(project "carrier"
+				(path "/ee42a069-09cc-4091-bee3-2dd6ab96c98c/64ed744c-f0e1-4d20-9137-f6a463447101"
+					(reference "R30")
+					(unit 1)
+				)
+			)
+		)
 	)
 	(symbol
 		(lib_id "power:+3V3")

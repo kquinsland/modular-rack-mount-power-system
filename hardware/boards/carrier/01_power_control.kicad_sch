@@ -4126,13 +4126,12 @@
 		)
 		(uuid "5d8ba6ad-1cf2-4950-9386-d7c236c12871")
 	)
-	(text "TODO: now that we have STM32, use the IRQ?"
+	(text "SW3538 IRQ/ONLINE2 -> PD_IRQ\nDefault: active-low ONLINE2 indication.\nIRQ mode: set Reg0x11[7]; clear Reg0x20 pending flags before enabling Reg0x28 sources."
 		(exclude_from_sim no)
-		(at 355.092 62.992 0)
+		(at 335.28 66.04 0)
 		(effects
 			(font
-				(size 1 1)
-				(bold yes)
+				(size 0.8 0.8)
 			)
 			(justify left bottom)
 		)
@@ -4251,8 +4250,15 @@
 		(color 0 0 0 0)
 		(uuid "fe9e23b1-abf7-480f-a0fa-6d39e4d52536")
 	)
-	(no_connect
-		(at 358.14 50.8)
+	(hierarchical_label "PD_IRQ"
+		(shape output)
+		(at 358.14 50.8 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
 		(uuid "1dfed7d4-8180-48c9-b65a-a1c65ea36418")
 	)
 	(wire

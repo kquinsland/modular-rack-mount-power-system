@@ -4559,6 +4559,26 @@
 		)
 		(uuid "1ee26f62-429b-4d1f-9a96-3607ff9bc85e")
 	)
+	(label "PD_IRQ"
+		(at 180 200.48 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "e71e4ca9-d173-48c5-94ac-68fe9bc3b59b")
+	)
+	(label "PD_IRQ"
+		(at 300 210.72 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "55ccd02f-6425-4a7d-b8e2-fcfaefbbae5c")
+	)
 	(label "BUCK_FB"
 		(at 86.36 173.99 180)
 		(effects
@@ -7918,6 +7938,16 @@
 				(justify left)
 			)
 		)
+		(pin "PD_IRQ" input
+			(at 300 210.72 180)
+			(uuid "cd40566c-c0cd-4012-adba-7f265c0d1f5f")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
 		(instances
 			(project "carrier"
 				(path "/ee42a069-09cc-4091-bee3-2dd6ab96c98c"
@@ -8017,6 +8047,16 @@
 		(pin "PD_ENABLE" bidirectional
 			(at 180 195.4 180)
 			(uuid "8b1e1a19-bc25-43ac-bf61-4fdd189d7bfb")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "PD_IRQ" output
+			(at 180 200.48 180)
+			(uuid "16af5923-09e8-4fcf-baa2-7cee28699a6f")
 			(effects
 				(font
 					(size 1.27 1.27)
