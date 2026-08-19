@@ -4204,7 +4204,7 @@
 		)
 		(uuid "11007418-c6da-4bd4-9780-929374b3d360")
 	)
-	(text "ASSEMBLY / FOOTPRINT CHECKS\nL1 footprint intentionally unassigned: create/verify against the YNR6045 manufacturer land pattern.\nVerify U2 package pin numbering and exposed-pad requirements against manufacturer drawings."
+	(text "ASSEMBLY / FOOTPRINT CHECKS\nL1: Sunlord SWPA8040S680MT / C36418; footprint Inductor_SMD:L_Sunlord_SWPA8040S.\nVerify U2 package pin numbering and exposed-pad requirements against manufacturer drawings."
 		(exclude_from_sim no)
 		(at 292.1 151 0)
 		(effects
@@ -4449,16 +4449,6 @@
 		)
 		(uuid "a09695a9-1459-4114-8ae8-807dcf5373bc")
 	)
-	(label "BUCK_PGOOD"
-		(at 73.66 163.83 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "a941b7ba-9df3-4d54-992d-1a476de04a19")
-	)
 	(wire
 		(pts
 			(xy 43.18 182.88) (xy 48.26 182.88)
@@ -4688,6 +4678,16 @@
 			(justify right bottom)
 		)
 		(uuid "a0bcb91b-8b2a-4a56-ade4-02aad47aff7d")
+	)
+	(label "BUCK_PGOOD"
+		(at 73.66 163.83 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "a941b7ba-9df3-4d54-992d-1a476de04a19")
 	)
 	(label "BP_SMBUS_SDA"
 		(at 35.56 40.64 180)
@@ -5589,7 +5589,7 @@
 				)
 			)
 		)
-		(property "Value" "68uH"
+		(property "Value" "68μH"
 			(at 126.238 153.162 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5599,7 +5599,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Inductor_SMD:L_Sunlord_SWPA8040S"
 			(at 123.19 153.67 0)
 			(hide yes)
 			(show_name no)
@@ -5610,7 +5610,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "https://www.sunlordinc.com/UploadFiles/PDF_Cat/20120704094224784.pdf"
 			(at 123.19 153.67 0)
 			(hide yes)
 			(show_name no)
@@ -5621,7 +5621,7 @@
 				)
 			)
 		)
-		(property "Description" "Inductor"
+		(property "Description" "68uH 20%, 1.25A, Isat 1.45A, shielded power inductor"
 			(at 123.19 153.67 0)
 			(hide yes)
 			(show_name no)
@@ -5632,7 +5632,7 @@
 				)
 			)
 		)
-		(property "MPN" "YNR6045-680M"
+		(property "MPN" "SWPA8040S680MT"
 			(at 123.19 153.67 0)
 			(hide yes)
 			(show_name no)
@@ -5643,7 +5643,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" "YJYCOIN"
+		(property "Manufacturer" "Sunlord"
 			(at 123.19 153.67 0)
 			(hide yes)
 			(show_name no)
@@ -5654,7 +5654,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C341069"
+		(property "LCSC" "C36418"
 			(at 123.19 153.67 0)
 			(hide yes)
 			(show_name no)
@@ -5665,7 +5665,7 @@
 				)
 			)
 		)
-		(property "Footprint_Status" "UNASSIGNED - verify manufacturer land pattern"
+		(property "Footprint_Status" "ASSIGNED - KiCad Sunlord SWPA8040S manufacturer land pattern"
 			(at 123.19 153.67 0)
 			(hide yes)
 			(show_name no)
