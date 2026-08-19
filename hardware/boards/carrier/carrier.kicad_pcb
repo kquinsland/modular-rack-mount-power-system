@@ -5127,7 +5127,7 @@
 	(footprint "mini-rack-power:SW3538_140W_Module"
 		(layer "F.Cu")
 		(uuid "6f50a8ac-1372-4a41-9dac-821ec09ec5a6")
-		(at 265 45)
+		(at 149 112.8 -90)
 		(descr "Mechanical/electrical footprint for SW3538 140W USB-C/PD module from hardware/mechanical/exports/SW3538_140W_Module.dxf. Pin placement follows the module holes: GND/DC- column, DC+ column, and side SDA/SCK/IRQ header; verify against module before fabrication.")
 		(tags "SW3538 USB-C PD module 140W daughterboard")
 		(property "Reference" "MOD1"
@@ -12451,6 +12451,17 @@
 		)
 	)
 	(gr_rect
+		(start 164.9 98.56)
+		(end 172.9 106.56)
+		(stroke
+			(width 0.15)
+			(type solid)
+		)
+		(fill yes)
+		(layer "F.SilkS")
+		(uuid "70d0e87c-ce9e-4b80-8b11-dcf962d6bf0d")
+	)
+	(gr_rect
 		(start 3 10)
 		(end 73 43)
 		(stroke
@@ -12460,91 +12471,6 @@
 		(fill no)
 		(layer "Cmts.User")
 		(uuid "7841f48f-518f-4309-9133-07ff409caa3b")
-	)
-	(gr_text "INPUT PROTECTION + HOT-SWAP\nD1, U3, Q1, R1-R9, C1-C2"
-		(at 3 8 0)
-		(layer "Cmts.User")
-		(uuid "6028b4d9-f72f-43b7-8081-322de40fb2d0")
-		(effects
-			(font
-				(size 1.2 1.2)
-				(thickness 0.2)
-				(bold yes)
-			)
-			(justify left bottom)
-		)
-	)
-	(gr_rect
-		(start 121 13)
-		(end 172 40)
-		(stroke
-			(width 0.25)
-			(type default)
-		)
-		(fill no)
-		(layer "Cmts.User")
-		(uuid "43948aaf-842c-4ab4-b40b-d1b2dc48727a")
-	)
-	(gr_text "3.3 V HOUSEKEEPING BUCK\nU2, L1, C3-C9, R12-R16"
-		(at 121 11 0)
-		(layer "Cmts.User")
-		(uuid "ae020e7e-fe52-438c-b883-1a5241327d9a")
-		(effects
-			(font
-				(size 1.2 1.2)
-				(thickness 0.2)
-				(bold yes)
-			)
-			(justify left bottom)
-		)
-	)
-	(gr_rect
-		(start 225 8)
-		(end 284 82)
-		(stroke
-			(width 0.25)
-			(type default)
-		)
-		(fill no)
-		(layer "Cmts.User")
-		(uuid "1b035837-d5ef-4113-a998-ceb1c2ee5346")
-	)
-	(gr_text "PD MODULE + ENABLE CONTROL\nMOD1, Q2-Q3, R10-R11"
-		(at 225 6 0)
-		(layer "Cmts.User")
-		(uuid "a4a01be9-8917-49f4-9d6e-40b8f2080983")
-		(effects
-			(font
-				(size 1.2 1.2)
-				(thickness 0.2)
-				(bold yes)
-			)
-			(justify left bottom)
-		)
-	)
-	(gr_rect
-		(start 330 14)
-		(end 365 36)
-		(stroke
-			(width 0.25)
-			(type default)
-		)
-		(fill no)
-		(layer "Cmts.User")
-		(uuid "546551c8-a78e-4938-80df-5f326d186e86")
-	)
-	(gr_text "POWER / CURRENT MONITOR\nU4, C10, R17-R19"
-		(at 330 12 0)
-		(layer "Cmts.User")
-		(uuid "9a45a7f6-bd6a-4e4a-a519-406f331300d8")
-		(effects
-			(font
-				(size 1.2 1.2)
-				(thickness 0.2)
-				(bold yes)
-			)
-			(justify left bottom)
-		)
 	)
 	(gr_rect
 		(start 14 160)
@@ -12557,18 +12483,27 @@
 		(layer "Cmts.User")
 		(uuid "142904df-1353-46db-99d9-bbf34cd30e63")
 	)
-	(gr_text "MCU + RESET + SWD\nU1, J2, C11-C13, R28, R30"
-		(at 14 158 0)
-		(layer "Cmts.User")
-		(uuid "16fc8d4f-35cc-4540-bc5a-dc3f3a13f0fb")
-		(effects
-			(font
-				(size 1.2 1.2)
-				(thickness 0.2)
-				(bold yes)
-			)
-			(justify left bottom)
+	(gr_rect
+		(start 109.8 96.8)
+		(end 125.2 113)
+		(stroke
+			(width 0.25)
+			(type default)
 		)
+		(fill no)
+		(layer "Cmts.User")
+		(uuid "096caeb5-7065-49e7-ba04-3c4cdacbb259")
+	)
+	(gr_rect
+		(start 121 13)
+		(end 172 40)
+		(stroke
+			(width 0.25)
+			(type default)
+		)
+		(fill no)
+		(layer "Cmts.User")
+		(uuid "43948aaf-842c-4ab4-b40b-d1b2dc48727a")
 	)
 	(gr_rect
 		(start 146 171)
@@ -12581,18 +12516,16 @@
 		(layer "Cmts.User")
 		(uuid "5bbada4d-f0e4-4038-8b3a-45eebd53e564")
 	)
-	(gr_text "BACKPLANE GND TEST\nTP5 - related to J1"
-		(at 146 169 0)
-		(layer "Cmts.User")
-		(uuid "94e1d929-db81-48f8-b84a-fd38ea6fd4b9")
-		(effects
-			(font
-				(size 1.2 1.2)
-				(thickness 0.2)
-				(bold yes)
-			)
-			(justify left bottom)
+	(gr_rect
+		(start 225 15)
+		(end 242 31)
+		(stroke
+			(width 0.25)
+			(type default)
 		)
+		(fill no)
+		(layer "Cmts.User")
+		(uuid "1b035837-d5ef-4113-a998-ceb1c2ee5346")
 	)
 	(gr_rect
 		(start 231 171)
@@ -12605,18 +12538,16 @@
 		(layer "Cmts.User")
 		(uuid "3b1b5978-1142-4d7a-8424-25874efd7a66")
 	)
-	(gr_text "OPTIONAL PD I2C PULL-UPS\nR24-R25"
-		(at 231 169 0)
-		(layer "Cmts.User")
-		(uuid "217f21ed-9cb4-4abd-b469-6403f0314806")
-		(effects
-			(font
-				(size 1.2 1.2)
-				(thickness 0.2)
-				(bold yes)
-			)
-			(justify left bottom)
+	(gr_rect
+		(start 330 14)
+		(end 365 36)
+		(stroke
+			(width 0.25)
+			(type default)
 		)
+		(fill no)
+		(layer "Cmts.User")
+		(uuid "546551c8-a78e-4938-80df-5f326d186e86")
 	)
 	(gr_rect
 		(start 331 171)
@@ -12628,54 +12559,6 @@
 		(fill no)
 		(layer "Cmts.User")
 		(uuid "16c4c040-f89c-431b-ad8d-3cd5294515b8")
-	)
-	(gr_text "RGB STATUS LED\nR29, LED1"
-		(at 331 169 0)
-		(layer "Cmts.User")
-		(uuid "467eb487-1de7-4e62-8d41-73a20dec1f3b")
-		(effects
-			(font
-				(size 1.2 1.2)
-				(thickness 0.2)
-				(bold yes)
-			)
-			(justify left bottom)
-		)
-	)
-	(gr_rect
-		(start 109.8 96.8)
-		(end 125.2 113)
-		(stroke
-			(width 0.25)
-			(type default)
-		)
-		(fill no)
-		(layer "Cmts.User")
-		(uuid "096caeb5-7065-49e7-ba04-3c4cdacbb259")
-	)
-	(gr_text "BACKPLANE CONNECTOR\nJ1 - TP5 staged below"
-		(at 126.5 100 0)
-		(layer "Cmts.User")
-		(uuid "dfe71599-4528-4aa5-b55c-4b7dee3fe38b")
-		(effects
-			(font
-				(size 1.2 1.2)
-				(thickness 0.2)
-				(bold yes)
-			)
-			(justify left bottom)
-		)
-	)
-	(gr_rect
-		(start 164.9 98.56)
-		(end 172.9 106.56)
-		(stroke
-			(width 0.15)
-			(type solid)
-		)
-		(fill yes)
-		(layer "F.SilkS")
-		(uuid "70d0e87c-ce9e-4b80-8b11-dcf962d6bf0d")
 	)
 	(gr_line
 		(start 100.8 106.5)
@@ -12790,6 +12673,123 @@
 				(size 1 1)
 				(thickness 0.15)
 			)
+		)
+	)
+	(gr_text "INPUT PROTECTION + HOT-SWAP\nD1, U3, Q1, R1-R9, C1-C2"
+		(at 3 8 0)
+		(layer "Cmts.User")
+		(uuid "6028b4d9-f72f-43b7-8081-322de40fb2d0")
+		(effects
+			(font
+				(size 1.2 1.2)
+				(thickness 0.2)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+	)
+	(gr_text "MCU + RESET + SWD\nU1, J2, C11-C13, R28, R30"
+		(at 14 158 0)
+		(layer "Cmts.User")
+		(uuid "16fc8d4f-35cc-4540-bc5a-dc3f3a13f0fb")
+		(effects
+			(font
+				(size 1.2 1.2)
+				(thickness 0.2)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+	)
+	(gr_text "3.3 V HOUSEKEEPING BUCK\nU2, L1, C3-C9, R12-R16"
+		(at 121 11 0)
+		(layer "Cmts.User")
+		(uuid "ae020e7e-fe52-438c-b883-1a5241327d9a")
+		(effects
+			(font
+				(size 1.2 1.2)
+				(thickness 0.2)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+	)
+	(gr_text "BACKPLANE CONNECTOR\nJ1 - TP5 staged below"
+		(at 126.5 100 0)
+		(layer "Cmts.User")
+		(uuid "dfe71599-4528-4aa5-b55c-4b7dee3fe38b")
+		(effects
+			(font
+				(size 1.2 1.2)
+				(thickness 0.2)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+	)
+	(gr_text "BACKPLANE GND TEST\nTP5 - related to J1"
+		(at 146 169 0)
+		(layer "Cmts.User")
+		(uuid "94e1d929-db81-48f8-b84a-fd38ea6fd4b9")
+		(effects
+			(font
+				(size 1.2 1.2)
+				(thickness 0.2)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+	)
+	(gr_text "PD ENABLE CONTROL\nQ2-Q3, R10-R11 - MOD1 on board"
+		(at 225 13 0)
+		(layer "Cmts.User")
+		(uuid "a4a01be9-8917-49f4-9d6e-40b8f2080983")
+		(effects
+			(font
+				(size 1.2 1.2)
+				(thickness 0.2)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+	)
+	(gr_text "OPTIONAL PD I2C PULL-UPS\nR24-R25"
+		(at 231 169 0)
+		(layer "Cmts.User")
+		(uuid "217f21ed-9cb4-4abd-b469-6403f0314806")
+		(effects
+			(font
+				(size 1.2 1.2)
+				(thickness 0.2)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+	)
+	(gr_text "POWER / CURRENT MONITOR\nU4, C10, R17-R19"
+		(at 330 12 0)
+		(layer "Cmts.User")
+		(uuid "9a45a7f6-bd6a-4e4a-a519-406f331300d8")
+		(effects
+			(font
+				(size 1.2 1.2)
+				(thickness 0.2)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+	)
+	(gr_text "RGB STATUS LED\nR29, LED1"
+		(at 331 169 0)
+		(layer "Cmts.User")
+		(uuid "467eb487-1de7-4e62-8d41-73a20dec1f3b")
+		(effects
+			(font
+				(size 1.2 1.2)
+				(thickness 0.2)
+				(bold yes)
+			)
+			(justify left bottom)
 		)
 	)
 	(embedded_fonts no)
