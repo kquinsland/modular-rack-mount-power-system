@@ -2960,7 +2960,7 @@
 		(locked yes)
 		(layer "F.Cu")
 		(uuid "50000000-0000-4000-8000-000000000001")
-		(at 140 175 -90)
+		(at 112.4825 109.2 -90)
 		(descr "Amass XT30PW(2+2)-M.G.B right-angle male through-hole connector. Pad locations from manufacturer installation drawing.")
 		(tags "Amass XT30 XT30PW 2+2 male right-angle through-hole power signal")
 		(property "Reference" "J1"
@@ -12448,6 +12448,222 @@
 			(rotate
 				(xyz 0 0 0)
 			)
+		)
+	)
+	(gr_rect
+		(start 3 10)
+		(end 73 43)
+		(stroke
+			(width 0.25)
+			(type default)
+		)
+		(fill no)
+		(layer "Cmts.User")
+		(uuid "7841f48f-518f-4309-9133-07ff409caa3b")
+	)
+	(gr_text "INPUT PROTECTION + HOT-SWAP\nD1, U3, Q1, R1-R9, C1-C2"
+		(at 3 8 0)
+		(layer "Cmts.User")
+		(uuid "6028b4d9-f72f-43b7-8081-322de40fb2d0")
+		(effects
+			(font
+				(size 1.2 1.2)
+				(thickness 0.2)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+	)
+	(gr_rect
+		(start 121 13)
+		(end 172 40)
+		(stroke
+			(width 0.25)
+			(type default)
+		)
+		(fill no)
+		(layer "Cmts.User")
+		(uuid "43948aaf-842c-4ab4-b40b-d1b2dc48727a")
+	)
+	(gr_text "3.3 V HOUSEKEEPING BUCK\nU2, L1, C3-C9, R12-R16"
+		(at 121 11 0)
+		(layer "Cmts.User")
+		(uuid "ae020e7e-fe52-438c-b883-1a5241327d9a")
+		(effects
+			(font
+				(size 1.2 1.2)
+				(thickness 0.2)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+	)
+	(gr_rect
+		(start 225 8)
+		(end 284 82)
+		(stroke
+			(width 0.25)
+			(type default)
+		)
+		(fill no)
+		(layer "Cmts.User")
+		(uuid "1b035837-d5ef-4113-a998-ceb1c2ee5346")
+	)
+	(gr_text "PD MODULE + ENABLE CONTROL\nMOD1, Q2-Q3, R10-R11"
+		(at 225 6 0)
+		(layer "Cmts.User")
+		(uuid "a4a01be9-8917-49f4-9d6e-40b8f2080983")
+		(effects
+			(font
+				(size 1.2 1.2)
+				(thickness 0.2)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+	)
+	(gr_rect
+		(start 330 14)
+		(end 365 36)
+		(stroke
+			(width 0.25)
+			(type default)
+		)
+		(fill no)
+		(layer "Cmts.User")
+		(uuid "546551c8-a78e-4938-80df-5f326d186e86")
+	)
+	(gr_text "POWER / CURRENT MONITOR\nU4, C10, R17-R19"
+		(at 330 12 0)
+		(layer "Cmts.User")
+		(uuid "9a45a7f6-bd6a-4e4a-a519-406f331300d8")
+		(effects
+			(font
+				(size 1.2 1.2)
+				(thickness 0.2)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+	)
+	(gr_rect
+		(start 14 160)
+		(end 44 207)
+		(stroke
+			(width 0.25)
+			(type default)
+		)
+		(fill no)
+		(layer "Cmts.User")
+		(uuid "142904df-1353-46db-99d9-bbf34cd30e63")
+	)
+	(gr_text "MCU + RESET + SWD\nU1, J2, C11-C13, R28, R30"
+		(at 14 158 0)
+		(layer "Cmts.User")
+		(uuid "16fc8d4f-35cc-4540-bc5a-dc3f3a13f0fb")
+		(effects
+			(font
+				(size 1.2 1.2)
+				(thickness 0.2)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+	)
+	(gr_rect
+		(start 146 171)
+		(end 154 179)
+		(stroke
+			(width 0.25)
+			(type default)
+		)
+		(fill no)
+		(layer "Cmts.User")
+		(uuid "5bbada4d-f0e4-4038-8b3a-45eebd53e564")
+	)
+	(gr_text "BACKPLANE GND TEST\nTP5 - related to J1"
+		(at 146 169 0)
+		(layer "Cmts.User")
+		(uuid "94e1d929-db81-48f8-b84a-fd38ea6fd4b9")
+		(effects
+			(font
+				(size 1.2 1.2)
+				(thickness 0.2)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+	)
+	(gr_rect
+		(start 231 171)
+		(end 246 179)
+		(stroke
+			(width 0.25)
+			(type default)
+		)
+		(fill no)
+		(layer "Cmts.User")
+		(uuid "3b1b5978-1142-4d7a-8424-25874efd7a66")
+	)
+	(gr_text "OPTIONAL PD I2C PULL-UPS\nR24-R25"
+		(at 231 169 0)
+		(layer "Cmts.User")
+		(uuid "217f21ed-9cb4-4abd-b469-6403f0314806")
+		(effects
+			(font
+				(size 1.2 1.2)
+				(thickness 0.2)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+	)
+	(gr_rect
+		(start 331 171)
+		(end 347 179)
+		(stroke
+			(width 0.25)
+			(type default)
+		)
+		(fill no)
+		(layer "Cmts.User")
+		(uuid "16c4c040-f89c-431b-ad8d-3cd5294515b8")
+	)
+	(gr_text "RGB STATUS LED\nR29, LED1"
+		(at 331 169 0)
+		(layer "Cmts.User")
+		(uuid "467eb487-1de7-4e62-8d41-73a20dec1f3b")
+		(effects
+			(font
+				(size 1.2 1.2)
+				(thickness 0.2)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+	)
+	(gr_rect
+		(start 109.8 96.8)
+		(end 125.2 113)
+		(stroke
+			(width 0.25)
+			(type default)
+		)
+		(fill no)
+		(layer "Cmts.User")
+		(uuid "096caeb5-7065-49e7-ba04-3c4cdacbb259")
+	)
+	(gr_text "BACKPLANE CONNECTOR\nJ1 - TP5 staged below"
+		(at 126.5 100 0)
+		(layer "Cmts.User")
+		(uuid "dfe71599-4528-4aa5-b55c-4b7dee3fe38b")
+		(effects
+			(font
+				(size 1.2 1.2)
+				(thickness 0.2)
+				(bold yes)
+			)
+			(justify left bottom)
 		)
 	)
 	(gr_rect
