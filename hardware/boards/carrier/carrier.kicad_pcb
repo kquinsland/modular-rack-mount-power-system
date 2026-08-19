@@ -13178,7 +13178,6 @@
 			(type default)
 		)
 		(fill no)
-		(locked yes)
 		(layer "Cmts.User")
 		(uuid "b2c668fd-4a46-4599-981f-f1a0ddd8e018")
 	)
@@ -13190,7 +13189,6 @@
 			(type default)
 		)
 		(fill no)
-		(locked yes)
 		(layer "Cmts.User")
 		(uuid "80402e1b-9a40-45a0-938a-65ce6a0a6fa2")
 	)
@@ -13202,7 +13200,6 @@
 			(type default)
 		)
 		(fill no)
-		(locked yes)
 		(layer "Cmts.User")
 		(uuid "93c38603-66f9-45fd-8f14-8acf81a61143")
 	)
@@ -13214,7 +13211,6 @@
 			(type default)
 		)
 		(fill no)
-		(locked yes)
 		(layer "Cmts.User")
 		(uuid "615d8928-4e0a-4436-8134-d490c7e132b2")
 	)
@@ -13226,7 +13222,6 @@
 			(type default)
 		)
 		(fill no)
-		(locked yes)
 		(layer "Cmts.User")
 		(uuid "ee89d253-83a3-4064-9f89-61839b41adf1")
 	)
@@ -13238,7 +13233,6 @@
 			(type default)
 		)
 		(fill no)
-		(locked yes)
 		(layer "Cmts.User")
 		(uuid "5d19eca1-b0d7-43b4-b5e6-a4b27fd8c10b")
 	)
@@ -13250,7 +13244,6 @@
 			(type default)
 		)
 		(fill no)
-		(locked yes)
 		(layer "Cmts.User")
 		(uuid "c624bc06-a682-4ef1-a089-39f6cba10563")
 	)
@@ -13370,7 +13363,6 @@
 		)
 	)
 	(gr_text "L1 68uH FOOTPRINT UNASSIGNED — ADD TO THIS CONSTELLATION"
-		(locked yes)
 		(at 142 11 0)
 		(layer "Cmts.User")
 		(uuid "c7b9e34c-92b9-4bf6-a611-0c314fda993c")
@@ -13383,7 +13375,6 @@
 		)
 	)
 	(gr_text "A — INPUT / HOT-SWAP POWER PATH"
-		(locked yes)
 		(at 5 7 0)
 		(layer "Cmts.User")
 		(uuid "633936e3-c886-48b6-8fe1-6c38909fa9a4")
@@ -13397,7 +13388,6 @@
 		)
 	)
 	(gr_text "B — FAIL-SAFE ENABLE / PGOOD"
-		(locked yes)
 		(at 5 103 0)
 		(layer "Cmts.User")
 		(uuid "6a29f068-0408-4ad6-8e05-3a23719dfbe8")
@@ -13411,7 +13401,6 @@
 		)
 	)
 	(gr_text "E — MCU CORE / RESET / SWD"
-		(locked yes)
 		(at 5 186 0)
 		(layer "Cmts.User")
 		(uuid "aeef1333-19c3-47ad-bb3a-004c8a0ac831")
@@ -13425,7 +13414,6 @@
 		)
 	)
 	(gr_text "C — 48 V TO 3.3 V BUCK"
-		(locked yes)
 		(at 142 7 0)
 		(layer "Cmts.User")
 		(uuid "ab3cf214-cd15-4cef-902c-76bfab81366a")
@@ -13439,7 +13427,6 @@
 		)
 	)
 	(gr_text "F — I2C PULL-UP OPTIONS"
-		(locked yes)
 		(at 182 186 0)
 		(layer "Cmts.User")
 		(uuid "19f65da4-ff87-4774-a798-d41ad0bfbf12")
@@ -13453,7 +13440,6 @@
 		)
 	)
 	(gr_text "D — CURRENT / POWER MONITOR"
-		(locked yes)
 		(at 237 103 0)
 		(layer "Cmts.User")
 		(uuid "aaacf9eb-b2cc-4b50-a452-68dcbe3c6edb")
@@ -13467,7 +13453,6 @@
 		)
 	)
 	(gr_text "G — RGB STATUS LED"
-		(locked yes)
 		(at 267 7 0)
 		(layer "Cmts.User")
 		(uuid "4f78a196-d6c4-4891-9d09-a9c0d8799c3e")
@@ -13619,37 +13604,6 @@
 	(zone
 		(layer "F.Cu")
 		(hatch none 0.1)
-		(priority 30001)
-		(attr
-			(teardrop
-				(type padvia)
-			)
-		)
-		(connect_pads yes
-			(clearance 0)
-		)
-		(min_thickness 0.0254)
-		(fill yes
-			(island_removal_mode 1)
-		)
-		(polygon
-			(pts
-				(xy 112.848648 118.15) (xy 112.848648 117.95) (xy 111.629617 117.344463) (xy 111.247648 118.05)
-				(xy 111.629617 118.755537)
-			)
-		)
-		(filled_polygon
-			(layer "F.Cu")
-			(island yes)
-			(pts
-				(xy 112.848648 118.15) (xy 112.848648 117.95) (xy 111.629617 117.344463) (xy 111.247648 118.05)
-				(xy 111.629617 118.755537)
-			)
-		)
-	)
-	(zone
-		(layer "F.Cu")
-		(hatch none 0.1)
 		(priority 30002)
 		(attr
 			(teardrop
@@ -13675,6 +13629,37 @@
 			(pts
 				(xy 110.393014 119.25) (xy 110.393014 119.05) (xy 110.3525 119.05) (xy 110.423211 119.079289) (xy 110.018052 117.817772)
 				(xy 109.249069 118.046569) (xy 109.020272 118.815552) (xy 110.281789 119.220711) (xy 110.3525 119.25)
+			)
+		)
+	)
+	(zone
+		(layer "F.Cu")
+		(hatch none 0.1)
+		(priority 30001)
+		(attr
+			(teardrop
+				(type padvia)
+			)
+		)
+		(connect_pads yes
+			(clearance 0)
+		)
+		(min_thickness 0.0254)
+		(fill yes
+			(island_removal_mode 1)
+		)
+		(polygon
+			(pts
+				(xy 112.848648 118.15) (xy 112.848648 117.95) (xy 111.629617 117.344463) (xy 111.247648 118.05)
+				(xy 111.629617 118.755537)
+			)
+		)
+		(filled_polygon
+			(layer "F.Cu")
+			(island yes)
+			(pts
+				(xy 112.848648 118.15) (xy 112.848648 117.95) (xy 111.629617 117.344463) (xy 111.247648 118.05)
+				(xy 111.629617 118.755537)
 			)
 		)
 	)
