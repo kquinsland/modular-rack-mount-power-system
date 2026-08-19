@@ -32,7 +32,7 @@ The carrier shall:
   - current
   - power
 - Provide:
-  - one upstream I²C bus, with the STM32 acting as an I²C target/slave
+  - one backplane SMBus, with the STM32 acting as an SMBus target/slave
   - one local/downstream I²C bus, with the STM32 acting as controller/master
 - Control a single WS2812-compatible RGB status LED.
 - Default the PD-module power path to **OFF** whenever the MCU is unpowered, resetting, or not explicitly enabling the branch.
@@ -45,8 +45,8 @@ The only electrical interface between the backplane and carrier is:
 
 - unswitched DC input
 - ground
-- upstream I²C SDA
-- upstream I²C SCL
+- backplane SMBus SDA
+- backplane SMBus SCL
 
 The backplane does not supply a carrier logic rail. Each carrier generates its own 3.3 V housekeeping rail from the unswitched DC input.
 
@@ -142,7 +142,7 @@ If the eventual source can exceed 48 V continuously, revisit:
                                │     SMCJ48A       │
                                └─────────┬─────────┘
                                          │
-                                       VIN_RAW
+                                       VCC
                                          │
                     ┌────────────────────┴─────────────────────┐
                     │                                          │
@@ -178,10 +178,10 @@ If the eventual source can exceed 48 V continuously, revisit:
        │                     │                                  │
        │                     └──── I2C2 ────────────────────────┤
        │                                                        │
-       └──── I2C1 ─────────────► J1 UPSTREAM                    │
+       └──── I2C1 ─────────────► J1 BACKPLANE SMBUS             │
 ```
 
-The housekeeping branch connects to `VIN_RAW` **before** the PD current shunt. Therefore the INA237 reports the PD-module branch power rather than including the STM32/LED housekeeping power.
+The housekeeping branch connects to `VCC` **before** the PD current shunt. Therefore the INA237 reports the PD-module branch power rather than including the STM32/LED housekeeping power.
 
 ---
 
@@ -307,7 +307,7 @@ Populate if cable/source inductance or bench measurements indicate useful input 
 ## 6.3 Buck schematic
 
 ```text
-                              VIN_RAW
+                              VCC
                                  │
                  ┌───────────────┼────────────────┐
                  │               │                │
@@ -318,8 +318,8 @@ Populate if cable/source inductance or bench measurements indicate useful input 
                                  │
                            ┌─────▼────────────┐
                            │ U2 LM5163        │
-VIN_RAW ──────────────────►│ VIN             │
-VIN_RAW ──────────────────►│ EN/UVLO         │
+VCC ──────────────────►│ VIN             │
+VCC ──────────────────►│ EN/UVLO         │
                            │                 │
 BUCK_RON ─────────────────►│ RON             │
 BUCK_FB  ─────────────────►│ FB              │
@@ -361,7 +361,7 @@ BUCK_SW ── RA 110k ── BUCK_RIPPLE
 ```text
                                  RSH1
                             6 mΩ / 3 W
-VIN_RAW ═══════════════════════/\/\/\/══════════════ HS_SENSE
+VCC ═══════════════════════/\/\/\/══════════════ HS_SENSE
                            Kelvin │   │ Kelvin           │
                                   │   │                  │ D
                                   │   │             ┌────┴─────┐
@@ -403,7 +403,7 @@ U3 LMX5069MS
 Connections:
 
 ```text
-U3.VIN   ── Kelvin VIN_RAW side of RSH1
+U3.VIN   ── Kelvin VCC side of RSH1
 U3.SENSE ── Kelvin HS_SENSE side of RSH1
 U3.GATE  ── Q1_GATE
 U3.OUT   ── R_OUT 100Ω ── PD_VIN_SW
@@ -583,7 +583,7 @@ Use independent UVLO and OVLO dividers.
 ## 8.1 UVLO
 
 ```text
-VIN_RAW ── 110k ──┬── HS_UVLO
+VCC ── 110k ──┬── HS_UVLO
                    │
                   18k
                    │
@@ -602,7 +602,7 @@ This prevents the 140 W branch from trying to operate on a substantially collaps
 ## 8.2 OVLO
 
 ```text
-VIN_RAW ── 110k ──┬── HS_OVLO
+VCC ── 110k ──┬── HS_OVLO
                    │
                   5.1k
                    │
@@ -634,7 +634,7 @@ Do not directly connect the MCU GPIO to the LMX5069 UVLO pin.
 Use two 2N7002 MOSFETs:
 
 ```text
-                          VIN_RAW
+                          VCC
                              │
                            110k
                              │
@@ -816,16 +816,16 @@ The smaller ±40.96 mV range is not suitable because:
 
 ## 11.4 Address
 
-Default:
+Fixed configuration:
 
 ```text
-A0 -> 0Ω -> GND
-A1 -> 0Ω -> GND
+A0 -> GND
+A1 -> GND
 
 I²C address = 0x40
 ```
 
-Also provide DNP 0 Ω strap footprints from A0 and A1 to +3V3 so the address can be changed without redesign if the PD module conflicts with `0x40`.
+Each carrier contains only one INA237. Tie A0 and A1 directly to GND; do not fit address-selection or alternate-address strap resistors.
 
 ## 11.5 ALERT
 
@@ -876,8 +876,8 @@ No external crystal is required for this design.
 | 23 | PB3 | spare |
 | 24 | PB4 | spare |
 | 25 | PB5 | spare |
-| 26 | PB6 | UP_I2C_SCL / I2C1 |
-| 27 | PB7 | UP_I2C_SDA / I2C1 |
+| 26 | PB6 | BP_SMBUS_SCL / I2C1 |
+| 27 | PB7 | BP_SMBUS_SDA / I2C1 |
 | 28 | PB8 | spare |
 
 ## 12.3 MCU support
@@ -906,26 +906,26 @@ Use pogo/test pads rather than a permanent connector unless mechanical constrain
 
 ---
 
-# 13. I²C architecture
+# 13. SMBus and local I²C architecture
 
-## 13.1 Upstream I²C1
+## 13.1 Backplane SMBus on I²C1
 
-The STM32 is an I²C target/slave on the upstream bus. The existing backplane I²C mux remains the channel-isolation point; each carrier sits behind one mux channel. Retain the backplane's per-channel pull-ups and ESD protection, and do not move the former backplane GPIO expander or branch FET driver onto this interface.
+The STM32 is an SMBus target/slave on the backplane-facing bus, using its I²C1-compatible peripheral. The existing backplane bus mux remains the channel-isolation point; each carrier sits behind one mux channel. Retain the backplane's per-channel pull-ups and ESD protection, and do not move the former backplane GPIO expander or branch FET driver onto this interface.
 
 ```text
-J1.UP_I2C_SCL ───── U1 PB6 / I2C1_SCL
-J1.UP_I2C_SDA ───── U1 PB7 / I2C1_SDA
+J1.BP_SMBUS_SCL ───── U1 PB6 / I2C1_SCL
+J1.BP_SMBUS_SDA ───── U1 PB7 / I2C1_SDA
 J1.GND        ───── GND
 ```
 
 Provide local pull-up footprints:
 
 ```text
-+3V3 ── 2.2k ── UP_I2C_SCL   DNP BY DEFAULT
-+3V3 ── 2.2k ── UP_I2C_SDA   DNP BY DEFAULT
++3V3 ── 2.2k ── BP_SMBUS_SCL   DNP BY DEFAULT
++3V3 ── 2.2k ── BP_SMBUS_SDA   DNP BY DEFAULT
 ```
 
-Only one suitable set of pull-ups should normally exist on each muxed upstream channel. The carrier footprints are tuning/DNP options; do not populate them when the backplane channel pull-ups are fitted.
+Only one suitable set of pull-ups should normally exist on each muxed backplane SMBus channel. The carrier footprints are tuning/DNP options; do not populate them when the backplane channel pull-ups are fitted.
 
 ## 13.2 Local / downstream I²C2
 
@@ -951,7 +951,7 @@ Populate:
 
 The firmware shall **not transparently electrically bridge** the two buses.
 
-Instead, application logic should terminate the upstream protocol and explicitly perform downstream transactions.
+Instead, application logic should terminate the backplane SMBus protocol and explicitly perform downstream I²C transactions.
 
 This allows firmware to:
 
@@ -1000,7 +1000,7 @@ LCSC C5861043
 Connection:
 
 ```text
-VIN_RAW ─────┬──────── rest of carrier
+VCC ─────┬──────── rest of carrier
              │
            DTVS1
              │
@@ -1052,7 +1052,7 @@ Exact manufacturer pin numbers and footprint pad numbering must be checked again
 # RAW INPUT
 # ============================================================
 
-NET VIN_RAW
+NET VCC
     J1.VIN+
     DTVS1.K
     U2.VIN
@@ -1094,9 +1094,9 @@ NET GND
     R_PD_EN_PD.2
 
     U4.GND
+    U4.A0
+    U4.A1
     C_INA_SUPPLY.2
-    R_A0_GND.2
-    R_A1_GND.2
 
     U1.VSS_VSSA
     C_MCU.2
@@ -1156,16 +1156,14 @@ NET +3V3
     U4.VS
     C_INA_SUPPLY.1
     R_ALERT.1
-    R_A0_ALT.1           # DNP
-    R_A1_ALT.1           # DNP
 
     LED1.VDD
     C_LED.1
 
     R_PD_SCL.1
     R_PD_SDA.1
-    R_UP_SCL.1           # DNP
-    R_UP_SDA.1           # DNP
+    R_BP_SMBUS_SCL.1           # DNP
+    R_BP_SMBUS_SDA.1           # DNP
 
     R_PGD.1
     R_BUCK_PG.1
@@ -1269,17 +1267,6 @@ NET INA_ALERT
     R_ALERT.2
     U1.PA2
 
-NET INA_A0
-    U4.A0
-    R_A0_GND.1           # FIT
-    R_A0_ALT.2           # DNP
-
-NET INA_A1
-    U4.A1
-    R_A1_GND.1           # FIT
-    R_A1_ALT.2           # DNP
-
-
 # ============================================================
 # LOCAL / DOWNSTREAM I2C2
 # ============================================================
@@ -1298,18 +1285,18 @@ NET PD_I2C_SDA
 
 
 # ============================================================
-# UPSTREAM I2C1
+# BACKPLANE SMBUS / I2C1
 # ============================================================
 
-NET UP_I2C_SCL
+NET BP_SMBUS_SCL
     U1.PB6
-    J1.UP_I2C_SCL
-    R_UP_SCL.2
+    J1.BP_SMBUS_SCL
+    R_BP_SMBUS_SCL.2
 
-NET UP_I2C_SDA
+NET BP_SMBUS_SDA
     U1.PB7
-    J1.UP_I2C_SDA
-    R_UP_SDA.2
+    J1.BP_SMBUS_SDA
+    R_BP_SMBUS_SDA.2
 
 
 # ============================================================
@@ -1375,15 +1362,11 @@ For high-voltage ceramics, shunt components, and timing/programming values, pres
 | R_INA_P | 1 | **10 Ω** | 1% |
 | R_INA_N | 1 | **10 Ω** | 1% |
 | R_ALERT | 1 | **10 kΩ** | 1% |
-| R_A0_GND | 1 | **0 Ω** | FIT |
-| R_A1_GND | 1 | **0 Ω** | FIT |
-| R_A0_ALT | 1 | **0 Ω** | DNP, to +3V3 |
-| R_A1_ALT | 1 | **0 Ω** | DNP, to +3V3 |
 | R_NRST | 1 | **10 kΩ** | 1% |
 | R_PD_SCL | 1 | **2.2 kΩ** | local I²C pull-up |
 | R_PD_SDA | 1 | **2.2 kΩ** | local I²C pull-up |
-| R_UP_SCL | 1 | **2.2 kΩ** | DNP |
-| R_UP_SDA | 1 | **2.2 kΩ** | DNP |
+| R_BP_SMBUS_SCL | 1 | **2.2 kΩ** | DNP |
+| R_BP_SMBUS_SDA | 1 | **2.2 kΩ** | DNP |
 | R_LED | 1 | **100 Ω** | LED data series |
 
 ## 17.2 Capacitors
@@ -1434,15 +1417,15 @@ The existing carrier/backplane connector is a combined two-power-contact plus tw
 ## J1 — combined backplane interface
 
 ```text
-VIN_RAW
+VCC
 GND
-UP_I2C_SCL
-UP_I2C_SDA
+BP_SMBUS_SCL
+BP_SMBUS_SDA
 ```
 
-The power contacts and PCB copper shall support the 140 W architecture case and the short-duration current-limit current. Treat SDA/SCL as a 3.3 V I²C interface.
+The power contacts and PCB copper shall support the 140 W architecture case and the short-duration current-limit current. Treat SDA/SCL as a 3.3 V SMBus-compatible interface.
 
-The current carrier schematic assumes `pin 1 = VIN_RAW`, `pin 2 = GND`, `pin 3 = SDA`, and `pin 4 = SCL`, while the backplane-prototype schematic presently shows the two power nets in the opposite order. This may be a male/female footprint-numbering mirror. Before fabrication, verify the real mated contacts from manufacturer drawings and continuity, then make symbol pins, footprint pads, net assignments, and connector notes consistent across every carrier and backplane project. Do not infer polarity from an unlabeled PCB-side view.
+The current carrier schematic assumes `pin 1 = VCC`, `pin 2 = GND`, `pin 3 = SMBus SDA`, and `pin 4 = SMBus SCL`, while the backplane-prototype schematic presently shows the two power nets in the opposite order. This may be a male/female footprint-numbering mirror. Before fabrication, verify the real mated contacts from manufacturer drawings and continuity, then make symbol pins, footprint pads, net assignments, and connector notes consistent across every carrier and backplane project. Do not infer polarity from an unlabeled PCB-side view.
 
 ## J3 — PD-module interface
 
@@ -1590,7 +1573,7 @@ Firmware should be able to:
 6. wait for `PD_PGOOD`
 7. reprobe the module
 
-Do not use the upstream I²C bus as part of the downstream recovery mechanism.
+Do not use the backplane SMBus as part of the downstream I²C recovery mechanism.
 
 No dedicated bleeder is required on `PD_VIN_SW`. The PD module's onboard low-power supply remains connected to its input capacitors and discharges them to zero after Q1 turns off. Confirm the discharge time on the assembled module during bring-up; add no carrier bleeder unless that measurement disproves the assumption.
 
@@ -1752,7 +1735,7 @@ Rev A shall use a 4-layer, 1.6 mm stackup with 2 oz outer copper and 1 oz inner 
 ```text
 L1 / F.Cu    2 oz    module pads, high-current pours, signals
 L2 / In1.Cu  1 oz    solid GND
-L3 / In2.Cu  1 oz    VIN_RAW / PD_VIN_SW high-current assistance
+L3 / In2.Cu  1 oz    VCC / PD_VIN_SW high-current assistance
 L4 / B.Cu    2 oz    new components, local pours, signals
 ```
 
@@ -1859,7 +1842,7 @@ Bench-test:
 
 Capture:
 
-- VIN_RAW
+- VCC
 - HS_SENSE
 - PD_VIN_SW
 - Q1 VGS
@@ -1998,7 +1981,7 @@ PD_PGOOD        input    pulled high when branch healthy
 INA_ALERT       input    open-drain interrupt/status
 BUCK_PGOOD      input    housekeeping regulator status
 
-UP_I2C_*        I2C1     upstream target/slave
+BP_SMBUS_*      I2C1     backplane SMBus target/slave
 PD_I2C_*        I2C2     downstream controller/master
 
 LED_DATA        output   WS2812 status
@@ -2067,7 +2050,7 @@ Future hardware target      240 W capable; new hardware review required
 Backplane/carrier interface:
 
 ```text
-J1 = VIN_RAW + GND + upstream I2C SDA/SCL
+J1 = VCC + GND + backplane SMBus SDA/SCL
 No backplane 3.3 V rail
 Carrier generates local 3.3 V with LM5163
 ```
