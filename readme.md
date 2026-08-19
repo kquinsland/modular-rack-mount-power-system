@@ -60,3 +60,8 @@ It's how I 'caught' that the `sw3538` based module I am using is non-standard 14
 
 
 https://github.com/Shrike-Lab/HomeLab-PDU-V1/blob/main/ASSEMBLY/README.md#pcb-tray
+
+
+Plan was to use APK43070 but they do not support MCU controlling it via i2c
+
+https://meron33.hatenablog.com/entry/2026/02/07/112759
