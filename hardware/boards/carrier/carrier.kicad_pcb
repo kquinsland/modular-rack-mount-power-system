@@ -2629,14 +2629,14 @@
 			)
 		)
 	)
-	(footprint "LED_SMD:LED_WS2812B-2020_PLCC4_2.0x2.0mm"
+	(footprint "mini-rack-power:LED_Worldsemi_WS2812B-4020_SideView"
 		(layer "F.Cu")
 		(uuid "47730c63-b69a-4c18-8310-d5a3efd991c4")
-		(at 205.16 102.74 90)
-		(descr "2.0mm x 2.0mm Addressable RGB LED NeoPixel Nano, 12 mA, https://cdn-shop.adafruit.com/product-files/4684/4684_WS2812B-2020_V1.3_EN.pdf")
-		(tags "LED RGB NeoPixel Nano PLCC-4 2020")
+		(at 204.85 102.74 -90)
+		(descr "Worldsemi WS2812B-4020 side-view addressable RGB LED, 3.98 x 2.00 x 1.70 mm; recommended land pattern from manufacturer datasheet")
+		(tags "LED RGB addressable side-view right-angle WS2812B 4020")
 		(property "Reference" "LED1"
-			(at 0 -2 90)
+			(at 0 2.45 90)
 			(layer "F.SilkS")
 			(uuid "418022fd-e2cd-4ea6-8175-0db029de512f")
 			(effects
@@ -2646,8 +2646,8 @@
 				)
 			)
 		)
-		(property "Value" "WS2812B-2020-V6"
-			(at 0 2.2 90)
+		(property "Value" "WS2812B-4020-V6"
+			(at 0 -2.45 -90)
 			(layer "F.Fab")
 			(uuid "77a83e3c-057f-42fe-b8e2-ae5e3a757dc9")
 			(effects
@@ -2657,8 +2657,8 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://cdn-shop.adafruit.com/product-files/4684/4684_WS2812B-2020_V1.3_EN.pdf"
-			(at 0 0 90)
+		(property "Datasheet" "https://datasheet.lcsc.com/datasheet/pdf/ec5ab06f6bef843823cdd508ed36b03e.pdf?productCode=C52941387"
+			(at 0 0 -90)
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
@@ -2670,8 +2670,8 @@
 				)
 			)
 		)
-		(property "Description" "RGB LED with integrated controller, 2.0 x 2.0 mm, 12 mA"
-			(at 0 0 90)
+		(property "Description" "Side-view RGB LED with integrated WS2812-compatible controller, 3.3 V capable, 3.98 x 2.00 x 1.70 mm"
+			(at 0 0 -90)
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
@@ -2683,8 +2683,8 @@
 				)
 			)
 		)
-		(property "MPN" "WS2812B-2020-V6"
-			(at 0 0 90)
+		(property "MPN" "WS2812B-4020-V6"
+			(at 0 0 -90)
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
@@ -2697,7 +2697,7 @@
 			)
 		)
 		(property "Manufacturer" "Worldsemi"
-			(at 0 0 90)
+			(at 0 0 -90)
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
@@ -2709,8 +2709,8 @@
 				)
 			)
 		)
-		(property "LCSC" "C52917434"
-			(at 0 0 90)
+		(property "LCSC" "C52941387"
+			(at 0 0 -90)
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
@@ -2722,21 +2722,21 @@
 				)
 			)
 		)
-		(property ki_fp_filters "LED*WS2812*-2020_PLCC4*")
+		(property ki_fp_filters "*WS2812B*4020*SideView*")
 		(path "/64ed744c-f0e1-4d20-9137-f6a463447101/f698226c-ad3c-4f8f-af57-9718e13d3b7c")
 		(sheetname "/STM32 Housekeeping and Status/")
 		(sheetfile "02_housekeeping.kicad_sch")
 		(units
 			(unit
 				(name "A")
-				(pins "3" "4" "2" "1")
+				(pins "1" "2" "3" "4")
 			)
 		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
-			(start 1.6 -1.15)
-			(end 1.6 1.15)
+			(start 2.1 -1.1)
+			(end 2.1 -0.55)
 			(stroke
 				(width 0.12)
 				(type solid)
@@ -2745,8 +2745,8 @@
 			(uuid "6fa063f3-a7f4-4d43-bc8b-195210ff75c2")
 		)
 		(fp_line
-			(start -1.3 -1.15)
-			(end 1.6 -1.15)
+			(start -2.1 -1.1)
+			(end 2.1 -1.1)
 			(stroke
 				(width 0.12)
 				(type solid)
@@ -2755,18 +2755,18 @@
 			(uuid "33f7ab18-e48d-4430-be6e-bf188cdc00d5")
 		)
 		(fp_line
-			(start -1.3 -1.15)
-			(end -1.6 -0.85)
+			(start 1.65 1.4)
+			(end 1.65 1.75)
 			(stroke
 				(width 0.12)
-				(type default)
+				(type solid)
 			)
 			(layer "F.SilkS")
 			(uuid "74d07087-02b6-4595-9030-d24dab63dbc8")
 		)
 		(fp_line
-			(start -1.6 1.15)
-			(end -1.6 -0.85)
+			(start -2.1 -1.1)
+			(end -2.1 -0.55)
 			(stroke
 				(width 0.12)
 				(type solid)
@@ -2775,8 +2775,8 @@
 			(uuid "71c91663-090d-4dd3-8f3c-e6b1c669ccea")
 		)
 		(fp_line
-			(start -1.6 1.15)
-			(end 1.6 1.15)
+			(start 1.65 1.75)
+			(end 1.95 1.75)
 			(stroke
 				(width 0.12)
 				(type solid)
@@ -2785,8 +2785,8 @@
 			(uuid "00d53fe4-8568-47e0-bb4d-103ab1927dc8")
 		)
 		(fp_line
-			(start 1.52 -1.25)
-			(end -1.52 -1.25)
+			(start 2.25 -1.25)
+			(end -2.25 -1.25)
 			(stroke
 				(width 0.05)
 				(type solid)
@@ -2795,8 +2795,8 @@
 			(uuid "2509a8ae-1b1c-46c9-a107-1c9e1a987979")
 		)
 		(fp_line
-			(start -1.52 -1.25)
-			(end -1.52 1.25)
+			(start -2.25 -1.25)
+			(end -2.25 1.75)
 			(stroke
 				(width 0.05)
 				(type solid)
@@ -2805,8 +2805,8 @@
 			(uuid "afd530a3-71eb-473d-8de1-a52ed72f80df")
 		)
 		(fp_line
-			(start 1.52 1.25)
-			(end 1.52 -1.25)
+			(start 2.25 1.75)
+			(end 2.25 -1.25)
 			(stroke
 				(width 0.05)
 				(type solid)
@@ -2815,8 +2815,8 @@
 			(uuid "3ff4067c-96e1-47ae-b9da-c544d94a6c39")
 		)
 		(fp_line
-			(start -1.52 1.25)
-			(end 1.52 1.25)
+			(start -2.25 1.75)
+			(end 2.25 1.75)
 			(stroke
 				(width 0.05)
 				(type solid)
@@ -2825,8 +2825,8 @@
 			(uuid "5f3c9802-1f11-42f4-aac1-3ff691741ec0")
 		)
 		(fp_line
-			(start 1.1 -1)
-			(end -0.55 -1)
+			(start 1.99 -1)
+			(end -1.99 -1)
 			(stroke
 				(width 0.1)
 				(type solid)
@@ -2835,8 +2835,8 @@
 			(uuid "e8eddc63-8cf0-4818-8f52-1aa087768a23")
 		)
 		(fp_line
-			(start 1.1 -1)
-			(end 1.1 1)
+			(start 1.99 -1)
+			(end 1.99 1)
 			(stroke
 				(width 0.1)
 				(type solid)
@@ -2845,8 +2845,8 @@
 			(uuid "dc2e4724-d50e-4cf0-8edb-e882316965ee")
 		)
 		(fp_line
-			(start -0.55 -1)
-			(end -1.1 -0.45)
+			(start 1.99 0.65)
+			(end 1.65 1)
 			(stroke
 				(width 0.1)
 				(type solid)
@@ -2855,8 +2855,8 @@
 			(uuid "482c72fa-8865-4fe1-a319-0b3541f62165")
 		)
 		(fp_line
-			(start -1.1 -0.45)
-			(end -1.1 1)
+			(start -1.99 -1)
+			(end -1.99 1)
 			(stroke
 				(width 0.1)
 				(type solid)
@@ -2865,8 +2865,8 @@
 			(uuid "187e41de-43d4-40bb-a43a-641e96d37e64")
 		)
 		(fp_line
-			(start -1.1 1)
-			(end 1.1 1)
+			(start -1.99 1)
+			(end 1.65 1)
 			(stroke
 				(width 0.1)
 				(type solid)
@@ -2897,7 +2897,7 @@
 			(uuid "a04ae2cf-0a2e-4f70-86b6-57e81a43de3d")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
+			(at 0 0 -90)
 			(layer "F.Fab")
 			(uuid "536cf2c1-c9d1-41ba-a766-db85524336b3")
 			(effects
@@ -2907,54 +2907,47 @@
 				)
 			)
 		)
-		(pad "1" smd rect
-			(at -0.915 -0.55 90)
-			(size 0.7 0.7)
+		(pad "3" smd roundrect
+			(at -0.425 0.65 -90)
+			(size 0.42 1.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
-			(net "unconnected-(LED1-DOUT-Pad1)")
-			(pinfunction "DOUT_1")
+			(roundrect_rratio 0.2)
+			(net "unconnected-(LED1-DOUT-Pad3)")
+			(pinfunction "DOUT_3")
 			(pintype "output+no_connect")
 			(uuid "165eeae7-a257-4407-8af7-d1218d7e6200")
 		)
-		(pad "2" smd rect
-			(at -0.915 0.55 90)
-			(size 0.7 0.7)
+		(pad "4" smd roundrect
+			(at -1.275 0.65 -90)
+			(size 0.42 1.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
+			(roundrect_rratio 0.2)
 			(net "GND")
-			(pinfunction "VSS_2")
+			(pinfunction "VSS_4")
 			(pintype "power_in")
 			(uuid "79104752-5d11-4c27-a6e8-9d120ebfb44c")
 		)
-		(pad "3" smd rect
-			(at 0.915 0.55 90)
-			(size 0.7 0.7)
+		(pad "1" smd roundrect
+			(at 1.275 0.65 -90)
+			(size 0.42 1.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
+			(roundrect_rratio 0.2)
 			(net "/STM32 Housekeeping and Status/LED_DATA_RAW")
-			(pinfunction "DIN_3")
+			(pinfunction "DIN_1")
 			(pintype "input")
 			(uuid "72faf83f-fd14-4f21-8a77-c6c26bc5f81e")
 		)
-		(pad "4" smd rect
-			(at 0.915 -0.55 90)
-			(size 0.7 0.7)
+		(pad "2" smd roundrect
+			(at 0.425 0.65 -90)
+			(size 0.42 1.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
+			(roundrect_rratio 0.2)
 			(net "+3V3")
-			(pinfunction "VDD_4")
+			(pinfunction "VDD_2")
 			(pintype "power_in")
 			(uuid "2b6303bd-25fe-4f0d-9fce-ed079f76f7f7")
 		)
 		(embedded_fonts no)
-		(model "${KIPRJMOD}/../../libraries/3dmodels/Worldsemi_WS2812B-2020-V6.step"
-			(offset
-				(xyz 0 0 0)
-			)
-			(scale
-				(xyz 1 1 1)
-			)
-			(rotate
-				(xyz 0 0 0)
-			)
-		)
 	)
 	(footprint "mini-rack-power:MountingHole_JLCPCB_Tooling_1.152mm"
 		(layer "F.Cu")
@@ -5308,7 +5301,7 @@
 				(pins "1" "3" "5" "6" "7" "2" "4")
 			)
 		)
-		(attr through_hole)
+		(attr through_hole exclude_from_pos_files dnp)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
 			(start -5.06 33.35)
@@ -7662,7 +7655,7 @@
 	(footprint "Package_TO_SOT_SMD:TO-263-3_TabPin2"
 		(layer "F.Cu")
 		(uuid "a2eb40b7-93f7-4af0-b6c2-2db79f7d0b28")
-		(at 128.96 124.74 180)
+		(at 128.96 123.74 180)
 		(descr "TO-263/D2PAK/DDPAK SMD package, http://www.infineon.com/cms/en/product/packages/PG-TO263/PG-TO263-3-1/")
 		(tags "D2PAK DDPAK TO-263 D2PAK-3 TO-263-3 SOT-404")
 		(property "Reference" "Q1"
@@ -12269,7 +12262,7 @@
 				(pins "1" "2" "3" "4" "5")
 			)
 		)
-		(attr through_hole)
+		(attr through_hole exclude_from_pos_files dnp)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
 			(start -1.38 1.38)

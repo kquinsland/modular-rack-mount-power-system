@@ -7,6 +7,9 @@
 # so it cannot verify the physical Z clearance. Only footprints deliberately assigned
 # to the Under_PD_Module component class may overlap MOD1's courtyard. Their assembled
 # height above the carrier PCB, including tolerances, must not exceed 2.75 mm.
+(assign_component_class "Under_PD_Module"
+    (condition "A.Reference == 'C3' || A.Reference == 'C5' || A.Reference == 'C6' || A.Reference == 'C7' || A.Reference == 'C8' || A.Reference == 'C9' || A.Reference == 'C10' || A.Reference == 'C11' || A.Reference == 'C12' || A.Reference == 'C13' || A.Reference == 'LED1' || A.Reference == 'R11' || A.Reference == 'R12' || A.Reference == 'R13' || A.Reference == 'R14' || A.Reference == 'R15' || A.Reference == 'R16' || A.Reference == 'R17' || A.Reference == 'R18' || A.Reference == 'R24' || A.Reference == 'R25' || A.Reference == 'R28' || A.Reference == 'R29' || A.Reference == 'R30' || A.Reference == 'U1' || A.Reference == 'U2' || A.Reference == 'U4'"))
+
 (rule "Allow qualified low-profile parts below MOD1"
     (condition "((A.Reference == 'MOD1' && B.hasComponentClass('Under_PD_Module')) || (B.Reference == 'MOD1' && A.hasComponentClass('Under_PD_Module')))"
     (constraint courtyard_clearance (min -1mm)))

@@ -1172,7 +1172,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "LED:WS2812B-2020"
+		(symbol "mini-rack-power:WS2812B-4020-V6"
 			(pin_names
 				(offset 0.254)
 			)
@@ -1192,7 +1192,7 @@
 					(justify right bottom)
 				)
 			)
-			(property "Value" "WS2812B-2020"
+			(property "Value" "WS2812B-4020-V6"
 				(at 1.27 -5.715 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1203,7 +1203,7 @@
 					(justify left top)
 				)
 			)
-			(property "Footprint" "LED_SMD:LED_WS2812B-2020_PLCC4_2.0x2.0mm"
+			(property "Footprint" "mini-rack-power:LED_Worldsemi_WS2812B-4020_SideView"
 				(at 1.27 -7.62 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1215,7 +1215,7 @@
 					(justify left top)
 				)
 			)
-			(property "Datasheet" "https://cdn-shop.adafruit.com/product-files/4684/4684_WS2812B-2020_V1.3_EN.pdf"
+			(property "Datasheet" "https://datasheet.lcsc.com/datasheet/pdf/ec5ab06f6bef843823cdd508ed36b03e.pdf?productCode=C52941387"
 				(at 2.54 -9.525 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1227,7 +1227,7 @@
 					(justify left top)
 				)
 			)
-			(property "Description" "RGB LED with integrated controller, 2.0 x 2.0 mm, 12 mA"
+			(property "Description" "Side-view RGB LED with integrated WS2812-compatible controller, 3.3 V capable, 3.98 x 2.00 x 1.70 mm"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1238,7 +1238,7 @@
 					)
 				)
 			)
-			(property "ki_keywords" "RGB LED NeoPixel Nano addressable"
+			(property "ki_keywords" "RGB LED NeoPixel addressable side-view right-angle"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1249,7 +1249,7 @@
 					)
 				)
 			)
-			(property "ki_fp_filters" "LED*WS2812*-2020_PLCC4*"
+			(property "ki_fp_filters" "*WS2812B*4020*SideView*"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1260,7 +1260,7 @@
 					)
 				)
 			)
-			(symbol "WS2812B-2020_0_0"
+			(symbol "WS2812B-4020-V6_0_0"
 				(text "RGB"
 					(at 2.286 -4.191 0)
 					(effects
@@ -1270,7 +1270,7 @@
 					)
 				)
 			)
-			(symbol "WS2812B-2020_0_1"
+			(symbol "WS2812B-4020-V6_0_1"
 				(polyline
 					(pts
 						(xy 1.27 -2.54) (xy 1.778 -2.54)
@@ -1366,8 +1366,17 @@
 						(type background)
 					)
 				)
+				(text "RGB\nSIDE VIEW"
+					(at 0 0 0)
+					(effects
+						(font
+							(size 1.016 1.016)
+						)
+						(justify left)
+					)
+				)
 			)
-			(symbol "WS2812B-2020_1_1"
+			(symbol "WS2812B-4020-V6_1_1"
 				(pin output line
 					(at 7.62 0 180)
 					(length 2.54)
@@ -1378,7 +1387,7 @@
 							)
 						)
 					)
-					(number "1"
+					(number "3"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1396,7 +1405,7 @@
 							)
 						)
 					)
-					(number "2"
+					(number "4"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1414,7 +1423,7 @@
 							)
 						)
 					)
-					(number "3"
+					(number "1"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1432,7 +1441,7 @@
 							)
 						)
 					)
-					(number "4"
+					(number "2"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -4725,8 +4734,8 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
+		(in_pos_files no)
+		(dnp yes)
 		(fields_autoplaced yes)
 		(uuid "210695f3-d650-4055-9a36-80b1511851c3")
 		(property "Reference" "J2"
@@ -6573,7 +6582,7 @@
 		)
 	)
 	(symbol
-		(lib_id "LED:WS2812B-2020")
+		(lib_id "mini-rack-power:WS2812B-4020-V6")
 		(at 66.04 149.86 0)
 		(unit 1)
 		(body_style 1)
@@ -6594,7 +6603,7 @@
 				(justify right bottom)
 			)
 		)
-		(property "Value" "WS2812B-2020-V6"
+		(property "Value" "WS2812B-4020-V6"
 			(at 71.12 158.496 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6605,7 +6614,7 @@
 				(justify left top)
 			)
 		)
-		(property "Footprint" "LED_SMD:LED_WS2812B-2020_PLCC4_2.0x2.0mm"
+		(property "Footprint" "mini-rack-power:LED_Worldsemi_WS2812B-4020_SideView"
 			(at 67.31 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -6617,7 +6626,7 @@
 				(justify left top)
 			)
 		)
-		(property "Datasheet" "https://cdn-shop.adafruit.com/product-files/4684/4684_WS2812B-2020_V1.3_EN.pdf"
+		(property "Datasheet" "https://datasheet.lcsc.com/datasheet/pdf/ec5ab06f6bef843823cdd508ed36b03e.pdf?productCode=C52941387"
 			(at 68.58 140.335 0)
 			(hide yes)
 			(show_name no)
@@ -6629,7 +6638,7 @@
 				(justify left top)
 			)
 		)
-		(property "Description" "RGB LED with integrated controller, 2.0 x 2.0 mm, 12 mA"
+		(property "Description" "Side-view RGB LED with integrated WS2812-compatible controller, 3.3 V capable, 3.98 x 2.00 x 1.70 mm"
 			(at 66.04 149.86 0)
 			(hide yes)
 			(show_name no)
@@ -6640,7 +6649,7 @@
 				)
 			)
 		)
-		(property "MPN" "WS2812B-2020-V6"
+		(property "MPN" "WS2812B-4020-V6"
 			(at 66.04 149.86 0)
 			(hide yes)
 			(show_name no)
@@ -6662,7 +6671,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C52917434"
+		(property "LCSC" "C52941387"
 			(at 66.04 149.86 0)
 			(hide yes)
 			(show_name no)
@@ -6674,16 +6683,16 @@
 			)
 		)
 		(pin "1"
-			(uuid "5e0ab2dc-9a32-488f-a834-8c1b070e8158")
-		)
-		(pin "2"
-			(uuid "61eaed89-5eaa-4c52-8942-e6c12f7d4183")
-		)
-		(pin "3"
 			(uuid "53b8af50-3420-46b3-8b6a-c6c8ec545b32")
 		)
-		(pin "4"
+		(pin "2"
 			(uuid "880029fa-df2f-4ace-96fb-ee7b1e139cbc")
+		)
+		(pin "3"
+			(uuid "5e0ab2dc-9a32-488f-a834-8c1b070e8158")
+		)
+		(pin "4"
+			(uuid "61eaed89-5eaa-4c52-8942-e6c12f7d4183")
 		)
 		(instances
 			(project "carrier"
