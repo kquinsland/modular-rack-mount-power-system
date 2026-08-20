@@ -3,6 +3,14 @@
 # Ported from backplane-prototype for the same JLCPCB process.
 # The annular-ring rule assumes 2 oz outer copper.
 
+# MOD1 is mounted above the carrier PCB. KiCad's courtyard DRC is two-dimensional,
+# so it cannot verify the physical Z clearance. Only footprints deliberately assigned
+# to the Under_PD_Module component class may overlap MOD1's courtyard. Their assembled
+# height above the carrier PCB, including tolerances, must not exceed 2.75 mm.
+(rule "Allow qualified low-profile parts below MOD1"
+    (condition "((A.Reference == 'MOD1' && B.hasComponentClass('Under_PD_Module')) || (B.Reference == 'MOD1' && A.hasComponentClass('Under_PD_Module')))"
+    (constraint courtyard_clearance (min -1mm)))
+
 # JLCPCB supports through vias for this process, not blind, buried, or microvias.
 (rule "JLCPCB through vias only"
     (condition "A.Type == 'Via' && A.Via_Type != 'Through'")
