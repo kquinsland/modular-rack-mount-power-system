@@ -1172,7 +1172,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "mini-rack-power:WS2812B-4020-V6"
+		(symbol "LED:WS2812B-2020"
 			(pin_names
 				(offset 0.254)
 			)
@@ -1192,7 +1192,7 @@
 					(justify right bottom)
 				)
 			)
-			(property "Value" "WS2812B-4020-V6"
+			(property "Value" "WS2812B-2020"
 				(at 1.27 -5.715 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1203,7 +1203,7 @@
 					(justify left top)
 				)
 			)
-			(property "Footprint" "mini-rack-power:LED_Worldsemi_WS2812B-4020_SideView"
+			(property "Footprint" "LED_SMD:LED_WS2812B-2020_PLCC4_2.0x2.0mm"
 				(at 1.27 -7.62 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1215,7 +1215,7 @@
 					(justify left top)
 				)
 			)
-			(property "Datasheet" "https://datasheet.lcsc.com/datasheet/pdf/ec5ab06f6bef843823cdd508ed36b03e.pdf?productCode=C52941387"
+			(property "Datasheet" "https://cdn-shop.adafruit.com/product-files/4684/4684_WS2812B-2020_V1.3_EN.pdf"
 				(at 2.54 -9.525 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1227,7 +1227,7 @@
 					(justify left top)
 				)
 			)
-			(property "Description" "Side-view RGB LED with integrated WS2812-compatible controller, 3.3 V capable, 3.98 x 2.00 x 1.70 mm"
+			(property "Description" "RGB LED with integrated controller, 2.0 x 2.0 mm, 12 mA"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1238,7 +1238,7 @@
 					)
 				)
 			)
-			(property "ki_keywords" "RGB LED NeoPixel addressable side-view right-angle"
+			(property "ki_keywords" "RGB LED NeoPixel Nano addressable"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1249,7 +1249,7 @@
 					)
 				)
 			)
-			(property "ki_fp_filters" "*WS2812B*4020*SideView*"
+			(property "ki_fp_filters" "LED*WS2812*-2020_PLCC4*"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1260,7 +1260,7 @@
 					)
 				)
 			)
-			(symbol "WS2812B-4020-V6_0_0"
+			(symbol "WS2812B-2020_0_0"
 				(text "RGB"
 					(at 2.286 -4.191 0)
 					(effects
@@ -1270,7 +1270,7 @@
 					)
 				)
 			)
-			(symbol "WS2812B-4020-V6_0_1"
+			(symbol "WS2812B-2020_0_1"
 				(polyline
 					(pts
 						(xy 1.27 -2.54) (xy 1.778 -2.54)
@@ -1366,17 +1366,8 @@
 						(type background)
 					)
 				)
-				(text "RGB\nSIDE VIEW"
-					(at 0 0 0)
-					(effects
-						(font
-							(size 1.016 1.016)
-						)
-						(justify left)
-					)
-				)
 			)
-			(symbol "WS2812B-4020-V6_1_1"
+			(symbol "WS2812B-2020_1_1"
 				(pin output line
 					(at 7.62 0 180)
 					(length 2.54)
@@ -1387,7 +1378,7 @@
 							)
 						)
 					)
-					(number "3"
+					(number "1"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1405,7 +1396,7 @@
 							)
 						)
 					)
-					(number "4"
+					(number "2"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1423,7 +1414,7 @@
 							)
 						)
 					)
-					(number "1"
+					(number "3"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1441,7 +1432,7 @@
 							)
 						)
 					)
-					(number "2"
+					(number "4"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -4012,6 +4003,170 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Switch:SW_Push"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 1.016)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "SW"
+				(at 1.27 2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "SW_Push"
+				(at 0 -1.524 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 5.08 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 5.08 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Push button switch, generic, two pins"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "switch normally-open pushbutton push-button"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "SW_Push_0_1"
+				(circle
+					(center -2.032 0)
+					(radius 0.508)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 1.27) (xy 0 3.048)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 2.032 0)
+					(radius 0.508)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 2.54 1.27) (xy -2.54 1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(pin passive line
+					(at -5.08 0 0)
+					(length 2.54)
+					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 5.08 0 180)
+					(length 2.54)
+					(name "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "power:GND"
 			(power global)
 			(pin_numbers
@@ -4330,6 +4485,26 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "c76a7637-f49c-4e37-af5d-b78aca4d08a0")
+	)
+	(wire
+		(pts
+			(xy 20.32 50.8) (xy 20.32 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6b140ee9-f17c-488b-8aa9-8e69ae2ab871")
+	)
+	(wire
+		(pts
+			(xy 30.48 50.8) (xy 39.37 50.8)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f598fc30-9b17-4e12-855d-b64335bda89c")
 	)
 	(no_connect
 		(at 58.42 58.42)
@@ -4734,8 +4909,8 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files no)
-		(dnp yes)
+		(in_pos_files yes)
+		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "210695f3-d650-4055-9a36-80b1511851c3")
 		(property "Reference" "J2"
@@ -6389,6 +6564,196 @@
 		)
 	)
 	(symbol
+		(lib_id "Switch:SW_Push")
+		(at 25.4 50.8 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "80c4db72-5704-4d61-9f4f-0c46aea0d6db")
+		(property "Reference" "SW1"
+			(at 25.4 47.498 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SKSCLCE010"
+			(at 25.4 54.61 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "mini-rack-power:SW_ALPS_SKSCLCE010_SidePush"
+			(at 25.4 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://datasheet.lcsc.com/datasheet/pdf/a3d9c3c84b96b16ebda6f9dac2fc041f.pdf?productCode=C139799"
+			(at 25.4 50.8 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Low-profile right-angle side-push tactile switch, SPST-NO, 3.5 x 2.9 x 1.25 mm"
+			(at 25.4 50.8 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "SKSCLCE010"
+			(at 25.4 50.8 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "ALPSALPINE"
+			(at 25.4 50.8 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C139799"
+			(at 25.4 50.8 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "875598b0-7830-4ff3-9547-80a467d45ad5")
+		)
+		(pin "2"
+			(uuid "0fbb9e41-b33f-4234-b0fe-edfe0a1fe350")
+		)
+		(instances
+			(project "carrier"
+				(path "/ee42a069-09cc-4091-bee3-2dd6ab96c98c/64ed744c-f0e1-4d20-9137-f6a463447101"
+					(reference "SW1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 20.32 55.88 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "7c1c2b9d-5173-4f3b-a2cd-d2aa5a6e1c27")
+		(property "Reference" "#PWR68"
+			(at 20.32 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 20.32 60.96 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 20.32 55.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 20.32 55.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 20.32 55.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "314f05fe-c91a-4434-9a11-e324f1fb9044")
+		)
+		(instances
+			(project "carrier"
+				(path "/ee42a069-09cc-4091-bee3-2dd6ab96c98c/64ed744c-f0e1-4d20-9137-f6a463447101"
+					(reference "#PWR68")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "MCU_ST_STM32G0:STM32G031G6Ux")
 		(at 76.2 68.58 0)
 		(unit 1)
@@ -6582,7 +6947,7 @@
 		)
 	)
 	(symbol
-		(lib_id "mini-rack-power:WS2812B-4020-V6")
+		(lib_id "LED:WS2812B-2020")
 		(at 66.04 149.86 0)
 		(unit 1)
 		(body_style 1)
@@ -6603,7 +6968,7 @@
 				(justify right bottom)
 			)
 		)
-		(property "Value" "WS2812B-4020-V6"
+		(property "Value" "WS2812B-2020-V6"
 			(at 71.12 158.496 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6614,7 +6979,7 @@
 				(justify left top)
 			)
 		)
-		(property "Footprint" "mini-rack-power:LED_Worldsemi_WS2812B-4020_SideView"
+		(property "Footprint" "LED_SMD:LED_WS2812B-2020_PLCC4_2.0x2.0mm"
 			(at 67.31 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -6626,7 +6991,7 @@
 				(justify left top)
 			)
 		)
-		(property "Datasheet" "https://datasheet.lcsc.com/datasheet/pdf/ec5ab06f6bef843823cdd508ed36b03e.pdf?productCode=C52941387"
+		(property "Datasheet" "https://cdn-shop.adafruit.com/product-files/4684/4684_WS2812B-2020_V1.3_EN.pdf"
 			(at 68.58 140.335 0)
 			(hide yes)
 			(show_name no)
@@ -6638,7 +7003,7 @@
 				(justify left top)
 			)
 		)
-		(property "Description" "Side-view RGB LED with integrated WS2812-compatible controller, 3.3 V capable, 3.98 x 2.00 x 1.70 mm"
+		(property "Description" "RGB LED with integrated controller, 2.0 x 2.0 mm, 12 mA"
 			(at 66.04 149.86 0)
 			(hide yes)
 			(show_name no)
@@ -6649,7 +7014,7 @@
 				)
 			)
 		)
-		(property "MPN" "WS2812B-4020-V6"
+		(property "MPN" "WS2812B-2020-V6"
 			(at 66.04 149.86 0)
 			(hide yes)
 			(show_name no)
@@ -6671,40 +7036,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C52941387"
-			(at 66.04 149.86 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Alternate_MPN" "WS2812B-2020-V6"
-			(at 66.04 149.86 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Alternate_LCSC" "C52917434"
-			(at 66.04 149.86 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Population_Note" "Populate either the 4020 side-view pads or the 2020 top-emitting pads, never both"
+		(property "LCSC" "C52917434"
 			(at 66.04 149.86 0)
 			(hide yes)
 			(show_name no)
@@ -6716,16 +7048,16 @@
 			)
 		)
 		(pin "1"
-			(uuid "53b8af50-3420-46b3-8b6a-c6c8ec545b32")
-		)
-		(pin "2"
-			(uuid "880029fa-df2f-4ace-96fb-ee7b1e139cbc")
-		)
-		(pin "3"
 			(uuid "5e0ab2dc-9a32-488f-a834-8c1b070e8158")
 		)
-		(pin "4"
+		(pin "2"
 			(uuid "61eaed89-5eaa-4c52-8942-e6c12f7d4183")
+		)
+		(pin "3"
+			(uuid "53b8af50-3420-46b3-8b6a-c6c8ec545b32")
+		)
+		(pin "4"
+			(uuid "880029fa-df2f-4ace-96fb-ee7b1e139cbc")
 		)
 		(instances
 			(project "carrier"
