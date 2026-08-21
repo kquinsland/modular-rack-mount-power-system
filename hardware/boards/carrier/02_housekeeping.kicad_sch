@@ -4468,6 +4468,17 @@
 		)
 		(uuid "c3a863d4-9fb4-4ca8-a540-6f72442c1734")
 	)
+	(text "SW1: USER_BUTTON_N (PA6), active low.\nConfigure the STM32 input pull-up; debounce in firmware."
+		(exclude_from_sim no)
+		(at 20.32 35.56 0)
+		(effects
+			(font
+				(size 0.9 0.9)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d0ad567-c024-4ec4-b048-108ddc4febd8")
+	)
 	(text "RGB STATUS LED"
 		(exclude_from_sim no)
 		(at 57.15 133.858 0)
@@ -4496,23 +4507,9 @@
 		)
 		(uuid "6b140ee9-f17c-488b-8aa9-8e69ae2ab871")
 	)
-	(wire
-		(pts
-			(xy 30.48 50.8) (xy 39.37 50.8)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f598fc30-9b17-4e12-855d-b64335bda89c")
-	)
 	(no_connect
 		(at 58.42 58.42)
 		(uuid "0aee7c0f-c0d8-45b1-94d7-b28dfb367de3")
-	)
-	(no_connect
-		(at 93.98 66.04)
-		(uuid "1737cf96-a37d-48b1-83bf-2a5f77a038af")
 	)
 	(no_connect
 		(at 58.42 55.88)
@@ -4631,6 +4628,26 @@
 			(justify right bottom)
 		)
 		(uuid "46f56e0f-d443-4939-82b3-d6714949bcc4")
+	)
+	(label "USER_BUTTON_N"
+		(at 30.48 50.8 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "d25c26ae-b82d-47fe-9bc3-5332f3f8c8a1")
+	)
+	(label "USER_BUTTON_N"
+		(at 93.98 66.04 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "cabce793-b614-4a61-87b2-e78c9cf23946")
 	)
 	(label "NRST"
 		(at 50.8 50.8 0)

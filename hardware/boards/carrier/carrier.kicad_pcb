@@ -2279,6 +2279,7 @@
 			(effects
 				(font
 					(size 1 1)
+					(thickness 0.15)
 				)
 			)
 		)
@@ -2290,6 +2291,7 @@
 			(effects
 				(font
 					(size 1 1)
+					(thickness 0.15)
 				)
 			)
 		)
@@ -2301,6 +2303,7 @@
 			(effects
 				(font
 					(size 1 1)
+					(thickness 0.15)
 				)
 			)
 		)
@@ -2316,44 +2319,14 @@
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
-			(start -0.85 2.15)
-			(end 0.85 2.15)
+			(start -1.75 -1.45)
+			(end 1.75 -1.45)
 			(stroke
 				(width 0.15)
 				(type default)
 			)
 			(layer "F.SilkS")
-			(uuid "5f78a99b-4754-458a-9033-29cc33f57dec")
-		)
-		(fp_line
-			(start 0.85 2.15)
-			(end 0.85 1.45)
-			(stroke
-				(width 0.15)
-				(type default)
-			)
-			(layer "F.SilkS")
-			(uuid "566125ad-ddd9-45e9-b8ef-6cd582933c0f")
-		)
-		(fp_line
-			(start -1.75 1.45)
-			(end -0.85 1.45)
-			(stroke
-				(width 0.15)
-				(type default)
-			)
-			(layer "F.SilkS")
-			(uuid "972c6150-63ca-4916-9a0d-2bc07abe0e21")
-		)
-		(fp_line
-			(start -0.85 1.45)
-			(end -0.85 2.15)
-			(stroke
-				(width 0.15)
-				(type default)
-			)
-			(layer "F.SilkS")
-			(uuid "1858ee86-a054-4a15-8b8b-e20c2d4dd158")
+			(uuid "34b3c2f3-3a22-4a62-8a52-d760118b17b9")
 		)
 		(fp_line
 			(start 0.85 1.45)
@@ -2366,14 +2339,44 @@
 			(uuid "e20b853b-86a8-4024-a3b8-23afe1844f11")
 		)
 		(fp_line
-			(start -1.75 -1.45)
-			(end 1.75 -1.45)
+			(start -0.85 1.45)
+			(end -0.85 2.15)
 			(stroke
 				(width 0.15)
 				(type default)
 			)
 			(layer "F.SilkS")
-			(uuid "34b3c2f3-3a22-4a62-8a52-d760118b17b9")
+			(uuid "1858ee86-a054-4a15-8b8b-e20c2d4dd158")
+		)
+		(fp_line
+			(start -1.75 1.45)
+			(end -0.85 1.45)
+			(stroke
+				(width 0.15)
+				(type default)
+			)
+			(layer "F.SilkS")
+			(uuid "972c6150-63ca-4916-9a0d-2bc07abe0e21")
+		)
+		(fp_line
+			(start 0.85 2.15)
+			(end 0.85 1.45)
+			(stroke
+				(width 0.15)
+				(type default)
+			)
+			(layer "F.SilkS")
+			(uuid "566125ad-ddd9-45e9-b8ef-6cd582933c0f")
+		)
+		(fp_line
+			(start -0.85 2.15)
+			(end 0.85 2.15)
+			(stroke
+				(width 0.15)
+				(type default)
+			)
+			(layer "F.SilkS")
+			(uuid "5f78a99b-4754-458a-9033-29cc33f57dec")
 		)
 		(fp_circle
 			(center -2.55 1.45)
@@ -2398,17 +2401,6 @@
 			(uuid "56630f8b-7d4f-4d0b-93bf-e7aa02ccab78")
 		)
 		(fp_rect
-			(start -0.8 1.45)
-			(end 0.8 2.15)
-			(stroke
-				(width 0.1)
-				(type default)
-			)
-			(fill no)
-			(layer "F.Fab")
-			(uuid "0b246dac-e7d3-4a46-9d29-00e566747c2d")
-		)
-		(fp_rect
 			(start -1.75 -1.45)
 			(end 1.75 1.45)
 			(stroke
@@ -2418,6 +2410,17 @@
 			(fill no)
 			(layer "F.Fab")
 			(uuid "bdcc2c55-c427-4ef7-9df0-4a3d3e8379bd")
+		)
+		(fp_rect
+			(start -0.8 1.45)
+			(end 0.8 2.15)
+			(stroke
+				(width 0.1)
+				(type default)
+			)
+			(fill no)
+			(layer "F.Fab")
+			(uuid "0b246dac-e7d3-4a46-9d29-00e566747c2d")
 		)
 		(fp_text user "${REFERENCE}"
 			(at 0 0 90)
@@ -2450,7 +2453,7 @@
 			(at -1.8 -0.65 90)
 			(size 1.4 0.9)
 			(layers "F.Cu" "F.Mask" "F.Paste")
-			(net "/STM32 Housekeeping and Status/NRST")
+			(net "/STM32 Housekeeping and Status/USER_BUTTON_N")
 			(pintype "passive")
 			(uuid "2780dcfe-fd46-4cbd-9e76-fc012fc4de47")
 		)
@@ -2458,7 +2461,7 @@
 			(at 1.8 -0.65 90)
 			(size 1.4 0.9)
 			(layers "F.Cu" "F.Mask" "F.Paste")
-			(net "/STM32 Housekeeping and Status/NRST")
+			(net "/STM32 Housekeeping and Status/USER_BUTTON_N")
 			(pintype "passive")
 			(uuid "f84d90b2-4784-4675-b3c6-2a7b92b0b204")
 		)
@@ -10411,9 +10414,9 @@
 			(size 0.25 0.875)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "unconnected-(U1-PA6-Pad12)")
+			(net "/STM32 Housekeeping and Status/USER_BUTTON_N")
 			(pinfunction "PA6_12")
-			(pintype "bidirectional+no_connect")
+			(pintype "bidirectional")
 			(uuid "a574834e-fae4-4c80-a9d2-fd7f8df4fc8d")
 		)
 		(pad "13" smd roundrect
