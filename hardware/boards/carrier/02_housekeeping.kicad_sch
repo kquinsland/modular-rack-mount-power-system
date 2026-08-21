@@ -4468,9 +4468,9 @@
 		)
 		(uuid "c3a863d4-9fb4-4ca8-a540-6f72442c1734")
 	)
-	(text "SW1: USER_BUTTON_N (PA6), active low.\nConfigure the STM32 input pull-up; debounce in firmware."
+	(text "USER BUTTON — 10 ms HARDWARE DEBOUNCE\nR31/C14 form the active-low RC filter on PA6."
 		(exclude_from_sim no)
-		(at 20.32 35.56 0)
+		(at 20.32 88.9 0)
 		(effects
 			(font
 				(size 0.9 0.9)
@@ -4497,15 +4497,41 @@
 		(color 0 0 0 0)
 		(uuid "c76a7637-f49c-4e37-af5d-b78aca4d08a0")
 	)
+	(junction
+		(at 39.37 104.14)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "2ab2a8ed-c0a6-4e1a-9fc0-644d97ccaf56")
+	)
 	(wire
 		(pts
-			(xy 20.32 50.8) (xy 20.32 55.88)
+			(xy 20.32 104.14) (xy 20.32 109.22)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "6b140ee9-f17c-488b-8aa9-8e69ae2ab871")
+	)
+	(wire
+		(pts
+			(xy 30.48 104.14) (xy 39.37 104.14)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "742981bb-23f0-44be-9d55-2ebf013f795b")
+	)
+	(wire
+		(pts
+			(xy 39.37 104.14) (xy 44.45 104.14)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b6400fd2-f265-49db-adb1-47fc2854a775")
 	)
 	(no_connect
 		(at 58.42 58.42)
@@ -4630,7 +4656,7 @@
 		(uuid "46f56e0f-d443-4939-82b3-d6714949bcc4")
 	)
 	(label "USER_BUTTON_N"
-		(at 30.48 50.8 0)
+		(at 44.45 104.14 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6582,7 +6608,7 @@
 	)
 	(symbol
 		(lib_id "Switch:SW_Push")
-		(at 25.4 50.8 0)
+		(at 25.4 104.14 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -6592,7 +6618,7 @@
 		(dnp no)
 		(uuid "80c4db72-5704-4d61-9f4f-0c46aea0d6db")
 		(property "Reference" "SW1"
-			(at 25.4 47.498 0)
+			(at 25.4 100.838 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6602,7 +6628,7 @@
 			)
 		)
 		(property "Value" "SKSCLCE010"
-			(at 25.4 54.61 0)
+			(at 25.4 107.95 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6612,7 +6638,7 @@
 			)
 		)
 		(property "Footprint" "mini-rack-power:SW_ALPS_SKSCLCE010_SidePush"
-			(at 25.4 45.72 0)
+			(at 25.4 99.06 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6623,7 +6649,7 @@
 			)
 		)
 		(property "Datasheet" "https://datasheet.lcsc.com/datasheet/pdf/a3d9c3c84b96b16ebda6f9dac2fc041f.pdf?productCode=C139799"
-			(at 25.4 50.8 0)
+			(at 25.4 104.14 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6634,7 +6660,7 @@
 			)
 		)
 		(property "Description" "Low-profile right-angle side-push tactile switch, SPST-NO, 3.5 x 2.9 x 1.25 mm"
-			(at 25.4 50.8 0)
+			(at 25.4 104.14 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6645,7 +6671,7 @@
 			)
 		)
 		(property "MPN" "SKSCLCE010"
-			(at 25.4 50.8 0)
+			(at 25.4 104.14 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6656,7 +6682,7 @@
 			)
 		)
 		(property "Manufacturer" "ALPSALPINE"
-			(at 25.4 50.8 0)
+			(at 25.4 104.14 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6667,7 +6693,7 @@
 			)
 		)
 		(property "LCSC" "C139799"
-			(at 25.4 50.8 0)
+			(at 25.4 104.14 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6694,7 +6720,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 20.32 55.88 0)
+		(at 20.32 109.22 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -6705,7 +6731,7 @@
 		(fields_autoplaced yes)
 		(uuid "7c1c2b9d-5173-4f3b-a2cd-d2aa5a6e1c27")
 		(property "Reference" "#PWR68"
-			(at 20.32 62.23 0)
+			(at 20.32 115.57 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6716,7 +6742,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 20.32 60.96 0)
+			(at 20.32 114.3 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6726,7 +6752,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 20.32 55.88 0)
+			(at 20.32 109.22 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6737,7 +6763,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 20.32 55.88 0)
+			(at 20.32 109.22 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6748,7 +6774,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 20.32 55.88 0)
+			(at 20.32 109.22 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7158,6 +7184,322 @@
 			(project "carrier"
 				(path "/ee42a069-09cc-4091-bee3-2dd6ab96c98c/64ed744c-f0e1-4d20-9137-f6a463447101"
 					(reference "#PWR06")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 39.37 100.33 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "83e18ab6-14eb-41d7-ab74-873083eb4580")
+		(property "Reference" "R31"
+			(at 42.418 98.552 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "100k"
+			(at 42.672 102.362 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 37.592 100.33 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 39.37 100.33 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 39.37 100.33 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "2b684c1a-2ad5-4b4c-815d-8c41aab0c215")
+		)
+		(pin "2"
+			(uuid "f5ecfc88-ad08-4aec-952d-26c8ef6d5e3a")
+		)
+		(instances
+			(project "carrier"
+				(path "/ee42a069-09cc-4091-bee3-2dd6ab96c98c/64ed744c-f0e1-4d20-9137-f6a463447101"
+					(reference "R31")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 39.37 107.95 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "351eb97b-32db-41a9-b6af-0ccf3258bf7f")
+		(property "Reference" "C14"
+			(at 42.418 106.172 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100nF"
+			(at 42.672 109.982 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 40.335 104.14 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 39.37 107.95 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 39.37 107.95 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "85712228-c7d6-4743-9319-aeb4bef7484f")
+		)
+		(pin "2"
+			(uuid "15b1b1a2-62a0-4b7b-aea1-ba7c28693f8c")
+		)
+		(instances
+			(project "carrier"
+				(path "/ee42a069-09cc-4091-bee3-2dd6ab96c98c/64ed744c-f0e1-4d20-9137-f6a463447101"
+					(reference "C14")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3V3")
+		(at 39.37 96.52 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "5db3a119-fbe9-41dc-9083-0cf761b7b662")
+		(property "Reference" "#PWR70"
+			(at 39.37 100.33 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 39.37 91.44 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 39.37 96.52 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 39.37 96.52 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3V3\""
+			(at 39.37 96.52 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "01af4928-cc08-4c00-b198-3dad415ef9ac")
+		)
+		(instances
+			(project "carrier"
+				(path "/ee42a069-09cc-4091-bee3-2dd6ab96c98c/64ed744c-f0e1-4d20-9137-f6a463447101"
+					(reference "#PWR70")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 39.37 111.76 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "8c6e5a5a-26ad-430e-b40b-5240a590f47e")
+		(property "Reference" "#PWR69"
+			(at 39.37 118.11 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 39.37 116.84 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 39.37 111.76 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 39.37 111.76 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 39.37 111.76 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "3ae5d8bb-50e3-4610-a048-c9d8c6474670")
+		)
+		(instances
+			(project "carrier"
+				(path "/ee42a069-09cc-4091-bee3-2dd6ab96c98c/64ed744c-f0e1-4d20-9137-f6a463447101"
+					(reference "#PWR69")
 					(unit 1)
 				)
 			)
