@@ -191,7 +191,7 @@ The housekeeping branch connects to `VCC` **before** the PD current shunt. There
 
 | Ref | Qty | Manufacturer / Part | LCSC | Package | Function |
 |---|---:|---|---|---|---|
-| U1 | 1 | **ST STM32G031G6U6** | **C432210** | UFQFPN-28, 4 × 4 mm | MCU |
+| U1 | 1 | **ST STM32C092GCU7** | — | UFQFPN-28, 4 × 4 mm | MCU with FDCAN |
 | U2 | 1 | **TI LM5163DDAR** | **C2873264** | SO PowerPAD-8 | 6–100 V synchronous buck |
 | U3 | 1 | **Wuxi Maxinmicro LMX5069MS** | **C47967145** | MSOP-10 | Hot-swap / inrush controller |
 | U4 | 1 | **TI INA237AIDGSR** | **C2864837** | VSSOP-10 | I²C voltage/current/power monitor |
@@ -841,7 +841,7 @@ Each carrier contains only one INA237. Tie A0 and A1 directly to GND; do not fit
 ## 12.1 MCU
 
 ```text
-U1 = STM32G031G6U6
+U1 = STM32C092GCU7
 Package = UFQFPN-28
 ```
 
