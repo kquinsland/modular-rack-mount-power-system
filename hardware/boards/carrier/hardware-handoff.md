@@ -203,7 +203,7 @@ The housekeeping branch connects to `VCC` **before** the PD current shunt. There
 | DTVS1 | 1 | **SMCJ48A** | **C5861043** | SMC | Input TVS |
 | D2 | 1 | **Nexperia PESD2CANFD27V-TR** | — | SOT-23 | CAN-FD bus ESD protection |
 | L1 | 1 | **YJYCOIN YNR6045-680M** | **C341069** | ~6 × 6 mm | 68 µH buck inductor |
-| L3 | 1 | **TDK ACT1210D-101-2P-TL00** | — | 1210 | CAN common-mode choke |
+| L3 | 1 | **TDK ACT1210D-101-2P-TL00** | **C3039743** | ACT1210 | CAN common-mode choke |
 | LED1 | 1 | **Worldsemi WS2812B-2020-V6** | **C52917434** | 2020 | RGB status LED |
 
 ### Q1 sourcing note
