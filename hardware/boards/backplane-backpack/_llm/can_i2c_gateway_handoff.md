@@ -32,7 +32,7 @@ If a 5 V addressable LED is preferred instead, see Section 12.
 
 | Ref(s) | Qty | MPN | LCSC | Package | Purpose | Population |
 |---|---:|---|---|---|---|---|
-| U1 | 1 | STM32C092FCP6 | C44847704 | TSSOP-20 | MCU, FDCAN controller | POP |
+| U1 | 1 | STM32C092GCU7 | — | UFQFPN-28 | MCU, FDCAN controller | POP |
 | U2 | 1 | TCA9548APWR | C130026 | TSSOP-24 | 8-channel I2C mux | POP |
 | U3 | 1 | TCAN3413DR | C22433320 | SOIC-8 | 3.3 V CAN-FD transceiver | POP |
 | U4,U5 | 2 | LMR51610YDBVR | C22427220 | SOT-23-6 | 3.3 V and 12 V bucks | POP |
@@ -74,30 +74,38 @@ If a 5 V addressable LED is preferred instead, see Section 12.
 
 ---
 
-## 3. MCU pin allocation — U1 STM32C092FCP6, TSSOP-20
+## 3. MCU pin allocation — U1 STM32C092GCU7, UFQFPN-28
 
 | Pin | MCU pad | Net | Function / AF |
 |---:|---|---|---|
-| 1 | PB7/PB8 package option | NC | leave NC |
-| 2 | PC14-OSCX_IN | NC | no LSE crystal in Rev A |
-| 3 | PC15-OSCX_OUT | NC | no LSE crystal in Rev A |
-| 4 | VDD/VDDA | +3V3 | supply |
-| 5 | VSS/VSSA | GND | ground |
-| 6 | PF2-NRST | NRST | SWD reset |
-| 7 | PA0 | FAN_CTRL | TIM2_CH1 / AF3 |
-| 8 | PA1 | FAN_TACH | TIM17_CH1 / AF2 input capture |
-| 9 | PA2 | LED_DATA | GPIO or TIM15_CH1 / AF8 |
-| 10 | PA3 | I2C_MUX_RESET_N | GPIO |
-| 11 | PA4 | CAN_STB | GPIO |
-| 12 | PA5 | SPARE_GPIO | test pad |
-| 13 | PA6 | I2C_UP_SDA | I2C2_SDA / AF6 |
-| 14 | PA7 | I2C_UP_SCL | I2C2_SCL / AF6 |
-| 15 | PB0/PB1/PB2/PA8 package option | NC | leave NC |
-| 16 | PA11 [PA9] | CAN_RX | FDCAN1_RX / AF4 |
-| 17 | PA12 [PA10] | CAN_TX | FDCAN1_TX / AF4 |
-| 18 | PA13 | SWDIO | SWD |
-| 19 | PA14-BOOT0 | SWCLK | SWD |
-| 20 | PB3/PB4/PB5/PB6 package option | NC | leave NC |
+| 1 | PC14-OSCX_IN | NC | no LSE crystal in Rev A |
+| 2 | PC15-OSCX_OUT | NC | no LSE crystal in Rev A |
+| 3 | VDD/VDDA | +3V3 | supply |
+| 4 | VSS/VSSA | GND | ground |
+| 5 | PF2-NRST | NRST | SWD reset |
+| 6 | PA0 | FAN_CTRL | TIM2_CH1 / AF3 |
+| 7 | PA1 | FAN_TACH | TIM17_CH1 / AF2 input capture |
+| 8 | PA2 | LED_DATA | GPIO or TIM15_CH1 / AF8 |
+| 9 | PA3 | NC | leave NC |
+| 10 | PA4 | CAN_STB | GPIO |
+| 11 | PA5 | NC | leave NC |
+| 12 | PA6 | I2C_UP_SDA | I2C2_SDA / AF6 |
+| 13 | PA7 | I2C_UP_SCL | I2C2_SCL / AF6 |
+| 14 | PB0 | NC | leave NC |
+| 15 | PB1 | NC | leave NC |
+| 16 | PA8 | NC | leave NC |
+| 17 | PC6 | NC | leave NC |
+| 18 | PA11 [PA9] | CAN_RX | FDCAN1_RX / AF4 |
+| 19 | PA12 [PA10] | CAN_TX | FDCAN1_TX / AF4 |
+| 20 | PA13 | SWDIO | SWD |
+| 21 | PA14-BOOT0 | SWCLK | SWD |
+| 22 | PA15 | NC | leave NC |
+| 23 | PB3 | NC | leave NC |
+| 24 | PB4 | NC | leave NC |
+| 25 | PB5 | NC | leave NC |
+| 26 | PB6 | NC | leave NC |
+| 27 | PB7 | NC | leave NC |
+| 28 | PB8 | NC | leave NC |
 
 Use the internal HSI clock for Rev A unless firmware accuracy requirements later justify a crystal.
 
@@ -111,7 +119,7 @@ This is the schematic connectivity source of truth. Pin numbers are package pins
 
 Connect together:
 - J1.1
-- U1.5
+- U1.4
 - U2.12
 - U3.2
 - U4.2
@@ -165,7 +173,7 @@ C5/C6 must sit immediately at U4 VIN/GND. C9/C10 must sit immediately at U5 VIN/
 - L1.2
 - C8.1
 - C14.1
-- U1.4
+- U1.3
 - U2.24
 - U3.3 VCC
 - U3.5 VIO
@@ -228,22 +236,22 @@ R19.2 -> GND. R19 = 22.1 k.
 ### U1 local/reset/debug
 
 `NRST`
-- U1.6
+- U1.5
 - J10.5
 - C19.1
 
 C19.2 -> GND.
 
 `SWDIO`
-- U1.18
+- U1.20
 - J10.3
 
 `SWCLK`
-- U1.19
+- U1.21
 - J10.4
 
 `SPARE_GPIO`
-- U1.12
+- U1.11
 - TP_SPARE_GPIO
 
 J10 suggested logical pinout:
@@ -256,14 +264,14 @@ J10 suggested logical pinout:
 ### I2C upstream
 
 `I2C_UP_SDA`
-- U1.13
+- U1.12
 - U2.23 SDA
 - R1.2
 
 R1.1 -> +3V3.
 
 `I2C_UP_SCL`
-- U1.14
+- U1.13
 - U2.22 SCL
 - R2.2
 
@@ -278,7 +286,7 @@ U2.21 A2 -> GND
 This selects mux address 0x70.
 
 `I2C_MUX_RESET_N`
-- U1.10
+- U1.9
 - U2.3 RESET_N
 - R15.2
 
@@ -334,15 +342,15 @@ No pullups required unless these channels are actually used.
 ### CAN controller / transceiver
 
 `CAN_TX`
-- U1.17 PA12
+- U1.19 PA12
 - U3.1 TXD
 
 `CAN_RX`
-- U1.16 PA11
+- U1.18 PA11
 - U3.4 RXD
 
 `CAN_STB`
-- U1.11 PA4
+- U1.10 PA4
 - U3.8 STB
 
 U3.2 -> GND
@@ -401,7 +409,7 @@ Layout order should be approximately U3 -> L3 -> connector region, with D1 locat
 ### Addressable RGB LED
 
 `LED_DATA`
-- U1.9 PA2
+- U1.8 PA2
 - R25.1
 
 `LED_DIN`
@@ -419,7 +427,7 @@ R25 = 120 ohm.
 ### Fan control — common circuit
 
 `FAN_CTRL`
-- U1.7 PA0
+- U1.6 PA0
 - Q2.1 GATE
 - R22.1
 
@@ -441,7 +449,7 @@ Q1.2 SOURCE -> +12V
 Q1.3 DRAIN -> `FAN_12V_SW`
 
 `FAN_TACH`
-- U1.8 PA1
+- U1.7 PA1
 - J9.3
 - R16.2
 
