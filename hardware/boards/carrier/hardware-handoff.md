@@ -32,7 +32,7 @@ The carrier shall:
   - current
   - power
 - Provide:
-  - one backplane SMBus, with the STM32 acting as an SMBus target/slave
+  - one backplane CAN-FD interface
   - one local/downstream I²C bus, with the STM32 acting as controller/master
 - Control a single WS2812-compatible RGB status LED.
 - Default the PD-module power path to **OFF** whenever the MCU is unpowered, resetting, or not explicitly enabling the branch.
@@ -45,8 +45,8 @@ The only electrical interface between the backplane and carrier is:
 
 - unswitched DC input
 - ground
-- backplane SMBus SDA
-- backplane SMBus SCL
+- backplane CANL
+- backplane CANH
 
 The backplane does not supply a carrier logic rail. Each carrier generates its own 3.3 V housekeeping rail from the unswitched DC input.
 
@@ -176,9 +176,9 @@ If the eventual source can exceed 48 V continuously, revisit:
        │                     │            │                     ▼
        │                     │            └──────────────► J3 PD MODULE
        │                     │                                  │
-       │                     └──── I2C2 ────────────────────────┤
+       │                     └──── I2C1 ────────────────────────┤
        │                                                        │
-       └──── I2C1 ─────────────► J1 BACKPLANE SMBUS             │
+       └──── FDCAN ──► U5 TCAN3413 ──► J1 BACKPLANE CAN-FD     │
 ```
 
 The housekeeping branch connects to `VCC` **before** the PD current shunt. Therefore the INA237 reports the PD-module branch power rather than including the STM32/LED housekeeping power.
@@ -195,12 +195,15 @@ The housekeeping branch connects to `VCC` **before** the PD current shunt. There
 | U2 | 1 | **TI LM5163DDAR** | **C2873264** | SO PowerPAD-8 | 6–100 V synchronous buck |
 | U3 | 1 | **Wuxi Maxinmicro LMX5069MS** | **C47967145** | MSOP-10 | Hot-swap / inrush controller |
 | U4 | 1 | **TI INA237AIDGSR** | **C2864837** | VSSOP-10 | I²C voltage/current/power monitor |
+| U5 | 1 | **TI TCAN3413DR** | — | SOIC-8 | 3.3 V CAN-FD transceiver |
 | Q1 | 1 | **Infineon IPB020N10N5LF** | **C536484** | TO-263 / D²PAK | 100 V linear-mode high-side pass MOSFET |
 | Q2 | 1 | **2N7002** | **C8545** | SOT-23 | Fail-safe UVLO clamp |
 | Q3 | 1 | **2N7002** | **C8545** | SOT-23 | MCU enable inversion / fail-safe control |
 | RSH1 | 1 | **Milliohm HoLLR2512-3W-6mR-1%** | **C2985709** | 2512 | 6 mΩ shared current shunt |
 | DTVS1 | 1 | **SMCJ48A** | **C5861043** | SMC | Input TVS |
+| D2 | 1 | **Nexperia PESD2CANFD27V-TR** | — | SOT-23 | CAN-FD bus ESD protection |
 | L1 | 1 | **YJYCOIN YNR6045-680M** | **C341069** | ~6 × 6 mm | 68 µH buck inductor |
+| L3 | 1 | **TDK ACT1210D-101-2P-TL00** | — | 1210 | CAN common-mode choke |
 | LED1 | 1 | **Worldsemi WS2812B-2020-V6** | **C52917434** | 2020 | RGB status LED |
 
 ### Q1 sourcing note
@@ -731,7 +734,7 @@ PD_ENABLE = 1
     ▼
 wait for PD_PGOOD
     │
-    ├── asserted → probe PD module over I2C2
+    ├── asserted → probe PD module over I2C1
     │
     └── timeout  → report branch startup failure
 ```
@@ -860,24 +863,24 @@ No external crystal is required for this design.
 | 7 | PA1 | PD_ENABLE |
 | 8 | PA2 | INA_ALERT |
 | 9 | PA3 | PD_PGOOD |
-| 10 | PA4 | BUCK_PGOOD |
+| 10 | PA4 | CAN_STB |
 | 11 | PA5 | spare |
 | 12 | PA6 | spare |
-| 13 | PA7 | spare |
+| 13 | PA7 | BUCK_PGOOD |
 | 14 | PB0 | spare |
 | 15 | PB1 | spare |
 | 16 | PA8 | spare |
 | 17 | PC6 | spare |
-| 18 | PA11 | PD_I2C_SCL / I2C2 |
-| 19 | PA12 | PD_I2C_SDA / I2C2 |
+| 18 | PA11 | CAN_RX / FDCAN_RX |
+| 19 | PA12 | CAN_TX / FDCAN_TX |
 | 20 | PA13 | SWDIO |
 | 21 | PA14 | SWCLK |
 | 22 | PA15 | spare |
 | 23 | PB3 | spare |
 | 24 | PB4 | spare |
 | 25 | PB5 | spare |
-| 26 | PB6 | BP_SMBUS_SCL / I2C1 |
-| 27 | PB7 | BP_SMBUS_SDA / I2C1 |
+| 26 | PB6 | PD_I2C_SCL / I2C1 |
+| 27 | PB7 | PD_I2C_SDA / I2C1 |
 | 28 | PB8 | spare |
 
 ## 12.3 MCU support
@@ -906,34 +909,31 @@ Use pogo/test pads rather than a permanent connector unless mechanical constrain
 
 ---
 
-# 13. SMBus and local I²C architecture
+# 13. CAN-FD and local I²C architecture
 
-## 13.1 Backplane SMBus on I²C1
+## 13.1 Backplane CAN-FD
 
-The STM32 is an SMBus target/slave on the backplane-facing bus, using its I²C1-compatible peripheral. The existing backplane bus mux remains the channel-isolation point; each carrier sits behind one mux channel. Retain the backplane's per-channel pull-ups and ESD protection, and do not move the former backplane GPIO expander or branch FET driver onto this interface.
-
-```text
-J1.BP_SMBUS_SCL ───── U1 PB6 / I2C1_SCL
-J1.BP_SMBUS_SDA ───── U1 PB7 / I2C1_SDA
-J1.GND        ───── GND
-```
-
-Provide local pull-up footprints:
+The STM32 uses its FDCAN peripheral for backplane communication. A TCAN3413DR translates the 3.3 V logic interface to the differential CAN bus. The connector-side network includes a common-mode choke, a PESD2CANFD27V ESD protector, and optional 120 Ω termination selected by SJ1.
 
 ```text
-+3V3 ── 2.2k ── BP_SMBUS_SCL   DNP BY DEFAULT
-+3V3 ── 2.2k ── BP_SMBUS_SDA   DNP BY DEFAULT
+U1 PA12 / FDCAN_TX ───── U5.TXD
+U1 PA11 / FDCAN_RX ───── U5.RXD
+U1 PA4              ───── U5.STB
+
+U5.CANH ── L3 ── CANH_BUS ───── J1 pin 4
+U5.CANL ── L3 ── CANL_BUS ───── J1 pin 3
+GND                              J1 pin 2
 ```
 
-Only one suitable set of pull-ups should normally exist on each muxed backplane SMBus channel. The carrier footprints are tuning/DNP options; do not populate them when the backplane channel pull-ups are fitted.
+SJ1 and R26 provide endpoint termination. Populate/bridge the termination only when this carrier is physically at a bus end. Place D2 adjacent to the connector on the bus side of L3, and route CANH/CANL as a tightly coupled, symmetric pair.
 
-## 13.2 Local / downstream I²C2
+## 13.2 Local / downstream I²C1
 
 The STM32 is controller/master.
 
 ```text
-U1 PA11 / I2C2_SCL ───── PD_I2C_SCL
-U1 PA12 / I2C2_SDA ───── PD_I2C_SDA
+U1 PB6 / I2C1_SCL ───── PD_I2C_SCL
+U1 PB7 / I2C1_SDA ───── PD_I2C_SDA
 
 U4 INA237.SCL ─────────── PD_I2C_SCL
 U4 INA237.SDA ─────────── PD_I2C_SDA
@@ -949,16 +949,12 @@ Populate:
 +3V3 ── 2.2k ── PD_I2C_SDA
 ```
 
-The firmware shall **not transparently electrically bridge** the two buses.
-
-Instead, application logic should terminate the backplane SMBus protocol and explicitly perform downstream I²C transactions.
-
-This allows firmware to:
+CAN-FD messages may request downstream I²C transactions, but application logic must terminate and validate the CAN protocol before accessing the local bus. This allows firmware to:
 
 - isolate downstream transaction failures
 - report PD module communication failures upstream
 - power-cycle the PD branch independently
-- recover/reinitialize I2C2 without disturbing I2C1
+- recover/reinitialize I2C1 without disturbing backplane CAN-FD communication
 
 ---
 
@@ -1162,8 +1158,6 @@ NET +3V3
 
     R_PD_SCL.1
     R_PD_SDA.1
-    R_BP_SMBUS_SCL.1           # DNP
-    R_BP_SMBUS_SDA.1           # DNP
 
     R_PGD.1
     R_BUCK_PG.1
@@ -1173,7 +1167,7 @@ NET +3V3
 NET BUCK_PGOOD
     U2.PGOOD
     R_BUCK_PG.2
-    U1.PA4
+    U1.PA7
 
 
 # ============================================================
@@ -1268,35 +1262,49 @@ NET INA_ALERT
     U1.PA2
 
 # ============================================================
-# LOCAL / DOWNSTREAM I2C2
+# LOCAL / DOWNSTREAM I2C1
 # ============================================================
 
 NET PD_I2C_SCL
-    U1.PA11
+    U1.PB6
     U4.SCL
     R_PD_SCL.2
     J3.PD_I2C_SCL
 
 NET PD_I2C_SDA
-    U1.PA12
+    U1.PB7
     U4.SDA
     R_PD_SDA.2
     J3.PD_I2C_SDA
 
 
 # ============================================================
-# BACKPLANE SMBUS / I2C1
+# BACKPLANE CAN-FD
 # ============================================================
 
-NET BP_SMBUS_SCL
-    U1.PB6
-    J1.BP_SMBUS_SCL
-    R_BP_SMBUS_SCL.2
+NET CAN_TX
+    U1.PA12
+    U5.TXD
 
-NET BP_SMBUS_SDA
-    U1.PB7
-    J1.BP_SMBUS_SDA
-    R_BP_SMBUS_SDA.2
+NET CAN_RX
+    U1.PA11
+    U5.RXD
+
+NET CAN_STB
+    U1.PA4
+    U5.STB
+
+NET CANH_BUS
+    L3.CANH_BUS
+    D2.IO1
+    SJ1.1
+    J1.4
+
+NET CANL_BUS
+    L3.CANL_BUS
+    D2.IO2
+    R26.2
+    J1.3
 
 
 # ============================================================
@@ -1365,8 +1373,7 @@ For high-voltage ceramics, shunt components, and timing/programming values, pres
 | R_NRST | 1 | **10 kΩ** | 1% |
 | R_PD_SCL | 1 | **2.2 kΩ** | local I²C pull-up |
 | R_PD_SDA | 1 | **2.2 kΩ** | local I²C pull-up |
-| R_BP_SMBUS_SCL | 1 | **2.2 kΩ** | DNP |
-| R_BP_SMBUS_SDA | 1 | **2.2 kΩ** | DNP |
+| R26 | 1 | **120 Ω** | CAN termination, DNP unless enabled by SJ1 |
 | R_LED | 1 | **100 Ω** | LED data series |
 
 ## 17.2 Capacitors
@@ -1419,13 +1426,13 @@ The existing carrier/backplane connector is a combined two-power-contact plus tw
 ```text
 VCC
 GND
-BP_SMBUS_SCL
-BP_SMBUS_SDA
+CANL_BUS
+CANH_BUS
 ```
 
-The power contacts and PCB copper shall support the 140 W architecture case and the short-duration current-limit current. Treat SDA/SCL as a 3.3 V SMBus-compatible interface.
+The power contacts and PCB copper shall support the 140 W architecture case and the short-duration current-limit current. Route CANL/CANH as a controlled, tightly coupled differential pair appropriate for the selected CAN-FD data rate and physical length.
 
-The current carrier schematic assumes `pin 1 = VCC`, `pin 2 = GND`, `pin 3 = SMBus SDA`, and `pin 4 = SMBus SCL`, while the backplane-prototype schematic presently shows the two power nets in the opposite order. This may be a male/female footprint-numbering mirror. Before fabrication, verify the real mated contacts from manufacturer drawings and continuity, then make symbol pins, footprint pads, net assignments, and connector notes consistent across every carrier and backplane project. Do not infer polarity from an unlabeled PCB-side view.
+The current carrier schematic assumes `pin 1 = VCC`, `pin 2 = GND`, `pin 3 = CANL`, and `pin 4 = CANH`, while the backplane-prototype schematic presently shows the two power nets in the opposite order. This may be a male/female footprint-numbering mirror. Before fabrication, verify the real mated contacts from manufacturer drawings and continuity, then make symbol pins, footprint pads, net assignments, and connector notes consistent across every carrier and backplane project. Do not infer polarity from an unlabeled PCB-side view.
 
 ## J3 — PD-module interface
 
@@ -1485,7 +1492,7 @@ Q1 turns on under current/power control
 PD_PGOOD asserts
              │
              ▼
-STM32 probes PD module over I2C2
+STM32 probes PD module over I2C1
              │
        ┌─────┴─────┐
        │           │
@@ -1565,15 +1572,15 @@ The branch should therefore fail toward OFF rather than partially commanded ON.
 
 Firmware should be able to:
 
-1. report an I2C2 failure upstream
-2. clear/reinitialize I2C2
+1. report an I2C1 failure upstream over CAN-FD
+2. clear/reinitialize I2C1
 3. disable `PD_ENABLE`
 4. allow the PD module's onboard housekeeping supply to discharge `PD_VIN_SW`
 5. re-enable the branch
 6. wait for `PD_PGOOD`
 7. reprobe the module
 
-Do not use the backplane SMBus as part of the downstream I²C recovery mechanism.
+Keep the backplane CAN-FD interface operational while recovering the downstream I²C bus.
 
 No dedicated bleeder is required on `PD_VIN_SW`. The PD module's onboard low-power supply remains connected to its input capacitors and discharges them to zero after Q1 turns off. Confirm the discharge time on the assembled module during bring-up; add no carrier bleeder unless that measurement disproves the assumption.
 
@@ -1981,8 +1988,8 @@ PD_PGOOD        input    pulled high when branch healthy
 INA_ALERT       input    open-drain interrupt/status
 BUCK_PGOOD      input    housekeeping regulator status
 
-BP_SMBUS_*      I2C1     backplane SMBus target/slave
-PD_I2C_*        I2C2     downstream controller/master
+CAN_TX/RX/STB   FDCAN    backplane CAN-FD interface through U5
+PD_I2C_*        I2C1     downstream controller/master
 
 LED_DATA        output   WS2812 status
 ```
@@ -2050,7 +2057,7 @@ Future hardware target      240 W capable; new hardware review required
 Backplane/carrier interface:
 
 ```text
-J1 = VCC + GND + backplane SMBus SDA/SCL
+J1 = VCC + GND + backplane CANL/CANH
 No backplane 3.3 V rail
 Carrier generates local 3.3 V with LM5163
 ```
