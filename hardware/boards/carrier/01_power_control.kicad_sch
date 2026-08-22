@@ -4771,7 +4771,7 @@
 		)
 		(uuid "64b51bce-0487-4dc9-a5c9-dd6fe11faeee")
 	)
-	(text "CAN PLACEMENT: keep D2, L3, and U5 close to J1 (connector → D2 → L3 → U5).\nPlace C15/C16 directly at U5 VCC/VIO. Keep CANH/CANL short, tightly coupled, and symmetric.\nRoute CAN_TX/CAN_RX/CAN_STB to U1 over continuous ground, away from buck switching and high-current nodes."
+	(text "CAN PLACEMENT: keep D2, L3, and U5 close to J1 (connector → D2 → L3 → U5).\nPlace C15/C16 directly at U5 VCC/VIO. Route CAN_BUS_P/N and CAN_PHY_P/N as differential pairs; P = CANH, N = CANL.\nKeep each pair short, tightly coupled, symmetric, and length-matched. Route CAN_TX/CAN_RX/CAN_STB over continuous ground, away from switching nodes."
 		(exclude_from_sim no)
 		(at 23.876 221.742 0)
 		(effects
@@ -5667,7 +5667,7 @@
 		)
 		(uuid "1dfed7d4-8180-48c9-b65a-a1c65ea36418")
 	)
-	(hierarchical_label "CANL_BUS"
+	(hierarchical_label "CAN_BUS_N"
 		(shape bidirectional)
 		(at 39.37 252.73 0)
 		(effects
@@ -5744,7 +5744,7 @@
 		)
 		(uuid "8771afa2-ec73-4bbf-9084-9e11b9d3a0ea")
 	)
-	(hierarchical_label "CANH_BUS"
+	(hierarchical_label "CAN_BUS_P"
 		(shape bidirectional)
 		(at 39.37 247.65 0)
 		(effects
@@ -5754,6 +5754,26 @@
 			(justify left bottom)
 		)
 		(uuid "8ae4d20a-fca6-4fc6-b7d0-28e3913e5983")
+	)
+	(label "CAN_PHY_P"
+		(at 73.66 246.38 90)
+		(effects
+			(font
+				(size 0.9 0.9)
+			)
+			(justify left bottom)
+		)
+		(uuid "3f31b5e3-3a99-463c-8761-2b76c00d7183")
+	)
+	(label "CAN_PHY_N"
+		(at 73.66 254 270)
+		(effects
+			(font
+				(size 0.9 0.9)
+			)
+			(justify left bottom)
+		)
+		(uuid "eb93667b-bf06-40ba-9324-9cf399c1aa48")
 	)
 	(hierarchical_label "PD_I2C_SCL"
 		(shape bidirectional)
@@ -6082,7 +6102,7 @@
 				)
 			)
 		)
-		(property "Value" "CANH_BUS"
+		(property "Value" "CAN_BUS_P"
 			(at 55.88 229.87 0)
 			(hide yes)
 			(show_name no)
@@ -8674,7 +8694,7 @@
 				)
 			)
 		)
-		(property "Value" "CANL_BUS"
+		(property "Value" "CAN_BUS_N"
 			(at 55.88 237.49 0)
 			(hide yes)
 			(show_name no)
@@ -11673,6 +11693,243 @@
 			(project "carrier"
 				(path "/ee42a069-09cc-4091-bee3-2dd6ab96c98c/bfe0cac3-96d7-4839-869d-6366daca24b5"
 					(reference "#PWR21")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 274.32 129.54 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "d4ad7aed-e20b-4363-87ed-f2e2cb29cae4")
+		(property "Reference" "C18"
+			(at 277.368 127.254 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100nF"
+			(at 277.368 130.302 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 275.285 125.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/ina237.pdf"
+			(at 274.32 129.54 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "INA237 local supply bypass; place directly at U4 pins 6 and 7"
+			(at 274.32 129.54 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "f92d2cec-c394-4a76-b6cb-2fbd2160a4d4")
+		)
+		(pin "2"
+			(uuid "b2f7223f-7532-47aa-bd36-64b0bdca8c69")
+		)
+		(instances
+			(project "carrier"
+				(path "/ee42a069-09cc-4091-bee3-2dd6ab96c98c/bfe0cac3-96d7-4839-869d-6366daca24b5"
+					(reference "C18")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3V3")
+		(at 274.32 125.73 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "3cc66946-247a-4ff9-b5f5-e87da223ffa7")
+		(property "Reference" "#PWR0414"
+			(at 274.32 129.54 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 274.32 120.65 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 274.32 125.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 274.32 125.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3V3\""
+			(at 274.32 125.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "5c546d81-eee0-4028-8bbe-0744767fd5f8")
+		)
+		(instances
+			(project "carrier"
+				(path "/ee42a069-09cc-4091-bee3-2dd6ab96c98c/bfe0cac3-96d7-4839-869d-6366daca24b5"
+					(reference "#PWR0414")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 274.32 133.35 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "2e138b33-a629-4859-a3a2-0eb4e5a655c2")
+		(property "Reference" "#PWR0415"
+			(at 274.32 139.7 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 274.32 138.43 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 274.32 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 274.32 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 274.32 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "59bf2a80-3460-4327-a5b3-33d2715998f1")
+		)
+		(instances
+			(project "carrier"
+				(path "/ee42a069-09cc-4091-bee3-2dd6ab96c98c/bfe0cac3-96d7-4839-869d-6366daca24b5"
+					(reference "#PWR0415")
 					(unit 1)
 				)
 			)

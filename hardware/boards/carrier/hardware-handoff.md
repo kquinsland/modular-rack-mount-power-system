@@ -920,12 +920,12 @@ U1 PA12 / FDCAN_TX ───── U5.TXD
 U1 PA11 / FDCAN_RX ───── U5.RXD
 U1 PA4              ───── U5.STB
 
-U5.CANH ── L3 ── CANH_BUS ───── J1 pin 4
-U5.CANL ── L3 ── CANL_BUS ───── J1 pin 3
+U5.CANH ── CAN_PHY_P ── L3 ── CAN_BUS_P ───── J1 pin 4
+U5.CANL ── CAN_PHY_N ── L3 ── CAN_BUS_N ───── J1 pin 3
 GND                              J1 pin 2
 ```
 
-SJ1 and R26 provide endpoint termination. Populate/bridge the termination only when this carrier is physically at a bus end. Place D2 adjacent to the connector on the bus side of L3, and route CANH/CANL as a tightly coupled, symmetric pair.
+SJ1 and R26 provide endpoint termination. Populate/bridge the termination only when this carrier is physically at a bus end. Place D2 adjacent to the connector on the bus side of L3. KiCad differential-pair naming uses `CAN_BUS_P/N` on the connector side and `CAN_PHY_P/N` on the transceiver side, where P is CANH and N is CANL; route each pair tightly coupled, symmetric, and length-matched.
 
 ## 13.2 Local / downstream I²C1
 
@@ -1294,14 +1294,22 @@ NET CAN_STB
     U1.PA4
     U5.STB
 
-NET CANH_BUS
-    L3.CANH_BUS
+NET CAN_PHY_P
+    U5.CANH
+    L3.CAN_PHY_P
+
+NET CAN_PHY_N
+    U5.CANL
+    L3.CAN_PHY_N
+
+NET CAN_BUS_P
+    L3.CAN_BUS_P
     D2.IO1
     SJ1.1
     J1.4
 
-NET CANL_BUS
-    L3.CANL_BUS
+NET CAN_BUS_N
+    L3.CAN_BUS_N
     D2.IO2
     R26.2
     J1.3
@@ -1426,8 +1434,8 @@ The existing carrier/backplane connector is a combined two-power-contact plus tw
 ```text
 VCC
 GND
-CANL_BUS
-CANH_BUS
+CAN_BUS_N
+CAN_BUS_P
 ```
 
 The power contacts and PCB copper shall support the 140 W architecture case and the short-duration current-limit current. Route CANL/CANH as a controlled, tightly coupled differential pair appropriate for the selected CAN-FD data rate and physical length.
