@@ -854,13 +854,13 @@ No external crystal is required for this design.
 
 | Physical pin | STM32 pin | Net / function |
 |---:|---|---|
-| 1 | PC14 | spare |
+| 1 | PC14 | PD_ENABLE |
 | 2 | PC15 | spare |
 | 3 | VDD/VDDA | +3V3 |
 | 4 | VSS/VSSA | GND |
 | 5 | PF2/NRST | NRST |
 | 6 | PA0 | spare |
-| 7 | PA1 | PD_ENABLE |
+| 7 | PA1 | spare |
 | 8 | PA2 | INA_ALERT |
 | 9 | PA3 | PD_PGOOD |
 | 10 | PA4 | CAN_STB |
@@ -1237,7 +1237,7 @@ NET KILL_GATE
     Q3.D
 
 NET PD_ENABLE
-    U1.PA1
+    U1.PC14
     Q3.G
     R_PD_EN_PD.1
 
