@@ -4736,6 +4736,18 @@
 		)
 		(uuid "2761a200-8095-4141-9bac-9b039feac66d")
 	)
+	(text "RELEASE BLOCKER — U3 DEVICE / FOOTPRINT VERIFICATION\nSymbol: TI LM5069MM-2; fitted device: Maxinmicro LMX5069MS (C47967145).\nObtain/archive the exact Maxinmicro datasheet; verify pinout, thresholds, TIMER/retry behavior, package, and footprint.\nU3 pad-to-pad clearance is 0.15 mm vs. the board's 0.20 mm rule; approve a local fab rule or revise the footprint/rules."
+		(exclude_from_sim no)
+		(at 93.98 76.2 0)
+		(effects
+			(font
+				(size 0.9 0.9)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+		(uuid "3b72aeea-5f20-4172-97f7-cacb43996b1e")
+	)
 	(text "Default OFF:\n  R8/R9 drive Q2 on unless PC14 drives Q3.\n  LMX5069 auto-retries; STM32 observes PD_PGOOD and may remove PD_ENABLE."
 		(exclude_from_sim no)
 		(at 194.818 64.262 0)
@@ -4791,18 +4803,6 @@
 			(justify left bottom)
 		)
 		(uuid "9b6119a2-22e7-4e46-a461-e4a050506c60")
-	)
-	(text "RELEASE BLOCKER — U3 DEVICE / FOOTPRINT VERIFICATION\nSymbol: TI LM5069MM-2; fitted device: Maxinmicro LMX5069MS (C47967145).\nObtain/archive the exact Maxinmicro datasheet; verify pinout, thresholds, TIMER/retry behavior, package, and footprint.\nU3 pad-to-pad clearance is 0.15 mm vs. the board's 0.20 mm rule; approve a local fab rule or revise the footprint/rules."
-		(exclude_from_sim no)
-		(at 93.98 76.2 0)
-		(effects
-			(font
-				(size 0.9 0.9)
-				(bold yes)
-			)
-			(justify left bottom)
-		)
-		(uuid "3b72aeea-5f20-4172-97f7-cacb43996b1e")
 	)
 	(text "Power path: VCC -> R1 (6 mR Kelvin-routed) -> HS_SENSE -> Q1 -> PD_VIN_SW"
 		(exclude_from_sim no)
@@ -5450,17 +5450,6 @@
 		)
 		(uuid "0d82a91b-b61c-42ef-a55a-c182f6eb3c61")
 	)
-	(hierarchical_label "CANL_BUS"
-		(shape bidirectional)
-		(at 39.37 252.73 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "276a99ee-4c7d-46c1-b106-d8d27cc4dc6f")
-	)
 	(label "INA_INM_FILT"
 		(at 195.58 133.35 0)
 		(effects
@@ -5540,17 +5529,6 @@
 			(justify left bottom)
 		)
 		(uuid "8ad4d088-0a16-4657-b389-b650b286137e")
-	)
-	(hierarchical_label "CANH_BUS"
-		(shape bidirectional)
-		(at 39.37 247.65 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "8ae4d20a-fca6-4fc6-b7d0-28e3913e5983")
 	)
 	(label "HS_SENSE"
 		(at 144.78 40.64 90)
@@ -5689,6 +5667,17 @@
 		)
 		(uuid "1dfed7d4-8180-48c9-b65a-a1c65ea36418")
 	)
+	(hierarchical_label "CANL_BUS"
+		(shape bidirectional)
+		(at 39.37 252.73 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "276a99ee-4c7d-46c1-b106-d8d27cc4dc6f")
+	)
 	(hierarchical_label "INA_ALERT"
 		(shape bidirectional)
 		(at 270.51 137.16 0)
@@ -5754,6 +5743,17 @@
 			(justify left bottom)
 		)
 		(uuid "8771afa2-ec73-4bbf-9084-9e11b9d3a0ea")
+	)
+	(hierarchical_label "CANH_BUS"
+		(shape bidirectional)
+		(at 39.37 247.65 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "8ae4d20a-fca6-4fc6-b7d0-28e3913e5983")
 	)
 	(hierarchical_label "PD_I2C_SCL"
 		(shape bidirectional)
