@@ -4553,6 +4553,46 @@
 	)
 	(wire
 		(pts
+			(xy 359.41 109.22) (xy 359.41 105.41)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ea99e265-5d33-4672-abcc-ddbf6f51b40d")
+	)
+	(wire
+		(pts
+			(xy 339.09 105.41) (xy 359.41 105.41)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "52c848fc-e07f-4025-a54c-b3f9e2bb8d5d")
+	)
+	(wire
+		(pts
+			(xy 359.41 116.84) (xy 359.41 120.65)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6a147a7b-8d5b-4a03-8235-b8269efbe71b")
+	)
+	(wire
+		(pts
+			(xy 339.09 120.65) (xy 359.41 120.65)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "58a7b0b2-3529-4692-8982-74e5d74a002e")
+	)
+	(wire
+		(pts
 			(xy 80.01 154.94) (xy 80.01 149.86)
 		)
 		(stroke
@@ -7366,6 +7406,87 @@
 			(project "carrier"
 				(path "/ee42a069-09cc-4091-bee3-2dd6ab96c98c/64ed744c-f0e1-4d20-9137-f6a463447101"
 					(reference "U1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 359.41 113.03 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "c3b5f4dc-e347-4fb5-b188-1d7eb20b8987")
+		(property "Reference" "C17"
+			(at 359.41 110.49 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100nF"
+			(at 359.41 115.57 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 360.375 109.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 359.41 113.03 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "LED local bypass capacitor"
+			(at 359.41 113.03 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "ec3ad163-b1ef-4fd4-a942-04d372f18f83")
+		)
+		(pin "2"
+			(uuid "459fde0d-15e6-4a0a-bbe6-bc1f35743a0b")
+		)
+		(instances
+			(project "carrier"
+				(path "/ee42a069-09cc-4091-bee3-2dd6ab96c98c/64ed744c-f0e1-4d20-9137-f6a463447101"
+					(reference "C17")
 					(unit 1)
 				)
 			)
