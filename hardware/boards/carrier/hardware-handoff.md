@@ -859,7 +859,7 @@ No external crystal is required for this design.
 | 3 | VDD/VDDA | +3V3 |
 | 4 | VSS/VSSA | GND |
 | 5 | PF2/NRST | NRST |
-| 6 | PA0 | LED_DATA_RAW |
+| 6 | PA0 | spare |
 | 7 | PA1 | PD_ENABLE |
 | 8 | PA2 | INA_ALERT |
 | 9 | PA3 | PD_PGOOD |
@@ -869,7 +869,7 @@ No external crystal is required for this design.
 | 13 | PA7 | BUCK_PGOOD |
 | 14 | PB0 | spare |
 | 15 | PB1 | spare |
-| 16 | PA8 | spare |
+| 16 | PA8 | LED_DATA_RAW / TIM1_CH1 |
 | 17 | PC6 | spare |
 | 18 | PA11 | CAN_RX / FDCAN_RX |
 | 19 | PA12 | CAN_TX / FDCAN_TX |
@@ -1312,7 +1312,7 @@ NET CANL_BUS
 # ============================================================
 
 NET LED_DATA_RAW
-    U1.PA0
+    U1.PA8
     R_LED.1
 
 NET LED_DATA

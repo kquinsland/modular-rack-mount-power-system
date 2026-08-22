@@ -12343,9 +12343,9 @@
 			(size 0.875 0.25)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/STM32 Housekeeping and Status/LED_DATA_RAW")
+			(net "unconnected-(U1-PA0-Pad6)")
 			(pinfunction "PA0_6")
-			(pintype "bidirectional")
+			(pintype "bidirectional+no_connect")
 			(uuid "d716470f-aee3-42bc-9737-c0dd9fb52f58")
 		)
 		(pad "7" smd custom
@@ -12491,9 +12491,9 @@
 			(size 0.875 0.25)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "unconnected-(U1-PA8-Pad16)")
+			(net "/STM32 Housekeeping and Status/LED_DATA_RAW")
 			(pinfunction "PA8_16")
-			(pintype "bidirectional+no_connect")
+			(pintype "bidirectional")
 			(uuid "16e676dd-67da-4555-b868-456bb14fb24f")
 		)
 		(pad "17" smd roundrect
@@ -17261,35 +17261,6 @@
 		)
 	)
 	(zone
-		(net "VCC")
-		(layer "F.Cu")
-		(hatch none 0.1)
-		(priority 30001)
-		(attr
-			(teardrop
-				(type padvia)
-			)
-		)
-		(connect_pads yes
-			(clearance 0)
-		)
-		(min_thickness 0.0254)
-		(fill yes
-			(island_removal_mode 1)
-		)
-		(polygon
-			(pts
-				(xy 115.0825 109.3) (xy 115.0825 109.1) (xy 114.0825 108.2) (xy 112.4815 109.2) (xy 114.0825 110.2)
-			)
-		)
-		(filled_polygon
-			(layer "F.Cu")
-			(pts
-				(xy 115.0825 109.1) (xy 115.0825 109.3) (xy 114.0825 110.2) (xy 112.4815 109.2) (xy 114.0825 108.2)
-			)
-		)
-	)
-	(zone
 		(net "/Protected Power and Controls/HS_SENSE")
 		(layer "F.Cu")
 		(uuid "626a04c7-aaa3-4072-9a01-e3514bec5a89")
@@ -17586,6 +17557,35 @@
 				(xy 115.56589 107.0005) (xy 115.565892 107.0005) (xy 115.693186 106.966392) (xy 115.807314 106.9005)
 				(xy 115.81875 106.889063) (xy 115.847 106.867912) (xy 115.867356 106.856797) (xy 115.921498 106.841744)
 				(xy 115.924336 106.841623)
+			)
+		)
+	)
+	(zone
+		(net "VCC")
+		(layer "F.Cu")
+		(hatch none 0.1)
+		(priority 30001)
+		(attr
+			(teardrop
+				(type padvia)
+			)
+		)
+		(connect_pads yes
+			(clearance 0)
+		)
+		(min_thickness 0.0254)
+		(fill yes
+			(island_removal_mode 1)
+		)
+		(polygon
+			(pts
+				(xy 115.0825 109.3) (xy 115.0825 109.1) (xy 114.0825 108.2) (xy 112.4815 109.2) (xy 114.0825 110.2)
+			)
+		)
+		(filled_polygon
+			(layer "F.Cu")
+			(pts
+				(xy 115.0825 109.1) (xy 115.0825 109.3) (xy 114.0825 110.2) (xy 112.4815 109.2) (xy 114.0825 108.2)
 			)
 		)
 	)

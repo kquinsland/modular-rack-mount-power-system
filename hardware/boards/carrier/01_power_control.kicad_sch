@@ -5135,12 +5135,12 @@
 		)
 		(uuid "64b51bce-0487-4dc9-a5c9-dd6fe11faeee")
 	)
-	(text "Place D2 beside J1 on the connector side of L3.\nKeep CANH/CANL tightly coupled and symmetric."
+	(text "CAN PLACEMENT: keep D2, L3, and U5 close to J1 (connector → D2 → L3 → U5).\nPlace C15/C16 directly at U5 VCC/VIO. Keep CANH/CANL short, tightly coupled, and symmetric.\nRoute CAN_TX/CAN_RX/CAN_STB to U1 over continuous ground, away from buck switching and high-current nodes."
 		(exclude_from_sim no)
 		(at 132.334 233.68 0)
 		(effects
 			(font
-				(size 1.1 1.1)
+				(size 0.8 0.8)
 			)
 			(justify left bottom)
 		)
@@ -5684,17 +5684,6 @@
 		)
 		(uuid "faa90c7f-e048-4402-9fef-238b1df85f1a")
 	)
-	(hierarchical_label "CANL_BUS"
-		(shape bidirectional)
-		(at 238.76 265.43 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "02944cbb-2e54-4fb4-ad84-b6709caaabee")
-	)
 	(label "INA_INM_FILT"
 		(at 228.6 134.62 180)
 		(effects
@@ -5885,17 +5874,6 @@
 		)
 		(uuid "8ae4d20a-fca6-4fc6-b7d0-28e3913e5983")
 	)
-	(hierarchical_label "CANH_BUS"
-		(shape bidirectional)
-		(at 238.76 242.57 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "8fe97300-3af7-4826-a5a3-d5a26e8b6479")
-	)
 	(label "HS_SENSE"
 		(at 144.78 40.64 90)
 		(effects
@@ -6032,6 +6010,17 @@
 			)
 		)
 	)
+	(hierarchical_label "CANL_BUS"
+		(shape bidirectional)
+		(at 238.76 265.43 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "02944cbb-2e54-4fb4-ad84-b6709caaabee")
+	)
 	(hierarchical_label "PD_IRQ"
 		(shape output)
 		(at 358.14 50.8 180)
@@ -6108,6 +6097,17 @@
 			(justify left bottom)
 		)
 		(uuid "8771afa2-ec73-4bbf-9084-9e11b9d3a0ea")
+	)
+	(hierarchical_label "CANH_BUS"
+		(shape bidirectional)
+		(at 238.76 242.57 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "8fe97300-3af7-4826-a5a3-d5a26e8b6479")
 	)
 	(hierarchical_label "PD_I2C_SCL"
 		(shape bidirectional)
