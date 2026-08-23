@@ -4771,7 +4771,7 @@
 		)
 		(uuid "64b51bce-0487-4dc9-a5c9-dd6fe11faeee")
 	)
-	(text "CAN PLACEMENT: keep D2, L3, and U5 close to J1 (connector → D2 → L3 → U5).\nPlace C15/C16 directly at U5 VCC/VIO. Route CAN_BUS_P/N and CAN_PHY_P/N as differential pairs; P = CANH, N = CANL.\nKeep each pair short, tightly coupled, symmetric, and length-matched. Route CAN_TX/CAN_RX/CAN_STB over continuous ground, away from switching nodes.\nJ1 is fixed: preserve physical N/P pair order through D2 and L3; L3 pads 1/4 = N and pads 2/3 = P."
+	(text "CAN PLACEMENT: keep D2, L3, and U5 close to J1 (connector → D2 → L3 → U5).\nPlace C15/C16 directly at U5 VCC/VIO. Route CAN_BUS_P/N and CAN_PHY_P/N as differential pairs; P = CANH, N = CANL.\nKeep each pair short, tightly coupled, symmetric, and length-matched. Route CAN_TX/CAN_RX over continuous ground, away from switching nodes.\nJ1 is fixed: preserve physical N/P pair order through D2 and L3; L3 pads 1/4 = N and pads 2/3 = P."
 		(exclude_from_sim no)
 		(at 23.876 221.742 0)
 		(effects
@@ -5649,28 +5649,6 @@
 			(justify left bottom)
 		)
 		(uuid "ef61038a-6bfd-4ffb-85b6-6f9158da261d")
-	)
-	(global_label "CAN_STB"
-		(shape bidirectional)
-		(at 99.06 252.73 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "12ebb8fd-6394-48ce-a51c-7e29dae74944")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 99.06 252.73 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
 	)
 	(global_label "CAN_TX"
 		(shape bidirectional)
@@ -7098,6 +7076,85 @@
 			(project "carrier"
 				(path "/ee42a069-09cc-4091-bee3-2dd6ab96c98c/bfe0cac3-96d7-4839-869d-6366daca24b5"
 					(reference "TP7")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 99.06 252.73 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "c7547038-2f98-470f-950f-10acd093e5da")
+		(property "Reference" "#PWR0416"
+			(at 99.06 259.08 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 99.06 257.81 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 99.06 252.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 99.06 252.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 99.06 252.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fc966ab4-220c-41f3-bad9-6c78ee51ec2c")
+		)
+		(instances
+			(project "carrier"
+				(path "/ee42a069-09cc-4091-bee3-2dd6ab96c98c/bfe0cac3-96d7-4839-869d-6366daca24b5"
+					(reference "#PWR0416")
 					(unit 1)
 				)
 			)
