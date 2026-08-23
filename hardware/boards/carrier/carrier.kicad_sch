@@ -4504,7 +4504,7 @@
 		)
 		(uuid "231e2050-8460-44bb-b955-0f1a66079306")
 	)
-	(text "LM5163 Type-3 ripple injection; nominal 3.3 V / ~300 kHz. Keep SW/BST/ripple loop compact during PCB layout."
+	(text "LM5163 Type-3 ripple injection; nominal 3.3 V / ~300 kHz. Keep SW/BST/ripple loop compact during PCB layout.\nTODO: During bring-up, measure VIN ringing directly at U2 pin 2 using a short ground spring."
 		(exclude_from_sim no)
 		(at 20.32 99.06 0)
 		(effects
@@ -4528,7 +4528,7 @@
 		)
 		(uuid "4bedb946-21c9-41a7-bb1b-2c8670c01124")
 	)
-	(text "RELEASE BLOCKER - CONNECTOR POLARITY\nCurrent carrier assumption: J1 pin 1 = VCC, pin 2 = GND, pin 3 = CANL, pin 4 = CANH.\nBackplane-prototype presently shows the power pins oppositely. Confirm physical mated contacts and drawing viewpoints,\nthen make symbol pins, footprint pads, net assignments, and notes consistent in every carrier/backplane project before fabrication."
+	(text "CARRIER CONNECTOR PINOUT (CONTROLLING DEFINITION)\nJ1 pin 1 = VCC, pin 2 = GND, pin 3 = CANH / CAN_BUS_P, pin 4 = CANL / CAN_BUS_N.\nUpdate the mating backplane connector to match the physical contacts and drawing viewpoint before fabrication."
 		(exclude_from_sim no)
 		(at 20.32 23.622 0)
 		(effects

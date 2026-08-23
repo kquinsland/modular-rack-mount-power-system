@@ -4736,7 +4736,7 @@
 		)
 		(uuid "2761a200-8095-4141-9bac-9b039feac66d")
 	)
-	(text "RELEASE BLOCKER — U3 DEVICE / FOOTPRINT VERIFICATION\nSymbol: TI LM5069MM-2; fitted device: Maxinmicro LMX5069MS (C47967145).\nObtain/archive the exact Maxinmicro datasheet; verify pinout, thresholds, TIMER/retry behavior, package, and footprint.\nU3 pad-to-pad clearance is 0.15 mm vs. the board's 0.20 mm rule; approve a local fab rule or revise the footprint/rules."
+	(text "PROJECT-LOCAL U3 FOOTPRINT\nU3 is Maxinmicro LMX5069MS (C47967145), MSOP-10; manufacturer datasheet is archived locally.\nUse mini-rack-power:MSOP-10_3x3mm_P0.5mm_0.20mm_Clearance. It retains KiCad's pad length, body, and courtyard,\nbut narrows pads to 0.30 mm for 0.20 mm copper clearance at 0.50 mm pitch. This avoids the stock footprint's 0.15 mm\nclearance limit with 2 oz copper and satisfies the project DRC rule. Confirm final copper weight and vendor DFM before release."
 		(exclude_from_sim no)
 		(at 93.98 76.2 0)
 		(effects
@@ -4771,7 +4771,7 @@
 		)
 		(uuid "64b51bce-0487-4dc9-a5c9-dd6fe11faeee")
 	)
-	(text "CAN PLACEMENT: keep D2, L3, and U5 close to J1 (connector → D2 → L3 → U5).\nPlace C15/C16 directly at U5 VCC/VIO. Route CAN_BUS_P/N and CAN_PHY_P/N as differential pairs; P = CANH, N = CANL.\nKeep each pair short, tightly coupled, symmetric, and length-matched. Route CAN_TX/CAN_RX/CAN_STB over continuous ground, away from switching nodes."
+	(text "CAN PLACEMENT: keep D2, L3, and U5 close to J1 (connector → D2 → L3 → U5).\nPlace C15/C16 directly at U5 VCC/VIO. Route CAN_BUS_P/N and CAN_PHY_P/N as differential pairs; P = CANH, N = CANL.\nKeep each pair short, tightly coupled, symmetric, and length-matched. Route CAN_TX/CAN_RX/CAN_STB over continuous ground, away from switching nodes.\nJ1 is fixed: preserve physical N/P pair order through D2 and L3; L3 pads 1/4 = N and pads 2/3 = P."
 		(exclude_from_sim no)
 		(at 23.876 221.742 0)
 		(effects
@@ -4942,6 +4942,16 @@
 	)
 	(wire
 		(pts
+			(xy 73.66 254) (xy 76.2 246.38)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "116b163f-09a0-4b92-8f1e-1d49cca67049")
+	)
+	(wire
+		(pts
 			(xy 60.96 88.9) (xy 52.07 88.9)
 		)
 		(stroke
@@ -4952,7 +4962,7 @@
 	)
 	(wire
 		(pts
-			(xy 71.12 254) (xy 78.74 254)
+			(xy 71.12 254) (xy 73.66 254)
 		)
 		(stroke
 			(width 0)
@@ -4979,6 +4989,16 @@
 			(type default)
 		)
 		(uuid "26ba6f2f-eee7-4a28-b0e5-eaac42303e6e")
+	)
+	(wire
+		(pts
+			(xy 76.2 246.38) (xy 78.74 246.38)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2c6ad507-8a4d-445f-b7b8-fec35fe55e13")
 	)
 	(wire
 		(pts
@@ -5062,7 +5082,7 @@
 	)
 	(wire
 		(pts
-			(xy 78.74 246.38) (xy 71.12 246.38)
+			(xy 71.12 246.38) (xy 73.66 246.38)
 		)
 		(stroke
 			(width 0)
@@ -5132,6 +5152,16 @@
 	)
 	(wire
 		(pts
+			(xy 73.66 246.38) (xy 76.2 254)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "75fc929a-5e92-46f8-8952-f4b9b903b0c6")
+	)
+	(wire
+		(pts
 			(xy 39.37 252.73) (xy 49.53 252.73)
 		)
 		(stroke
@@ -5149,6 +5179,16 @@
 			(type default)
 		)
 		(uuid "76221d5e-94ed-4c60-82df-2b8bd1fcd6e1")
+	)
+	(wire
+		(pts
+			(xy 76.2 254) (xy 78.74 254)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "766f267b-9fb9-483c-9621-da10cd99ce27")
 	)
 	(wire
 		(pts
@@ -5480,7 +5520,7 @@
 		)
 		(uuid "30f3d6ec-5e8e-447c-a1f3-cdc030216857")
 	)
-	(label "CAN_PHY_P"
+	(label "CAN_PHY_N"
 		(at 73.66 246.38 90)
 		(effects
 			(font
@@ -5560,7 +5600,7 @@
 		)
 		(uuid "b5da6695-dd50-4cc6-9e56-086003d41436")
 	)
-	(label "CAN_PHY_N"
+	(label "CAN_PHY_P"
 		(at 73.66 254 270)
 		(effects
 			(font
@@ -5687,7 +5727,7 @@
 		)
 		(uuid "1dfed7d4-8180-48c9-b65a-a1c65ea36418")
 	)
-	(hierarchical_label "CAN_BUS_N"
+	(hierarchical_label "CAN_BUS_P"
 		(shape bidirectional)
 		(at 39.37 252.73 0)
 		(effects
@@ -5764,7 +5804,7 @@
 		)
 		(uuid "8771afa2-ec73-4bbf-9084-9e11b9d3a0ea")
 	)
-	(hierarchical_label "CAN_BUS_P"
+	(hierarchical_label "CAN_BUS_N"
 		(shape bidirectional)
 		(at 39.37 247.65 0)
 		(effects
@@ -6102,7 +6142,7 @@
 				)
 			)
 		)
-		(property "Value" "CAN_BUS_P"
+		(property "Value" "CAN_BUS_N"
 			(at 55.88 229.87 0)
 			(hide yes)
 			(show_name no)
@@ -8849,7 +8889,7 @@
 				)
 			)
 		)
-		(property "Value" "CAN_BUS_N"
+		(property "Value" "CAN_BUS_P"
 			(at 55.88 237.49 0)
 			(hide yes)
 			(show_name no)
@@ -10478,7 +10518,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Package_SO:MSOP-10_3x3mm_P0.5mm"
+		(property "Footprint" "mini-rack-power:MSOP-10_3x3mm_P0.5mm_0.20mm_Clearance"
 			(at 148.59 28.956 0)
 			(hide yes)
 			(show_name no)

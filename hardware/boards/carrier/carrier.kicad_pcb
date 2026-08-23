@@ -947,6 +947,164 @@
 		)
 	)
 	(footprint "Resistor_SMD:R_0603_1608Metric"
+		(layer "F.Cu")
+		(uuid "1eb67a1b-840f-4879-b3c2-e93b0bdf01b7")
+		(at 202.35 102.78 90)
+		(descr "Resistor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
+		(tags "resistor")
+		(property "Reference" "R32"
+			(at 0 -1.43 90)
+			(layer "F.SilkS")
+			(uuid "b486f3b8-ca95-432c-94b3-d3268c5138d7")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "100R"
+			(at 0 1.43 90)
+			(layer "F.Fab")
+			(uuid "d796ad50-b61a-459d-a986-b0277b9bf29e")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 90)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "4a3ffb6e-69e6-4c82-bdbe-1675f3ef0eae")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Series damping resistor for WS2812B data input"
+			(at 0 0 90)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "5208da14-96e8-4ea3-b0df-37a470928002")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
+			(at 0 0 90)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "94f5c594-3829-4c13-beb1-600428b271fa")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property ki_fp_filters "R_*")
+		(path "/64ed744c-f0e1-4d20-9137-f6a463447101/93c13c22-87b8-4558-913a-ce70373dcc0b")
+		(sheetname "/STM32 Housekeeping and Status/")
+		(sheetfile "02_housekeeping.kicad_sch")
+		(units
+			(unit
+				(name "A")
+				(pins "1" "2")
+			)
+		)
+		(attr smd)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_line
+			(start -0.237258 -0.5225)
+			(end 0.237258 -0.5225)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "a7aade7f-d7d2-44a6-b87b-c274c1d3fb6d")
+		)
+		(fp_line
+			(start -0.237258 0.5225)
+			(end 0.237258 0.5225)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "4905749e-fb7d-4968-aae3-5ed0b6a2ab51")
+		)
+		(fp_rect
+			(start -1.48 -0.73)
+			(end 1.48 0.73)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "45b45a84-daf0-4066-8a0f-ad27fb7c7fff")
+		)
+		(fp_rect
+			(start -0.8 -0.4125)
+			(end 0.8 0.4125)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.Fab")
+			(uuid "04e785cd-47f7-4870-8faf-1f2f2f59ebb5")
+		)
+		(fp_text user "${REFERENCE}"
+			(at 0 0 90)
+			(layer "F.Fab")
+			(uuid "286f3ae6-f999-4687-8b8d-e4ac487486cc")
+			(effects
+				(font
+					(size 0.4 0.4)
+					(thickness 0.06)
+				)
+			)
+		)
+		(pad "1" smd roundrect
+			(at -0.825 0 90)
+			(size 0.8 0.95)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(roundrect_rratio 0.25)
+			(net "/STM32 Housekeeping and Status/LED_DATA_RAW")
+			(pintype "passive")
+			(uuid "e3bb3a48-294b-4ce3-b8d7-5f46c689658a")
+		)
+		(pad "2" smd roundrect
+			(at 0.825 0 90)
+			(size 0.8 0.95)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(roundrect_rratio 0.25)
+			(net "Net-(LED1-DIN)")
+			(pintype "passive")
+			(uuid "3a99152b-bbe7-4202-9558-e50661308124")
+		)
+		(embedded_fonts no)
+		(model "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
+	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(locked yes)
 		(layer "F.Cu")
 		(uuid "2207dbbe-b3ab-4e4b-9327-a16b16667b3e")
@@ -1263,13 +1421,13 @@
 			)
 		)
 	)
-	(footprint "Package_SO:MSOP-10_3x3mm_P0.5mm"
+	(footprint "mini-rack-power:MSOP-10_3x3mm_P0.5mm_0.20mm_Clearance"
 		(locked yes)
 		(layer "F.Cu")
 		(uuid "2d0ed29b-f7bb-44e6-b33f-213ff25733b5")
 		(at 125.5625 122.58 -90)
-		(descr "MSOP, 10 Pin (JEDEC MO-187 variation BA, 0.85mm body thickness, https://www.jedec.org/system/files/docs/mo-187F.pdf)")
-		(tags "MSOP SO TSSOP-10_3x3mm_P0.5mm")
+		(descr "Project-local MSOP-10, 3 x 3 mm body, 0.5 mm pitch; 0.30 mm pad width provides 0.20 mm copper clearance for 2 oz fabrication; derived from KiCad MSOP-10_3x3mm_P0.5mm")
+		(tags "MSOP SO TSSOP-10 0.20mm clearance LMX5069MS")
 		(property "Reference" "U3"
 			(at 0.24 -2.3 90)
 			(layer "F.SilkS")
@@ -1594,7 +1752,7 @@
 		)
 		(pad "1" smd roundrect
 			(at -2.1 -1 270)
-			(size 1.5 0.35)
+			(size 1.5 0.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
 			(net "/Protected Power and Controls/HS_SENSE")
@@ -1604,7 +1762,7 @@
 		)
 		(pad "2" smd roundrect
 			(at -2.1 -0.5 270)
-			(size 1.5 0.35)
+			(size 1.5 0.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
 			(net "VCC")
@@ -1614,7 +1772,7 @@
 		)
 		(pad "3" smd roundrect
 			(at -2.1 0 270)
-			(size 1.5 0.35)
+			(size 1.5 0.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
 			(net "/Protected Power and Controls/HS_UVLO")
@@ -1624,7 +1782,7 @@
 		)
 		(pad "4" smd roundrect
 			(at -2.1 0.5 270)
-			(size 1.5 0.35)
+			(size 1.5 0.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
 			(net "/Protected Power and Controls/HS_OVLO")
@@ -1634,7 +1792,7 @@
 		)
 		(pad "5" smd roundrect
 			(at -2.1 1 270)
-			(size 1.5 0.35)
+			(size 1.5 0.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
 			(net "GND")
@@ -1644,7 +1802,7 @@
 		)
 		(pad "6" smd roundrect
 			(at 2.1 1 270)
-			(size 1.5 0.35)
+			(size 1.5 0.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
 			(net "Net-(U3-TIMER)")
@@ -1654,7 +1812,7 @@
 		)
 		(pad "7" smd roundrect
 			(at 2.1 0.5 270)
-			(size 1.5 0.35)
+			(size 1.5 0.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
 			(net "Net-(U3-PWR)")
@@ -1664,7 +1822,7 @@
 		)
 		(pad "8" smd roundrect
 			(at 2.1 0 270)
-			(size 1.5 0.35)
+			(size 1.5 0.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
 			(net "/PD_PGOOD")
@@ -1674,7 +1832,7 @@
 		)
 		(pad "9" smd roundrect
 			(at 2.1 -0.5 270)
-			(size 1.5 0.35)
+			(size 1.5 0.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
 			(net "Net-(U3-OUT)")
@@ -1684,7 +1842,7 @@
 		)
 		(pad "10" smd roundrect
 			(at 2.1 -1 270)
-			(size 1.5 0.35)
+			(size 1.5 0.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
 			(net "/Protected Power and Controls/Q1_GATE")
@@ -1708,7 +1866,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "2f1d112d-fe6d-4806-a27b-8125c7a20c89")
-		(at 194.8775 103.56 180)
+		(at 194.3 103.05 180)
 		(descr "Capacitor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "capacitor")
 		(property "Reference" "C12"
@@ -3895,7 +4053,7 @@
 			(at 0.915 0.55 270)
 			(size 0.7 0.7)
 			(layers "F.Cu" "F.Mask" "F.Paste")
-			(net "/STM32 Housekeeping and Status/LED_DATA_RAW")
+			(net "Net-(LED1-DIN)")
 			(pinfunction "DIN_3")
 			(pintype "input")
 			(uuid "8a9d0783-8aac-441c-9497-345d9d0ab816")
@@ -7780,12 +7938,6 @@
 		(path "/bfe0cac3-96d7-4839-869d-6366daca24b5/274ab5ec-3cec-4043-b017-7b5e88e98fb0")
 		(sheetname "/Protected Power and Controls/")
 		(sheetfile "01_power_control.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2" "4" "3")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -7880,38 +8032,49 @@
 			(layer "F.Fab")
 			(uuid "24e3e345-bca8-433a-8e7b-ce657e612b25")
 		)
+		(fp_text user "${REFERENCE}"
+			(at 0 0 90)
+			(layer "F.Fab")
+			(uuid "42dedcdc-3b18-4b28-ae67-93d19d7ac6ca")
+			(effects
+				(font
+					(size 0.7 0.7)
+					(thickness 0.1)
+				)
+			)
+		)
 		(pad "1" smd rect
-			(at -1.525 -0.6 180)
-			(size 1.05 0.4)
+			(at -1.525 -0.5 90)
+			(size 1.05 0.6)
 			(layers "F.Cu" "F.Mask" "F.Paste")
-			(net "/CAN_BUS_P")
+			(net "/CAN_BUS_N")
 			(pinfunction "A_PHY_1")
 			(pintype "passive")
 			(uuid "840a6a68-df56-4131-a8d2-3a7bc26a3203")
 		)
 		(pad "2" smd rect
-			(at -1.525 0.6 180)
-			(size 1.05 0.4)
+			(at -1.525 0.5 90)
+			(size 1.05 0.6)
 			(layers "F.Cu" "F.Mask" "F.Paste")
-			(net "/CAN_BUS_N")
+			(net "/CAN_BUS_P")
 			(pinfunction "B_PHY_2")
 			(pintype "passive")
 			(uuid "64b0bc04-4624-49a4-bff0-c68dcabae9b1")
 		)
 		(pad "3" smd rect
-			(at 1.525 0.6 180)
-			(size 1.05 0.4)
+			(at 1.525 0.5 90)
+			(size 1.05 0.6)
 			(layers "F.Cu" "F.Mask" "F.Paste")
-			(net "/Protected Power and Controls/CAN_PHY_N")
+			(net "/Protected Power and Controls/CAN_PHY_P")
 			(pinfunction "B_BUS_3")
 			(pintype "passive")
 			(uuid "bff425f2-df7d-4f18-b5ba-45b11c48f0f3")
 		)
 		(pad "4" smd rect
-			(at 1.525 -0.6 180)
-			(size 1.05 0.4)
+			(at 1.525 -0.5 90)
+			(size 1.05 0.6)
 			(layers "F.Cu" "F.Mask" "F.Paste")
-			(net "/Protected Power and Controls/CAN_PHY_P")
+			(net "/Protected Power and Controls/CAN_PHY_N")
 			(pinfunction "A_BUS_4")
 			(pintype "passive")
 			(uuid "c8aa3bd8-81ea-44af-bbd3-bdbe48fced6f")
@@ -9076,7 +9239,7 @@
 			(size 1.475 0.6)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/CAN_BUS_P")
+			(net "/CAN_BUS_N")
 			(pinfunction "IO1_1")
 			(pintype "passive")
 			(uuid "7a7a0644-a096-400e-93ff-eb165b351d92")
@@ -9086,7 +9249,7 @@
 			(size 1.475 0.6)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "/CAN_BUS_N")
+			(net "/CAN_BUS_P")
 			(pinfunction "IO2_2")
 			(pintype "passive")
 			(uuid "09c28149-12ec-44d4-a886-efc4035216ab")
@@ -10280,12 +10443,6 @@
 		(path "/bfe0cac3-96d7-4839-869d-6366daca24b5/359d839a-0b53-42fd-bb48-740af34a1147")
 		(sheetname "/Protected Power and Controls/")
 		(sheetfile "01_power_control.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "4" "8" "3" "2" "5" "7" "6")
-			)
-		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -11065,7 +11222,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "a840a4b2-cb18-41e5-a573-5a685b94c246")
-		(at 194.86 101.86 180)
+		(at 194.2825 101.35 180)
 		(descr "Capacitor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "capacitor")
 		(property "Reference" "C13"
@@ -11223,7 +11380,7 @@
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "ab22eb9d-71e0-434b-93cb-ae4ec8ed4425")
-		(at 194.8775 107.36)
+		(at 194.6 106.96)
 		(descr "Resistor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "resistor")
 		(property "Reference" "R28"
@@ -12270,7 +12427,7 @@
 	(footprint "Package_DFN_QFN:QFN-28_4x4mm_P0.5mm"
 		(layer "F.Cu")
 		(uuid "dae9f59b-5847-4c90-b723-49fb7813710c")
-		(at 199.2675 104.04)
+		(at 198.69 103.53)
 		(descr "QFN, 28 Pin (http://www.st.com/resource/en/datasheet/stm32f031k6.pdf#page=90)")
 		(tags "QFN NoLead")
 		(property "Reference" "U1"
@@ -14246,7 +14403,7 @@
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "f00c574b-97ee-4acd-ba31-ae25ea11aba2")
-		(at 194.8775 105.46 180)
+		(at 194.3 104.95 180)
 		(descr "Capacitor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "capacitor")
 		(property "Reference" "C11"
@@ -15213,7 +15370,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Value" "CAN_BUS_N"
+		(property "Value" "CAN_BUS_P"
 			(at 0 -1.75 0)
 			(layer "B.Fab")
 			(uuid "0c3450e7-9b4e-455c-9b2e-9ef9d9a1b406")
@@ -15358,7 +15515,7 @@
 			(at 0 0 180)
 			(size 1.5 1.5)
 			(layers "B.Cu" "B.Mask")
-			(net "/CAN_BUS_N")
+			(net "/CAN_BUS_P")
 			(pinfunction "1_1")
 			(pintype "passive")
 			(uuid "d45ee98a-d57e-4296-ad41-b2bc72e234d1")
@@ -15383,7 +15540,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Value" "CAN_BUS_P"
+		(property "Value" "CAN_BUS_N"
 			(at 0 -1.75 0)
 			(layer "B.Fab")
 			(uuid "2a7b2acb-f82d-4869-ac60-b8fca0c0eb34")
@@ -15528,7 +15685,7 @@
 			(at 0 0 180)
 			(size 1.5 1.5)
 			(layers "B.Cu" "B.Mask")
-			(net "/CAN_BUS_P")
+			(net "/CAN_BUS_N")
 			(pinfunction "1_1")
 			(pintype "passive")
 			(uuid "4cc8b15b-742e-4890-86fd-245f0710d89b")
@@ -16522,22 +16679,6 @@
 		(uuid "2abbda30-95ce-491a-a558-0edc1ac1a7a0")
 	)
 	(segment
-		(start 119.83 101.445)
-		(end 121.155 101.445)
-		(width 0.2)
-		(layer "F.Cu")
-		(net "/Protected Power and Controls/CAN_PHY_N")
-		(uuid "9bafe3e3-19ec-4df9-a9b2-e645ac87605c")
-	)
-	(segment
-		(start 118.78 102.495)
-		(end 119.83 101.445)
-		(width 0.2)
-		(layer "F.Cu")
-		(net "/Protected Power and Controls/CAN_PHY_N")
-		(uuid "b838d4cd-f063-4db9-8786-2b6b3baccbac")
-	)
-	(segment
 		(start 120.875 102.995)
 		(end 121.155 102.715)
 		(width 0.2)
@@ -16561,36 +16702,21 @@
 		(net "/Protected Power and Controls/CAN_PHY_P")
 		(uuid "bc8fb3e5-d8ed-474c-97e1-d31f22d65d98")
 	)
-	(zone
-		(net "/CAN_BUS_N")
+	(segment
+		(start 119.83 101.445)
+		(end 121.155 101.445)
+		(width 0.2)
 		(layer "F.Cu")
-		(hatch none 0.1)
-		(priority 30000)
-		(attr
-			(teardrop
-				(type padvia)
-			)
-		)
-		(connect_pads yes
-			(clearance 0)
-		)
-		(min_thickness 0.0254)
-		(fill yes
-			(island_removal_mode 1)
-		)
-		(polygon
-			(pts
-				(xy 110.393014 119.25) (xy 110.393014 119.05) (xy 110.3525 119.05) (xy 110.423211 119.079289) (xy 110.018052 117.817772)
-				(xy 109.249069 118.046569) (xy 109.020272 118.815552) (xy 110.281789 119.220711) (xy 110.3525 119.25)
-			)
-		)
-		(filled_polygon
-			(layer "F.Cu")
-			(pts
-				(xy 110.393014 119.25) (xy 110.393014 119.05) (xy 110.3525 119.05) (xy 110.423211 119.079289) (xy 110.018052 117.817772)
-				(xy 109.249069 118.046569) (xy 109.020272 118.815552) (xy 110.281789 119.220711) (xy 110.3525 119.25)
-			)
-		)
+		(net "/Protected Power and Controls/CAN_PHY_N")
+		(uuid "9bafe3e3-19ec-4df9-a9b2-e645ac87605c")
+	)
+	(segment
+		(start 118.78 102.495)
+		(end 119.83 101.445)
+		(width 0.2)
+		(layer "F.Cu")
+		(net "/Protected Power and Controls/CAN_PHY_N")
+		(uuid "b838d4cd-f063-4db9-8786-2b6b3baccbac")
 	)
 	(zone
 		(net "/Protected Power and Controls/PD_VIN_SW")
@@ -16642,6 +16768,37 @@
 			(pts
 				(xy 112.426151 117.13) (xy 112.426151 116.93) (xy 112.2725 116.93) (xy 112.201789 116.959289) (xy 111.020272 117.284448)
 				(xy 111.249069 118.053431) (xy 112.018052 118.282228) (xy 112.343211 117.100711)
+			)
+		)
+	)
+	(zone
+		(net "/CAN_BUS_N")
+		(layer "F.Cu")
+		(hatch none 0.1)
+		(priority 30000)
+		(attr
+			(teardrop
+				(type padvia)
+			)
+		)
+		(connect_pads yes
+			(clearance 0)
+		)
+		(min_thickness 0.0254)
+		(fill yes
+			(island_removal_mode 1)
+		)
+		(polygon
+			(pts
+				(xy 110.393014 119.25) (xy 110.393014 119.05) (xy 110.3525 119.05) (xy 110.423211 119.079289) (xy 110.018052 117.817772)
+				(xy 109.249069 118.046569) (xy 109.020272 118.815552) (xy 110.281789 119.220711) (xy 110.3525 119.25)
+			)
+		)
+		(filled_polygon
+			(layer "F.Cu")
+			(pts
+				(xy 110.393014 119.25) (xy 110.393014 119.05) (xy 110.3525 119.05) (xy 110.423211 119.079289) (xy 110.018052 117.817772)
+				(xy 109.249069 118.046569) (xy 109.020272 118.815552) (xy 110.281789 119.220711) (xy 110.3525 119.25)
 			)
 		)
 	)
