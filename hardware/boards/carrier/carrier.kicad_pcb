@@ -16446,7 +16446,7 @@
 		)
 	)
 	(via
-		(at 136.53 112.78)
+		(at 136.53 112.9)
 		(size 0.6)
 		(drill 0.3)
 		(layers "F.Cu" "B.Cu")
@@ -16455,7 +16455,7 @@
 		(uuid "3a7fdffb-615c-4ae1-9a9c-ee763432308e")
 	)
 	(via
-		(at 139.82 113.31)
+		(at 140.4 113.85)
 		(size 0.6)
 		(drill 0.3)
 		(layers "F.Cu" "B.Cu")
@@ -16464,7 +16464,7 @@
 		(uuid "7f835112-f0db-4cf2-9b13-a17dd775c759")
 	)
 	(via
-		(at 127.63 116.89)
+		(at 128.29 116.6)
 		(size 0.6)
 		(drill 0.3)
 		(layers "F.Cu" "B.Cu")
@@ -16473,7 +16473,7 @@
 		(uuid "81ce03e6-612b-49fe-8b33-d9ff939ae45e")
 	)
 	(via
-		(at 127.6 120.28)
+		(at 128.29 119.17)
 		(size 0.6)
 		(drill 0.3)
 		(layers "F.Cu" "B.Cu")
@@ -16482,7 +16482,7 @@
 		(uuid "92ce108a-44ce-4f30-9318-805ae57a0841")
 	)
 	(via
-		(at 132.45 112.63)
+		(at 129.83 112.9)
 		(size 0.6)
 		(drill 0.3)
 		(layers "F.Cu" "B.Cu")
@@ -16491,7 +16491,25 @@
 		(uuid "b0576f07-4c5c-4e3a-ab09-1821fbcbc63d")
 	)
 	(via
-		(at 139.91 120.18)
+		(at 128.29 123.79)
+		(size 0.6)
+		(drill 0.3)
+		(layers "F.Cu" "B.Cu")
+		(free yes)
+		(net "/Protected Power and Controls/HS_SENSE")
+		(uuid "b131d238-da6b-465f-9ee5-3292434e79b1")
+	)
+	(via
+		(at 133.55 112.9)
+		(size 0.6)
+		(drill 0.3)
+		(layers "F.Cu" "B.Cu")
+		(free yes)
+		(net "/Protected Power and Controls/HS_SENSE")
+		(uuid "d4a3dadf-0c0e-42bd-917c-0765fd48f66c")
+	)
+	(via
+		(at 140.4 120.18)
 		(size 0.6)
 		(drill 0.3)
 		(layers "F.Cu" "B.Cu")
@@ -16500,7 +16518,7 @@
 		(uuid "e09b823f-b4a1-4e60-9ac7-cb8795d1c4a2")
 	)
 	(via
-		(at 140.08 117.37)
+		(at 140.4 116.92)
 		(size 0.6)
 		(drill 0.3)
 		(layers "F.Cu" "B.Cu")
@@ -16742,58 +16760,6 @@
 		)
 	)
 	(zone
-		(net "/CAN_BUS_P")
-		(layer "F.Cu")
-		(hatch none 0.1)
-		(priority 30000)
-		(attr
-			(teardrop
-				(type padvia)
-			)
-		)
-		(connect_pads yes
-			(clearance 0)
-		)
-		(min_thickness 0.0254)
-		(fill yes
-			(island_removal_mode 1)
-		)
-		(polygon
-			(pts
-				(xy 112.426151 117.13) (xy 112.426151 116.93) (xy 112.2725 116.93) (xy 112.201789 116.959289) (xy 111.020272 117.284448)
-				(xy 111.249069 118.053431) (xy 112.018052 118.282228) (xy 112.343211 117.100711)
-			)
-		)
-		(filled_polygon
-			(layer "F.Cu")
-			(pts
-				(xy 112.426151 117.13) (xy 112.426151 116.93) (xy 112.2725 116.93) (xy 112.201789 116.959289) (xy 111.020272 117.284448)
-				(xy 111.249069 118.053431) (xy 112.018052 118.282228) (xy 112.343211 117.100711)
-			)
-		)
-	)
-	(zone
-		(net "/Protected Power and Controls/PD_VIN_SW")
-		(layer "F.Cu")
-		(uuid "5663afb8-aa09-436a-81d3-e7aa480c8ef8")
-		(name "PD_VIN_SW")
-		(hatch edge 0.5)
-		(connect_pads yes
-			(clearance 0)
-		)
-		(min_thickness 0.25)
-		(fill
-			(thermal_gap 0.5)
-			(thermal_bridge_width 0.5)
-			(island_removal_mode 0)
-		)
-		(polygon
-			(pts
-				(xy 140.15 121.75) (xy 152.75 121.75) (xy 152.75 130.15) (xy 135.5 130.15) (xy 135.5 124.68) (xy 140.15 124.68)
-			)
-		)
-	)
-	(zone
 		(net "/CAN_BUS_N")
 		(layer "F.Cu")
 		(hatch none 0.1)
@@ -16821,6 +16787,58 @@
 			(pts
 				(xy 110.393014 119.25) (xy 110.393014 119.05) (xy 110.3525 119.05) (xy 110.423211 119.079289) (xy 110.018052 117.817772)
 				(xy 109.249069 118.046569) (xy 109.020272 118.815552) (xy 110.281789 119.220711) (xy 110.3525 119.25)
+			)
+		)
+	)
+	(zone
+		(net "/Protected Power and Controls/PD_VIN_SW")
+		(layer "F.Cu")
+		(uuid "5663afb8-aa09-436a-81d3-e7aa480c8ef8")
+		(name "PD_VIN_SW")
+		(hatch edge 0.5)
+		(connect_pads yes
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(island_removal_mode 0)
+		)
+		(polygon
+			(pts
+				(xy 140.15 121.75) (xy 152.75 121.75) (xy 152.75 130.15) (xy 135.5 130.15) (xy 135.5 124.68) (xy 140.15 124.68)
+			)
+		)
+	)
+	(zone
+		(net "/CAN_BUS_P")
+		(layer "F.Cu")
+		(hatch none 0.1)
+		(priority 30000)
+		(attr
+			(teardrop
+				(type padvia)
+			)
+		)
+		(connect_pads yes
+			(clearance 0)
+		)
+		(min_thickness 0.0254)
+		(fill yes
+			(island_removal_mode 1)
+		)
+		(polygon
+			(pts
+				(xy 112.426151 117.13) (xy 112.426151 116.93) (xy 112.2725 116.93) (xy 112.201789 116.959289) (xy 111.020272 117.284448)
+				(xy 111.249069 118.053431) (xy 112.018052 118.282228) (xy 112.343211 117.100711)
+			)
+		)
+		(filled_polygon
+			(layer "F.Cu")
+			(pts
+				(xy 112.426151 117.13) (xy 112.426151 116.93) (xy 112.2725 116.93) (xy 112.201789 116.959289) (xy 111.020272 117.284448)
+				(xy 111.249069 118.053431) (xy 112.018052 118.282228) (xy 112.343211 117.100711)
 			)
 		)
 	)
