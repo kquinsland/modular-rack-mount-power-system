@@ -4736,7 +4736,7 @@
 		)
 		(uuid "2761a200-8095-4141-9bac-9b039feac66d")
 	)
-	(text "PROJECT-LOCAL U3 FOOTPRINT\nU3 is Maxinmicro LMX5069MS (C47967145), MSOP-10; manufacturer datasheet is archived locally.\nUse mini-rack-power:MSOP-10_3x3mm_P0.5mm_0.20mm_Clearance. It retains KiCad's pad length, body, and courtyard,\nbut narrows pads to 0.30 mm for 0.20 mm copper clearance at 0.50 mm pitch. This avoids the stock footprint's 0.15 mm\nclearance limit with 2 oz copper and satisfies the project DRC rule. Confirm final copper weight and vendor DFM before release."
+	(text "U3 STOCK MSOP-10 FOOTPRINT\nU3 is Maxinmicro LMX5069MS (C47967145), MSOP-10; manufacturer datasheet is archived locally.\nUse Package_SO:MSOP-10_3x3mm_P0.5mm. Its 0.15 mm pad-to-pad gap is covered by a footprint-local board clearance\noverride and is compatible with the selected 1 oz outer-copper fabrication process. Confirm vendor DFM before release."
 		(exclude_from_sim no)
 		(at 93.98 76.2 0)
 		(effects
@@ -10518,7 +10518,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "mini-rack-power:MSOP-10_3x3mm_P0.5mm_0.20mm_Clearance"
+		(property "Footprint" "Package_SO:MSOP-10_3x3mm_P0.5mm"
 			(at 148.59 28.956 0)
 			(hide yes)
 			(show_name no)

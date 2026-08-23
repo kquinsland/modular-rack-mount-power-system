@@ -1,7 +1,7 @@
 (version 1)
 
 # Ported from backplane-prototype for the same JLCPCB process.
-# The annular-ring rule assumes 2 oz outer copper.
+# The conservative annular-ring rule is retained for the selected 1 oz outer copper.
 
 # MOD1 is mounted above the carrier PCB. KiCad's courtyard DRC is two-dimensional,
 # so it cannot verify the physical Z clearance. Only footprints deliberately assigned
@@ -19,9 +19,8 @@
     (condition "A.Type == 'Via' && A.Via_Type != 'Through'")
     (constraint disallow via))
 
-# JLCPCB specifies a 0.254 mm PTH annular ring for 2 oz copper, so use a
-# slightly conservative 0.255 mm minimum.
-(rule "JLCPCB 2 oz PTH fabrication"
+# Retain a conservative 0.255 mm PTH annular-ring minimum for fabrication.
+(rule "JLCPCB conservative PTH fabrication"
     (condition "A.Type == 'Pad' && A.Pad_Type == 'Through-hole'")
     (constraint annular_width (min 0.255mm))
     (constraint hole_clearance (min 0.3mm)))
