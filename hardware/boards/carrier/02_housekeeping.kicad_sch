@@ -4479,6 +4479,17 @@
 		)
 		(uuid "c3a863d4-9fb4-4ca8-a540-6f72442c1734")
 	)
+	(text "FACTORY ROM FDCAN RECOVERY\nCAN_RX = PB0/pin 14; CAN_TX = PB1/pin 15."
+		(exclude_from_sim no)
+		(at 20.32 95.25 0)
+		(effects
+			(font
+				(size 0.9 0.9)
+			)
+			(justify left bottom)
+		)
+		(uuid "4cece8c8-8176-4a50-a4f4-c661859e9539")
+	)
 	(text "RGB STATUS LED"
 		(exclude_from_sim no)
 		(at 330.2 97.028 0)
@@ -4532,7 +4543,7 @@
 		(uuid "7563d851-6d86-4ca3-833f-09abf28af767")
 	)
 	(no_connect
-		(at 58.42 68.58)
+		(at 93.98 76.2)
 		(uuid "8663efa9-3fa5-4c2a-b1b7-4852669523b8")
 	)
 	(no_connect
@@ -4544,7 +4555,7 @@
 		(uuid "b37ac631-c2b6-47d1-b403-95abaa2b3df2")
 	)
 	(no_connect
-		(at 58.42 66.04)
+		(at 93.98 73.66)
 		(uuid "c91b58a0-e1ee-4125-a72d-7aa0597a19b0")
 	)
 	(no_connect
@@ -4647,16 +4658,6 @@
 	)
 	(wire
 		(pts
-			(xy 101.6 76.2) (xy 93.98 76.2)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "b60e2b86-4f86-479d-9b0b-ac6e21602f3f")
-	)
-	(wire
-		(pts
 			(xy 140.97 107.95) (xy 135.89 107.95)
 		)
 		(stroke
@@ -4684,16 +4685,6 @@
 			(type default)
 		)
 		(uuid "cca13a0c-5ced-4472-bbee-178fa2d1709f")
-	)
-	(wire
-		(pts
-			(xy 101.6 73.66) (xy 93.98 73.66)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e70fe8ac-226e-4cbd-aaa2-53583909fb02")
 	)
 	(wire
 		(pts
@@ -4807,16 +4798,16 @@
 	)
 	(global_label "CAN_RX"
 		(shape bidirectional)
-		(at 101.6 73.66 0)
+		(at 58.42 66.04 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left bottom)
+			(justify right bottom)
 		)
 		(uuid "000f947d-6814-485b-96a2-47fd98a1ccf5")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 101.6 73.66 180)
+			(at 58.42 66.04 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4829,16 +4820,16 @@
 	)
 	(global_label "CAN_TX"
 		(shape bidirectional)
-		(at 101.6 76.2 0)
+		(at 58.42 68.58 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left bottom)
+			(justify right bottom)
 		)
 		(uuid "83920461-1956-412d-b08d-6f42e3fa7a74")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 101.6 76.2 180)
+			(at 58.42 68.58 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
