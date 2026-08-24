@@ -4410,7 +4410,7 @@
 		)
 		(uuid "4ff0e37f-6c30-47cc-b97e-70960624ebf2")
 	)
-	(text "USER BUTTON — 10 ms HARDWARE DEBOUNCE\nR31/C14 form the active-low RC filter on PA6."
+	(text "USER BUTTON — 10 ms HARDWARE DEBOUNCE\nR31/C14 form the active-low RC filter on PA7."
 		(exclude_from_sim no)
 		(at 20.32 88.9 0)
 		(effects
@@ -4468,7 +4468,7 @@
 		)
 		(uuid "baca5dc2-7517-4144-a550-0d18a2d2c9d9")
 	)
-	(text "PD_IRQ (PA5/EXTI5), active low.\nR30 provides the 3.3 V pull-up."
+	(text "PD_IRQ (PC14/EXTI14), active low.\nR30 provides the 3.3 V pull-up."
 		(exclude_from_sim no)
 		(at 115.57 59.182 0)
 		(effects
@@ -4489,6 +4489,17 @@
 			(justify left bottom)
 		)
 		(uuid "4cece8c8-8176-4a50-a4f4-c661859e9539")
+	)
+	(text "RESET / ROM BOOT STATES\nAfter reset, GPIOs begin as high-impedance analog inputs; the board pull resistors establish the initial levels.\nDefaults: PC14/p1 PD_IRQ high (R30 10k); PC15/p2 PD_ENABLE low/off (R10 100k); PA7/p13 USER_BUTTON_N high (R31 100k);\nPA5/p11 PD_PGOOD high (R11 10k); PA4/p10 INA_ALERT high (R19 10k); PB8/p28 BUCK_PGOOD high (R16 10k).\nIn system ROM, PB0/p14 is FDCAN RX (pull-up) and PB1/p15 is FDCAN TX (push-pull, pull-up).\nPA7/p13 (MOSI), PA5/p11 (SCK), and PA4/p10 (NSS) become internally pulled-down SPI inputs. The 10k external pulls keep PA4/PA5 biased high;\nPA7's weaker 100k pull-up may read low. PA6/p12 becomes SPI MISO push-pull and may rise to 3.3 V, so it is intentionally unconnected.\nPC14/p1, PC15/p2, and PB8/p28 are not claimed by the ROM bootloader, so their board-defined defaults remain."
+		(exclude_from_sim no)
+		(at 20.32 102.87 0)
+		(effects
+			(font
+				(size 0.9 0.9)
+			)
+			(justify left bottom)
+		)
+		(uuid "e4166192-0048-48a1-a183-01d45bf761b7")
 	)
 	(text "RGB STATUS LED"
 		(exclude_from_sim no)
@@ -4519,7 +4530,11 @@
 		(uuid "0aee7c0f-c0d8-45b1-94d7-b28dfb367de3")
 	)
 	(no_connect
-		(at 93.98 60.96)
+		(at 93.98 55.88)
+		(uuid "e1d3e71a-19d5-4dc4-99aa-a7b92ef40435")
+	)
+	(no_connect
+		(at 93.98 66.04)
 		(uuid "261cf5a4-78a1-430d-80bd-e1d4853695d2")
 	)
 	(no_connect
@@ -4547,7 +4562,7 @@
 		(uuid "8663efa9-3fa5-4c2a-b1b7-4852669523b8")
 	)
 	(no_connect
-		(at 58.42 83.82)
+		(at 93.98 58.42)
 		(uuid "92fb7503-d856-4de2-b779-ed5cd981049e")
 	)
 	(no_connect
@@ -4557,10 +4572,6 @@
 	(no_connect
 		(at 93.98 73.66)
 		(uuid "c91b58a0-e1ee-4125-a72d-7aa0597a19b0")
-	)
-	(no_connect
-		(at 58.42 60.96)
-		(uuid "e77f8621-13ec-48b1-b366-4d146edcfade")
 	)
 	(no_connect
 		(at 93.98 83.82)
@@ -4678,16 +4689,6 @@
 	)
 	(wire
 		(pts
-			(xy 93.98 63.5) (xy 113.03 63.5)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "cca13a0c-5ced-4472-bbee-178fa2d1709f")
-	)
-	(wire
-		(pts
 			(xy 359.41 109.22) (xy 359.41 105.41)
 		)
 		(stroke
@@ -4757,7 +4758,7 @@
 		(uuid "a6b85d91-0e6a-4d0e-9c5a-d55dc8a2b2a3")
 	)
 	(label "USER_BUTTON_N"
-		(at 93.98 66.04 0)
+		(at 93.98 68.58 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -4765,6 +4766,16 @@
 			(justify left bottom)
 		)
 		(uuid "cabce793-b614-4a61-87b2-e78c9cf23946")
+	)
+	(label "PD_IRQ"
+		(at 113.03 63.5 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "04f71dc7-5952-44ef-b7b9-692e608549a5")
 	)
 	(label "USER_BUTTON_N"
 		(at 135.89 107.95 180)
@@ -4842,7 +4853,7 @@
 	)
 	(hierarchical_label "PD_PGOOD"
 		(shape bidirectional)
-		(at 93.98 58.42 0)
+		(at 93.98 63.5 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -4897,29 +4908,29 @@
 	)
 	(hierarchical_label "PD_IRQ"
 		(shape input)
-		(at 113.03 63.5 0)
+		(at 58.42 58.42 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left bottom)
+			(justify right bottom)
 		)
 		(uuid "a4a0119b-a82e-4e58-b9f3-dcb82a729501")
 	)
 	(hierarchical_label "BUCK_PGOOD"
 		(shape bidirectional)
-		(at 93.98 68.58 0)
+		(at 58.42 83.82 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left bottom)
+			(justify right bottom)
 		)
 		(uuid "bdc52b2e-ddfc-4e91-99d6-d773e509e530")
 	)
 	(hierarchical_label "INA_ALERT"
 		(shape bidirectional)
-		(at 93.98 55.88 0)
+		(at 93.98 60.96 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -4930,7 +4941,7 @@
 	)
 	(hierarchical_label "PD_ENABLE"
 		(shape bidirectional)
-		(at 58.42 58.42 180)
+		(at 58.42 60.96 180)
 		(effects
 			(font
 				(size 1.27 1.27)
