@@ -2660,24 +2660,6 @@
 			)
 			(symbol "PESD_Dual_SOT23_1_1"
 				(pin passive line
-					(at -7.62 2.54 0)
-					(length 2.54)
-					(name "IO2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
 					(at -7.62 -2.54 0)
 					(length 2.54)
 					(name "IO1"
@@ -2688,6 +2670,24 @@
 						)
 					)
 					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -7.62 2.54 0)
+					(length 2.54)
+					(name "IO2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -5132,7 +5132,7 @@
 	)
 	(wire
 		(pts
-			(xy 31.75 265.43) (xy 31.75 257.81)
+			(xy 29.21 265.43) (xy 29.21 257.81)
 		)
 		(stroke
 			(width 0)
@@ -5159,16 +5159,6 @@
 			(type default)
 		)
 		(uuid "75fc929a-5e92-46f8-8952-f4b9b903b0c6")
-	)
-	(wire
-		(pts
-			(xy 39.37 252.73) (xy 49.53 252.73)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "76052041-2198-47b8-99fc-ff7679948b53")
 	)
 	(wire
 		(pts
@@ -5199,6 +5189,16 @@
 			(type default)
 		)
 		(uuid "7b7b35a4-0ead-4fac-af5d-78dc451b8bd0")
+	)
+	(wire
+		(pts
+			(xy 36.83 247.65) (xy 49.53 247.65)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8220fcfe-56d6-4e5f-81e4-8e73195235f5")
 	)
 	(wire
 		(pts
@@ -5352,6 +5352,16 @@
 	)
 	(wire
 		(pts
+			(xy 36.83 252.73) (xy 49.53 252.73)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bf1da50b-cbd8-4024-afa3-6a7f593531f2")
+	)
+	(wire
+		(pts
 			(xy 248.92 121.92) (xy 250.19 121.92)
 		)
 		(stroke
@@ -5369,16 +5379,6 @@
 			(type default)
 		)
 		(uuid "c9c70612-6065-4eb4-b0d8-3dbeacab760d")
-	)
-	(wire
-		(pts
-			(xy 39.37 247.65) (xy 49.53 247.65)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ca558144-b82a-42bc-ad30-7ecd7f529f6f")
 	)
 	(wire
 		(pts
@@ -5707,7 +5707,7 @@
 	)
 	(hierarchical_label "CAN_BUS_P"
 		(shape bidirectional)
-		(at 39.37 252.73 0)
+		(at 36.83 252.73 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5784,7 +5784,7 @@
 	)
 	(hierarchical_label "CAN_BUS_N"
 		(shape bidirectional)
-		(at 39.37 247.65 0)
+		(at 36.83 247.65 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -7082,85 +7082,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:GND")
-		(at 99.06 252.73 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "c7547038-2f98-470f-950f-10acd093e5da")
-		(property "Reference" "#PWR0416"
-			(at 99.06 259.08 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 99.06 257.81 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 99.06 252.73 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 99.06 252.73 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 99.06 252.73 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "fc966ab4-220c-41f3-bad9-6c78ee51ec2c")
-		)
-		(instances
-			(project "carrier"
-				(path "/ee42a069-09cc-4091-bee3-2dd6ab96c98c/bfe0cac3-96d7-4839-869d-6366daca24b5"
-					(reference "#PWR0416")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "backplane-backpack:TCAN3413DR")
 		(at 88.9 250.19 0)
 		(mirror y)
@@ -7819,7 +7740,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 31.75 265.43 0)
+		(at 29.21 265.43 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -7830,7 +7751,7 @@
 		(fields_autoplaced yes)
 		(uuid "42e69e98-4c7a-4356-94a0-84855c928d75")
 		(property "Reference" "#PWR0411"
-			(at 31.75 271.78 0)
+			(at 29.21 271.78 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7841,7 +7762,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 31.75 270.51 0)
+			(at 29.21 270.51 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7851,7 +7772,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 31.75 265.43 0)
+			(at 29.21 265.43 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7862,7 +7783,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 31.75 265.43 0)
+			(at 29.21 265.43 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7873,7 +7794,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 31.75 265.43 0)
+			(at 29.21 265.43 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10682,7 +10603,7 @@
 	)
 	(symbol
 		(lib_id "backplane-backpack:PESD_Dual_SOT23")
-		(at 31.75 250.19 0)
+		(at 29.21 250.19 0)
 		(mirror y)
 		(unit 1)
 		(body_style 1)
@@ -10693,7 +10614,7 @@
 		(dnp no)
 		(uuid "c11bea6a-3a54-46be-bcfe-d15abeea656d")
 		(property "Reference" "D2"
-			(at 32.004 243.078 0)
+			(at 29.464 243.078 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10703,7 +10624,7 @@
 			)
 		)
 		(property "Value" "PESD2CANFD27V-TR"
-			(at 32.512 239.776 0)
+			(at 29.972 239.776 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10713,7 +10634,7 @@
 			)
 		)
 		(property "Footprint" "Package_TO_SOT_SMD:SOT-23"
-			(at 31.75 245.11 0)
+			(at 29.21 245.11 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10724,7 +10645,7 @@
 			)
 		)
 		(property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/PESD2CANFD27V-T.pdf"
-			(at 31.75 242.57 0)
+			(at 29.21 242.57 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10735,7 +10656,7 @@
 			)
 		)
 		(property "Description" "Dual-line shunt TVS/ESD protector, signal pins 1/2 and common ground pin 3"
-			(at 31.75 240.03 0)
+			(at 29.21 240.03 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10746,7 +10667,7 @@
 			)
 		)
 		(property "MPN" "PESD2CANFD27V-TR"
-			(at 31.75 250.19 0)
+			(at 29.21 250.19 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10757,7 +10678,7 @@
 			)
 		)
 		(property "LCSC" "C552488"
-			(at 31.75 250.19 0)
+			(at 29.21 250.19 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10768,7 +10689,7 @@
 			)
 		)
 		(property "Package" "SOT-23"
-			(at 31.75 250.19 0)
+			(at 29.21 250.19 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10779,7 +10700,7 @@
 			)
 		)
 		(property "Population" "POP"
-			(at 31.75 250.19 0)
+			(at 29.21 250.19 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10790,7 +10711,7 @@
 			)
 		)
 		(property "Manufacturer" "Nexperia"
-			(at 31.75 250.19 0)
+			(at 29.21 250.19 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10923,6 +10844,85 @@
 			(project "carrier"
 				(path "/ee42a069-09cc-4091-bee3-2dd6ab96c98c/bfe0cac3-96d7-4839-869d-6366daca24b5"
 					(reference "Q2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 99.06 252.73 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "c7547038-2f98-470f-950f-10acd093e5da")
+		(property "Reference" "#PWR0416"
+			(at 99.06 259.08 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 99.06 257.81 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 99.06 252.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 99.06 252.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 99.06 252.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fc966ab4-220c-41f3-bad9-6c78ee51ec2c")
+		)
+		(instances
+			(project "carrier"
+				(path "/ee42a069-09cc-4091-bee3-2dd6ab96c98c/bfe0cac3-96d7-4839-869d-6366daca24b5"
+					(reference "#PWR0416")
 					(unit 1)
 				)
 			)
