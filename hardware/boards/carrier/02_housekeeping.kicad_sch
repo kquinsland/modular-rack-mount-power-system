@@ -4490,7 +4490,7 @@
 		)
 		(uuid "4cece8c8-8176-4a50-a4f4-c661859e9539")
 	)
-	(text "RESET / ROM BOOT STATES\nAfter reset, GPIOs begin as high-impedance analog inputs; the board pull resistors establish the initial levels.\nDefaults: PC14/p1 PD_IRQ high (R30 10k); PC15/p2 PD_ENABLE low/off (R10 100k); PA7/p13 USER_BUTTON_N high (R31 100k);\nPA5/p11 PD_PGOOD high (R11 10k); PA4/p10 INA_ALERT high (R19 10k); PB8/p28 BUCK_PGOOD high (R16 10k).\nIn system ROM, PB0/p14 is FDCAN RX (pull-up) and PB1/p15 is FDCAN TX (push-pull, pull-up).\nPA7/p13 (MOSI), PA5/p11 (SCK), and PA4/p10 (NSS) become internally pulled-down SPI inputs. The 10k external pulls keep PA4/PA5 biased high;\nPA7's weaker 100k pull-up may read low. PA6/p12 becomes SPI MISO push-pull and may rise to 3.3 V, so it is intentionally unconnected.\nPC14/p1, PC15/p2, and PB8/p28 are not claimed by the ROM bootloader, so their board-defined defaults remain."
+	(text "RESET / ROM BOOT STATES\nAfter reset, GPIOs begin as high-impedance analog inputs; the board pull resistors establish the initial levels.\nDefaults: PA1/p7 PD_IRQ high (R30 10k); PA0/p6 PD_ENABLE low/off (R10 100k); PA7/p13 USER_BUTTON_N high (R31 100k);\nPA5/p11 PD_PGOOD high (R11 10k); PA4/p10 INA_ALERT high (R19 10k); PB8/p28 BUCK_PGOOD high (R16 10k).\nIn system ROM, PB0/p14 is FDCAN RX (pull-up) and PB1/p15 is FDCAN TX (push-pull, pull-up).\nPA7/p13 (MOSI), PA5/p11 (SCK), and PA4/p10 (NSS) become internally pulled-down SPI inputs. The 10k external pulls keep PA4/PA5 biased high;\nPA7's weaker 100k pull-up may read low. PA6/p12 becomes SPI MISO push-pull and may rise to 3.3 V, so it is intentionally unconnected.\nPA0/p6, PA1/p7, and PB8/p28 are not claimed by the ROM bootloader, so their board-defined defaults remain."
 		(exclude_from_sim no)
 		(at 20.32 102.87 0)
 		(effects
@@ -4526,7 +4526,7 @@
 		(uuid "c76a7637-f49c-4e37-af5d-b78aca4d08a0")
 	)
 	(no_connect
-		(at 93.98 53.34)
+		(at 58.42 58.42)
 		(uuid "0aee7c0f-c0d8-45b1-94d7-b28dfb367de3")
 	)
 	(no_connect
@@ -4546,7 +4546,7 @@
 		(uuid "4f3d4163-ea6a-4819-9fe3-ad52345fc71f")
 	)
 	(no_connect
-		(at 93.98 50.8)
+		(at 58.42 60.96)
 		(uuid "53a70dc9-39fe-4b26-a859-2d86a653fe33")
 	)
 	(no_connect
@@ -4908,12 +4908,12 @@
 	)
 	(hierarchical_label "PD_IRQ"
 		(shape input)
-		(at 58.42 58.42 180)
+		(at 93.98 53.34 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify right bottom)
+			(justify left bottom)
 		)
 		(uuid "a4a0119b-a82e-4e58-b9f3-dcb82a729501")
 	)
@@ -4941,12 +4941,12 @@
 	)
 	(hierarchical_label "PD_ENABLE"
 		(shape bidirectional)
-		(at 58.42 60.96 180)
+		(at 93.98 50.8 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify right bottom)
+			(justify left bottom)
 		)
 		(uuid "f2a32ea7-a30e-4cf5-80b7-bc5e21459c15")
 	)
