@@ -13,6 +13,17 @@
     (condition "(A.Reference == 'MOD1' && B.hasComponentClass('Under_PD_Module')) || (B.Reference == 'MOD1' && A.hasComponentClass('Under_PD_Module'))")
     (constraint courtyard_clearance (min -1mm)))
 
+# J1, D2, and H9 are intentionally placed at the board interface. Keep these
+# exceptions reference-specific so other connector, TVS, and tooling-hole
+# courtyard conflicts remain visible.
+(rule "Allow intentional J1 D2 courtyard overlap"
+    (condition "(A.Reference == 'J1' && B.Reference == 'D2') || (A.Reference == 'D2' && B.Reference == 'J1')")
+    (constraint courtyard_clearance (min -1mm)))
+
+(rule "Allow intentional J1 H9 courtyard overlap"
+    (condition "(A.Reference == 'J1' && B.Reference == 'H9') || (A.Reference == 'H9' && B.Reference == 'J1')")
+    (constraint courtyard_clearance (min -1mm)))
+
 # JLCPCB supports through vias for this process, not blind, buried, or microvias.
 (rule "JLCPCB through vias only"
     (condition "A.Type == 'Via' && A.Via_Type != 'Through'")
