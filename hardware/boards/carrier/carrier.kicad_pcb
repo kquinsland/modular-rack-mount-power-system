@@ -3355,7 +3355,7 @@
 		(descr "SOT, 3 Pin (JEDEC TO-236 Var AB https://www.jedec.org/document_search?search_api_views_fulltext=TO-236)")
 		(tags "SOT TO_SOT_SMD")
 		(property "Reference" "Q2"
-			(at -1.42 -2.97 0)
+			(at 2.24 -1.8875 90)
 			(layer "F.SilkS")
 			(uuid "765f4ee6-2e7b-4042-95fb-5b9803ce6b15")
 			(effects
@@ -5170,7 +5170,7 @@
 		(descr "Capacitor SMD 1206 (3216 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "capacitor")
 		(property "Reference" "C1"
-			(at -3.07 -1.32 90)
+			(at -3.355 0.14 90)
 			(layer "F.SilkS")
 			(uuid "1881078a-68c5-4a9c-98bf-673c7e5d7d2e")
 			(effects
@@ -6776,7 +6776,6 @@
 		)
 	)
 	(footprint "mini-rack-power:SW3538_140W_Module"
-		(locked yes)
 		(layer "F.Cu")
 		(uuid "6f50a8ac-1372-4a41-9dac-821ec09ec5a6")
 		(at 174 112.8 -90)
@@ -7451,7 +7450,7 @@
 			(uuid "d7bcb68b-4517-48e8-9825-8504314c47b3")
 		)
 		(fp_text user "GND"
-			(at -19.53 28 0)
+			(at -11.98 22.07 90)
 			(unlocked yes)
 			(layer "F.SilkS" knockout)
 			(uuid "8a4486be-228f-44e0-a0b2-ca661c3b0d8a")
@@ -7464,7 +7463,7 @@
 			)
 		)
 		(fp_text user "DC+"
-			(at 20.94 26.49 0)
+			(at 16.57 21.78 90)
 			(unlocked yes)
 			(layer "F.SilkS" knockout)
 			(uuid "a601efd6-af79-4f3a-a170-d90b25c33ec5")
@@ -8834,7 +8833,7 @@
 		(descr "SOT, 3 Pin (JEDEC TO-236 Var AB https://www.jedec.org/document_search?search_api_views_fulltext=TO-236)")
 		(tags "SOT TO_SOT_SMD")
 		(property "Reference" "D2"
-			(at -2.97 -1.47 0)
+			(at 0.6775 -2.51 180)
 			(layer "F.SilkS")
 			(uuid "4a538437-d669-4b61-b7ca-3d32caf5f6a1")
 			(effects
@@ -9388,7 +9387,7 @@
 		(descr "Resistor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "resistor")
 		(property "Reference" "R6"
-			(at -2.505 0.01 0)
+			(at -2.535 0.1 0)
 			(layer "F.SilkS")
 			(uuid "896e0d88-04f2-40c0-b88a-863c19e0e764")
 			(effects
@@ -10922,7 +10921,7 @@
 		(descr "Diode SMC (DO-214AB)")
 		(tags "Diode SMC (DO-214AB)")
 		(property "Reference" "D1"
-			(at 4.27 -2.4 0)
+			(at 3.71 -2.34 90)
 			(layer "F.SilkS")
 			(uuid "6aa5c318-7853-47f5-a2c5-bdba95acf602")
 			(effects
@@ -22650,6 +22649,41 @@
 		)
 	)
 	(zone
+		(net "/CAN_BUS_N")
+		(layer "F.Cu")
+		(hatch none 0.1)
+		(priority 30001)
+		(attr
+			(teardrop
+				(type padvia)
+			)
+		)
+		(connect_pads yes
+			(clearance 0)
+		)
+		(min_thickness 0.0254)
+		(fill yes
+			(island_removal_mode 1)
+		)
+		(polygon
+			(pts
+				(xy 110.393014 119.25) (xy 110.393014 119.05) (xy 110.3525 119.05) (xy 110.423211 119.079289) (xy 110.018052 117.817772)
+				(xy 109.249069 118.046569) (xy 109.020272 118.815552) (xy 110.281789 119.220711) (xy 110.3525 119.25)
+			)
+		)
+		(filled_polygon
+			(layer "F.Cu")
+			(pts
+				(xy 110.015983 117.821962) (xy 110.021553 117.828673) (xy 110.415484 119.055232) (xy 110.414751 119.064157)
+				(xy 110.407922 119.06995) (xy 110.399866 119.069619) (xy 110.393014 119.06678) (xy 110.393014 119.2383)
+				(xy 110.389587 119.246573) (xy 110.381314 119.25) (xy 110.354826 119.25) (xy 110.350349 119.249109)
+				(xy 110.281807 119.220718) (xy 110.281797 119.220714) (xy 110.281793 119.220712) (xy 110.281789 119.220711)
+				(xy 109.031173 118.819053) (xy 109.024344 118.81326) (xy 109.023537 118.804577) (xy 109.247263 118.052637)
+				(xy 109.252906 118.045687) (xy 109.25513 118.044765) (xy 110.007077 117.821037)
+			)
+		)
+	)
+	(zone
 		(net "GND")
 		(layer "F.Cu")
 		(uuid "2c8de6c5-3e5f-4c72-91dc-55caed80261b")
@@ -24749,41 +24783,6 @@
 		)
 	)
 	(zone
-		(net "/CAN_BUS_N")
-		(layer "F.Cu")
-		(hatch none 0.1)
-		(priority 30001)
-		(attr
-			(teardrop
-				(type padvia)
-			)
-		)
-		(connect_pads yes
-			(clearance 0)
-		)
-		(min_thickness 0.0254)
-		(fill yes
-			(island_removal_mode 1)
-		)
-		(polygon
-			(pts
-				(xy 110.393014 119.25) (xy 110.393014 119.05) (xy 110.3525 119.05) (xy 110.423211 119.079289) (xy 110.018052 117.817772)
-				(xy 109.249069 118.046569) (xy 109.020272 118.815552) (xy 110.281789 119.220711) (xy 110.3525 119.25)
-			)
-		)
-		(filled_polygon
-			(layer "F.Cu")
-			(pts
-				(xy 110.015983 117.821962) (xy 110.021553 117.828673) (xy 110.415484 119.055232) (xy 110.414751 119.064157)
-				(xy 110.407922 119.06995) (xy 110.399866 119.069619) (xy 110.393014 119.06678) (xy 110.393014 119.2383)
-				(xy 110.389587 119.246573) (xy 110.381314 119.25) (xy 110.354826 119.25) (xy 110.350349 119.249109)
-				(xy 110.281807 119.220718) (xy 110.281797 119.220714) (xy 110.281793 119.220712) (xy 110.281789 119.220711)
-				(xy 109.031173 118.819053) (xy 109.024344 118.81326) (xy 109.023537 118.804577) (xy 109.247263 118.052637)
-				(xy 109.252906 118.045687) (xy 109.25513 118.044765) (xy 110.007077 117.821037)
-			)
-		)
-	)
-	(zone
 		(net "/Protected Power and Controls/HS_SENSE")
 		(layer "F.Cu")
 		(uuid "ce9e0d3b-4a10-4acd-b26a-73cfbcdd28a8")
@@ -24883,6 +24882,39 @@
 				(xy 116.595417 106.695667) (xy 116.654842 106.6805) (xy 118.30956 106.6805) (xy 118.309562 106.6805)
 				(xy 118.385989 106.660021) (xy 118.454511 106.62046) (xy 118.51046 106.564511) (xy 118.67605 106.39892)
 				(xy 118.704297 106.377775) (xy 118.727389 106.365167) (xy 118.786814 106.35) (xy 127.75817 106.35)
+			)
+		)
+	)
+	(zone
+		(net "/CAN_BUS_N")
+		(layer "B.Cu")
+		(hatch none 0.1)
+		(priority 30001)
+		(attr
+			(teardrop
+				(type padvia)
+			)
+		)
+		(connect_pads yes
+			(clearance 0)
+		)
+		(min_thickness 0.0254)
+		(fill yes
+			(island_removal_mode 1)
+		)
+		(polygon
+			(pts
+				(xy 108.194564 116.850642) (xy 108.053142 116.992064) (xy 108.486948 118.282228) (xy 109.255931 118.053431)
+				(xy 109.484728 117.284448)
+			)
+		)
+		(filled_polygon
+			(layer "B.Cu")
+			(pts
+				(xy 108.201437 116.852953) (xy 109.474021 117.280848) (xy 109.48077 117.286733) (xy 109.481506 117.295275)
+				(xy 109.257737 118.04736) (xy 109.252093 118.054312) (xy 109.24986 118.055237) (xy 108.497775 118.279006)
+				(xy 108.488868 118.278081) (xy 108.483348 118.271521) (xy 108.055453 116.998937) (xy 108.056065 116.990003)
+				(xy 108.058267 116.986938) (xy 108.189436 116.855769) (xy 108.197708 116.852343)
 			)
 		)
 	)
@@ -25794,72 +25826,6 @@
 		)
 	)
 	(zone
-		(net "/CAN_BUS_P")
-		(layer "B.Cu")
-		(hatch none 0.1)
-		(priority 30000)
-		(attr
-			(teardrop
-				(type padvia)
-			)
-		)
-		(connect_pads yes
-			(clearance 0)
-		)
-		(min_thickness 0.0254)
-		(fill yes
-			(island_removal_mode 1)
-		)
-		(polygon
-			(pts
-				(xy 110.053142 119.107936) (xy 110.194564 119.249358) (xy 111.484728 118.815552) (xy 111.255931 118.046569)
-				(xy 110.486948 117.817772)
-			)
-		)
-		(filled_polygon
-			(layer "B.Cu")
-			(pts
-				(xy 111.249861 118.044763) (xy 111.256812 118.050406) (xy 111.257737 118.052639) (xy 111.481506 118.804724)
-				(xy 111.480581 118.813631) (xy 111.474021 118.819151) (xy 110.201437 119.247046) (xy 110.192503 119.246434)
-				(xy 110.189435 119.244229) (xy 110.05827 119.113064) (xy 110.054843 119.104791) (xy 110.055453 119.101062)
-				(xy 110.410625 118.044762) (xy 110.483348 117.828477) (xy 110.489233 117.821729) (xy 110.497774 117.820993)
-			)
-		)
-	)
-	(zone
-		(net "/CAN_BUS_N")
-		(layer "B.Cu")
-		(hatch none 0.1)
-		(priority 30001)
-		(attr
-			(teardrop
-				(type padvia)
-			)
-		)
-		(connect_pads yes
-			(clearance 0)
-		)
-		(min_thickness 0.0254)
-		(fill yes
-			(island_removal_mode 1)
-		)
-		(polygon
-			(pts
-				(xy 108.194564 116.850642) (xy 108.053142 116.992064) (xy 108.486948 118.282228) (xy 109.255931 118.053431)
-				(xy 109.484728 117.284448)
-			)
-		)
-		(filled_polygon
-			(layer "B.Cu")
-			(pts
-				(xy 108.201437 116.852953) (xy 109.474021 117.280848) (xy 109.48077 117.286733) (xy 109.481506 117.295275)
-				(xy 109.257737 118.04736) (xy 109.252093 118.054312) (xy 109.24986 118.055237) (xy 108.497775 118.279006)
-				(xy 108.488868 118.278081) (xy 108.483348 118.271521) (xy 108.055453 116.998937) (xy 108.056065 116.990003)
-				(xy 108.058267 116.986938) (xy 108.189436 116.855769) (xy 108.197708 116.852343)
-			)
-		)
-	)
-	(zone
 		(net "/Protected Power and Controls/HS_SENSE")
 		(layer "B.Cu")
 		(uuid "e1cf5c77-9de1-4594-b79d-b8f0e4d06dfc")
@@ -25891,6 +25857,39 @@
 				(xy 132.141206 129.277011) (xy 132.13 129.2255) (xy 132.13 124.54) (xy 127.664 124.54) (xy 127.596961 124.520315)
 				(xy 127.551206 124.467511) (xy 127.54 124.416) (xy 127.54 112.274) (xy 127.559685 112.206961) (xy 127.612489 112.161206)
 				(xy 127.664 112.15) (xy 141.026 112.15)
+			)
+		)
+	)
+	(zone
+		(net "/CAN_BUS_P")
+		(layer "B.Cu")
+		(hatch none 0.1)
+		(priority 30000)
+		(attr
+			(teardrop
+				(type padvia)
+			)
+		)
+		(connect_pads yes
+			(clearance 0)
+		)
+		(min_thickness 0.0254)
+		(fill yes
+			(island_removal_mode 1)
+		)
+		(polygon
+			(pts
+				(xy 110.053142 119.107936) (xy 110.194564 119.249358) (xy 111.484728 118.815552) (xy 111.255931 118.046569)
+				(xy 110.486948 117.817772)
+			)
+		)
+		(filled_polygon
+			(layer "B.Cu")
+			(pts
+				(xy 111.249861 118.044763) (xy 111.256812 118.050406) (xy 111.257737 118.052639) (xy 111.481506 118.804724)
+				(xy 111.480581 118.813631) (xy 111.474021 118.819151) (xy 110.201437 119.247046) (xy 110.192503 119.246434)
+				(xy 110.189435 119.244229) (xy 110.05827 119.113064) (xy 110.054843 119.104791) (xy 110.055453 119.101062)
+				(xy 110.410625 118.044762) (xy 110.483348 117.828477) (xy 110.489233 117.821729) (xy 110.497774 117.820993)
 			)
 		)
 	)
