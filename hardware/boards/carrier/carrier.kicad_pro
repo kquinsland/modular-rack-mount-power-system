@@ -43,7 +43,7 @@
           "height": 1.5,
           "width": 1.5
         },
-        "silk_line_width": 0.16,
+        "silk_line_width": 0.15,
         "silk_text_italic": false,
         "silk_text_size_h": 1.0,
         "silk_text_size_v": 1.0,
@@ -248,7 +248,17 @@
   },
   "boards": [],
   "component_class_settings": {
-    "assignments": [],
+    "assignments": [
+      {
+        "component_class": "Under_PD_Module",
+        "conditions": {
+          "REFERENCE": {
+            "primary": "C5,C6,C7,C8,C11,C12,C13,C14,C17,H7,J2,LED1,R11,R12,R13,R14,R15,R16,R24,R25,R28,R30,R31,R32,SW1,U1,U2"
+          }
+        },
+        "conditions_operator": "ALL"
+      }
+    ],
     "meta": {
       "version": 0
     },
