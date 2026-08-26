@@ -1423,13 +1423,13 @@
 			)
 		)
 	)
-	(footprint "Package_SO:MSOP-10_3x3mm_P0.5mm"
+	(footprint "mini-rack-power:MSOP-10_3x3mm_P0.5mm_0.20mm_Clearance"
 		(locked yes)
 		(layer "F.Cu")
 		(uuid "2d0ed29b-f7bb-44e6-b33f-213ff25733b5")
 		(at 125.5625 122.58 -90)
-		(descr "MSOP, 10 Pin (JEDEC MO-187 variation BA, 0.85mm body thickness, https://www.jedec.org/system/files/docs/mo-187F.pdf)")
-		(tags "MSOP SO TSSOP-10_3x3mm_P0.5mm")
+		(descr "Project-local MSOP-10, 3 x 3 mm body, 0.5 mm pitch; 0.30 mm pad width provides 0.20 mm copper clearance; derived from KiCad MSOP-10_3x3mm_P0.5mm")
+		(tags "MSOP SO TSSOP-10 0.20mm clearance LMX5069MS")
 		(property "Reference" "U3"
 			(at 0.24 -2.3 90)
 			(layer "F.SilkS")
@@ -1755,7 +1755,7 @@
 		)
 		(pad "1" smd roundrect
 			(at -2.1 -1 270)
-			(size 1.5 0.35)
+			(size 1.5 0.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
 			(net "/Protected Power and Controls/HS_SENSE")
@@ -1765,7 +1765,7 @@
 		)
 		(pad "2" smd roundrect
 			(at -2.1 -0.5 270)
-			(size 1.5 0.35)
+			(size 1.5 0.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
 			(net "VCC")
@@ -1775,7 +1775,7 @@
 		)
 		(pad "3" smd roundrect
 			(at -2.1 0 270)
-			(size 1.5 0.35)
+			(size 1.5 0.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
 			(net "/Protected Power and Controls/HS_UVLO")
@@ -1785,7 +1785,7 @@
 		)
 		(pad "4" smd roundrect
 			(at -2.1 0.5 270)
-			(size 1.5 0.35)
+			(size 1.5 0.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
 			(net "/Protected Power and Controls/HS_OVLO")
@@ -1795,7 +1795,7 @@
 		)
 		(pad "5" smd roundrect
 			(at -2.1 1 270)
-			(size 1.5 0.35)
+			(size 1.5 0.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
 			(net "GND")
@@ -1805,7 +1805,7 @@
 		)
 		(pad "6" smd roundrect
 			(at 2.1 1 270)
-			(size 1.5 0.35)
+			(size 1.5 0.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
 			(net "Net-(U3-TIMER)")
@@ -1815,7 +1815,7 @@
 		)
 		(pad "7" smd roundrect
 			(at 2.1 0.5 270)
-			(size 1.5 0.35)
+			(size 1.5 0.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
 			(net "Net-(U3-PWR)")
@@ -1825,7 +1825,7 @@
 		)
 		(pad "8" smd roundrect
 			(at 2.1 0 270)
-			(size 1.5 0.35)
+			(size 1.5 0.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
 			(net "/PD_PGOOD")
@@ -1835,7 +1835,7 @@
 		)
 		(pad "9" smd roundrect
 			(at 2.1 -0.5 270)
-			(size 1.5 0.35)
+			(size 1.5 0.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
 			(net "Net-(U3-OUT)")
@@ -1845,7 +1845,7 @@
 		)
 		(pad "10" smd roundrect
 			(at 2.1 -1 270)
-			(size 1.5 0.35)
+			(size 1.5 0.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
 			(net "/Protected Power and Controls/Q1_GATE")
