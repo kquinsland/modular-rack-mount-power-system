@@ -4515,6 +4515,17 @@
 		)
 		(uuid "365943f5-90b5-4f64-84c4-da6710c6ab21")
 	)
+	(text "BUCK_PGOOD TESTPOINT PLACEMENT\nPlace TP27 close to U2/R16 PGOOD routing with a direct, short stub. Keep its pad and trace out of the SW/BST/ripple loop and away from L1 switch-node copper."
+		(exclude_from_sim no)
+		(at 111.76 127 0)
+		(effects
+			(font
+				(size 0.9 0.9)
+			)
+			(justify left bottom)
+		)
+		(uuid "485bdc7f-848a-4d42-bb0e-5a5b1920cd5b")
+	)
 	(text "For SMT/A services, need at least three mount/holding holes."
 		(exclude_from_sim no)
 		(at 50.546 249.936 0)
@@ -5013,6 +5024,16 @@
 			(justify right bottom)
 		)
 		(uuid "7f6502e7-bd34-4b40-9db3-7a73c04d96de")
+	)
+	(label "BUCK_PGOOD"
+		(at 135.89 160.02 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "a3a5ba4e-9a4c-4979-a153-2531b92a2ca4")
 	)
 	(label "BUCK_PGOOD"
 		(at 73.66 163.83 0)
@@ -7838,6 +7859,117 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 135.89 160.02 0)
+		(mirror y)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "b8cde0a0-7776-4839-ab55-91dc125d7339")
+		(property "Reference" "TP27"
+			(at 135.89 154.178 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "BUCK_PGOOD"
+			(at 135.89 143.51 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
+			(at 130.81 160.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 130.81 160.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 135.89 160.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "PCB test point"
+			(at 135.89 160.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Package" "1.5 mm SMD pad"
+			(at 135.89 160.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Population" "PCB"
+			(at 135.89 160.02 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "0bbf8a5f-c3f6-4643-afb4-03db13cd76b0")
+		)
+		(instances
+			(project "carrier"
+				(path "/ee42a069-09cc-4091-bee3-2dd6ab96c98c"
+					(reference "TP27")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:C")
 		(at 73.66 120.65 0)
 		(unit 1)
@@ -8875,139 +9007,6 @@
 			)
 		)
 	)
-	(text "BUCK_PGOOD TESTPOINT PLACEMENT\nPlace TP27 close to U2/R16 PGOOD routing with a direct, short stub. Keep its pad and trace out of the SW/BST/ripple loop and away from L1 switch-node copper."
-		(exclude_from_sim no)
-		(at 111.76 127 0)
-		(effects
-			(font
-				(size 0.9 0.9)
-			)
-			(justify left bottom)
-		)
-		(uuid "485bdc7f-848a-4d42-bb0e-5a5b1920cd5b")
-	)
-	(label "BUCK_PGOOD"
-		(at 135.89 160.02 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "a3a5ba4e-9a4c-4979-a153-2531b92a2ca4")
-	)
-	(symbol
-		(lib_id "Connector:TestPoint")
-		(at 135.89 160.02 0)
-		(mirror y)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "b8cde0a0-7776-4839-ab55-91dc125d7339")
-		(property "Reference" "TP27"
-			(at 135.89 154.178 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "BUCK_PGOOD"
-			(at 135.89 143.51 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
-			(at 130.81 160.02 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 130.81 160.02 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "test point"
-			(at 135.89 160.02 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "PCB test point"
-			(at 135.89 160.02 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Package" "1.5 mm SMD pad"
-			(at 135.89 160.02 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Population" "PCB"
-			(at 135.89 160.02 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "0bbf8a5f-c3f6-4643-afb4-03db13cd76b0")
-		)
-		(instances
-			(project "carrier"
-				(path "/ee42a069-09cc-4091-bee3-2dd6ab96c98c"
-					(reference "TP27")
-					(unit 1)
-				)
-			)
-		)
-	)
-
 	(sheet_instances
 		(path "/"
 			(page "1")
