@@ -5300,7 +5300,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp no)
+		(dnp yes)
 		(uuid "10000000-0000-4000-8000-000000000001")
 		(property "Reference" "J1"
 			(at 44.45 44.45 0)
@@ -5379,6 +5379,17 @@
 			)
 		)
 		(property "Manufacturer" "AMASS"
+			(at 44.45 49.53 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Population" "DNP"
 			(at 44.45 49.53 0)
 			(hide yes)
 			(show_name no)
@@ -7068,9 +7079,9 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "85f3e65f-c92a-4a75-acf6-da500beee3d8")
 		(property "Reference" "SJ1"
