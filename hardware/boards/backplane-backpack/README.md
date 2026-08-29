@@ -4,7 +4,7 @@ This board mates with the backplane—hence the "backpack" name. It shares the
 backplane's mechanical footprint and contains the control electronics that would
 otherwise displace high-current routing.
 
-Rev A is a CAN-FD-to-I2C/PD controller built around an STM32C092FCP6. It includes:
+Rev A is a CAN-FD-to-I2C/PD controller built around an STM32C092GCU7. It includes:
 
 - a TCAN3413 CAN-FD transceiver;
 - a TCA9548A mux with six populated downstream I2C connectors and two test-pad
