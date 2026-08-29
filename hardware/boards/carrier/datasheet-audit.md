@@ -6,15 +6,11 @@
 with `docs/data-sheets/`. `J1` and `MOD1` are intentionally user-installed and
 are listed separately from assembly-populated parts.
 
-## Release-critical exact-part gaps
+## Remaining release-critical exact-part gap
 
 | Ref | Populated part | Local status | Action |
 |---|---|---|---|
-| R1 | `HoLLR2512-3W-6mR-1%` | Missing. | Archive the exact shunt data for TCR, pulse rating, and Kelvin-layout assumptions. |
 | C8 | Samsung `CL21A226MAQNNNE` | Near-match only. The local PDF is `CL21A226MAYNNNE`. | Add the exact `...MAQ...` PDF or formally document suffix equivalence. |
-`IPB020N10N5LF.pdf` is now present
-`SMCJ48A.pdf` is now present
-
 
 ## Other carrier gaps or near-matches
 
@@ -32,10 +28,10 @@ are listed separately from assembly-populated parts.
 
 ## Adequate local coverage
 
+- D1: JUXING `SMCJ48A.pdf` is the manufacturer catalog covering the populated
+  `SMCJ48A`, LCSC `C5861043`.
 - D2: Nexperia `PESD2CANFD27V.pdf`; the populated `-TR` suffix appears to be
   packaging.
-- D1: JUXING `SMCJ48A.pdf` is the manufacturer catalog covering the populated
-  TVS family/value.
 - L1: Sunlord `SWPA8040S680MT.pdf`.
 - L3: TDK `ACT1210D.pdf`, covering the populated
   `ACT1210D-101-2P-TL00` family/value.
@@ -49,6 +45,9 @@ are listed separately from assembly-populated parts.
 - U4: TI `INA237.pdf` covers populated `INA237AIDGSR`.
 - U5: TI `TCAN3413.pdf`, covering TCAN3413/TCAN3414.
 - Q1: Infineon `IPB020N10N5LF.pdf` is the exact MOSFET/SOA datasheet.
+- R1: Milliohm `C2985709.pdf` covers the populated
+  `HoLLR2512-3W-6mR-1%`, including TCR, power derating, overload tests, and
+  the recommended Kelvin-sense land pattern.
 - J1: Amass `XT30PW(2+2)-M.G.B.pdf`.
 - SW1: ALPS Alpine `SKSCLCE010.pdf`.
 
@@ -66,8 +65,8 @@ Do not delete these merely because the carrier does not use them. Repository
 searches show that most serve another board or historical design:
 
 - `TI/LMR516xx.pdf` must remain for the backpack's populated
-  `LMR51610YDBVR` regulators. The new `TI/LM5163.pdf` replaces it only as the
-  carrier U2 reference; LM5163 is not a substitute for LMR51610.
+  `LMR51610YDBVR` regulators. `TI/LM5163.pdf` is the carrier U2 reference;
+  LM5163 is not a substitute for LMR51610.
 - `BOURNS/SRN6045TA.pdf`, `SAMSUNG/CL21A226MAYNNNE.pdf`,
   `IHHEC/C1206X225K101T.pdf`, and `WS/WS2812B-MINI-V6_V1.2_EN.pdf` are also
   used by backpack designs.
@@ -82,5 +81,5 @@ searches show that most serve another board or historical design:
   family-level connector documentation.
 
 The safest remaining cleanup is therefore to label board scope and
-exact-versus-family coverage and add the remaining carrier-critical exact PDFs,
-especially the R1 shunt and exact C8 suffix. Broad deletion is not recommended.
+exact-versus-family coverage and add the exact C8 PDF or document its suffix
+equivalence. Broad deletion is not recommended.
