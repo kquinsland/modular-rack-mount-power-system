@@ -15,9 +15,12 @@ Track the system and per-slot power assumptions here.
 
 ## Protection Checklist
 
-- Input fuse or breaker.
+- System-level upstream current monitoring, fuse, breaker, or equivalent fault
+  interrupter for the raw DC feed.
 - Per-slot fuse, eFuse, current limit, or zero-ohm bring-up option.
-- Reverse polarity protection, if input connector allows it.
+- Reverse-polarity prevention/protection. For the carrier, the keyed XT
+  connector is the intended normal-use prevention mechanism; add electrical
+  protection if any adapter, service lead, or alternate harness can defeat it.
 - TVS or surge strategy for the DC input.
 - I2C pull-up placement and voltage domain.
 
@@ -26,10 +29,17 @@ Track the system and per-slot power assumptions here.
 It turns out that the [SW3538 modules](https://github.com/happyme531/h1_SW35xx/issues/13#issuecomment-4361605621) use a non-standard configuration to reach their advertised "140W" spec; proprietary 20 V at 7 A mode.
 Standard USB PD 3.0 tops out at 20 V at 5 A (100 W) which is already _plenty_ for my intended loads (they top out at around 70W!).
 
-Firmware enforces 100 W as the maximum accepted/programmed port policy. Rev A has
-no MCU-controlled high-side switch, so this is a soft ceiling after SW3538
-initialization rather than an independent protection device. Provision the backpack,
-install modules, persist policy, and only then attach loads.
+Firmware enforces 100 W as the maximum accepted/programmed port policy. The
+carrier's MCU-controlled hot-swap can disconnect the PD branch, but it is not an
+independent 100 W limiter; the ceiling remains a policy setting after SW3538
+initialization. Provision the backpack, install modules, persist policy, and
+only then attach loads.
+
+The carrier hardware is also a prototype platform toward a later 240 W USB-C
+EPR goal of 48 V / 5 A. The first production population remains a 24 V-input,
+20 V / 5 A-output, 100 W system. Approximately 48–50 V nominal input is a
+future characterization case and is not a released rating until the carrier
+first-article TVS, OVLO, SOA, transient, and thermal tests pass.
 
 The Rev B prototype's PCA9554-controlled per-slot FETs provide input isolation,
 not overcurrent protection. Firmware persists an enable policy before turning on

@@ -4782,7 +4782,7 @@
 		)
 		(uuid "64b51bce-0487-4dc9-a5c9-dd6fe11faeee")
 	)
-	(text "CAN PLACEMENT: keep D2, L3, and U5 close to J1 (connector → D2 → L3 → U5).\nPlace C15/C16 directly at U5 VCC/VIO. Route CAN_BUS_P/N and CAN_PHY_P/N as differential pairs; P = CANH, N = CANL.\nKeep each pair short, tightly coupled, symmetric, and length-matched. Route CAN_TX/CAN_RX over continuous ground, away from switching nodes.\nJ1 is fixed: preserve physical N/P pair order through D2 and L3; L3 pads 1/4 = N and pads 2/3 = P."
+	(text "CAN PLACEMENT: keep D2, L3, and U5 close to J1 (connector → D2 → L3 → U5).\nD2 is at the closest location that clears J1 and preserves post-assembly soldering access; keep its remaining CAN stubs and ground connection short.\nPlace C15/C16 directly at U5 VCC/VIO. Route CAN_BUS_P/N and CAN_PHY_P/N as differential pairs; P = CANH, N = CANL.\nKeep each pair short, tightly coupled, symmetric, and length-matched. Route CAN_TX/CAN_RX over continuous ground, away from switching nodes.\nJ1 is fixed: preserve physical N/P pair order through D2 and L3; L3 pads 1/4 = N and pads 2/3 = P."
 		(exclude_from_sim no)
 		(at 23.876 221.742 0)
 		(effects

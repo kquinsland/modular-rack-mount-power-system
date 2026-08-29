@@ -1,10 +1,16 @@
 # USB-C PD Carrier PCB Hardware Handoff
 
-**Status:** High-level electrical design handoff for KiCad implementation
+**Status:** Carrier Rev A implementation notes; the checked-in KiCad schematic,
+PCB, and production BOM are authoritative where they differ from this historical
+handoff text.
 
 **Revision:** Rev A architectural handoff
 
-**Design intent:** Per-module USB-C PD carrier with protected 24–48 V input power switching, current/power telemetry, dual-I²C control, and local 3.3 V housekeeping supply. Rev A is product-limited to 100 W while using a 140 W-capable carrier architecture.
+**Design intent:** Per-module USB-C PD carrier with a 24 V initial input and
+48–50 V future prototype characterization, protected power switching,
+current/power telemetry, CAN-FD, local I²C control, and a local 3.3 V
+housekeeping supply. The first population is product-limited to 100 W while
+the component choices support investigation toward a future 240 W EPR system.
 
 ---
 
@@ -84,11 +90,13 @@ Keep these three ratings distinct:
 
 | Generation / constraint | Power target | Hardware interpretation |
 |---|---:|---|
-| Current product generation | **100 W maximum** | Enforced by the selected PD module/configuration and system policy; normal worst-case input current is below the 140 W sizing case. |
-| This carrier architecture | **140 W capable** | Size the carrier power path, current limit, connector contacts, copper, and thermal design for this case. |
-| Future hardware generation | **240 W capable** | Requires a new hardware review/revision; it is not a rating of this Rev-A carrier. |
+| First production population | **100 W maximum** | Nominal 24 V input; MOD1 supplies at most 20 V / 5 A under the selected configuration and system policy. |
+| Rev-A carrier sizing case | **140 W capable** | Size the carrier power path, current limit, connector contacts, copper, and thermal design for this 24 V high-current case. |
+| Prototype program target | **240 W USB-C EPR, 48 V / 5 A** | Component selection anticipates a later approximately 48–50 V input/module experiment, but first-article characterization and a fresh system/module review are required before assigning that rating. |
 
 The 140 W architecture case is the electrical sizing corner for this carrier.
+Rev A is also a prototype vehicle for learning toward the 240 W target; that
+goal does not change the first production run's 24 V / 100 W operating limit.
 
 At the low-voltage operating corner, assuming approximately 90% converter efficiency:
 
@@ -118,9 +126,22 @@ This substantially reduces aggregate bus inrush, but each carrier still retains 
 
 ### 3.3 48 V interpretation
 
-The design target is **up to 48 V continuous input**, not a telecom-style “48 V nominal” rail that normally operates in the high-50-V range.
+The first production run uses a **24 V nominal input**. The longer-term
+prototype goal is an approximately **48–50 V nominal input** supporting a
+future 48 V / 5 A USB-C EPR implementation. Sustained input above approximately
+50 V is an unsupported gross misconfiguration, not a required operating case;
+short transients above that level must still be contained within every
+component's limits.
 
-If the eventual source can exceed 48 V continuously, revisit:
+The populated Rev-A protection values put 50 V at the edge of the present
+design: D1 has a 48 V stand-off rating and the calculated low OVLO corner is
+approximately 49.8 V at 25 °C. Therefore 48–50 V is a controlled
+characterization range for the first boards, not yet a guaranteed continuous
+rating. Before treating 50 V as supported, measure D1 leakage/temperature and
+actual OVLO thresholds across boards and temperature, then revise the TVS or
+divider if necessary.
+
+If the source can exceed approximately 50 V continuously, revisit:
 
 - TVS selection
 - INA237 85 V bus/common-mode limit
@@ -133,9 +154,9 @@ If the eventual source can exceed 48 V continuously, revisit:
 # 4. Functional architecture
 
 ```text
-                                      24–48 VDC
+                         24 V initial / 48–50 V prototype
                                          │
-                                  J1 DC + I²C
+                                  J1 DC + CAN-FD
                                          │
                                ┌─────────┴─────────┐
                                │      DTVS1        │
@@ -191,7 +212,7 @@ The housekeeping branch connects to `VCC` **before** the PD current shunt. There
 
 | Ref | Qty | Manufacturer / Part | LCSC | Package | Function |
 |---|---:|---|---|---|---|
-| U1 | 1 | **ST STM32C092GCU7** | — | UFQFPN-28, 4 × 4 mm | MCU with FDCAN |
+| U1 | 1 | **ST STM32C092GCU6** | **C44847705** | UFQFPN-28, 4 × 4 mm | MCU with FDCAN |
 | U2 | 1 | **TI LM5163DDAR** | **C2873264** | SO PowerPAD-8 | 6–100 V synchronous buck |
 | U3 | 1 | **Wuxi Maxinmicro LMX5069MS** | **C47967145** | MSOP-10 | Hot-swap / inrush controller |
 | U4 | 1 | **TI INA237AIDGSR** | **C2864837** | VSSOP-10 | I²C voltage/current/power monitor |
@@ -200,9 +221,9 @@ The housekeeping branch connects to `VCC` **before** the PD current shunt. There
 | Q2 | 1 | **2N7002** | **C8545** | SOT-23 | Fail-safe UVLO clamp |
 | Q3 | 1 | **2N7002** | **C8545** | SOT-23 | MCU enable inversion / fail-safe control |
 | RSH1 | 1 | **Milliohm HoLLR2512-3W-6mR-1%** | **C2985709** | 2512 | 6 mΩ shared current shunt |
-| DTVS1 | 1 | **SMCJ48A** | **C5861043** | SMC | Input TVS |
+| DTVS1 | 1 | **JUXING SMCJ48A** | **C5861043** | SMC | Input TVS |
 | D2 | 1 | **Nexperia PESD2CANFD27V-TR** | — | SOT-23 | CAN-FD bus ESD protection |
-| L1 | 1 | **YJYCOIN YNR6045-680M** | **C341069** | ~6 × 6 mm | 68 µH buck inductor |
+| L1 | 1 | **Sunlord SWPA8040S680MT** | **C36418** | 8 × 8 mm | 68 µH buck inductor |
 | L3 | 1 | **TDK ACT1210D-101-2P-TL00** | **C3039743** | ACT1210 | CAN common-mode choke |
 | LED1 | 1 | **Worldsemi WS2812B-2020-V6** | **C52917434** | 2020 | RGB status LED |
 
@@ -260,7 +281,7 @@ Reasons:
 - appropriate margin for a future 48 V bus
 - synchronous architecture: no external freewheel diode
 - 500 mA output capability, far above expected housekeeping consumption
-- suitable for direct conversion from 24–48 V to 3.3 V
+- suitable for direct conversion from the intended 24–50 V prototype range to 3.3 V
 
 Expected housekeeping current is dominated by:
 
@@ -352,7 +373,7 @@ BUCK_SW ── RA 110k ── BUCK_RIPPLE
                            │
                            └── CB 220p ── BUCK_FB
 
-+3V3 ── 10k ── BUCK_PGOOD ── U1 PA4
++3V3 ── 10k ── BUCK_PGOOD ── U1 PA8
 ```
 
 ---
@@ -481,6 +502,14 @@ The 36 kΩ operating point is near the datasheet's recommended minimum 5 mV sens
 
 Q1 SOA shall be proven against **~66 W and the maximum TIMER interval**, not 41 W / 35 ms. If that hot-corner check fails, revise `RPWR`, Q1, the timer strategy, or the controller architecture; do not release on typical behavior.
 
+The preliminary Q1 result is favorable, not evidence of an expected failure.
+At 48 V, a 66 W power limit corresponds to approximately 1.38 A. Infineon's
+published 65 °C DC-SOA example for the same `IPB020N10N5LF` permits about
+4.5 A at 48 V, roughly 3.3 times this first-order current. The remaining signoff
+work is to prove the actual LMX5069 limit, Q1 starting/case temperature and
+thermal path, the complete VDS/ID trajectory, and repeated auto-retry behavior
+on this PCB.
+
 ## 7.5 Measured 300 µF module startup
 
 Measured PD input capacitance:
@@ -505,6 +534,12 @@ Using the approximately 41 W conservative minimum power-limit estimate and ~9.17
 
 This is a very manageable startup event.
 
+For scale, charging 300 µF to 48 V stores about 0.346 J. A persistent short at
+the inferred 66 W maximum limit for the 66.5 ms maximum TIMER interval can
+instead expose Q1 to as much as approximately 4.39 J per retry pulse. That is
+why a successful typical startup capture alone does not close the fault-SOA
+case.
+
 Sequential external startup further reduces stress on the shared upstream supply because only one module is expected to enter startup at a time.
 
 ## 7.6 TIMER
@@ -513,7 +548,7 @@ Use:
 
 ```text
 CTIMER = 680 nF, ±10%, X7R, >=16 V
-LCSC suggested part: C237234
+Current PCB/BOM part: 0603B684K160NT / C24797
 ```
 
 Approximate typical fault timeout:
@@ -706,7 +741,7 @@ This makes PD power control **active-high and fail-safe-off**.
 
 ```text
 +3V3 ── 10k ── PD_PGOOD ── U3.PGD
-                         └─ U1 PA3
+                         └─ U1 PA15
 ```
 
 Firmware should use `PD_PGOOD` to distinguish:
@@ -834,7 +869,7 @@ Each carrier contains only one INA237. Tie A0 and A1 directly to GND; do not fit
 
 ```text
 +3V3 ── 10k ── INA_ALERT ── U4.ALERT
-                         └─ U1 PA2
+                         └─ U1 PB5
 ```
 
 ---
@@ -844,7 +879,7 @@ Each carrier contains only one INA237. Tie A0 and A1 directly to GND; do not fit
 ## 12.1 MCU
 
 ```text
-U1 = STM32C092GCU7
+U1 = STM32C092GCU6
 Package = UFQFPN-28
 ```
 
@@ -854,34 +889,34 @@ No external crystal is required for this design.
 
 | Physical pin | STM32 pin | Net / function |
 |---:|---|---|
-| 1 | PC14 | PD_ENABLE |
-| 2 | PC15 | spare |
+| 1 | PC14 | spare |
+| 2 | PC15 | USER_BUTTON_N |
 | 3 | VDD/VDDA | +3V3 |
 | 4 | VSS/VSSA | GND |
 | 5 | PF2/NRST | NRST |
 | 6 | PA0 | spare |
 | 7 | PA1 | spare |
-| 8 | PA2 | INA_ALERT |
-| 9 | PA3 | PD_PGOOD |
-| 10 | PA4 | CAN_STB |
+| 8 | PA2 | spare |
+| 9 | PA3 | spare |
+| 10 | PA4 | spare |
 | 11 | PA5 | spare |
 | 12 | PA6 | spare |
-| 13 | PA7 | BUCK_PGOOD |
-| 14 | PB0 | spare |
-| 15 | PB1 | spare |
-| 16 | PA8 | LED_DATA_RAW / TIM1_CH1 |
-| 17 | PC6 | spare |
-| 18 | PA11 | CAN_RX / FDCAN_RX |
-| 19 | PA12 | CAN_TX / FDCAN_TX |
+| 13 | PA7 | spare |
+| 14 | PB0 | CAN_RX / FDCAN_RX |
+| 15 | PB1 | CAN_TX / FDCAN_TX |
+| 16 | PA8 | BUCK_PGOOD |
+| 17 | PC6 | PD_IRQ |
+| 18 | PA9/PA11 | spare |
+| 19 | PA10/PA12 | spare |
 | 20 | PA13 | SWDIO |
 | 21 | PA14 | SWCLK |
-| 22 | PA15 | spare |
-| 23 | PB3 | spare |
+| 22 | PA15 | PD_PGOOD |
+| 23 | PB3 | PD_ENABLE |
 | 24 | PB4 | spare |
-| 25 | PB5 | spare |
+| 25 | PB5 | INA_ALERT |
 | 26 | PB6 | PD_I2C_SCL / I2C1 |
 | 27 | PB7 | PD_I2C_SDA / I2C1 |
-| 28 | PB8 | spare |
+| 28 | PB8 | LED_DATA_RAW |
 
 ## 12.3 MCU support
 
@@ -916,16 +951,16 @@ Use pogo/test pads rather than a permanent connector unless mechanical constrain
 The STM32 uses its FDCAN peripheral for backplane communication. A TCAN3413DR translates the 3.3 V logic interface to the differential CAN bus. The connector-side network includes a common-mode choke, a PESD2CANFD27V ESD protector, and optional 120 Ω termination selected by SJ1.
 
 ```text
-U1 PA12 / FDCAN_TX ───── U5.TXD
-U1 PA11 / FDCAN_RX ───── U5.RXD
-U1 PA4              ───── U5.STB
+U1 PB1 / FDCAN_TX ───── U5.TXD
+U1 PB0 / FDCAN_RX ───── U5.RXD
+GND                 ───── U5.STB
 
 U5.CANH ── CAN_PHY_P ── L3 ── CAN_BUS_P ───── J1 pin 3
 U5.CANL ── CAN_PHY_N ── L3 ── CAN_BUS_N ───── J1 pin 4
 GND                              J1 pin 2
 ```
 
-SJ1 and R26 provide endpoint termination. Populate/bridge the termination only when this carrier is physically at a bus end. Place D2 adjacent to the connector on the bus side of L3. KiCad differential-pair naming uses `CAN_BUS_P/N` on the connector side and `CAN_PHY_P/N` on the transceiver side, where P is CANH and N is CANL; route each pair tightly coupled, symmetric, and length-matched.
+SJ1 and R26 provide endpoint termination. Populate/bridge the termination only when this carrier is physically at a bus end. U5 `STB` is intentionally tied low so the transceiver is permanently in normal mode; this carrier does not need MCU-controlled CAN standby. Place D2 adjacent to the connector on the bus side of L3. In the current PCB, D2 is intentionally placed as close to J1 and the local GND return as the connector/mechanical constraints permit. KiCad differential-pair naming uses `CAN_BUS_P/N` on the connector side and `CAN_PHY_P/N` on the transceiver side, where P is CANH and N is CANL; route each pair tightly coupled, symmetric, and length-matched.
 
 ## 13.2 Local / downstream I²C1
 
@@ -970,7 +1005,7 @@ Supply = +3V3
 Connection:
 
 ```text
-U1 PA0 ── 100Ω ── LED1.DIN
+U1 PB8 ── 100Ω ── LED1.DIN
 
 +3V3 ───────────── LED1.VDD
   │
@@ -989,7 +1024,7 @@ The V6 device is intended to operate directly from the 3.3 V rail, avoiding a lo
 Use:
 
 ```text
-DTVS1 = SMCJ48A
+DTVS1 = JUXING SMCJ48A
 LCSC C5861043
 ```
 
@@ -1007,7 +1042,10 @@ Place immediately behind the input connector with very short high-current and gr
 
 ## TVS validation concern
 
-The proposed SMCJ48A is an appropriate starting point for a true 48 V maximum-continuous system, but transient validation remains mandatory.
+The proposed SMCJ48A is an appropriate starting point at the 48 V
+characterization point, but 50 V is above its stated stand-off rating. Sustained
+48–50 V operation and transient behavior must be measured on the first boards;
+the production TVS or supported voltage range may need revision.
 
 The important limiting device is the INA237:
 
@@ -1066,6 +1104,7 @@ NET VCC
 NET GND
     J1.GND[*]
     DTVS1.A
+    U5.STB
 
     U2.GND
     U2.EXPOSED_PAD
@@ -1167,7 +1206,7 @@ NET +3V3
 NET BUCK_PGOOD
     U2.PGOOD
     R_BUCK_PG.2
-    U1.PA7
+    U1.PA8
 
 
 # ============================================================
@@ -1223,7 +1262,7 @@ NET HS_PWR
 NET PD_PGOOD
     U3.PGD
     R_PGD.2
-    U1.PA3
+    U1.PA15
 
 
 # ============================================================
@@ -1237,7 +1276,7 @@ NET KILL_GATE
     Q3.D
 
 NET PD_ENABLE
-    U1.PC14
+    U1.PB3
     Q3.G
     R_PD_EN_PD.1
 
@@ -1259,7 +1298,7 @@ NET INA_INM_FILT
 NET INA_ALERT
     U4.ALERT
     R_ALERT.2
-    U1.PA2
+    U1.PB5
 
 # ============================================================
 # LOCAL / DOWNSTREAM I2C1
@@ -1283,16 +1322,12 @@ NET PD_I2C_SDA
 # ============================================================
 
 NET CAN_TX
-    U1.PA12
+    U1.PB1
     U5.TXD
 
 NET CAN_RX
-    U1.PA11
+    U1.PB0
     U5.RXD
-
-NET CAN_STB
-    U1.PA4
-    U5.STB
 
 NET CAN_PHY_P
     U5.CANH
@@ -1320,7 +1355,7 @@ NET CAN_BUS_N
 # ============================================================
 
 NET LED_DATA_RAW
-    U1.PA8
+    U1.PB8
     R_LED.1
 
 NET LED_DATA
@@ -1414,11 +1449,11 @@ These are convenience selections, not architectural requirements unless noted.
 | Function | Suggested part | LCSC |
 |---|---|---|
 | 6 mΩ / 3 W shunt | HoLLR2512-3W-6mR-1% | **C2985709** |
-| 68 µH inductor | YNR6045-680M | **C341069** |
-| 2.2 µF / 100 V X7R | Yageo CC1206KKX7R0BB225 or equivalent | **C577211** |
-| 22 µF / 25 V output MLCC | Samsung CL21A226MAYNNNE | **C602037** |
+| 68 µH inductor | Sunlord SWPA8040S680MT | **C36418** |
+| 2.2 µF / 100 V X7R | Samsung CL32B225KCJSNNE, 1210 | **C55151** |
+| 22 µF / 25 V output MLCC | Samsung CL21A226MAQNNNE, 0805 | **C45783** |
 | 1 µF / 100 V X7R | Samsung CL31B105KCHNNNE | **C13832** |
-| 680 nF timer capacitor | Walsin 0603B684K160CT | **C237234** |
+| 680 nF timer capacitor | 0603B684K160NT, 0603 | **C24797** |
 | 2N7002 | commodity stocked 2N7002 | **C8545** |
 
 For low-voltage generic 0603 resistors and decoupling capacitors, prefer existing BOM values/basic parts already used elsewhere in the product when electrically equivalent.
@@ -1442,6 +1477,10 @@ The power contacts and PCB copper shall support the 140 W architecture case and 
 
 The routed carrier PCB is the controlling definition: `pin 1 = VCC`, `pin 2 = GND`, `pin 3 = CANH / CAN_BUS_P`, and `pin 4 = CANL / CAN_BUS_N`. Update every mating backplane connector to produce this mapping at the physical contacts. When checking a male/female pair, use the manufacturer mating-face drawings or continuity measurements rather than inferring numbering from an unlabeled PCB-side view.
 
+J1 is intentionally excluded from the assembly BOM. The assembled PCB is expected
+to ship without this right-angle XT30PW(2+2) connector; the user installs and
+solders J1 after assembly.
+
 ## J3 — PD-module interface
 
 ```text
@@ -1453,6 +1492,10 @@ PD_I2C_SDA
 SPARE_GPIO0     optional
 SPARE_GPIO1     optional
 ```
+
+The live KiCad design uses `MOD1` for the SW3538 module footprint. `MOD1` is
+intentionally excluded from the assembly BOM because the user installs and
+solders the PD module after PCB assembly.
 
 ---
 
@@ -1895,6 +1938,47 @@ Validate SMCJ48A clamp behavior on actual hardware.
 
 The INA237 85 V bus/common-mode maximum is one of the tightest upper-voltage constraints.
 
+The first production configuration is 24 V nominal and 100 W maximum. The
+future prototype objective is approximately 48–50 V nominal input for a
+240 W, 48 V / 5 A USB-C EPR implementation. Sustained input above approximately
+50 V is explicitly unsupported; supply tolerance and ripple must be included
+when enforcing that boundary.
+
+Current first-pass voltage margins, using the populated Rev-A values, are:
+
+| Check | Result |
+|---|---|
+| Populated D1 | JUXING `SMCJ48A`, LCSC `C5861043`: 48 V stand-off, 53.3 V minimum breakdown, 77.4 V maximum clamp at 19.4 A for the specified pulse waveform |
+| OVLO rising, nominal | `2.5 V × (110 kΩ + 5.1 kΩ) / 5.1 kΩ ≈ 56.4 V` |
+| OVLO rising, first-order component corners | Approximately **49.8 V to 63.3 V** using the datasheet's 2.25/2.75 V threshold limits and ±1% divider resistors; those IC limits are specified at 25 °C, so this is not yet a guaranteed full-temperature system limit |
+| Raw-VCC limiting part | INA237 at 85 V; U2 and Q1 are 100 V parts, and U3 is rated for 90 V operation / 108 V absolute maximum |
+| Idealized INA237 margin at D1's stated maximum clamp | `85 V - 77.4 V = 7.6 V`, before PCB/harness inductive overshoot and TVS dynamic effects |
+
+At 48 V, D1 is already at its stand-off rating, although still below its
+minimum breakdown voltage. At 50 V it is above the stated stand-off rating, and
+the calculated lowest 25 °C OVLO corner is approximately 49.8 V. Consequently,
+50 V operation could produce either excess TVS leakage/heating or an early
+OVLO trip depending on component corners. OVLO only turns off the switched PD
+branch; it cannot protect D1 or the always-on housekeeping branch from an
+excessive sustained raw input.
+
+Before closing this release gate:
+
+- archive the exact JUXING `SMCJ48A` datasheet for populated D1 / LCSC
+  `C5861043`, rather than relying only on the generic TVS family name
+- measure D1 current and temperature during sustained 48 V, 49 V, and 50 V
+  operation; replace D1 or narrow the supported range if it does not remain
+  acceptably cool
+- decide whether the 49.8 V first-order minimum OVLO corner gives enough
+  nuisance-trip margin for the intended 48–50 V prototype range, and obtain a
+  defensible full-temperature threshold bound
+- check the TVS maximum clamp at the credible surge current against every
+  raw-VCC absolute maximum, especially INA237, Q1, U2, U3, and the 100 V
+  capacitors
+- verify TVS pulse energy and upstream fuse/current-limit coordination
+- capture J1/VCC transients during hot-plug, turn-off, and downstream-short
+  testing on the intended supply and harness
+
 If board-level transients approach that value, revise:
 
 - TVS
@@ -1904,7 +1988,10 @@ If board-level transients approach that value, revise:
 
 ## 24.5 Input fuse / upstream protection
 
-This design does **not** include a local fuse or reverse-polarity protector.
+This carrier does **not** include a local input fuse or raw-input current
+monitor ahead of the housekeeping buck and TVS. That is intentional only if the
+system harness/backplane feeding J1 provides the upstream current monitoring,
+fusing, and raw-input fault protection.
 
 LMX5069 protects only the switched PD branch.
 
@@ -1916,15 +2003,20 @@ A short in:
 
 must be cleared by the upstream distribution protection.
 
-Confirm the system/harness feeding J1 is appropriately fused.
+Confirm the system/harness feeding J1 is appropriately fused and that its trip
+behavior coordinates with the carrier raw-input copper, TVS, and housekeeping
+buck fault ratings.
 
 If it is not, add a local input fuse.
 
 ## 24.6 Reverse polarity
 
-No reverse-polarity protection is currently specified.
+The keyed XT30PW(2+2) connector interface is the intended reverse-polarity
+prevention mechanism for normal assembly and service.
 
-If the connector/harness makes reversed input physically possible, add appropriate protection.
+If an adapter, service cable, field repair, or alternate harness makes reversed
+input physically possible, add appropriate upstream or local reverse-polarity
+protection.
 
 ## 24.7 I²C powered-off verification
 
@@ -1975,7 +2067,12 @@ The carrier PCB is authoritative: J1 pin 1 is VCC, pin 2 is GND, pin 3 is CANH /
 
 ## 24.11 Bottom-side mechanical clearance
 
-The existing outline only fits the added electronics by using the bottom side. Check the assembled carrier against the rack, guides, neighboring boards, fasteners, and enclosure for clearance around:
+The current placement has been checked in the KiCad 3D render and the
+clearances appear acceptable. Retain this as completed Rev-A design evidence,
+then confirm it on the first physical assembly because the result depends on
+3D-model accuracy and manufacturing tolerances.
+
+The existing outline only fits the added electronics by using the bottom side. The completed render check covered the rack, guides, neighboring boards, fasteners, and enclosure around:
 
 - Q1 D²PAK body and solder fillet
 - the approximately 4.5 mm-tall buck inductor
@@ -1983,6 +2080,36 @@ The existing outline only fits the added electronics by using the bottom side. C
 - programming pogo-pin access
 
 If this clearance is unavailable, the carrier outline or mechanical stack must change; moving the circuitry to the module side is not supported by the current PD-module courtyard.
+
+## 24.12 First-generation PCB bring-up and validation
+
+Perform bring-up on one board at a time with a current-limited source, suitable
+upstream fuse, remote power disconnect, and temperature monitoring. Record the
+board serial/revision, supply, harness, ambient temperature, load, firmware,
+probe locations, and saved waveforms. Do not proceed to the 48–50 V tests until
+the 24 V checks pass. Use appropriately rated differential/isolated probes for
+high-side and shunt measurements, and verify probe common-mode limits before
+connecting them.
+
+| Stage | Tests and measurements | Evidence to retain |
+|---|---|---|
+| Unpowered inspection | Inspect polarity/orientation, Q1 and U2 thermal-pad soldering, shunt joints, D1, J1/MOD1 hand soldering, and workmanship. Measure resistance from VCC, +3V3, and PD_VIN_SW to GND. | Inspection photographs and resistance readings before first power. |
+| Connector/mechanical | Continuity-check every J1 and MOD1 contact against the PCB net names; verify keyed mating, rack insertion, neighboring-board clearance, solder fillets, programming access, and enclosure fit on a physical assembly. | Pin-map record and assembly photographs. |
+| 24 V housekeeping | Power with PD disabled. Measure input current, +3V3 startup/DC/ripple, BUCK_PGOOD, U2 VIN ringing, switching frequency, and U2/L1 temperature. | Oscilloscope captures and steady-state temperatures. |
+| MCU/default safety | Program over SWD; exercise reset, button, LED, watchdog, and firmware update path. Confirm PD_ENABLE defaults low, Q1 remains off during reset/unpowered MCU, and PD_PGOOD reports the off state. | Boot log and power-sequencing captures. |
+| CAN-FD | Test with and without endpoint termination as appropriate at the intended arbitration/data rates. Scope CANH/CANL at J1 and U5; record differential amplitude, common-mode level, ringing, error counters, and long-duration traffic errors. | Bus waveforms and error-rate/test-duration record. |
+| INA237 | Compare bus voltage and shunt/current readings against calibrated DMM/electronic-load measurements at several currents, including zero, moderate load, and the 100 W operating point. Verify ALERT. | Calibration/error table. |
+| MOD1/I²C | Verify module discovery/configuration and powered-off SDA/SCL levels. Check for clamp distortion or measurable back-power with MOD1 unpowered. | Logic-analyzer captures and powered-off current/voltage readings. |
+| Normal hot-swap startup | At 24 V, capture VCC, HS_SENSE, PD_VIN_SW, Q1 VGS/VDS, R1 differential voltage, TIMER, supply current, and PD_PGOOD with no USB load, moderate load, and the allowed maximum load. Repeat at 36 V and 48 V only after the preceding cases pass. | Startup waveforms proving valid startup completes without TIMER timeout and with acceptable Q1 stress. |
+| Controlled fault/SOA | With a protected current-limited setup, apply a downstream short or controlled overload. Measure actual current/power limit, TIMER duration, Q1 VDS/ID, PD_PGOOD, retry interval/duty cycle, and Q1 case temperature. Stop testing if temperature or voltage approaches a device limit. | Worst-case single-pulse and repeated-retry waveforms plus temperature history. |
+| 48–50 V characterization | Slowly ramp the input and measure OVLO rising/falling thresholds on multiple boards at room temperature and, if possible, hot/cold. At 48 V, 49 V, and 50 V measure D1 current and body temperature, raw-VCC current, +3V3 regulation, and unexpected OVLO cycling. Do not leave 50 V operation unattended until this passes. | Per-board threshold table and D1 current/temperature plots. |
+| Hot-plug/transients | Using the intended supply, upstream protection, and cable/harness, capture J1/VCC during connection, removal, branch turn-off, and fault interruption. Probe at D1 and the INA237/U2 supply points with a low-inductance technique. | Peak voltage and pulse-duration records demonstrating margin to the 85 V INA237 limit and every other absolute maximum. |
+| Full-load thermal | Run the first configuration at 24 V input and 100 W output to thermal equilibrium in the intended enclosure/airflow. Measure J1, copper, R1, Q1, U2, L1, D1, MOD1, and nearby capacitor temperatures. | Ambient-referenced temperature table and thermal images. |
+| System sequencing | Populate the intended number of slots and verify sequential startup, upstream-bus droop/inrush, fuse/current-monitor behavior, CAN traffic, and recovery from one failed/shorted carrier. | Multi-slot startup/fault captures and protection trip record. |
+
+Any later 240 W experiment requires a compatible EPR module, cable/connector
+path, firmware policy, load, and a new end-to-end power/thermal review; the
+carrier component choices alone do not establish a 240 W product rating.
 
 ---
 
@@ -1996,7 +2123,7 @@ PD_PGOOD        input    pulled high when branch healthy
 INA_ALERT       input    open-drain interrupt/status
 BUCK_PGOOD      input    housekeeping regulator status
 
-CAN_TX/RX/STB   FDCAN    backplane CAN-FD interface through U5
+CAN_TX/RX       FDCAN    backplane CAN-FD interface through U5; U5 STB tied low
 PD_I2C_*        I2C1     downstream controller/master
 
 LED_DATA        output   WS2812 status
@@ -2045,10 +2172,25 @@ Primary references:
 - **Wuxi Maxinmicro LMX5069** datasheet
 - **Texas Instruments LM5163 / LM5163-Q1** datasheet
 - **Texas Instruments INA237** datasheet
-- **STMicroelectronics STM32G031x4/x6/x8** datasheet
+- **STMicroelectronics STM32C092GC** datasheet
 - **Infineon IPB020N10N5LF** datasheet / OptiMOS Linear FET SOA documentation
+- **Infineon XDP700-002** datasheet, which includes a 65 °C DC-SOA table and
+  48 V worked example for IPB020N10N5LF
 - **Worldsemi WS2812B-2020-V6** datasheet
 - LCSC catalog entries corresponding to the LCSC codes listed in this document
+
+The exact carrier U2 datasheet is archived as
+`docs/data-sheets/TI/LM5163.pdf`. `docs/data-sheets/TI/LMR516xx.pdf` is not a
+carrier substitute and remains in the repository for the backpack's populated
+LMR51610 regulators.
+
+The carrier datasheet audit found that exact local PDFs are still missing for
+the R1 shunt and C8 `CL21A226MAQNNNE`. The existing Samsung
+`CL21A226MAYNNNE.pdf` is close but is not the exact populated C8 suffix. Local
+manufacturer data is now present for LM5163, INA237, IPB020N10N5LF, and the
+JUXING SMCJ48A family. Do not delete apparently unrelated archive files solely
+because they are unused by the carrier; several are used by the
+backplane/backpack designs.
 
 ---
 
@@ -2059,7 +2201,10 @@ Power-generation envelope:
 ```text
 Current product limit       100 W
 Rev-A carrier architecture  140 W capable
-Future hardware target      240 W capable; new hardware review required
+Prototype program target    240 W EPR (48 V / 5 A); validation/review required
+Initial nominal input       24 V
+Future characterization     approximately 48–50 V nominal
+Unsupported sustained input above approximately 50 V
 ```
 
 Backplane/carrier interface:
@@ -2073,12 +2218,12 @@ Carrier generates local 3.3 V with LM5163
 The current intended architecture is:
 
 ```text
-24–48 VDC
+24 V initial; 48–50 V future prototype characterization
    │
    ├── SMCJ48A input TVS
    │
    ├── LM5163 100 V buck ──► 3.3 V
-   │                         ├── STM32G031
+   │                         ├── STM32C092GCU6
    │                         ├── INA237
    │                         ├── WS2812B-2020-V6
    │                         └── I²C pull-ups
