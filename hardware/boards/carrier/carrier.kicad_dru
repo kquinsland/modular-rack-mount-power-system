@@ -61,10 +61,10 @@
     (constraint assertion "A.Line_Width >= 0.15mm"))
 
 # CANH is the P member and CANL is the N member on both sides of L3.
-# The P/N suffixes enable KiCad's differential-pair router; these constraints
-# provide the interactive gap target and enforce coupling and pair skew in DRC.
+# The P/N suffixes enable KiCad's differential-pair router. Match the four nets
+# directly so project-settings rewrites cannot silently disable DRC enforcement.
 (rule "CAN differential pair coupling and skew"
-    (condition "A.hasNetclass('CAN')")
+    (condition "A.NetName == '/CAN_BUS_N' || A.NetName == '/CAN_BUS_P' || A.NetName == '/Protected Power and Controls/CAN_PHY_N' || A.NetName == '/Protected Power and Controls/CAN_PHY_P'")
     (constraint diff_pair_gap (min 0.20mm) (opt 0.25mm) (max 0.30mm))
     (constraint diff_pair_uncoupled (max 5mm))
     (constraint skew (max 1mm) (within_diff_pairs)))

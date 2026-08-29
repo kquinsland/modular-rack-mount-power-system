@@ -1754,7 +1754,7 @@ L3 / In2.Cu  0.5 oz    solid GND
 L4 / B.Cu    1 oz      components, high-current pours, signals
 ```
 
-The PCB stackup already contains these copper weights, but the internal GND zones have not yet been added to the layout. Add and refill both internal GND planes before production release. The central cutout makes the remaining copper rails narrow. Use filled copper on every useful layer, parallel paths where the net permits, and dense through-via arrays at layer transitions. Validate finished copper thickness and the exact dielectric stack with the fabricator at order time.
+The PCB implements the internal planes as the `GND_IN1` and `GND_IN2` zones. Refill both planes as part of every final production export. The central cutout makes the remaining copper rails narrow. Use filled copper on every useful layer, parallel paths where the net permits, and dense through-via arrays at layer transitions. Validate finished copper thickness and the exact dielectric stack with the fabricator at order time.
 
 ## 22.10 JLCPCB fabrication rules
 
