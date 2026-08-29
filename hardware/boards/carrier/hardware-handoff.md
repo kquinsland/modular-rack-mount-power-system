@@ -920,8 +920,8 @@ U1 PA12 / FDCAN_TX ───── U5.TXD
 U1 PA11 / FDCAN_RX ───── U5.RXD
 U1 PA4              ───── U5.STB
 
-U5.CANH ── CAN_PHY_P ── L3 ── CAN_BUS_P ───── J1 pin 4
-U5.CANL ── CAN_PHY_N ── L3 ── CAN_BUS_N ───── J1 pin 3
+U5.CANH ── CAN_PHY_P ── L3 ── CAN_BUS_P ───── J1 pin 3
+U5.CANL ── CAN_PHY_N ── L3 ── CAN_BUS_N ───── J1 pin 4
 GND                              J1 pin 2
 ```
 
@@ -1306,13 +1306,13 @@ NET CAN_BUS_P
     L3.CAN_BUS_P
     D2.IO1
     SJ1.1
-    J1.4
+    J1.3
 
 NET CAN_BUS_N
     L3.CAN_BUS_N
     D2.IO2
     R26.2
-    J1.3
+    J1.4
 
 
 # ============================================================
@@ -1432,15 +1432,15 @@ The existing carrier/backplane connector is a combined two-power-contact plus tw
 ## J1 — combined backplane interface
 
 ```text
-VCC
-GND
-CAN_BUS_N
-CAN_BUS_P
+pin 1 = VCC
+pin 2 = GND
+pin 3 = CAN_BUS_P / CANH
+pin 4 = CAN_BUS_N / CANL
 ```
 
 The power contacts and PCB copper shall support the 140 W architecture case and the short-duration current-limit current. Route CANL/CANH as a controlled, tightly coupled differential pair appropriate for the selected CAN-FD data rate and physical length.
 
-The current carrier schematic assumes `pin 1 = VCC`, `pin 2 = GND`, `pin 3 = CANL`, and `pin 4 = CANH`, while the backplane-prototype schematic presently shows the two power nets in the opposite order. This may be a male/female footprint-numbering mirror. Before fabrication, verify the real mated contacts from manufacturer drawings and continuity, then make symbol pins, footprint pads, net assignments, and connector notes consistent across every carrier and backplane project. Do not infer polarity from an unlabeled PCB-side view.
+The routed carrier PCB is the controlling definition: `pin 1 = VCC`, `pin 2 = GND`, `pin 3 = CANH / CAN_BUS_P`, and `pin 4 = CANL / CAN_BUS_N`. Update every mating backplane connector to produce this mapping at the physical contacts. When checking a male/female pair, use the manufacturer mating-face drawings or continuity measurements rather than inferring numbering from an unlabeled PCB-side view.
 
 ## J3 — PD-module interface
 
@@ -1745,23 +1745,23 @@ Fit conclusion:
 
 ## 22.9 Required stackup and copper
 
-Rev A shall use a 4-layer, 1.6 mm stackup with 2 oz outer copper and 1 oz inner copper. The carrier PCB project has been converted to match the backplane-prototype stackup:
+Rev A shall use a 4-layer, 1.6 mm stackup with 1 oz outer copper and 0.5 oz inner copper. Keep CAN, I²C, and ordinary signal routing on the outer layers over continuous reference copper. No dedicated 3.3 V plane is required; use both internal layers as solid GND reference planes:
 
 ```text
-L1 / F.Cu    2 oz    module pads, high-current pours, signals
-L2 / In1.Cu  1 oz    solid GND
-L3 / In2.Cu  1 oz    VCC / PD_VIN_SW high-current assistance
-L4 / B.Cu    2 oz    new components, local pours, signals
+L1 / F.Cu    1 oz      module pads, high-current pours, signals
+L2 / In1.Cu  0.5 oz    solid GND
+L3 / In2.Cu  0.5 oz    solid GND
+L4 / B.Cu    1 oz      components, high-current pours, signals
 ```
 
-The central cutout makes the remaining copper rails narrow. Use filled copper on every useful layer, parallel paths where the net permits, and dense through-via arrays at layer transitions. Validate finished copper thickness and the exact dielectric stack with JLCPCB at order time.
+The PCB stackup already contains these copper weights, but the internal GND zones have not yet been added to the layout. Add and refill both internal GND planes before production release. The central cutout makes the remaining copper rails narrow. Use filled copper on every useful layer, parallel paths where the net permits, and dense through-via arrays at layer transitions. Validate finished copper thickness and the exact dielectric stack with the fabricator at order time.
 
 ## 22.10 JLCPCB fabrication rules
 
 `carrier.kicad_dru` ports the JLCPCB-specific custom rules from `backplane-prototype`:
 
 - through vias only; blind, buried, and microvias disallowed
-- 0.255 mm minimum PTH annular ring for the selected 2 oz outer-copper process
+- 0.255 mm minimum PTH annular ring for the selected 1 oz outer-copper process
 - 0.30 mm PTH hole clearance
 - 0.45 mm pad-hole-to-pad-hole clearance
 - minimum round NPTH and plated/non-plated slot sizes
@@ -1971,7 +1971,7 @@ Do not assume a connector is suitable based solely on nominal family rating; acc
 
 ## 24.10 Connector pin-map release check
 
-Resolve the carrier/backplane power-pin mismatch called out on the carrier schematic before fabrication. This is a release blocker even if it is ultimately only a male/female footprint-view issue. Verify the physical mating contacts, then audit every symbol, footprint, and connector note across the carrier, backplane, and backplane-prototype projects.
+The carrier PCB is authoritative: J1 pin 1 is VCC, pin 2 is GND, pin 3 is CANH / CAN_BUS_P, and pin 4 is CANL / CAN_BUS_N. Before fabricating a mating backplane, verify its physical connector contacts against this definition and audit its symbol, footprint, and connector notes. Male/female drawing viewpoints still require an explicit manufacturer-drawing or continuity check.
 
 ## 24.11 Bottom-side mechanical clearance
 
@@ -2143,7 +2143,8 @@ PD power:
 PCB:
     existing outline retained
     new circuitry predominantly on B.Cu side
-    4 layers, 2 oz outer / 1 oz inner copper
+    4 layers, 1 oz outer / 0.5 oz inner copper
+    In1.Cu and In2.Cu reserved for solid GND planes
     JLCPCB custom fabrication rules enabled
 
 Discharge:
