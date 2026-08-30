@@ -1687,53 +1687,9 @@
 		(at 101.6 80.01)
 		(uuid "95b5385c-eceb-4f8a-925a-8a6ea4a5ef3e")
 	)
-	(global_label "FAN2_PWM"
-		(shape bidirectional)
-		(at 137.16 87.63 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "db6b7f14-006b-459a-9af0-0954a4d78aad")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 137.16 87.63 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
 	(no_connect
 		(at 137.16 82.55)
 		(uuid "b16d3a5b-7930-47fe-a2a5-9c76051a0f7c")
-	)
-	(global_label "FAN2_TACH"
-		(shape bidirectional)
-		(at 137.16 90.17 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "9da7a90d-6e99-42b0-84d8-8fe975569e65")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 137.16 90.17 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
 	)
 	(no_connect
 		(at 137.16 92.71)
@@ -1759,28 +1715,6 @@
 		)
 		(uuid "4490e935-4928-42d8-b57a-36ed582559eb")
 	)
-	(global_label "DS18B20_DATA"
-		(shape bidirectional)
-		(at 101.6 105.41 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "0170be90-e41a-4d2f-9e37-b07df63df6a6")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 101.6 105.41 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
 	(label "SWCLK"
 		(at 67.31 115.57 180)
 		(effects
@@ -1790,16 +1724,6 @@
 			(justify right bottom)
 		)
 		(uuid "9590ad57-d834-4514-a19c-f0f8bde33b29")
-	)
-	(label "NRST"
-		(at 227.33 59.69 90)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "a0a98ad8-bfb7-4a96-86c5-a8dff6257290")
 	)
 	(label "SWCLK"
 		(at 137.16 102.87 180)
@@ -1840,6 +1764,28 @@
 			(justify left bottom)
 		)
 		(uuid "ea91ad41-4ac6-459a-95b3-86a66611ef5c")
+	)
+	(global_label "DS18B20_DATA"
+		(shape bidirectional)
+		(at 101.6 105.41 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "0170be90-e41a-4d2f-9e37-b07df63df6a6")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 101.6 105.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 	)
 	(global_label "+3V3"
 		(shape bidirectional)
@@ -2127,6 +2073,28 @@
 			)
 		)
 	)
+	(global_label "FAN2_TACH"
+		(shape bidirectional)
+		(at 137.16 90.17 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "9da7a90d-6e99-42b0-84d8-8fe975569e65")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 137.16 90.17 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
 	(global_label "PGOOD_3V3"
 		(shape bidirectional)
 		(at 137.16 77.47 0)
@@ -2281,6 +2249,28 @@
 			)
 		)
 	)
+	(global_label "FAN2_PWM"
+		(shape bidirectional)
+		(at 137.16 87.63 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "db6b7f14-006b-459a-9af0-0954a4d78aad")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 137.16 87.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
 	(global_label "I2C_SDA"
 		(shape bidirectional)
 		(at 214.63 44.45 0)
@@ -2359,28 +2349,6 @@
 		(uuid "f0f131a2-3d3b-46e5-bf22-3d85f3c81f2b")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 64.77 48.26 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "FAN_TACH"
-		(shape bidirectional)
-		(at 214.63 59.69 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "fd588cc2-a383-4241-8761-98aae65780b6")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 214.63 59.69 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2522,82 +2490,6 @@
 			(project "backplane-prototype"
 				(path "/348cc909-6345-4013-9bef-98714057a65b/4275522b-7aaa-4a22-8d94-d30e15c87e30"
 					(reference "C17")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:TestPoint")
-		(at 214.63 59.69 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp yes)
-		(uuid "3ac81e4d-689f-4f4c-88c6-bdfeb9d427b7")
-		(property "Reference" "TP13"
-			(at 215 63.5 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "FAN_TACH"
-			(at 215 64.77 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
-			(at 220.08 60 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 220.08 60 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "test point"
-			(at 215 60 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "bf416af1-81be-4e79-aaa2-40dbc18f39a1")
-		)
-		(instances
-			(project "backplane-prototype"
-				(path "/348cc909-6345-4013-9bef-98714057a65b/4275522b-7aaa-4a22-8d94-d30e15c87e30"
-					(reference "TP13")
 					(unit 1)
 				)
 			)
@@ -3086,82 +2978,6 @@
 			(project "backplane-prototype"
 				(path "/348cc909-6345-4013-9bef-98714057a65b/4275522b-7aaa-4a22-8d94-d30e15c87e30"
 					(reference "TP6")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:TestPoint")
-		(at 227.33 59.69 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp yes)
-		(uuid "d773acdf-fcc5-4111-9f45-e86c0a9c7311")
-		(property "Reference" "TP14"
-			(at 227.5 50.8 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "NRST"
-			(at 227.5 49.53 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
-			(at 232.58 60 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 232.58 60 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "test point"
-			(at 227.5 60 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "81b6f022-f495-4050-9988-918ec94d200f")
-		)
-		(instances
-			(project "backplane-prototype"
-				(path "/348cc909-6345-4013-9bef-98714057a65b/4275522b-7aaa-4a22-8d94-d30e15c87e30"
-					(reference "TP14")
 					(unit 1)
 				)
 			)
