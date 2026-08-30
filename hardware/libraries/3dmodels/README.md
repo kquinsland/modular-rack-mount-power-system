@@ -1,5 +1,15 @@
 # Project 3D Models
 
+## `ACT12_Choke.step`
+
+Project-local mechanical model for the TDK ACT1210D common-mode choke. It is
+used by the `L_CommonModeChoke_TDK_ACT1210D` footprint.
+
+## `SKSCLCE010.step`
+
+Project-local mechanical model for the Alps Alpine SKSCLCE010 side-push
+tactile switch. It is used by the `SW_ALPS_SKSCLCE010_SidePush` footprint.
+
 ## `ST_UFQFPN-28_4x4mm_P0.5mm.step`
 
 Project-local mechanical model for the STM32G031G6U6 UFQFPN-28 package.
