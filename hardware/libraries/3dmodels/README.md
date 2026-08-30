@@ -1,9 +1,23 @@
 # Project 3D Models
 
+## `TDK_ACT1210D-101-2P-TL00.{wrl,step}`
+
+EasyEDA/LCSC mechanical model pair for the TDK ACT1210D-101-2P-TL00
+common-mode choke, imported from LCSC part C3039743 with `easyeda2kicad`
+1.0.1. The colored WRL is used by the `L_CommonModeChoke_TDK_ACT1210D`
+footprint; the same-basename STEP is available for KiCad's STEP-model
+substitution during board export.
+
+`easyeda2kicad` normalizes the OBJ-derived WRL to sit on Z=0 but copies the
+catalog STEP unchanged. The catalog STEP placed the component below Z=0, so
+the repository STEP has its Z geometry mirrored to match the WRL. The
+footprint rotates the pair 180 degrees to match this project's pad numbering.
+
 ## `ACT12_Choke.step`
 
-Project-local mechanical model for the TDK ACT1210D common-mode choke. It is
-used by the `L_CommonModeChoke_TDK_ACT1210D` footprint.
+Earlier project-local mechanical model for the TDK ACT1210D common-mode choke.
+It is retained for reference but is no longer associated with the maintained
+footprint or carrier PCB.
 
 ## `SKSCLCE010.step`
 
