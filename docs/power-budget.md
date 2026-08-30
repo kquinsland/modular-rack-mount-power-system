@@ -8,21 +8,21 @@ Track the system and per-slot power assumptions here.
 | Backplane sustained load target | Approximately 30 A | Six ports near 4.7 A input plus system margin. |
 | Carrier slot voltage | Nominal 24 V | Direct high-current backplane feed. |
 | Carrier slot input target | Approximately 4.7 A | 100 W output at 90% efficiency is approximately 4.63 A input. |
-| Rev A carrier slots | 6 | Firmware/protocol logical capacity remains 8. |
+| Carrier slots | 6 | One unswitched high-current feed per physical slot. |
 | USB-C PD policy ceiling | 100 W | Maximum 20 V, 5 A; no EPR or proprietary 7 A mode. |
 | Backplane logic rail | 3.3 V | Local LM5164DDAR/C477928 supplies the MCU, current sensor, CAN PHY, and slot status LEDs. |
 | Backplane fan rail | 12 V | Separate LM5164DDAR/C477928; target load is one 3-wire fan at no more than 0.5 A, with first-article startup/stall testing required. |
+| Aggregate current shunt | 1 mOhm | 30 mV and 0.9 W at 30 A; INA237 narrow-range configuration and Kelvin routing required. |
 
 Both backplane converters use PSPMAA0805-101M-ANP, LCSC/JLCPCB C2962892,
 100 uH as their common inductor. Their feedback, RON, ripple-injection, and
 capacitor values remain rail-specific.
 
 At the first JLCPCB quote, confirm whether C2962892 or the completed board
-requires an assembly fixture. The live part page does not currently display a
-fixture warning. If the quote confirms that no fixture is required, the carrier
-housekeeping converter should subsequently be migrated to the same
-LM5164DDAR/C477928 and C2962892 pair. If a fixture is required, revisit the
-inductor selection before changing the carrier.
+requires an assembly fixture. Continue with the part through design and quoting;
+if no fixture is required, the carrier housekeeping converter may subsequently
+be migrated to the same LM5164DDAR/C477928 and C2962892 pair. If a fixture is
+required, revisit the inductor selection before changing the carrier.
 
 ## Protection Checklist
 
@@ -40,11 +40,9 @@ inductor selection before changing the carrier.
 It turns out that the [SW3538 modules](https://github.com/happyme531/h1_SW35xx/issues/13#issuecomment-4361605621) use a non-standard configuration to reach their advertised "140W" spec; proprietary 20 V at 7 A mode.
 Standard USB PD 3.0 tops out at 20 V at 5 A (100 W) which is already _plenty_ for my intended loads (they top out at around 70W!).
 
-Firmware enforces 100 W as the maximum accepted/programmed port policy. The
-carrier's MCU-controlled hot-swap can disconnect the PD branch, but it is not an
-independent 100 W limiter; the ceiling remains a policy setting after SW3538
-initialization. Provision the backpack, install modules, persist policy, and
-only then attach loads.
+The carrier's MCU-controlled hot-swap can disconnect the PD branch, but it is
+not an independent 100 W limiter. The 100 W value is a system operating target,
+not a backplane hardware current limit.
 
 The carrier hardware is also a prototype platform toward a later 240 W USB-C
 EPR goal of 48 V / 5 A. The first production population remains a 24 V-input,
@@ -52,11 +50,10 @@ EPR goal of 48 V / 5 A. The first production population remains a 24 V-input,
 future characterization case and is not a released rating until the carrier
 first-article TVS, OVLO, SOA, transient, and thermal tests pass.
 
-The Rev B prototype's PCA9554-controlled per-slot FETs provide input isolation,
-not overcurrent protection. Firmware persists an enable policy before turning on
-its FET and restores enabled ports sequentially to reduce aggregate inrush. A
-cutoff depends on the shared upstream I2C bus, and the 100 W ceiling still depends
-on SW3538 configuration after power-on.
+The consolidated backplane does not retain the old PCA9554-controlled per-slot
+FETs. All six slot feeds are present whenever `VIN_BUS` is energized, so upstream
+and/or per-slot hardware fault protection must be resolved independently of
+firmware.
 
 As the 100W figure is the "at the C port" figure, we must account for losses.
 The datasheet's greater-than-95% figure is measured at a much lighter 12 V to 5 V, 25 W operating point, so it should not be used for the 24 V to 20 V full-load budget.

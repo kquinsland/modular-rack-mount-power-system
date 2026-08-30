@@ -1,133 +1,109 @@
-# Interfaces
+# Consolidated Backplane Interfaces
 
-This document describes the active Backplane Backpack architecture. All firmware,
-CLI, JSON, diagnostic, and board port identifiers are zero-based.
+This document describes the active second-generation backplane hardware in
+`hardware/boards/backplane-prototype`. The former backpack-to-backplane I2C
+boundary is superseded; the controller and all six slots now live on one PCB.
 
-## Backplane DC Bus
+## DC Input
 
-Backplane `J14` (`DC_IN`) and `J15` (`DC_OUT`) use DEGSON
-`DG135T-10.16-02P-14-00A(H)`, LCSC `C708738`. `J15` repeats the bus for an optional
-downstream backplane.
-
-| Pin | Signal | Direction | Notes |
-| ---: | --- | --- | --- |
-| 1 | `GND` | Shared | Common DC return. |
-| 2 | `+24V` | Input/output | Main nominal 24 V bus. |
-
-Each electrical pin maps to the terminal's two internally common through-hole
-pins. The connector is not polarized, so silkscreen must clearly identify both
-nets.
-
-## Backpack Power Input
-
-Backplane Backpack Rev A `J1` supplies the controller, fan regulator, and local
-logic. Its mechanical series is not yet locked.
+Backplane `J5` uses DORABO `DB910-6.35-2P-GN-S`, LCSC `C395872`.
 
 | Pin | Signal | Direction | Notes |
 | ---: | --- | --- | --- |
-| 1 | `GND` | Input | Common return. |
-| 2 | `VIN_RAW` | Input | Approximately 20–36 V; nominal system input is 24 V. |
+| 1 | `GND` | Input | Common power and signal return. |
+| 2 | `VIN_RAW` | Input | Nominal 24 V for the first population. |
 
-## Backpack CAN-FD
+`VIN_RAW` passes through the 1 mOhm high-side shunt `RSH1` to `VIN_BUS`. The
+INA237 measures this drop through 10 ohm/100 nF input filtering; its PCB sense
+connections must be Kelvin-routed directly to the shunt pads.
 
-Backplane Backpack Rev A `J2` is the protected CAN-FD connection. The connector's
-mechanical series is not yet locked.
+## External CAN-FD
+
+Backplane `J2` is a generic three-position screw-terminal symbol. Its exact
+mechanical series and footprint are intentionally deferred until PCB placement.
 
 | Pin | Signal | Direction | Notes |
 | ---: | --- | --- | --- |
 | 1 | `GND` | Shared | CAN reference/return. |
-| 2 | `CANL` | Bidirectional | Bus-side signal after choke and ESD protection. |
-| 3 | `CANH` | Bidirectional | Bus-side signal after choke and ESD protection. |
+| 2 | `CANL_EXT` | Bidirectional | External CAN low. |
+| 3 | `CANH_EXT` | Bidirectional | External CAN high. |
 
-`SJ1` enables the local 120 ohm termination only when the backpack is at a physical
-bus endpoint. The v1 working network configuration is 1 Mbit/s nominal arbitration,
-2 Mbit/s data phase, and CAN-FD bit-rate switching enabled. The physical CAN segment
-is trusted; v1 provides no authentication or encryption.
+`D1` provides connector-side CAN ESD protection and `L3` is the boundary common-
+mode choke. `SJ1` enables `R17`, the normally-open 120 ohm termination, only
+when the backplane is installed at a physical end of the CAN bus.
 
-## Backpack-to-Backplane Control Boundary
+The TCAN3413 standby input is tied low, so the transceiver is permanently
+active whenever 3.3 V is present. MCU-controlled standby is not required.
 
-The stable Rev B backplane prototype owns the TCA9548A mux, PCA9554 power
-expander, per-slot FET circuits, slot-local pull-ups/ESD, and every carrier
-connector. Its `J2` (`i2c_backpack`) boundary exposes only the upstream I2C bus
-and logic power:
+## Carrier Slots
 
-| Pin | Signal | Direction | Notes |
-| ---: | --- | --- | --- |
-| 1 | `GND` | Shared | Logic return, duplicated with pin 3. |
-| 2 | `+3V3` | Backpack to backplane | Backplane control-logic supply, duplicated with pin 4. |
-| 3 | `GND` | Shared | Logic return, duplicated with pin 1. |
-| 4 | `+3V3` | Backpack to backplane | Backplane control-logic supply, duplicated with pin 2. |
-| 5 | `I2C_UP_SDA` | Bidirectional | Upstream data shared by PCA9554 and TCA9548A. |
-| 6 | `I2C_UP_SCL` | Backpack to backplane | Upstream clock from STM32 I2C2. |
+The six carrier slots use the carrier-authoritative AMASS
+`XT30U(2+2)-F.G.B`, LCSC `C30170181`, footprint and pinout.
 
-No mux-reset, PCA9554 interrupt, per-slot I2C, or per-slot power-control signal
-crosses this connector. The backplane-local TCA9548A reset is held inactive by a
-4.7 kohm pull-up and is not firmware-controlled. The five former shift-register
-GPIOs and legacy PA3 mux-reset signal are unused by Rev B.
-
-TCA9548A channels `0..5` and PCA9554 outputs `P0..P5` map to logical ports
-`0..5`. Mux channels 6 and 7 are not supported ports, and firmware never selects
-them in the six-slot build.
-
-## Backpack Fan
-
-Rev A `J9` is a standard three-position PC-fan header. The fan supply is always
-the PMOS-switched 12 V rail; there are no fan-mode selection jumpers.
-
-| Pin | Signal | Direction | Notes |
-| ---: | --- | --- | --- |
-| 1 | `GND` | Backpack to fan | Fan return. |
-| 2 | `FAN_12V_SW` | Backpack to fan | Supply-PWM switched 12 V from Q1. |
-| 3 | `FAN_TACH` | Fan to backpack | 3.3 V pull-up; PA1/TIM17 capture. |
-
-PA0 controls Q2 and the Q1 high-side PMOS at the low supply-PWM frequency used
-by 3-wire fans. Boot and safety/fault behavior start or override the fan to full
-speed.
-
-## Backpack SWD
-
-Rev A `J10` provides the programming/debug signals with the following schematic
-pinout:
-
-| Logical pin | Signal |
+| Slot | Reference |
 | ---: | --- |
-| 1 | `GND` |
-| 2 | `+3V3` |
-| 3 | `SWDIO` |
+| 1 | `J1` |
+| 2 | `J3` |
+| 3 | `J4` |
+| 4 | `J6` |
+| 5 | `J7` |
+| 6 | `J8` |
+
+| Physical pin | Signal | Direction | Notes |
+| ---: | --- | --- | --- |
+| 1 | `VIN_BUS` | Backplane to carrier | Unswitched high-current slot supply. |
+| 2 | `GND` | Shared | Power and CAN return. |
+| 3 | `CANH_BUS` | Bidirectional | Shared CAN-FD high. |
+| 4 | `CANL_BUS` | Bidirectional | Shared CAN-FD low. |
+
+There is no per-slot backplane ESD network. The backplane protects its external
+CAN connector, and each carrier retains its own connector-side CAN protection.
+The PCB layout must implement a short shared CAN trunk with short slot stubs.
+
+## Local I2C
+
+`I2C_SDA` and `I2C_SCL` connect only the STM32C092GCU6 and INA237 on the
+backplane. They use 2.2 kohm pull-ups to 3.3 V. No I2C signal reaches a carrier
+slot, and the old TCA9548A mux, PCA9554 expander, slot pull-ups, and slot I2C ESD
+parts are not used.
+
+## Fan
+
+`J9` uses KiCad's vertical 2.54 mm 3-wire fan-header footprint. The exact
+purchasable header MPN is not yet selected and must be checked against that
+footprint before quoting.
+
+| Pin | Signal | Direction | Notes |
+| ---: | --- | --- | --- |
+| 1 | `GND` | Backplane to fan | Fan return. |
+| 2 | `FAN_12V_SW` | Backplane to fan | Q1 high-side supply-PWM switched 12 V. |
+| 3 | `FAN_TACH` | Fan to backplane | Open-collector tach input with 10 kohm pull-up to 3.3 V. |
+
+The interface supports 3-wire fans only. It does not provide the fourth control
+wire used by 4-wire PWM fans. The working fan-rail design target is one fan at
+no more than 0.5 A, subject to first-article startup and stall-current tests.
+
+## Slot Status LEDs
+
+`D2` through `D7` are WS2812B-2020-V6, LCSC `C52917434`, one per physical
+slot. The chain is driven from STM32 `PB8` through `R16` and has one 100 nF
+local bypass capacitor per LED.
+
+## SWD
+
+`J10` is a Tag-Connect `TC2030-IDC-NL` footprint with this schematic pinout:
+
+| Pin | Signal |
+| ---: | --- |
+| 1 | `+3V3` target reference |
+| 2 | `SWDIO` |
+| 3 | `NRST` |
 | 4 | `SWCLK` |
-| 5 | `NRST` |
+| 5 | `GND` |
+| 6 | Not connected |
 
-SWD/service tooling is the v1 firmware-update path; CAN-based update is out of
-scope for v1.
+## Local Power Rails
 
-## Backplane to Carrier Slot
-
-The high-current backplane/carrier interface remains entirely behind the upstream
-backpack boundary.
-
-| Signal | Direction | Notes |
-| --- | --- | --- |
-| `VDC_SLOT` | Backplane to carrier | Nominal 24 V module input. |
-| `GND` | Shared | Power and signal return. |
-| `SDA_SLOT_N` | Bidirectional | Slot-local SW3538 I2C data. |
-| `SCL_SLOT_N` | Backplane to carrier | Slot-local SW3538 I2C clock. |
-| `SLOT_N_PWR_SW` (Rev B) | Backplane to carrier | High-side switched nominal 24 V module input. |
-
-Carrier SW3538 modules use the same I2C address; the main-backplane TCA9548A
-provides one isolated segment per supported port. The PCA9554 power expander is
-also on the upstream bus at `0x20`; its `P0..P5` outputs control slots 0 through 5.
-
-## Logical Capacity and Board Revisions
-
-PDCAN, shared crates, persistent records, and simulation support ports 0
-through 7. Each firmware image embeds its hardware revision and supported-port
-bitmap:
-
-| Board | Supported bitmap | Ports |
-| --- | ---: | --- |
-| Backplane Backpack Rev A | `0x3F` | 0–5 |
-| Backplane Backpack Rev B prototype | `0x3F` | 0–5, individually input-power gated |
-| Future eight-port revision | `0xFF` | 0–7 |
-
-Commands targeting an unsupported port return `UNSUPPORTED`/`INVALID_TARGET`; they
-must not be reported as an absent module.
+Separate LM5164DDAR converters generate 3.3 V and 12 V from `VIN_BUS`. Both
+use PSPMAA0805-101M-ANP 100 uH inductors, but their feedback, RON,
+ripple-injection, and output-capacitor networks are rail-specific.

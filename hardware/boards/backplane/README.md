@@ -1,51 +1,36 @@
-# Backplane PCB
+# Legacy backplane project
 
-KiCad project for the mini-rack power backplane. The board is being reconciled
-with `backplane-prototype` and `backplane-backpack`; the prototype dimensions,
-connector footprints, and placement are the mechanical authority, while the
-carrier is the electrical authority where the designs overlap.
+This directory contains the superseded split-backplane design. It remains in
+the repository as design history and is not a manufacturing source.
 
-## Reconciliation decisions
+The active reconciliation is implemented in
+`../backplane-prototype/backplane-prototype.kicad_sch`. That project uses the
+prototype PCB as the mechanical authority and the carrier as the electrical
+authority where the boards overlap.
 
-- Use CAN-FD between the backplane and every carrier. Do not carry forward the
-  former per-slot I2C mux or its ESD parts. Backplane I2C is local only between
-  the STM32 and the board current sensor.
-- Use the carrier's STM32 and TCAN3413 CAN-FD transceiver choices.
-- Generate both `+3V3` and the 3-wire fan's `+12V` rail with separate
-  **LM5164DDAR** converters, LCSC/JLCPCB **C477928**.
-- Use **PSPMAA0805-101M-ANP**, 100 uH, LCSC/JLCPCB **C2962892**, as the common
-  inductor for both backplane converters. Each rail still requires its own
-  feedback, RON, ripple-injection, and capacitor calculations.
+The active design decisions are:
 
-### Assembly quote checkpoint
+- one combined backplane/controller PCB with six carrier slots;
+- CAN-FD to every carrier, with I2C local only between the backplane STM32 and
+  INA237 current sensor;
+- the carrier's STM32C092GCU6, TCAN3413, INA237, CAN-protection parts, slot
+  connector/pinout, and WS2812B-2020-V6 LED choice;
+- one protected external GND/CANL/CANH screw-terminal connection and optional
+  120 ohm termination, with no duplicate backplane ESD network per slot;
+- separate LM5164DDAR/C477928 converters for 3.3 V and the 3-wire fan's 12 V
+  rail; and
+- PSPMAA0805-101M-ANP/C2962892 100 uH as the common regulator inductor.
+
+## Assembly quote checkpoint
 
 During the first JLCPCB assembly quote, explicitly confirm whether C2962892 or
-the resulting board construction requires a PCB assembly fixture. The live
-C2962892 part page does not currently show a fixture warning, so no fixture
-requirement is assumed at design time.
+the resulting board construction requires a PCB assembly fixture. Continue
+with the selected part for design and quoting; revisit it only if the quote
+actually requires a fixture.
 
-- If no fixture is required, retain C2962892 and subsequently update the
-  carrier housekeeping converter to LM5164DDAR/C477928 with C2962892 so the
-  regulator and inductor setup fees are consolidated across boards.
-- If a fixture is required, revisit the common inductor choice before changing
-  the carrier.
-
-This is a quote-stage verification item, not a reason to block the current
-backplane design.
-
-## Historical project responsibilities
-
-Responsibilities:
-
-- Host carrier board mating connectors.
-- Distribute DC power to each carrier slot.
-- Provide an I2C mux, expected to be TCA9548A-family, to isolate fixed-address carrier modules.
-- Carry the slot-status LED chain.
-- Define slot numbering and slot-local net naming.
-
-The controller/I2C-mux/LED arrangement represented by this board revision is
-historical and must not be used as a manufacturing source. The reconciliation
-work supersedes the earlier split backplane/backpack architecture.
+If no fixture is required, the carrier housekeeping converter may subsequently
+be migrated to the same LM5164DDAR/C477928 and C2962892 pair to consolidate
+regulator and inductor setup fees across boards.
 
 Relevant docs:
 
