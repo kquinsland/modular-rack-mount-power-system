@@ -1,149 +1,10 @@
 (kicad_sch
-	(version 20250114)
-	(generator "KiCAD-MCP-Server")
-	(uuid 737b54b9-ae2e-48c1-a4fc-cc6379d0614b)
+	(version 20260306)
+	(generator "eeschema")
+	(generator_version "10.0")
+	(uuid "737b54b9-ae2e-48c1-a4fc-cc6379d0614b")
 	(paper "A4")
 	(lib_symbols
-		(symbol "Device:R"
-			(pin_numbers
-				(hide yes)
-			)
-			(pin_names
-				(offset 0)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(in_pos_files yes)
-			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "R"
-				(at 2.032 0 90)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "R"
-				(at 0 0 90)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at -1.778 0 90)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Datasheet" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" "Resistor"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "ki_keywords" "R res resistor"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "ki_fp_filters" "R_*"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(symbol "R_0_1"
-				(rectangle
-					(start -1.016 -2.54)
-					(end 1.016 2.54)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "R_1_1"
-				(pin passive line
-					(at 0 3.81 270)
-					(length 1.27)
-					(name ""
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 0 -3.81 90)
-					(length 1.27)
-					(name ""
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "Device:C"
 			(pin_numbers
 				(hide yes)
@@ -300,13 +161,22 @@
 			(embedded_fonts no)
 		)
 		(symbol "Device:LED"
-			(pin_numbers hide)
+			(pin_numbers
+				(hide yes)
+			)
 			(pin_names
-				(offset 1.016) hide)
+				(offset 1.016)
+				(hide yes)
+			)
+			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
 			(property "Reference" "D"
 				(at 0 2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -315,6 +185,8 @@
 			)
 			(property "Value" "LED"
 				(at 0 -2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -323,25 +195,44 @@
 			)
 			(property "Footprint" ""
 				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
 				(effects
 					(font
 						(size 1.27 1.27)
-					) hide)
+					)
+				)
 			)
-			(property "Datasheet" "~"
+			(property "Datasheet" ""
 				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
 				(effects
 					(font
 						(size 1.27 1.27)
-					) hide)
+					)
+				)
+			)
+			(property "Description" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
 			)
 			(symbol "LED_0_1"
 				(polyline
 					(pts
-						(xy -1.27 -1.27) (xy -1.27 1.27)
+						(xy -1.27 0) (xy 1.27 0)
 					)
 					(stroke
-						(width 0.254)
+						(width 0)
 						(type default)
 					)
 					(fill
@@ -350,10 +241,10 @@
 				)
 				(polyline
 					(pts
-						(xy -1.27 0) (xy 1.27 0)
+						(xy -1.27 -1.27) (xy -1.27 1.27)
 					)
 					(stroke
-						(width 0)
+						(width 0.254)
 						(type default)
 					)
 					(fill
@@ -411,6 +302,246 @@
 					)
 				)
 			)
+			(embedded_fonts no)
+		)
+		(symbol "Device:R"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "R"
+				(at 2.032 0 90)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "R"
+				(at 0 0 90)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at -1.778 0 90)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Resistor"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "R res resistor"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "R_*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "R_0_1"
+				(rectangle
+					(start -1.016 -2.54)
+					(end 1.016 2.54)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "R_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 1.27)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 1.27)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Mechanical:MountingHole"
+			(pin_names
+				(offset 1.016)
+			)
+			(exclude_from_sim no)
+			(in_bom no)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "H"
+				(at 0 5.08 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "MountingHole"
+				(at 0 3.175 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Mounting Hole without connection"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "mounting hole"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "MountingHole*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "MountingHole_0_1"
+				(circle
+					(center 0 0)
+					(radius 1.27)
+					(stroke
+						(width 1.27)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(embedded_fonts no)
 		)
 		(symbol "Mechanical:MountingHole_Pad"
 			(pin_numbers
@@ -535,263 +666,53 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Mechanical:MountingHole"
-			(pin_names
-				(offset 1.016)
-			)
-			(exclude_from_sim no)
-			(in_bom no)
-			(on_board yes)
-			(in_pos_files yes)
-			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "H"
-				(at 0 5.08 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "MountingHole"
-				(at 0 3.175 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Datasheet" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" "Mounting Hole without connection"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "ki_keywords" "mounting hole"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "ki_fp_filters" "MountingHole*"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(symbol "MountingHole_0_1"
-				(circle
-					(center 0 0)
-					(radius 1.27)
-					(stroke
-						(width 1.27)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 	)
-	(sheet
-		(at 40.0 40.0)
-		(size 80.0 45.0)
-		(fields_autoplaced yes)
-		(stroke
-			(width 0.0006)
-			(type default)
-		)
-		(fill
-			(color 0 0 0 0.0)
-		)
-		(uuid "077a6190-5781-45af-8c40-d2834d2d8f2c")
-		(property "Sheet name" "Power Input, Monitor and Regulators"
-			(at 42.54 38.73 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left bottom)
-			)
-		)
-		(property "Sheet file" "01_power_input.kicad_sch"
-			(at 42.54 86.27 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left bottom)
-			)
-		)
-	)
-	(sheet
-		(at 140.0 40.0)
-		(size 80.0 45.0)
-		(fields_autoplaced yes)
-		(stroke
-			(width 0.0006)
-			(type default)
-		)
-		(fill
-			(color 0 0 0 0.0)
-		)
-		(uuid "4275522b-7aaa-4a22-8d94-d30e15c87e30")
-		(property "Sheet name" "MCU and Local Control"
-			(at 142.54 38.73 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left bottom)
-			)
-		)
-		(property "Sheet file" "02_control.kicad_sch"
-			(at 142.54 86.27 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left bottom)
-			)
-		)
-	)
-	(sheet
-		(at 40.0 110.0)
-		(size 80.0 45.0)
-		(fields_autoplaced yes)
-		(stroke
-			(width 0.0006)
-			(type default)
-		)
-		(fill
-			(color 0 0 0 0.0)
-		)
-		(uuid "eb7e4e77-e42b-4b43-976a-f7a3e8147b95")
-		(property "Sheet name" "CAN-FD and Six Slots"
-			(at 42.54 108.73 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left bottom)
-			)
-		)
-		(property "Sheet file" "03_can_slots.kicad_sch"
-			(at 42.54 156.27 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left bottom)
-			)
-		)
-	)
-	(sheet
-		(at 140.0 110.0)
-		(size 80.0 45.0)
-		(fields_autoplaced yes)
-		(stroke
-			(width 0.0006)
-			(type default)
-		)
-		(fill
-			(color 0 0 0 0.0)
-		)
-		(uuid "5d5cc60b-4c39-4882-898d-1aa7068798ee")
-		(property "Sheet name" "Fan and Slot Status LEDs"
-			(at 142.54 108.73 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left bottom)
-			)
-		)
-		(property "Sheet file" "04_fan_status.kicad_sch"
-			(at 142.54 156.27 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left bottom)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Mechanical:MountingHole_Pad")
-		(at 44.45 180.34 0)
-		(unit 1)
-		(body_style 1)
+	(text "The routed backplane-prototype PCB is the mechanical authority. This replacement schematic is intentionally not synchronized to that PCB in this commit; component placement and high-current/CAN routing require a controlled follow-up pass."
 		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "59887702-101c-4c2e-ba0f-c842652c0667")
-		(property "Reference" "H1"
-			(at 44.45 180.0 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
+		(at 35 30 0)
+		(effects
+			(font
+				(size 1.1 1.1)
 			)
+			(justify left bottom)
 		)
-		(property "Value" "M2 CHASSIS"
-			(at 44.45 185.08 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
+		(uuid "4bea8760-e028-4c97-93d4-990dc02a5fa7")
+	)
+	(text "Prototype population: 24 V nominal, approximately 30 A total, 100 W USB-C output target per slot. Future characterization target: 48–50 V nominal and 5 A per slot; not a released rating until first-article validation."
+		(exclude_from_sim no)
+		(at 35 25 0)
+		(effects
+			(font
+				(size 1.1 1.1)
 			)
+			(justify left bottom)
 		)
-		(property "Footprint" "mini-rack-power:MountingHole_2.2mm_M2_Pad_Via_JLC"
-			(at 45 180 0)
+		(uuid "b02bf263-e57b-4de4-80c1-92d0f8d43c6d")
+	)
+	(text "CONSOLIDATED SIX-SLOT BACKPLANE"
+		(exclude_from_sim no)
+		(at 35 20 0)
+		(effects
+			(font
+				(size 2 2)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+		(uuid "bb3f4391-901d-4979-9dd2-f40c927e7302")
+	)
+	(global_label "GND"
+		(shape bidirectional)
+		(at 74.93 182.88 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "9e21c382-1a05-4587-8a6d-b32129d4ecc7")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 74.93 182.88 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -801,8 +722,19 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
-			(at 45 180 0)
+	)
+	(global_label "GND"
+		(shape bidirectional)
+		(at 134.62 182.88 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "ad02c3c4-1321-420b-acec-1c9be3b52f34")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 134.62 182.88 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -812,8 +744,19 @@
 				)
 			)
 		)
-		(property "Description" "Mounting Hole with connection"
-			(at 45 180 0)
+	)
+	(global_label "GND"
+		(shape bidirectional)
+		(at 44.45 182.88 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "b5901723-68f3-4718-9e7a-6976bc890f5a")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 44.45 182.88 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -823,14 +766,25 @@
 				)
 			)
 		)
-		(pin "1"
-			(uuid "9d3262b6-50a1-4a1d-9e43-790f42b57e51")
+	)
+	(global_label "GND"
+		(shape bidirectional)
+		(at 105.41 182.88 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
 		)
-		(instances
-			(project "backplane-prototype"
-				(path "/737b54b9-ae2e-48c1-a4fc-cc6379d0614b"
-					(reference "H1")
-					(unit 1)
+		(uuid "ca23bb5d-2936-4e74-81f2-31818e3f4e01")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 105.41 182.88 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
 				)
 			)
 		)
@@ -904,8 +858,84 @@
 		)
 		(instances
 			(project "backplane-prototype"
-				(path "/737b54b9-ae2e-48c1-a4fc-cc6379d0614b"
+				(path "/348cc909-6345-4013-9bef-98714057a65b"
 					(reference "H2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Mechanical:MountingHole_Pad")
+		(at 44.45 180.34 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "59887702-101c-4c2e-ba0f-c842652c0667")
+		(property "Reference" "H1"
+			(at 44.45 180 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "M2 CHASSIS"
+			(at 44.45 185.08 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "mini-rack-power:MountingHole_2.2mm_M2_Pad_Via_JLC"
+			(at 45 180 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 45 180 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Mounting Hole with connection"
+			(at 45 180 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "9d3262b6-50a1-4a1d-9e43-790f42b57e51")
+		)
+		(instances
+			(project "backplane-prototype"
+				(path "/348cc909-6345-4013-9bef-98714057a65b"
+					(reference "H1")
 					(unit 1)
 				)
 			)
@@ -980,8 +1010,227 @@
 		)
 		(instances
 			(project "backplane-prototype"
-				(path "/737b54b9-ae2e-48c1-a4fc-cc6379d0614b"
+				(path "/348cc909-6345-4013-9bef-98714057a65b"
 					(reference "H3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Mechanical:MountingHole")
+		(at 209.55 180.34 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "9cd918cb-d85a-4ab9-8892-c5310cc0b9c6")
+		(property "Reference" "H8"
+			(at 209.55 177.8 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "ToolingHole_1.152mm"
+			(at 209.55 182.88 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "mini-rack-power:MountingHole_JLCPCB_Tooling_1.152mm"
+			(at 210 180 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 210 180 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Mounting Hole without connection"
+			(at 210 180 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "backplane-prototype"
+				(path "/348cc909-6345-4013-9bef-98714057a65b"
+					(reference "H8")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Mechanical:MountingHole")
+		(at 180.34 180.34 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "a8ad9789-89f5-419e-962e-2fa2430f5df7")
+		(property "Reference" "H7"
+			(at 180.34 177.8 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "ToolingHole_1.152mm"
+			(at 180.34 182.88 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "mini-rack-power:MountingHole_JLCPCB_Tooling_1.152mm"
+			(at 180 180 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 180 180 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Mounting Hole without connection"
+			(at 180 180 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "backplane-prototype"
+				(path "/348cc909-6345-4013-9bef-98714057a65b"
+					(reference "H7")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Mechanical:MountingHole")
+		(at 240.03 180.34 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "ab247a4b-c756-4360-b98c-637f671c18be")
+		(property "Reference" "H9"
+			(at 240.03 177.8 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "ToolingHole_1.152mm"
+			(at 240.03 182.88 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "mini-rack-power:MountingHole_JLCPCB_Tooling_1.152mm"
+			(at 240 180 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 240 180 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Mounting Hole without connection"
+			(at 240 180 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "backplane-prototype"
+				(path "/348cc909-6345-4013-9bef-98714057a65b"
+					(reference "H9")
 					(unit 1)
 				)
 			)
@@ -1056,321 +1305,201 @@
 		)
 		(instances
 			(project "backplane-prototype"
-				(path "/737b54b9-ae2e-48c1-a4fc-cc6379d0614b"
+				(path "/348cc909-6345-4013-9bef-98714057a65b"
 					(reference "H5")
 					(unit 1)
 				)
 			)
 		)
 	)
-	(symbol
-		(lib_id "Mechanical:MountingHole")
-		(at 180.34 180.34 0)
-		(unit 1)
-		(body_style 1)
+	(sheet
+		(at 40 40)
+		(size 80 45)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
 		(dnp no)
-		(uuid "a8ad9789-89f5-419e-962e-2fa2430f5df7")
-		(property "Reference" "H7"
-			(at 180.34 177.8 0)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.0006)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "077a6190-5781-45af-8c40-d2834d2d8f2c")
+		(property "Sheetname" "Power Input, Monitor and Regulators"
+			(at 42.54 38.73 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left bottom)
 			)
 		)
-		(property "Value" "ToolingHole_1.152mm"
-			(at 180.34 182.88 0)
+		(property "Sheetfile" "01_power_input.kicad_sch"
+			(at 42.54 86.27 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-			)
-		)
-		(property "Footprint" "mini-rack-power:MountingHole_JLCPCB_Tooling_1.152mm"
-			(at 180 180 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 180 180 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Mounting Hole without connection"
-			(at 180 180 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
+				(justify left bottom)
 			)
 		)
 		(instances
 			(project "backplane-prototype"
-				(path "/737b54b9-ae2e-48c1-a4fc-cc6379d0614b"
-					(reference "H7")
-					(unit 1)
+				(path "/348cc909-6345-4013-9bef-98714057a65b"
+					(page "2")
 				)
 			)
 		)
 	)
-	(symbol
-		(lib_id "Mechanical:MountingHole")
-		(at 209.55 180.34 0)
-		(unit 1)
-		(body_style 1)
+	(sheet
+		(at 140 40)
+		(size 80 45)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
 		(dnp no)
-		(uuid "9cd918cb-d85a-4ab9-8892-c5310cc0b9c6")
-		(property "Reference" "H8"
-			(at 209.55 177.8 0)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.0006)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "4275522b-7aaa-4a22-8d94-d30e15c87e30")
+		(property "Sheetname" "MCU and Local Control"
+			(at 142.54 38.73 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left bottom)
 			)
 		)
-		(property "Value" "ToolingHole_1.152mm"
-			(at 209.55 182.88 0)
+		(property "Sheetfile" "02_control.kicad_sch"
+			(at 142.54 86.27 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-			)
-		)
-		(property "Footprint" "mini-rack-power:MountingHole_JLCPCB_Tooling_1.152mm"
-			(at 210 180 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 210 180 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Mounting Hole without connection"
-			(at 210 180 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
+				(justify left bottom)
 			)
 		)
 		(instances
 			(project "backplane-prototype"
-				(path "/737b54b9-ae2e-48c1-a4fc-cc6379d0614b"
-					(reference "H8")
-					(unit 1)
+				(path "/348cc909-6345-4013-9bef-98714057a65b"
+					(page "4")
 				)
 			)
 		)
 	)
-	(symbol
-		(lib_id "Mechanical:MountingHole")
-		(at 240.03 180.34 0)
-		(unit 1)
-		(body_style 1)
+	(sheet
+		(at 140 110)
+		(size 80 45)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
 		(dnp no)
-		(uuid "ab247a4b-c756-4360-b98c-637f671c18be")
-		(property "Reference" "H9"
-			(at 240.03 177.8 0)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.0006)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "5d5cc60b-4c39-4882-898d-1aa7068798ee")
+		(property "Sheetname" "Fan and Slot Status LEDs"
+			(at 142.54 108.73 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left bottom)
 			)
 		)
-		(property "Value" "ToolingHole_1.152mm"
-			(at 240.03 182.88 0)
+		(property "Sheetfile" "04_fan_status.kicad_sch"
+			(at 142.54 156.27 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-			)
-		)
-		(property "Footprint" "mini-rack-power:MountingHole_JLCPCB_Tooling_1.152mm"
-			(at 240 180 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 240 180 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Mounting Hole without connection"
-			(at 240 180 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
+				(justify left bottom)
 			)
 		)
 		(instances
 			(project "backplane-prototype"
-				(path "/737b54b9-ae2e-48c1-a4fc-cc6379d0614b"
-					(reference "H9")
-					(unit 1)
+				(path "/348cc909-6345-4013-9bef-98714057a65b"
+					(page "5")
 				)
 			)
 		)
 	)
-	(global_label "GND"
-		(at 44.45 182.88 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "b5901723-68f3-4718-9e7a-6976bc890f5a")
-	)
-	(text "CONSOLIDATED SIX-SLOT BACKPLANE"
+	(sheet
+		(at 40 110)
+		(size 80 45)
 		(exclude_from_sim no)
-		(at 35 20 0)
-		(effects
-			(font
-				(size 2 2)
-				(bold yes)
-			)
-			(justify left bottom)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.0006)
+			(type solid)
 		)
-		(uuid "bb3f4391-901d-4979-9dd2-f40c927e7302")
-	)
-	(text "Prototype population: 24 V nominal, approximately 30 A total, 100 W USB-C output target per slot. Future characterization target: 48–50 V nominal and 5 A per slot; not a released rating until first-article validation."
-		(exclude_from_sim no)
-		(at 35 25 0)
-		(effects
-			(font
-				(size 1.1 1.1)
-			)
-			(justify left bottom)
+		(fill
+			(color 0 0 0 0)
 		)
-		(uuid "b02bf263-e57b-4de4-80c1-92d0f8d43c6d")
-	)
-	(text "The routed backplane-prototype PCB is the mechanical authority. This replacement schematic is intentionally not synchronized to that PCB in this commit; component placement and high-current/CAN routing require a controlled follow-up pass."
-		(exclude_from_sim no)
-		(at 35 30 0)
-		(effects
-			(font
-				(size 1.1 1.1)
+		(uuid "eb7e4e77-e42b-4b43-976a-f7a3e8147b95")
+		(property "Sheetname" "CAN-FD and Six Slots"
+			(at 42.54 108.73 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
 			)
-			(justify left bottom)
 		)
-		(uuid "4bea8760-e028-4c97-93d4-990dc02a5fa7")
-	)
-	(global_label "GND"
-		(at 74.93 182.88 0)
-		(effects
-			(font
-				(size 1.27 1.27)
+		(property "Sheetfile" "03_can_slots.kicad_sch"
+			(at 42.54 156.27 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
 			)
-			(justify left)
 		)
-		(uuid "9e21c382-1a05-4587-8a6d-b32129d4ecc7")
-	)
-	(global_label "GND"
-		(at 105.41 182.88 0)
-		(effects
-			(font
-				(size 1.27 1.27)
+		(instances
+			(project "backplane-prototype"
+				(path "/348cc909-6345-4013-9bef-98714057a65b"
+					(page "3")
+				)
 			)
-			(justify left)
 		)
-		(uuid "ca23bb5d-2936-4e74-81f2-31818e3f4e01")
-	)
-	(global_label "GND"
-		(at 134.62 182.88 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "ad02c3c4-1321-420b-acec-1c9be3b52f34")
 	)
 	(sheet_instances
 		(path "/"
 			(page "1")
 		)
-		(path "/737b54b9-ae2e-48c1-a4fc-cc6379d0614b/077a6190-5781-45af-8c40-d2834d2d8f2c"
-			(page "2")
-		)
-		(path "/737b54b9-ae2e-48c1-a4fc-cc6379d0614b/4275522b-7aaa-4a22-8d94-d30e15c87e30"
-			(page "3")
-		)
-		(path "/737b54b9-ae2e-48c1-a4fc-cc6379d0614b/eb7e4e77-e42b-4b43-976a-f7a3e8147b95"
-			(page "4")
-		)
-		(path "/737b54b9-ae2e-48c1-a4fc-cc6379d0614b/5d5cc60b-4c39-4882-898d-1aa7068798ee"
-			(page "5")
-		)
 	)
+	(embedded_fonts no)
 )
