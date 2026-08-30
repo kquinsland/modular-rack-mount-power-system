@@ -10,8 +10,19 @@ Track the system and per-slot power assumptions here.
 | Carrier slot input target | Approximately 4.7 A | 100 W output at 90% efficiency is approximately 4.63 A input. |
 | Rev A carrier slots | 6 | Firmware/protocol logical capacity remains 8. |
 | USB-C PD policy ceiling | 100 W | Maximum 20 V, 5 A; no EPR or proprietary 7 A mode. |
-| Backpack logic rail | 3.3 V | Local LMR51610 supplies MCU, mux, CAN PHY, and status LED. |
-| Backpack fan rail | 12 V | Local LMR51610; final fan start/stall budget remains open. |
+| Backplane logic rail | 3.3 V | Local LM5164DDAR/C477928 supplies the MCU, current sensor, CAN PHY, and slot status LEDs. |
+| Backplane fan rail | 12 V | Separate LM5164DDAR/C477928; target load is one 3-wire fan at no more than 0.5 A, with first-article startup/stall testing required. |
+
+Both backplane converters use PSPMAA0805-101M-ANP, LCSC/JLCPCB C2962892,
+100 uH as their common inductor. Their feedback, RON, ripple-injection, and
+capacitor values remain rail-specific.
+
+At the first JLCPCB quote, confirm whether C2962892 or the completed board
+requires an assembly fixture. The live part page does not currently display a
+fixture warning. If the quote confirms that no fixture is required, the carrier
+housekeeping converter should subsequently be migrated to the same
+LM5164DDAR/C477928 and C2962892 pair. If a fixture is required, revisit the
+inductor selection before changing the carrier.
 
 ## Protection Checklist
 
