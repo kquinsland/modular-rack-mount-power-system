@@ -221,7 +221,7 @@ The housekeeping branch connects to `VCC` **before** the PD current shunt. There
 | Q2 | 1 | **2N7002** | **C8545** | SOT-23 | Fail-safe UVLO clamp |
 | Q3 | 1 | **2N7002** | **C8545** | SOT-23 | MCU enable inversion / fail-safe control |
 | RSH1 | 1 | **Milliohm HoLLR2512-3W-6mR-1%** | **C2985709** | 2512 | 6 mΩ shared current shunt |
-| DTVS1 | 1 | **JUXING SMCJ48A** | **C5861043** | SMC | Input TVS |
+| DTVS1 | 1 | **Hongjiacheng SMCJ48A** | **C19077611** | SMC | Input TVS |
 | D2 | 1 | **Nexperia PESD2CANFD27V-TR** | — | SOT-23 | CAN-FD bus ESD protection |
 | L1 | 1 | **Sunlord SWPA8040S680MT** | **C36418** | 8 × 8 mm | 68 µH buck inductor |
 | L3 | 1 | **TDK ACT1210D-101-2P-TL00** | **C3039743** | ACT1210 | CAN common-mode choke |
@@ -1024,8 +1024,8 @@ The V6 device is intended to operate directly from the 3.3 V rail, avoiding a lo
 Use:
 
 ```text
-DTVS1 = JUXING SMCJ48A
-LCSC C5861043
+DTVS1 = Hongjiacheng SMCJ48A
+LCSC C19077611
 ```
 
 Connection:
@@ -1948,7 +1948,7 @@ Current first-pass voltage margins, using the populated Rev-A values, are:
 
 | Check | Result |
 |---|---|
-| Populated D1 | JUXING `SMCJ48A`, LCSC `C5861043`: 48 V stand-off, 53.3 V minimum breakdown, 77.4 V maximum clamp at 19.4 A for the specified pulse waveform |
+| Populated D1 | Hongjiacheng `SMCJ48A`, LCSC `C19077611`: 48 V stand-off, 53.3 V minimum breakdown, 77.4 V maximum clamp at 19.4 A for the specified pulse waveform |
 | OVLO rising, nominal | `2.5 V × (110 kΩ + 5.1 kΩ) / 5.1 kΩ ≈ 56.4 V` |
 | OVLO rising, first-order component corners | Approximately **49.8 V to 63.3 V** using the datasheet's 2.25/2.75 V threshold limits and ±1% divider resistors; those IC limits are specified at 25 °C, so this is not yet a guaranteed full-temperature system limit |
 | Raw-VCC limiting part | INA237 at 85 V; U2 and Q1 are 100 V parts, and U3 is rated for 90 V operation / 108 V absolute maximum |
@@ -1964,8 +1964,9 @@ excessive sustained raw input.
 
 Before closing this release gate:
 
-- archive the exact JUXING `SMCJ48A` datasheet for populated D1 / LCSC
-  `C5861043`, rather than relying only on the generic TVS family name
+- retain the archived exact Hongjiacheng `SMCJ48A` family datasheet for
+  populated D1 / LCSC `C19077611`, and confirm the received part marking and
+  polarity during incoming inspection
 - measure D1 current and temperature during sustained 48 V, 49 V, and 50 V
   operation; replace D1 or narrow the supported range if it does not remain
   acceptably cool
@@ -2188,9 +2189,9 @@ The carrier datasheet audit found that exact local PDFs are still missing for
 the R1 shunt and C8 `CL21A226MAQNNNE`. The existing Samsung
 `CL21A226MAYNNNE.pdf` is close but is not the exact populated C8 suffix. Local
 manufacturer data is now present for LM5163, INA237, IPB020N10N5LF, and the
-JUXING SMCJ48A family. Do not delete apparently unrelated archive files solely
-because they are unused by the carrier; several are used by the
-backplane/backpack designs.
+populated Hongjiacheng SMCJ48A family. Do not delete apparently unrelated
+archive files solely because they are unused by the carrier; several are used
+by the backplane/backpack designs.
 
 ---
 

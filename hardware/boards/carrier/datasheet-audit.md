@@ -28,8 +28,8 @@ are listed separately from assembly-populated parts.
 
 ## Adequate local coverage
 
-- D1: JUXING `SMCJ48A.pdf` is the manufacturer catalog covering the populated
-  `SMCJ48A`, LCSC `C5861043`.
+- D1: Hongjiacheng `SMCJ48A.pdf` is the exact manufacturer family datasheet
+  covering the populated `SMCJ48A`, LCSC `C19077611`.
 - D2: Nexperia `PESD2CANFD27V.pdf`; the populated `-TR` suffix appears to be
   packaging.
 - L1: Sunlord `SWPA8040S680MT.pdf`.
@@ -64,6 +64,9 @@ are listed separately from assembly-populated parts.
 Do not delete these merely because the carrier does not use them. Repository
 searches show that most serve another board or historical design:
 
+- `JUXING/SMCJ48A.pdf` documents the previously selected D1 alternate. The
+  populated carrier part is now Hongjiacheng `C19077611`, whose exact family
+  datasheet is archived separately.
 - `TI/LMR516xx.pdf` must remain for the backpack's populated
   `LMR51610YDBVR` regulators. `TI/LM5163.pdf` is the carrier U2 reference;
   LM5163 is not a substitute for LMR51610.
