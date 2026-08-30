@@ -67,27 +67,38 @@ backplane. They use 2.2 kohm pull-ups to 3.3 V. No I2C signal reaches a carrier
 slot, and the old TCA9548A mux, PCA9554 expander, slot pull-ups, and slot I2C ESD
 parts are not used.
 
-## Fan
+## Fans
 
-`J9` uses KiCad's vertical 2.54 mm 3-wire fan-header footprint. The exact
-purchasable header MPN is not yet selected and must be checked against that
-footprint before quoting.
+`J9` and `J11` use KiCad's vertical 2.54 mm 3-wire fan-header footprint. The
+exact purchasable header MPN is not yet selected and must be checked against
+that footprint before quoting. Each connector has an independent high-side
+supply-PWM switch and tach input.
 
-| Pin | Signal | Direction | Notes |
+| Pin | `J9` signal | `J11` signal | Notes |
 | ---: | --- | --- | --- |
-| 1 | `GND` | Backplane to fan | Fan return. |
-| 2 | `FAN_12V_SW` | Backplane to fan | Q1 high-side supply-PWM switched 12 V. |
-| 3 | `FAN_TACH` | Fan to backplane | Open-collector tach input with 10 kohm pull-up to 3.3 V. |
+| 1 | `GND` | `GND` | Fan return. |
+| 2 | `FAN_12V_SW` | `FAN2_12V_SW` | Independently switched 12 V from Q1 or Q3. |
+| 3 | `FAN_TACH` | `FAN2_TACH` | Open-collector tach input with a 10 kohm pull-up to 3.3 V. |
 
-The interface supports 3-wire fans only. It does not provide the fourth control
-wire used by 4-wire PWM fans. The working fan-rail design target is one fan at
-no more than 0.5 A, subject to first-article startup and stall-current tests.
+The interfaces support 3-wire fans only. They do not provide the fourth control
+wire used by 4-wire PWM fans. Both connectors share the 1 A LM5164 12 V rail;
+combined continuous current, simultaneous startup, and stall behavior require
+first-article validation.
 
-## Slot Status LEDs
+## External Temperature Sensor
 
-`D2` through `D7` are WS2812B-2020-V6, LCSC `C52917434`, one per physical
-slot. The chain is driven from STM32 `PB8` through `R16` and has one 100 nF
-local bypass capacitor per LED.
+`J12` is a standard vertical 2.54 mm 1x3 header for an externally powered
+DS18B20:
+
+| Pin | Signal | Notes |
+| ---: | --- | --- |
+| 1 | `GND` | Sensor return. |
+| 2 | `DS18B20_DATA` | 1-Wire DQ to STM32 PB8. |
+| 3 | `+3V3` | External sensor supply. |
+
+`R24` is a 4.7 kohm pull-up from DQ to 3.3 V. This is the three-wire external-
+supply arrangement; no parasite-power strong-pull-up circuit is provided. Any
+cable-end bypass capacitor should be placed next to the sensor.
 
 ## SWD
 

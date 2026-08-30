@@ -1613,7 +1613,7 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "SWD J10 (TC2030): 1 VTref, 2 SWDIO, 3 nRESET, 4 SWCLK, 5 GND, 6 NC. PB8 drives the six-LED chain through R16."
+	(text "SWD J10 (TC2030): 1 VTref, 2 SWDIO, 3 nRESET, 4 SWCLK, 5 GND, 6 NC. PA6/PA7 provide TIM3 fan-2 PWM/tach; PB8 is the DS18B20 1-Wire bus."
 		(exclude_from_sim no)
 		(at 20 27.5 0)
 		(effects
@@ -1687,17 +1687,53 @@
 		(at 101.6 80.01)
 		(uuid "95b5385c-eceb-4f8a-925a-8a6ea4a5ef3e")
 	)
-	(no_connect
-		(at 137.16 87.63)
-		(uuid "aa905df1-d9a0-4073-affa-cae58ebf62cf")
+	(global_label "FAN2_PWM"
+		(shape bidirectional)
+		(at 137.16 87.63 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "db6b7f14-006b-459a-9af0-0954a4d78aad")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 137.16 87.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 	)
 	(no_connect
 		(at 137.16 82.55)
 		(uuid "b16d3a5b-7930-47fe-a2a5-9c76051a0f7c")
 	)
-	(no_connect
-		(at 137.16 90.17)
-		(uuid "c0cceed4-9c6e-4cfa-bced-26274159b16c")
+	(global_label "FAN2_TACH"
+		(shape bidirectional)
+		(at 137.16 90.17 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "9da7a90d-6e99-42b0-84d8-8fe975569e65")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 137.16 90.17 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 	)
 	(no_connect
 		(at 137.16 92.71)
@@ -1723,25 +1759,27 @@
 		)
 		(uuid "4490e935-4928-42d8-b57a-36ed582559eb")
 	)
-	(label "LED_DATA_RAW"
-		(at 101.6 105.41 0)
+	(global_label "DS18B20_DATA"
+		(shape bidirectional)
+		(at 101.6 105.41 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left bottom)
+			(justify right)
 		)
-		(uuid "786d4ce6-fc9c-4f79-ac82-67fac78d924a")
-	)
-	(label "LED_DATA_RAW"
-		(at 176.53 129.54 180)
-		(effects
-			(font
-				(size 1.27 1.27)
+		(uuid "0170be90-e41a-4d2f-9e37-b07df63df6a6")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 101.6 105.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
-			(justify right bottom)
 		)
-		(uuid "80f9c127-2424-4276-badf-f7a769756248")
 	)
 	(label "SWCLK"
 		(at 67.31 115.57 180)
@@ -2001,28 +2039,6 @@
 			)
 		)
 	)
-	(global_label "LED_DATA"
-		(shape bidirectional)
-		(at 190.5 59.69 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "90d706e5-7131-48c6-9069-754f119ab285")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 190.5 59.69 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
 	(global_label "PGOOD_12V"
 		(shape bidirectional)
 		(at 137.16 80.01 0)
@@ -2101,28 +2117,6 @@
 		(uuid "9a8eaa71-efb5-447b-962a-495ce4e1ee5a")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 201.93 44.45 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "LED_DATA"
-		(shape bidirectional)
-		(at 184.15 129.54 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "a34023c1-3e92-472f-95fc-f82301fa194d")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 184.15 129.54 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2535,82 +2529,6 @@
 	)
 	(symbol
 		(lib_id "Connector:TestPoint")
-		(at 190.5 59.69 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp yes)
-		(uuid "27e49864-502f-41ce-b338-784b7ff62506")
-		(property "Reference" "TP11"
-			(at 190 63.5 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "LED_DATA"
-			(at 190 64.77 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
-			(at 195.08 60 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 195.08 60 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "test point"
-			(at 190 60 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "89fc90c1-5a33-4dc5-a296-15e251001409")
-		)
-		(instances
-			(project "backplane-prototype"
-				(path "/348cc909-6345-4013-9bef-98714057a65b/4275522b-7aaa-4a22-8d94-d30e15c87e30"
-					(reference "TP11")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:TestPoint")
 		(at 214.63 59.69 0)
 		(unit 1)
 		(body_style 1)
@@ -2756,129 +2674,6 @@
 			(project "backplane-prototype"
 				(path "/348cc909-6345-4013-9bef-98714057a65b/4275522b-7aaa-4a22-8d94-d30e15c87e30"
 					(reference "TP12")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 180.34 129.54 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "730ef561-7028-4d1e-84b0-bde7a9b2a1b7")
-		(property "Reference" "R16"
-			(at 180 127 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "100R"
-			(at 180 125.73 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 180 131.778 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 180 130 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 180 130 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "0603WAF1000T5E"
-			(at 180 130 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "UNI-ROYAL (Uniroyal Elec)"
-			(at 180 130 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C22775"
-			(at 180 130 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Tolerance" "1%"
-			(at 180 130 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "845b3989-06aa-4cfd-bd55-688c6d007523")
-		)
-		(pin "2"
-			(uuid "46adc9e0-44b8-4021-b9d1-88f4f7a98fac")
-		)
-		(instances
-			(project "backplane-prototype"
-				(path "/348cc909-6345-4013-9bef-98714057a65b/4275522b-7aaa-4a22-8d94-d30e15c87e30"
-					(reference "R16")
 					(unit 1)
 				)
 			)

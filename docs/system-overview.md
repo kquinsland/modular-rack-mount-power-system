@@ -1,9 +1,9 @@
 # System Overview
 
 The second-generation design combines the controller, six-slot power
-distribution, current monitoring, fan control, and status LEDs on one
-backplane. Each carrier has its own STM32 and CAN-FD transceiver; there is no
-backplane-to-carrier I2C bus.
+distribution, current monitoring, dual-fan control, and external temperature
+sensor interface on one backplane. Each carrier has its own STM32 and CAN-FD
+transceiver; there is no backplane-to-carrier I2C bus.
 
 ```mermaid
 flowchart LR
@@ -24,22 +24,23 @@ flowchart LR
     buck3 --> phy
     shunt --> monitor
     mcu <--> monitor
-    mcu --> leds[Six slot NeoPixels]
-    buck12 --> fan[3-wire fan high-side switch]
-    mcu --> fan
+    buck3 --> temp[DS18B20 external-supply header]
+    mcu <--> temp
+    buck12 --> fans[Two 3-wire fan high-side switches]
+    mcu --> fans
 ```
 
 ## Electrical Authority
 
 Where the boards overlap, the carrier is authoritative. The backplane therefore
 uses the carrier's STM32C092GCU6, TCAN3413DR, INA237AIDGSR, CAN choke and ESD
-parts, slot connector/pinout, and WS2812B-2020-V6 LED.
+parts, and slot connector/pinout.
 
 The prototype backplane PCB is authoritative for the board outline, airflow
 cutouts, mounting features, and six slot-connector footprints and placement.
-The consolidated schematic is complete, but it has not yet been synchronized
-into that PCB; the current PCB is a mechanical base, not a fabrication-ready
-electrical implementation.
+The consolidated circuitry is synchronized into the PCB and staged for
+placement and routing. The current PCB remains a mechanical/electrical work in
+progress, not a fabrication-ready implementation.
 
 ## Communications
 
@@ -66,11 +67,17 @@ protection, shunt/current path, connector and copper temperatures, transients,
 regulators, carrier hot-swap path, and full-system first-article behavior have
 been validated.
 
-## Cooling and Status
+## Cooling and Temperature
 
-A dedicated LM5164 generates 12 V for one 3-wire fan. The STM32 switches the
-fan supply through a high-side PMOS and reads its tach output. Six daisy-chained
-NeoPixels provide one status indicator per physical slot.
+A dedicated LM5164 generates 12 V for two independently switched 3-wire fan
+connectors. The STM32 controls each high-side PMOS and reads both tach outputs.
+The two channels share the regulator's 1 A output capability, so simultaneous
+startup and stall loading must be validated with the selected fans.
+
+An externally powered DS18B20 can be connected at J12 for remote air, heatsink,
+or chassis-temperature measurement. The STM32 also contains an ADC-connected
+internal die-temperature sensor, but that is not a substitute for a remotely
+placed sensor. The slot NeoPixels were removed to keep SMT assembly on one side.
 
 Firmware is intentionally outside the scope of this hardware reconciliation
 and will be redesigned after the second-generation hardware stabilizes.

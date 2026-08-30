@@ -10,8 +10,8 @@ Track the system and per-slot power assumptions here.
 | Carrier slot input target | Approximately 4.7 A | 100 W output at 90% efficiency is approximately 4.63 A input. |
 | Carrier slots | 6 | One unswitched high-current feed per physical slot. |
 | USB-C PD policy ceiling | 100 W | Maximum 20 V, 5 A; no EPR or proprietary 7 A mode. |
-| Backplane logic rail | 3.3 V | Local LM5164DDAR/C477928 supplies the MCU, current sensor, CAN PHY, and slot status LEDs. |
-| Backplane fan rail | 12 V | Separate LM5164DDAR/C477928; target load is one 3-wire fan at no more than 0.5 A, with first-article startup/stall testing required. |
+| Backplane logic rail | 3.3 V | Local LM5164DDAR/C477928 supplies the MCU, current sensor, CAN PHY, and externally powered DS18B20 header. |
+| Backplane fan rail | 12 V | Separate 1 A LM5164DDAR/C477928 feeding two independently switched 3-wire fan headers; combined continuous/startup/stall loading requires first-article testing. |
 | Aggregate current shunt | 1 mOhm | 30 mV and 0.9 W at 30 A; INA237 narrow-range configuration and Kelvin routing required. |
 
 Both backplane converters use PSPMAA0805-101M-ANP, LCSC/JLCPCB C2962892,

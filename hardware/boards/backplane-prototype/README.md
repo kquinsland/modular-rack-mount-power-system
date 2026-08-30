@@ -8,7 +8,7 @@ The existing PCB in this directory is the mechanical authority for the board
 outline, airflow cutouts, mounting holes, and six slot-connector footprints and
 placement. The carrier is the electrical authority for circuitry shared between
 the two boards, including the slot pinout, STM32, CAN transceiver, current
-sensor, and addressable LED choice.
+sensor, and slot connector pinout.
 
 ## Implemented schematic
 
@@ -19,8 +19,10 @@ The root schematic is divided into four sheets:
 - `02_control.kicad_sch`: STM32C092GCU6, reset/decoupling, SWD, and test points;
 - `03_can_slots.kicad_sch`: TCAN3413 CAN-FD interface, external CAN protection,
   optional termination, and the six carrier slots; and
-- `04_fan_status.kicad_sch`: 3-wire fan supply-PWM switch and one
-  WS2812B-2020-V6 status LED per slot.
+- `04_fan_status.kicad_sch`: two independent 3-wire fan supply-PWM switches and
+  tachometer inputs, plus an externally powered DS18B20 interface. Per-slot
+  addressable LEDs were removed to keep automated assembly on one side of the
+  PCB.
 
 Both regulators use LM5164DDAR, LCSC C477928, with
 PSPMAA0805-101M-ANP 100 uH inductors, LCSC C2962892. The output-specific
@@ -60,7 +62,17 @@ footprint. Their physical pinout is:
 4. CANL
 
 The slot references are `J1`, `J3`, `J4`, `J6`, `J7`, and `J8`, from slot 1
-through slot 6. `J9` is a 3-wire fan connection: GND, switched 12 V, and tach.
+through slot 6. `J9` and `J11` are independently controlled 3-wire fan
+connections: GND, switched 12 V, and tach.
+
+`J12` is the externally powered DS18B20 header:
+
+1. GND
+2. DQ (`DS18B20_DATA`, pulled up to 3.3 V through `R24`)
+3. +3V3
+
+The DS18B20 data signal uses STM32 `PB8`. Fan 2 uses `PA6`/`TIM3_CH1` for PWM
+and `PA7`/`TIM3_CH2` for tach capture.
 
 ## Power assumptions
 
@@ -74,6 +86,10 @@ That is a future characterization target, not a released rating, until the
 input-protection, current-path, thermal, transient, and first-article tests are
 complete.
 
+Both fan channels share the LM5164 12 V rail. Its combined continuous,
+startup, and stall load must be tested with the intended pair of fans; adding a
+second connector does not increase the regulator's 1 A output rating.
+
 ## PCB status
 
 The consolidated schematic is synchronized into the PCB, with functional groups
@@ -81,8 +97,8 @@ staged outside the authoritative outline for placement and routing. Do not
 fabricate the current board yet. The next PCB stage must:
 
 - retain the authoritative outline, cutouts, holes, and slot placement;
-- place the selected external CAN terminal and confirm the generic 2.54 mm
-  fan-header footprint against the sourced part;
+- place the selected external CAN terminal; confirm the two generic 2.54 mm
+  fan-header footprints and DS18B20 pin header against the sourced parts;
 - import and place the new control, CAN, monitor, fan, and regulator circuitry;
 - re-engineer the high-current pours, shunt Kelvin routing, regulator loops,
   CAN-FD trunk/stubs, grounding, thermal paths, and test access; and
