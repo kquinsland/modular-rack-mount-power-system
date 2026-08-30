@@ -28,6 +28,9 @@ Both regulators use LM5164DDAR, LCSC C477928, with
 PSPMAA0805-101M-ANP 100 uH inductors, LCSC C2962892. The output-specific
 feedback, on-time, ripple-injection, and capacitor networks remain separate.
 
+The PCB stackup specifies 2 oz outer copper, 1 oz inner copper, and an ENIG
+surface finish.
+
 The local I2C bus exists only between the STM32 and INA237. The old TCA9548A,
 PCA9554, per-slot I2C protection, and per-slot power-switch sheets are not part
 of this design. Carrier communication is CAN-FD.
@@ -64,6 +67,12 @@ footprint. Their physical pinout is:
 The slot references are `J1`, `J3`, `J4`, `J6`, `J7`, and `J8`, from slot 1
 through slot 6. `J9` and `J11` are independently controlled 3-wire fan
 connections: GND, switched 12 V, and tach.
+
+CAN differential nets use KiCad's `_P`/`_N` naming convention on both sides of
+the common-mode choke: `CAN_BUS_P`/`CAN_BUS_N` and
+`CAN_EXT_P`/`CAN_EXT_N`, with `P = CANH` and `N = CANL`. Custom DRC rules
+enforce a 0.20-0.30 mm gap, 5 mm maximum uncoupled length, and 1 mm maximum
+within-pair skew.
 
 `J12` is the externally powered DS18B20 header:
 

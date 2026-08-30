@@ -1719,7 +1719,7 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "SLOT CONNECTOR PINOUT: 1 VIN_BUS (power contact furthest from signal pins), 2 GND (power contact between pin 1 and the signals), 3 CANH, 4 CANL. Preserve the prototype PCB connector footprints and 19 mm slot spacing; verify mating-view continuity before fabrication."
+	(text "SLOT CONNECTOR PINOUT: 1 VIN_BUS (power contact furthest from signal pins), 2 GND (power contact between pin 1 and the signals), 3 CANH / CAN_BUS_P, 4 CANL / CAN_BUS_N. Preserve the prototype PCB connector footprints and 19 mm slot spacing; verify mating-view continuity before fabrication."
 		(exclude_from_sim no)
 		(at 20 115 0)
 		(effects
@@ -1730,7 +1730,7 @@
 		)
 		(uuid "415c46db-a155-42d0-ba46-9d08531f777a")
 	)
-	(text "J2 is XINLAIYA XY308-2.54-3P / LCSC C557686: pin 1 GND, pin 2 CANL, pin 3 CANH. J2 is intentionally DNP for the assembled PCB; the user solders it manually."
+	(text "J2 is XINLAIYA XY308-2.54-3P / LCSC C557686: pin 1 GND, pin 2 CANL / CAN_EXT_N, pin 3 CANH / CAN_EXT_P. J2 is intentionally DNP for the assembled PCB; the user solders it manually."
 		(exclude_from_sim no)
 		(at 20 22.5 0)
 		(effects
@@ -1775,7 +1775,7 @@
 		)
 		(uuid "bcb1df3b-1425-4ff2-aa5f-50ff77ecdeb1")
 	)
-	(label "CANL_EXT"
+	(label "CAN_EXT_N"
 		(at 185.42 54.61 0)
 		(effects
 			(font
@@ -1785,7 +1785,7 @@
 		)
 		(uuid "17d39f72-bd46-4874-802b-89c0021fda75")
 	)
-	(label "CANH_BUS"
+	(label "CAN_BUS_P"
 		(at 74.93 49.53 180)
 		(effects
 			(font
@@ -1795,7 +1795,7 @@
 		)
 		(uuid "1c200ed0-6c12-4451-a7a3-86bca1cd1476")
 	)
-	(label "CANL_EXT"
+	(label "CAN_EXT_N"
 		(at 123.19 58.42 180)
 		(effects
 			(font
@@ -1805,7 +1805,7 @@
 		)
 		(uuid "1defa424-1c1d-4339-9d40-945da2c76214")
 	)
-	(label "CANL_BUS"
+	(label "CAN_BUS_N"
 		(at 39.37 134.62 0)
 		(effects
 			(font
@@ -1815,7 +1815,7 @@
 		)
 		(uuid "2db65ab9-05e9-40a0-97a9-9d55f86c9fad")
 	)
-	(label "CANH_BUS"
+	(label "CAN_BUS_P"
 		(at 144.78 132.08 0)
 		(effects
 			(font
@@ -1825,7 +1825,7 @@
 		)
 		(uuid "3008dcec-b964-48dc-91f8-26c705f50b99")
 	)
-	(label "CANL_BUS"
+	(label "CAN_BUS_N"
 		(at 107.95 58.42 180)
 		(effects
 			(font
@@ -1835,7 +1835,7 @@
 		)
 		(uuid "31b3f35e-f255-4a11-b629-32b8822cf703")
 	)
-	(label "CANH_BUS"
+	(label "CAN_BUS_P"
 		(at 74.93 132.08 0)
 		(effects
 			(font
@@ -1845,7 +1845,7 @@
 		)
 		(uuid "3347ea4f-2954-49bb-a3ce-d3ad86cf6e2b")
 	)
-	(label "CANH_BUS"
+	(label "CAN_BUS_P"
 		(at 110.49 132.08 0)
 		(effects
 			(font
@@ -1855,7 +1855,7 @@
 		)
 		(uuid "3db8af2f-fb9f-4581-a871-f9829869f2b3")
 	)
-	(label "CANL_EXT"
+	(label "CAN_EXT_N"
 		(at 142.24 67.31 180)
 		(effects
 			(font
@@ -1865,7 +1865,7 @@
 		)
 		(uuid "40d9738d-3349-4de9-9f6c-8dbfe21e525f")
 	)
-	(label "CANL_BUS"
+	(label "CAN_BUS_N"
 		(at 180.34 134.62 0)
 		(effects
 			(font
@@ -1875,7 +1875,7 @@
 		)
 		(uuid "46857844-7ce1-4846-821a-f0f4b4e83492")
 	)
-	(label "CANH_EXT"
+	(label "CAN_EXT_P"
 		(at 142.24 62.23 0)
 		(effects
 			(font
@@ -1885,7 +1885,7 @@
 		)
 		(uuid "4e74293d-2782-41e2-8fad-7717847df215")
 	)
-	(label "CANH_BUS"
+	(label "CAN_BUS_P"
 		(at 107.95 50.8 180)
 		(effects
 			(font
@@ -1895,7 +1895,7 @@
 		)
 		(uuid "5290ea16-b092-4b39-aefe-280b49659dd5")
 	)
-	(label "CANH_BUS"
+	(label "CAN_BUS_P"
 		(at 224.79 44.45 90)
 		(effects
 			(font
@@ -1905,7 +1905,7 @@
 		)
 		(uuid "5ba13048-5fff-431e-98fb-4cb0222226e5")
 	)
-	(label "CANH_BUS"
+	(label "CAN_BUS_P"
 		(at 214.63 132.08 0)
 		(effects
 			(font
@@ -1915,7 +1915,7 @@
 		)
 		(uuid "7fa9fb7f-00ab-45a0-bc4e-b72191882635")
 	)
-	(label "CANL_BUS"
+	(label "CAN_BUS_N"
 		(at 138.43 82.55 180)
 		(effects
 			(font
@@ -1925,7 +1925,7 @@
 		)
 		(uuid "7fb0c43b-5a7f-4493-b17c-575a94619c65")
 	)
-	(label "CANL_BUS"
+	(label "CAN_BUS_N"
 		(at 144.78 134.62 0)
 		(effects
 			(font
@@ -1935,7 +1935,7 @@
 		)
 		(uuid "93fa4bf3-2f26-4ae2-8e50-8911778fb648")
 	)
-	(label "CANH_BUS"
+	(label "CAN_BUS_P"
 		(at 110.49 87.63 90)
 		(effects
 			(font
@@ -1945,7 +1945,7 @@
 		)
 		(uuid "9fd9f1e0-7957-46e6-a59b-fa27eac7e746")
 	)
-	(label "CANL_BUS"
+	(label "CAN_BUS_N"
 		(at 214.63 134.62 0)
 		(effects
 			(font
@@ -1955,7 +1955,7 @@
 		)
 		(uuid "a1771dbf-02ba-463d-8c0e-992927becada")
 	)
-	(label "CANH_EXT"
+	(label "CAN_EXT_P"
 		(at 123.19 50.8 180)
 		(effects
 			(font
@@ -1965,7 +1965,7 @@
 		)
 		(uuid "a4f9162a-e1ce-4a6a-a394-c064ffe1a344")
 	)
-	(label "CANH_BUS"
+	(label "CAN_BUS_P"
 		(at 180.34 132.08 0)
 		(effects
 			(font
@@ -1975,7 +1975,7 @@
 		)
 		(uuid "aa15c677-51be-4bbc-ade3-84addcb003a1")
 	)
-	(label "CANL_BUS"
+	(label "CAN_BUS_N"
 		(at 74.93 134.62 0)
 		(effects
 			(font
@@ -1985,7 +1985,7 @@
 		)
 		(uuid "b0b90354-f1f3-4548-b8e9-03bfc6918af1")
 	)
-	(label "CANL_BUS"
+	(label "CAN_BUS_N"
 		(at 237.49 44.45 90)
 		(effects
 			(font
@@ -1995,7 +1995,7 @@
 		)
 		(uuid "b3ba6242-d307-4005-8e61-94715584ed24")
 	)
-	(label "CANL_BUS"
+	(label "CAN_BUS_N"
 		(at 110.49 134.62 0)
 		(effects
 			(font
@@ -2005,7 +2005,7 @@
 		)
 		(uuid "ba3b4f19-d870-4514-9187-b263398efecb")
 	)
-	(label "CANL_BUS"
+	(label "CAN_BUS_N"
 		(at 74.93 59.69 180)
 		(effects
 			(font
@@ -2015,7 +2015,7 @@
 		)
 		(uuid "c1d0d586-3ba5-4765-a8f2-8d55fa1b8dfb")
 	)
-	(label "CANL_EXT"
+	(label "CAN_EXT_N"
 		(at 262.89 44.45 90)
 		(effects
 			(font
@@ -2025,7 +2025,7 @@
 		)
 		(uuid "c2377e50-c25d-463e-9b76-278c62682707")
 	)
-	(label "CANH_EXT"
+	(label "CAN_EXT_P"
 		(at 185.42 57.15 0)
 		(effects
 			(font
@@ -2045,7 +2045,7 @@
 		)
 		(uuid "d03d11a0-504a-4bb1-8a86-92a5a2207667")
 	)
-	(label "CANH_BUS"
+	(label "CAN_BUS_P"
 		(at 39.37 132.08 0)
 		(effects
 			(font
@@ -2055,7 +2055,7 @@
 		)
 		(uuid "dcc48089-75b6-4a5b-b5a0-481b98c95c38")
 	)
-	(label "CANH_EXT"
+	(label "CAN_EXT_P"
 		(at 250.19 44.45 90)
 		(effects
 			(font
@@ -2580,7 +2580,7 @@
 				)
 			)
 		)
-		(property "Value" "CANL_BUS"
+		(property "Value" "CAN_BUS_N"
 			(at 237.5 29.21 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2656,7 +2656,7 @@
 				)
 			)
 		)
-		(property "Value" "CANL_EXT"
+		(property "Value" "CAN_EXT_N"
 			(at 262.5 29.21 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3507,7 +3507,7 @@
 				)
 			)
 		)
-		(property "Value" "CANH_EXT"
+		(property "Value" "CAN_EXT_P"
 			(at 250 29.21 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3979,7 +3979,7 @@
 				)
 			)
 		)
-		(property "Value" "CANH_BUS"
+		(property "Value" "CAN_BUS_P"
 			(at 225 29.21 0)
 			(show_name no)
 			(do_not_autoplace no)

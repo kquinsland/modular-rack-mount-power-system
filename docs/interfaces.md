@@ -19,18 +19,22 @@ connections must be Kelvin-routed directly to the shunt pads.
 
 ## External CAN-FD
 
-Backplane `J2` is a generic three-position screw-terminal symbol. Its exact
-mechanical series and footprint are intentionally deferred until PCB placement.
+Backplane `J2` uses the XINLAIYA XY308-2.54-3P footprint, LCSC `C557686`, and
+is intentionally DNP for manual installation.
 
 | Pin | Signal | Direction | Notes |
 | ---: | --- | --- | --- |
 | 1 | `GND` | Shared | CAN reference/return. |
-| 2 | `CANL_EXT` | Bidirectional | External CAN low. |
-| 3 | `CANH_EXT` | Bidirectional | External CAN high. |
+| 2 | `CAN_EXT_N` | Bidirectional | External CAN low (`CANL`). |
+| 3 | `CAN_EXT_P` | Bidirectional | External CAN high (`CANH`). |
 
 `D1` provides connector-side CAN ESD protection and `L3` is the boundary common-
 mode choke. `SJ1` enables `R17`, the normally-open 120 ohm termination, only
 when the backplane is installed at a physical end of the CAN bus.
+
+Both sides of `L3` use KiCad's paired-net naming convention: `P` is `CANH` and
+`N` is `CANL`. The PCB rules require 0.20-0.30 mm pair gap (0.25 mm preferred),
+no more than 5 mm uncoupled length, and no more than 1 mm within-pair skew.
 
 The TCAN3413 standby input is tied low, so the transceiver is permanently
 active whenever 3.3 V is present. MCU-controlled standby is not required.
@@ -53,8 +57,8 @@ The six carrier slots use the carrier-authoritative AMASS
 | ---: | --- | --- | --- |
 | 1 | `VIN_BUS` | Backplane to carrier | Unswitched high-current slot supply. |
 | 2 | `GND` | Shared | Power and CAN return. |
-| 3 | `CANH_BUS` | Bidirectional | Shared CAN-FD high. |
-| 4 | `CANL_BUS` | Bidirectional | Shared CAN-FD low. |
+| 3 | `CAN_BUS_P` | Bidirectional | Shared CAN-FD high (`CANH`). |
+| 4 | `CAN_BUS_N` | Bidirectional | Shared CAN-FD low (`CANL`). |
 
 There is no per-slot backplane ESD network. The backplane protects its external
 CAN connector, and each carrier retains its own connector-side CAN protection.
