@@ -1719,7 +1719,7 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "SLOT CONNECTOR PINOUT — verify by mating-view continuity before fabrication: 1 VIN_BUS, 2 GND, 3 CANH, 4 CANL. Preserve the prototype PCB connector footprints and 19 mm slot spacing."
+	(text "SLOT CONNECTOR PINOUT: 1 VIN_BUS (power contact furthest from signal pins), 2 GND (power contact between pin 1 and the signals), 3 CANH, 4 CANL. Preserve the prototype PCB connector footprints and 19 mm slot spacing; verify mating-view continuity before fabrication."
 		(exclude_from_sim no)
 		(at 20 115 0)
 		(effects
@@ -1730,7 +1730,7 @@
 		)
 		(uuid "415c46db-a155-42d0-ba46-9d08531f777a")
 	)
-	(text "J2 is deliberately a 3-position screw-terminal symbol: pin 1 GND, pin 2 CANL, pin 3 CANH. Select the exact small terminal footprint during PCB placement."
+	(text "J2 is XINLAIYA XY308-2.54-3P / LCSC C557686: pin 1 GND, pin 2 CANL, pin 3 CANH. J2 is intentionally DNP for the assembled PCB; the user solders it manually."
 		(exclude_from_sim no)
 		(at 20 22.5 0)
 		(effects
@@ -4424,7 +4424,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp no)
+		(dnp yes)
 		(uuid "e3e2db7b-735b-4211-99a9-d285a6931f89")
 		(property "Reference" "J2"
 			(at 190 49.53 0)
@@ -4436,7 +4436,7 @@
 				)
 			)
 		)
-		(property "Value" "EXTERNAL CAN (GND / CANL / CANH)"
+		(property "Value" "XY308-2.54-3P / EXTERNAL CAN"
 			(at 190 48.26 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4446,7 +4446,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "mini-rack-power:TerminalBlock_Xinya_XY308-2.54-3P_1x03_P2.54mm_Horizontal"
 			(at 190 55 0)
 			(hide yes)
 			(show_name no)
@@ -4457,7 +4457,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "../../../docs/data-sheets/XINLAIYA/XY308-2.54.pdf"
 			(at 190 55 0)
 			(hide yes)
 			(show_name no)
@@ -4468,7 +4468,7 @@
 				)
 			)
 		)
-		(property "Description" "Generic screw terminal, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"
+		(property "Description" "XINLAIYA XY308-2.54-3P, 3-position 2.54 mm side-entry screw terminal, 6 A 150 V"
 			(at 190 55 0)
 			(hide yes)
 			(show_name no)
@@ -4479,7 +4479,7 @@
 				)
 			)
 		)
-		(property "MPN" "TBD — small 3-position screw terminal"
+		(property "MPN" "XY308-2.54-3P"
 			(at 190 55 0)
 			(hide yes)
 			(show_name no)
@@ -4490,7 +4490,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" "TBD"
+		(property "Manufacturer" "XINLAIYA"
 			(at 190 55 0)
 			(hide yes)
 			(show_name no)
@@ -4501,7 +4501,7 @@
 				)
 			)
 		)
-		(property "LCSC" ""
+		(property "LCSC" "C557686"
 			(at 190 55 0)
 			(hide yes)
 			(show_name no)
@@ -4512,7 +4512,7 @@
 				)
 			)
 		)
-		(property "Package" "TBD during PCB placement"
+		(property "Package" "THT, 3-position, P2.54 mm, side entry"
 			(at 190 55 0)
 			(hide yes)
 			(show_name no)
@@ -4523,7 +4523,7 @@
 				)
 			)
 		)
-		(property "Population" "POP after terminal selection"
+		(property "Population" "DNP — user-installed"
 			(at 190 55 0)
 			(hide yes)
 			(show_name no)

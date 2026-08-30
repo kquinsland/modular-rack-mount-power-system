@@ -3,7 +3,7 @@
 	(generator "pcbnew")
 	(generator_version "10.0")
 	(layer "F.Cu")
-	(descr "THT footprint for Amass XT30U(2+2)-F.G.B vertical/180-degree female connector. Mating-face outline imported from hardware/mechanical/exports/XT30(2+2).dxf; power and signal contacts use plated through-holes.")
+	(descr "THT footprint for Amass XT30U(2+2)-F.G.B vertical/180-degree female connector. Pin 1 is the power contact furthest from signal pins 3/4; pin 2 is the power contact between pin 1 and the signal contacts. Mating-face outline imported from hardware/mechanical/exports/XT30(2+2).dxf; power and signal contacts use plated through-holes.")
 	(tags "Amass XT30 XT30U 2+2 female vertical 180-degree through-hole power signal")
 	(property "Reference" "REF**"
 		(at 0 -5 0)
@@ -192,7 +192,7 @@
 			)
 		)
 	)
-	(pad "1" thru_hole circle
+	(pad "2" thru_hole circle
 		(at -0.679376 0)
 		(size 4 4)
 		(drill 2.65)
@@ -200,12 +200,13 @@
 		(remove_unused_layers no)
 		(uuid "224cadee-9731-45af-92d4-39bdbd35bffe")
 	)
-	(pad "2" thru_hole circle
+	(pad "1" thru_hole roundrect
 		(at 4.320624 0)
 		(size 4 4)
 		(drill 2.65)
 		(layers "*.Cu" "*.Mask")
 		(remove_unused_layers no)
+		(roundrect_rratio 0.1)
 		(uuid "3e74f642-ee64-4abd-bfa6-694d283e5d7e")
 	)
 	(pad "3" thru_hole circle

@@ -37,23 +37,25 @@ of this design. Carrier communication is CAN-FD.
 1. GND
 2. VIN_RAW
 
-`J2` is deliberately a generic three-position screw-terminal symbol:
+`J2` is a XINLAIYA XY308-2.54-3P three-position screw terminal, LCSC
+`C557686`:
 
 1. GND
 2. CANL
 3. CANH
 
-Its exact purchasable connector and footprint will be selected during PCB
-placement. D1 and L3 protect only this external CAN boundary. Each carrier has
-its own connector-side CAN protection, so the backplane does not duplicate ESD
-parts at every slot. `SJ1` and `R17` provide normally-open 120 ohm termination
-for use only when this backplane is at a physical bus end.
+`J2` is intentionally marked DNP and excluded from pick-and-place output because
+the user installs it by hand after assembly. D1 and L3 protect only this external
+CAN boundary. Each carrier has its own connector-side CAN protection, so the
+backplane does not duplicate ESD parts at every slot. `SJ1` and `R17` provide
+normally-open 120 ohm termination for use only when this backplane is at a
+physical bus end.
 
 The six carrier slots retain the authoritative combined XT30 plus two-signal
 footprint. Their physical pinout is:
 
-1. VIN_BUS
-2. GND
+1. VIN_BUS — power contact furthest from the two low-voltage signal contacts
+2. GND — power contact between pin 1 and the two low-voltage signal contacts
 3. CANH
 4. CANL
 
@@ -74,12 +76,13 @@ complete.
 
 ## PCB status
 
-The consolidated schematic has not yet been synchronized into the PCB. Do not
-fabricate the current board as the consolidated design. The next PCB stage must:
+The consolidated schematic is synchronized into the PCB, with functional groups
+staged outside the authoritative outline for placement and routing. Do not
+fabricate the current board yet. The next PCB stage must:
 
 - retain the authoritative outline, cutouts, holes, and slot placement;
-- select the exact external CAN terminal footprint and confirm the generic
-  2.54 mm fan-header footprint against the sourced part;
+- place the selected external CAN terminal and confirm the generic 2.54 mm
+  fan-header footprint against the sourced part;
 - import and place the new control, CAN, monitor, fan, and regulator circuitry;
 - re-engineer the high-current pours, shunt Kelvin routing, regulator loops,
   CAN-FD trunk/stubs, grounding, thermal paths, and test access; and
