@@ -80,8 +80,11 @@ within-pair skew.
 2. DQ (`DS18B20_DATA`, pulled up to 3.3 V through `R24`)
 3. +3V3
 
-The DS18B20 data signal uses STM32 `PB8`. Fan 2 uses `PA6`/`TIM3_CH1` for PWM
-and `PA7`/`TIM3_CH2` for tach capture.
+The DS18B20 data signal uses STM32 `PA15`. The local status NeoPixel uses `PB8`
+through a 100 ohm series resistor and has a dedicated 100 nF bypass capacitor.
+Fan 2 uses `PB4`/`TIM3_CH1` for PWM and `PB3`/`TIM3_CH2` for tach capture in
+the hardware pin allocation. Firmware that reserves TIM3 for timekeeping must
+instead treat these as GPIOs or move the time driver to another timer.
 
 ## Power assumptions
 

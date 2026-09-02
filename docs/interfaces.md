@@ -97,12 +97,15 @@ DS18B20:
 | Pin | Signal | Notes |
 | ---: | --- | --- |
 | 1 | `GND` | Sensor return. |
-| 2 | `DS18B20_DATA` | 1-Wire DQ to STM32 PB8. |
+| 2 | `DS18B20_DATA` | 1-Wire DQ to STM32 PA15. |
 | 3 | `+3V3` | External sensor supply. |
 
 `R24` is a 4.7 kohm pull-up from DQ to 3.3 V. This is the three-wire external-
 supply arrangement; no parasite-power strong-pull-up circuit is provided. Any
 cable-end bypass capacitor should be placed next to the sensor.
+
+The backplane status NeoPixel (`LED1`) is driven from STM32 `PB8` through a
+100 ohm series resistor and has a dedicated 100 nF local bypass capacitor.
 
 ## SWD
 
