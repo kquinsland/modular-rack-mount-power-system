@@ -1884,7 +1884,7 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "SWD J10 (TC2030): 1 VTref, 2 SWDIO, 3 nRESET, 4 SWCLK, 5 GND, 6 NC. PA6/PA7 carry I2C2 SDA/SCL; PA15 is the DS18B20 1-Wire bus; PB8 drives the status NeoPixel. Fan 1 uses PB4/PB3; Fan 2 uses PA0/PA1."
+	(text "SWD J10 (TC2030): 1 VTref, 2 SWDIO, 3 nRESET, 4 SWCLK, 5 GND, 6 NC. PA6/PA7 carry I2C2 SDA/SCL; PA15 is the DS18B20 1-Wire bus; PA1 drives the status NeoPixel. Fan 1 uses PB4/PB3; Fan 2 uses PA0/PB8."
 		(exclude_from_sim no)
 		(at 20 27.5 0)
 		(effects
@@ -2081,12 +2081,12 @@
 		(uuid "9590ad57-d834-4514-a19c-f0f8bde33b29")
 	)
 	(label "LED_DATA_RAW"
-		(at 87.63 105.41 180)
+		(at 137.16 74.93 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify right bottom)
+			(justify left bottom)
 		)
 		(uuid "a53a9fdf-acbf-491f-ab7e-cfb2f1275105")
 	)
@@ -2704,16 +2704,16 @@
 	)
 	(global_label "FAN2_TACH"
 		(shape bidirectional)
-		(at 137.16 74.93 0)
+		(at 87.63 105.41 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left)
+			(justify right)
 		)
 		(uuid "f61f4041-2a02-47f2-a57e-b49222091f46")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 137.16 74.93 0)
+			(at 87.63 105.41 180)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
