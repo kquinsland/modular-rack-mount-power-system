@@ -1884,7 +1884,7 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "SWD J10 (TC2030): 1 VTref, 2 SWDIO, 3 nRESET, 4 SWCLK, 5 GND, 6 NC. PB4/PB3 expose TIM3 fan-2 PWM/tach functions; PA15 is the DS18B20 1-Wire bus; PB8 drives the status NeoPixel."
+	(text "SWD J10 (TC2030): 1 VTref, 2 SWDIO, 3 nRESET, 4 SWCLK, 5 GND, 6 NC. PA6/PA7 carry I2C2 SDA/SCL; PA15 is the DS18B20 1-Wire bus; PB8 drives the status NeoPixel. Fan 1 uses PB4/PB3; Fan 2 uses PA0/PA1."
 		(exclude_from_sim no)
 		(at 20 27.5 0)
 		(effects
@@ -1931,20 +1931,20 @@
 		(uuid "2e72e2e3-e549-4287-8af1-6e2876f93e6b")
 	)
 	(no_connect
-		(at 137.16 87.63)
-		(uuid "4189e5f1-1e89-44c6-83ef-bd7333a1f1b3")
-	)
-	(no_connect
-		(at 137.16 90.17)
-		(uuid "4d5456dd-a2f6-49df-b3f4-8ab246640c4c")
-	)
-	(no_connect
 		(at 137.16 97.79)
 		(uuid "5724af12-3ee0-4651-b13b-5fce47189153")
 	)
 	(no_connect
 		(at 101.6 82.55)
 		(uuid "5d58b934-84c4-4857-9634-db27feb07202")
+	)
+	(no_connect
+		(at 101.6 100.33)
+		(uuid "562d278d-9092-44d9-8694-500d9233cfe5")
+	)
+	(no_connect
+		(at 101.6 102.87)
+		(uuid "3822177f-1d8e-40db-9734-1beda9303ded")
 	)
 	(no_connect
 		(at 137.16 85.09)
@@ -2198,16 +2198,16 @@
 	)
 	(global_label "I2C_SCL"
 		(shape bidirectional)
-		(at 101.6 100.33 180)
+		(at 137.16 90.17 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify right)
+			(justify left)
 		)
 		(uuid "1d103afc-0241-4951-b5a1-990291a5562b")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 101.6 100.33 0)
+			(at 137.16 90.17 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2242,16 +2242,16 @@
 	)
 	(global_label "I2C_SDA"
 		(shape bidirectional)
-		(at 101.6 102.87 180)
+		(at 137.16 87.63 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify right)
+			(justify left)
 		)
 		(uuid "3ee76f84-d325-43df-9c62-2dde5c2aa0ab")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 101.6 102.87 0)
+			(at 137.16 87.63 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)

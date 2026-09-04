@@ -31,7 +31,7 @@ feedback, on-time, ripple-injection, and capacitor networks remain separate.
 The PCB stackup specifies 2 oz outer copper, 1 oz inner copper, and an ENIG
 surface finish.
 
-The local I2C bus exists only between the STM32 and INA237. The old TCA9548A,
+The local I2C2 bus uses STM32 PA6/PA7 and exists only between the STM32 and INA237. The old TCA9548A,
 PCA9554, per-slot I2C protection, and per-slot power-switch sheets are not part
 of this design. Carrier communication is CAN-FD.
 
@@ -82,9 +82,11 @@ within-pair skew.
 
 The DS18B20 data signal uses STM32 `PA15`. The local status NeoPixel uses `PB8`
 through a 100 ohm series resistor and has a dedicated 100 nF bypass capacitor.
-Fan 2 uses `PB4`/`TIM3_CH1` for PWM and `PB3`/`TIM3_CH2` for tach capture in
-the hardware pin allocation. Firmware that reserves TIM3 for timekeeping must
-instead treat these as GPIOs or move the time driver to another timer.
+Fan 1 uses `PB4`/`TIM3_CH1` for PWM and `PB3`/`TIM3_CH2` for tach capture in
+the hardware pin allocation. Fan 2 uses `PA0`/`TIM2_CH1` for PWM and
+`PA1`/`TIM17_CH1` for tach capture. Firmware that reserves TIM3 for timekeeping
+must instead treat the Fan 1 pins as GPIOs or move the time driver to another
+timer.
 
 ## Power assumptions
 

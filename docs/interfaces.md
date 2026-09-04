@@ -66,8 +66,9 @@ The PCB layout must implement a short shared CAN trunk with short slot stubs.
 
 ## Local I2C
 
-`I2C_SDA` and `I2C_SCL` connect only the STM32C092GCU6 and INA237 on the
-backplane. They use 2.2 kohm pull-ups to 3.3 V. No I2C signal reaches a carrier
+`I2C_SDA` and `I2C_SCL` use STM32 PA6 and PA7 respectively on I2C2 and connect
+only the STM32C092GCU6 and INA237 on the backplane. They use 2.2 kohm pull-ups
+to 3.3 V. No I2C signal reaches a carrier
 slot, and the old TCA9548A mux, PCA9554 expander, slot pull-ups, and slot I2C ESD
 parts are not used.
 
