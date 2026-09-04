@@ -701,146 +701,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Device:R"
-			(pin_numbers
-				(hide yes)
-			)
-			(pin_names
-				(offset 0)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(in_pos_files yes)
-			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "R"
-				(at 2.032 0 90)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "R"
-				(at 0 0 90)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at -1.778 0 90)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Datasheet" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" "Resistor"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "ki_keywords" "R res resistor"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "ki_fp_filters" "R_*"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(symbol "R_0_1"
-				(rectangle
-					(start -1.016 -2.54)
-					(end 1.016 2.54)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "R_1_1"
-				(pin passive line
-					(at 0 3.81 270)
-					(length 1.27)
-					(name ""
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 0 -3.81 90)
-					(length 1.27)
-					(name ""
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "LED:WS2812B-2020"
 			(pin_names
 				(offset 0.254)
@@ -1931,20 +1791,20 @@
 		(uuid "2e72e2e3-e549-4287-8af1-6e2876f93e6b")
 	)
 	(no_connect
-		(at 137.16 97.79)
-		(uuid "5724af12-3ee0-4651-b13b-5fce47189153")
-	)
-	(no_connect
-		(at 101.6 82.55)
-		(uuid "5d58b934-84c4-4857-9634-db27feb07202")
+		(at 101.6 102.87)
+		(uuid "3822177f-1d8e-40db-9734-1beda9303ded")
 	)
 	(no_connect
 		(at 101.6 100.33)
 		(uuid "562d278d-9092-44d9-8694-500d9233cfe5")
 	)
 	(no_connect
-		(at 101.6 102.87)
-		(uuid "3822177f-1d8e-40db-9734-1beda9303ded")
+		(at 137.16 97.79)
+		(uuid "5724af12-3ee0-4651-b13b-5fce47189153")
+	)
+	(no_connect
+		(at 101.6 82.55)
+		(uuid "5d58b934-84c4-4857-9634-db27feb07202")
 	)
 	(no_connect
 		(at 137.16 85.09)
@@ -1972,7 +1832,7 @@
 	)
 	(wire
 		(pts
-			(xy 210.82 82.55) (xy 210.82 86.36)
+			(xy 210.82 78.74) (xy 210.82 86.36)
 		)
 		(stroke
 			(width 0)
@@ -2002,7 +1862,7 @@
 	)
 	(wire
 		(pts
-			(xy 190.5 82.55) (xy 210.82 82.55)
+			(xy 190.5 78.74) (xy 210.82 78.74)
 		)
 		(stroke
 			(width 0)
@@ -2029,6 +1889,16 @@
 			(type default)
 		)
 		(uuid "ce2d4a62-716b-4cba-80d6-9451deeb6b38")
+	)
+	(wire
+		(pts
+			(xy 190.5 78.74) (xy 190.5 82.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "dc179516-d9e5-44ac-9447-ae364fd03274")
 	)
 	(wire
 		(pts
@@ -2061,7 +1931,7 @@
 		(uuid "4490e935-4928-42d8-b57a-36ed582559eb")
 	)
 	(label "LED_DATA_RAW"
-		(at 175.26 90.17 180)
+		(at 182.88 90.17 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2286,7 +2156,7 @@
 	)
 	(global_label "+3V3"
 		(shape bidirectional)
-		(at 190.5 82.55 0)
+		(at 190.5 78.74 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2295,7 +2165,7 @@
 		)
 		(uuid "62995095-5544-4ff9-a6d5-35fa46586da9")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 190.5 82.55 0)
+			(at 190.5 78.74 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3203,118 +3073,6 @@
 			(project "backplane-prototype"
 				(path "/348cc909-6345-4013-9bef-98714057a65b/4275522b-7aaa-4a22-8d94-d30e15c87e30"
 					(reference "C19")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 179.07 90.17 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "8d2a13c2-25ad-48e3-a147-cecc8e4330e4")
-		(property "Reference" "R25"
-			(at 179.07 87.63 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "100R"
-			(at 179.07 92.71 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 180.848 90.17 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 179.07 90.17 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Series damping resistor for WS2812B data input"
-			(at 179.07 90.17 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "0603WAF1000T5E"
-			(at 179.07 90.17 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "UNI-ROYAL (Uniroyal Elec)"
-			(at 179.07 90.17 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C22775"
-			(at 179.07 90.17 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "942ef4e2-bf13-4137-bcaf-35a3b9259741")
-		)
-		(pin "2"
-			(uuid "08ba52f8-2f17-4055-9961-8fd5bed111ec")
-		)
-		(instances
-			(project "backplane-prototype"
-				(path "/348cc909-6345-4013-9bef-98714057a65b/4275522b-7aaa-4a22-8d94-d30e15c87e30"
-					(reference "R25")
 					(unit 1)
 				)
 			)
