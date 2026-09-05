@@ -1783,23 +1783,14 @@
 		)
 		(uuid "f9114749-5c7a-4daf-b19d-a1ed9d37b2bc")
 	)
-	(text_box "Both regulators are LM5164DDAR at approximately 300 kHz with 100 µH C2962892 inductors. The +12 V rail follows TI's 12 V / 1 A Type-3 network except for the qualified 100 µH inductor; +3V3 reuses the carrier's Type-3 values.\n\nInput ceramics are 100 V rated. Add or qualify bulk input capacitance during PCB layout if the source is more than approximately 5 cm away. Verify VIN ringing directly at each regulator, output ripple, PGOOD, inductor temperature, and fan startup/stall on first articles."
+	(text "NOTES:\n\n  - Both regulators are LM5164DDAR at approximately 300 kHz with 100 µH C2962892 inductors.\n  - The +12 V rail follows TI's 12 V / 1 A Type-3 network except for the qualified 100 µH inductor.\n  - +3V3 reuses the carrier's Type-3 values.\n  - Input ceramics are rated for 100 V.\n  - Each rail uses two 22 µF / 25 V output capacitors.\n\nTODO:\n\n  - [ ] If the source is more than approximately 5 cm away, add or qualify bulk input capacitance.\n  - [ ] On first articles, verify VIN ringing at each regulator, output ripple, PGOOD,\n        inductor temperature, and fan startup/stall.\n\nLAYOUT:\n\n  - Place input ceramics directly at each regulator's VIN/GND pins with a minimum-area loop.\n  - Place L1/L2 close to SW and minimize the SW copper area.\n  - Place C4/C14 at L1's output and C10/C11 at L2's output; return each pair directly to regulator GND/EP.\n  - Keep feedback and ripple-injection parts close to FB and away from SW."
 		(exclude_from_sim no)
-		(at 184.15 25.4 0)
-		(size 100.33 69.85)
-		(margins 1.27 1.27 1.27 1.27)
-		(stroke
-			(width 0)
-			(type solid)
-		)
-		(fill
-			(type none)
-		)
+		(at 184.15 81.28 0)
 		(effects
 			(font
-				(size 1.27 1.27)
+				(size 1.143 1.143)
 			)
-			(justify left top)
+			(justify left bottom)
 		)
 		(uuid "4a96cb1d-0573-596c-af4e-a99d5f050705")
 	)
@@ -1826,6 +1817,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "16fcdedc-1566-47fd-b2d9-b88e68d5d382")
+	)
+	(junction
+		(at 116.84 43.18)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "0e19f992-1d3a-4a8c-b1fd-b962ea70c697")
 	)
 	(junction
 		(at 142.24 124.46)
@@ -2488,6 +2485,16 @@
 			(type default)
 		)
 		(uuid "a284891a-8d4d-4859-b8be-0695b953964e")
+	)
+	(wire
+		(pts
+			(xy 109.22 50.8) (xy 116.84 50.8)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3e429f02-1521-4021-924b-dba3b0b77645")
 	)
 	(wire
 		(pts
@@ -3156,25 +3163,25 @@
 		(dnp no)
 		(uuid "236fca88-f93c-43f5-8494-06ea6a2d3582")
 		(property "Reference" "C4"
-			(at 112.014 45.212 0)
+			(at 106.68 39.37 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
+				(justify right)
 			)
 		)
 		(property "Value" "22uF 25V"
-			(at 112.014 47.498 0)
+			(at 106.68 36.83 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
+				(justify right)
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
@@ -3264,6 +3271,131 @@
 			(project "backplane-prototype"
 				(path "/348cc909-6345-4013-9bef-98714057a65b/9f6d14f1-eef5-43ec-a5a0-8ac65326e3cb"
 					(reference "C4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 116.84 46.99 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "bf5a02de-bdd1-4810-979f-33a736c0f50e")
+		(property "Reference" "C14"
+			(at 119.38 39.37 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "22uF 25V"
+			(at 119.38 36.83 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+			(at 117.865 43.68 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 116.9 47.49 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 116.9 47.49 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CL21A226MAQNNNE"
+			(at 116.9 47.49 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 116.9 47.49 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C45783"
+			(at 116.9 47.49 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Voltage" "25 V"
+			(at 116.9 47.49 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fabff250-e7e9-49bb-8bc2-f42c7da8ca15")
+		)
+		(pin "2"
+			(uuid "741bcaf4-3e2b-4be6-bb89-17ba0a8174d6")
+		)
+		(instances
+			(project "backplane-prototype"
+				(path "/348cc909-6345-4013-9bef-98714057a65b/9f6d14f1-eef5-43ec-a5a0-8ac65326e3cb"
+					(reference "C14")
 					(unit 1)
 				)
 			)
