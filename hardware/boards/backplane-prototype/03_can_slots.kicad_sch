@@ -264,129 +264,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Connector:TestPoint"
-			(pin_numbers
-				(hide yes)
-			)
-			(pin_names
-				(offset 0.762)
-				(hide yes)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(in_pos_files yes)
-			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "TP"
-				(at 0 6.858 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "TestPoint"
-				(at 0 5.08 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 5.08 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Datasheet" ""
-				(at 5.08 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" "test point"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "ki_keywords" "test point tp"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "ki_fp_filters" "Pin* Test*"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(symbol "TestPoint_0_1"
-				(circle
-					(center 0 3.302)
-					(radius 0.762)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "TestPoint_1_1"
-				(pin passive line
-					(at 0 0 90)
-					(length 2.54)
-					(name "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "Connector_Generic:Conn_01x04"
 			(pin_names
 				(offset 1.016)
@@ -2158,18 +2035,6 @@
 		(uuid "bcb1df3b-1425-4ff2-aa5f-50ff77ecdeb1")
 	)
 	(junction
-		(at 85.09 69.85)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "0b026bd5-1387-4954-8568-c316008766c4")
-	)
-	(junction
-		(at 85.09 80.01)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "34ecc100-cffb-4455-9355-1567981c660d")
-	)
-	(junction
 		(at 57.15 90.17)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2195,16 +2060,6 @@
 	)
 	(wire
 		(pts
-			(xy 85.09 80.01) (xy 97.79 80.01)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "08e8fe47-73f2-44e2-bd1d-fae17ac62631")
-	)
-	(wire
-		(pts
 			(xy 41.91 156.21) (xy 53.34 156.21)
 		)
 		(stroke
@@ -2212,16 +2067,6 @@
 			(type default)
 		)
 		(uuid "0be909e4-ec07-4f6b-8c92-badef2039bec")
-	)
-	(wire
-		(pts
-			(xy 85.09 69.85) (xy 97.79 69.85)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "0c431274-669f-4ba8-be5c-3f7d47f27af8")
 	)
 	(wire
 		(pts
@@ -2365,7 +2210,7 @@
 	)
 	(wire
 		(pts
-			(xy 67.31 69.85) (xy 85.09 69.85)
+			(xy 67.31 69.85) (xy 83.82 69.85)
 		)
 		(stroke
 			(width 0)
@@ -2405,7 +2250,7 @@
 	)
 	(wire
 		(pts
-			(xy 97.79 80.01) (xy 97.79 81.28)
+			(xy 83.82 80.01) (xy 83.82 81.28)
 		)
 		(stroke
 			(width 0)
@@ -2415,7 +2260,7 @@
 	)
 	(wire
 		(pts
-			(xy 185.42 66.04) (xy 185.42 67.31)
+			(xy 165.1 66.04) (xy 165.1 67.31)
 		)
 		(stroke
 			(width 0)
@@ -2425,7 +2270,7 @@
 	)
 	(wire
 		(pts
-			(xy 185.42 87.63) (xy 185.42 85.09)
+			(xy 165.1 87.63) (xy 165.1 85.09)
 		)
 		(stroke
 			(width 0)
@@ -2465,7 +2310,7 @@
 	)
 	(wire
 		(pts
-			(xy 67.31 80.01) (xy 85.09 80.01)
+			(xy 67.31 80.01) (xy 83.82 80.01)
 		)
 		(stroke
 			(width 0)
@@ -2484,7 +2329,7 @@
 		(uuid "ea49d4c7-0b86-430b-a5e2-9f440bbc3640")
 	)
 	(label "CAN_EXT_N"
-		(at 217.17 62.23 0)
+		(at 196.85 62.23 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2504,7 +2349,7 @@
 		(uuid "1c200ed0-6c12-4451-a7a3-86bca1cd1476")
 	)
 	(label "CAN_EXT_N"
-		(at 113.03 78.74 0)
+		(at 99.06 78.74 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2554,7 +2399,7 @@
 		(uuid "3db8af2f-fb9f-4581-a871-f9829869f2b3")
 	)
 	(label "CAN_EXT_P"
-		(at 146.05 77.47 180)
+		(at 125.73 77.47 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2574,7 +2419,7 @@
 		(uuid "46857844-7ce1-4846-821a-f0f4b4e83492")
 	)
 	(label "CAN_EXT_N"
-		(at 146.05 72.39 180)
+		(at 125.73 72.39 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2594,7 +2439,7 @@
 		(uuid "7fa9fb7f-00ab-45a0-bc4e-b72191882635")
 	)
 	(label "CAN_BUS_N"
-		(at 185.42 87.63 180)
+		(at 165.1 87.63 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2614,7 +2459,7 @@
 		(uuid "93fa4bf3-2f26-4ae2-8e50-8911778fb648")
 	)
 	(label "CAN_BUS_P"
-		(at 185.42 66.04 180)
+		(at 165.1 66.04 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2634,7 +2479,7 @@
 		(uuid "a1771dbf-02ba-463d-8c0e-992927becada")
 	)
 	(label "CAN_EXT_P"
-		(at 113.03 72.39 0)
+		(at 99.06 72.39 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2684,7 +2529,7 @@
 		(uuid "c1d0d586-3ba5-4765-a8f2-8d55fa1b8dfb")
 	)
 	(label "CAN_EXT_P"
-		(at 217.17 59.69 0)
+		(at 196.85 59.69 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2743,83 +2588,6 @@
 			(effects
 				(font
 					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:TestPoint")
-		(at 85.09 69.85 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp yes)
-		(uuid "1261eb0f-0bf2-43d5-9105-1a5650a9af6f")
-		(property "Reference" "TP15"
-			(at 85.09 62.484 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "CAN_BUS_P"
-			(at 85.3 54.61 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
-			(at 90.38 70.4 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 90.38 70.4 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "test point"
-			(at 85.3 70.4 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "5fa354e8-6390-48bc-9d04-778e18c69943")
-		)
-		(instances
-			(project "backplane-prototype"
-				(path "/348cc909-6345-4013-9bef-98714057a65b/eb7e4e77-e42b-4b43-976a-f7a3e8147b95"
-					(reference "TP15")
-					(unit 1)
 				)
 			)
 		)
@@ -3138,7 +2906,7 @@
 	)
 	(symbol
 		(lib_id "backplane-backpack:ACT1210D_1243")
-		(at 105.41 74.93 0)
+		(at 91.44 74.93 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -3148,7 +2916,7 @@
 		(dnp no)
 		(uuid "383d8936-7ae8-4d5b-b021-86e48e009db8")
 		(property "Reference" "L3"
-			(at 104.648 65.786 0)
+			(at 90.678 65.786 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3158,7 +2926,7 @@
 			)
 		)
 		(property "Value" "ACT1210D-101-2P-TL00"
-			(at 104.84 67.31 0)
+			(at 90.87 67.31 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3169,7 +2937,7 @@
 			)
 		)
 		(property "Footprint" "mini-rack-power:L_CommonModeChoke_TDK_ACT1210D"
-			(at 104.84 70.24 0)
+			(at 90.87 70.24 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3180,7 +2948,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.tdk-electronics.tdk.com/inf/30/ds/act1210d101.pdf"
-			(at 104.84 67.7 0)
+			(at 90.87 67.7 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3191,7 +2959,7 @@
 			)
 		)
 		(property "Description" "ACT1210D CAN common-mode choke; winding A 1-4, winding B 2-3"
-			(at 104.84 65.16 0)
+			(at 90.87 65.16 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3202,7 +2970,7 @@
 			)
 		)
 		(property "MPN" "ACT1210D-101-2P-TL00"
-			(at 104.84 75.32 0)
+			(at 90.87 75.32 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3213,7 +2981,7 @@
 			)
 		)
 		(property "Manufacturer" "TDK"
-			(at 104.84 75.32 0)
+			(at 90.87 75.32 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3224,7 +2992,7 @@
 			)
 		)
 		(property "LCSC" "C3039743"
-			(at 104.84 75.32 0)
+			(at 90.87 75.32 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3235,7 +3003,7 @@
 			)
 		)
 		(property "Package" "ACT1210"
-			(at 104.84 75.32 0)
+			(at 90.87 75.32 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4103,7 +3871,7 @@
 	)
 	(symbol
 		(lib_id "Jumper:SolderJumper_2_Open")
-		(at 185.42 72.39 270)
+		(at 165.1 72.39 270)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -4113,7 +3881,7 @@
 		(dnp no)
 		(uuid "9e3b7251-acc8-4f3d-b25c-b253a8964f69")
 		(property "Reference" "SJ1"
-			(at 187.452 70.104 90)
+			(at 167.132 70.104 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4123,7 +3891,7 @@
 			)
 		)
 		(property "Value" "TERMINATION"
-			(at 185.166 57.404 90)
+			(at 164.846 57.404 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4133,7 +3901,7 @@
 			)
 		)
 		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Open_Pad1.0x1.5mm"
-			(at 185.91 72.44 0)
+			(at 165.59 72.44 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4144,7 +3912,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 193.53 72.44 0)
+			(at 173.21 72.44 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4155,7 +3923,7 @@
 			)
 		)
 		(property "Description" "Solder Jumper, 2-pole, open"
-			(at 190.99 72.44 0)
+			(at 170.67 72.44 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4166,7 +3934,7 @@
 			)
 		)
 		(property "MPN" "PCB solder jumper"
-			(at 185.91 72.44 0)
+			(at 165.59 72.44 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4177,7 +3945,7 @@
 			)
 		)
 		(property "Manufacturer" "PCB"
-			(at 185.91 72.44 0)
+			(at 165.59 72.44 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4188,7 +3956,7 @@
 			)
 		)
 		(property "LCSC" ""
-			(at 185.91 72.44 0)
+			(at 165.59 72.44 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4199,7 +3967,7 @@
 			)
 		)
 		(property "Population" "PCB"
-			(at 185.91 72.44 0)
+			(at 165.59 72.44 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4304,7 +4072,7 @@
 	)
 	(symbol
 		(lib_id "backplane-backpack:PESD_Dual_SOT23")
-		(at 153.67 74.93 0)
+		(at 133.35 74.93 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -4314,7 +4082,7 @@
 		(dnp no)
 		(uuid "b07a914d-ffaa-45ba-889f-fddc9590b4df")
 		(property "Reference" "D1"
-			(at 153.81 69.85 0)
+			(at 133.49 69.85 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4324,7 +4092,7 @@
 			)
 		)
 		(property "Value" "PESD2CANFD27V-TR"
-			(at 154.178 64.77 0)
+			(at 133.858 64.77 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4335,7 +4103,7 @@
 			)
 		)
 		(property "Footprint" "Package_TO_SOT_SMD:SOT-23"
-			(at 153.81 70.08 0)
+			(at 133.49 70.08 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4346,7 +4114,7 @@
 			)
 		)
 		(property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/PESD2CANFD27V-T.pdf"
-			(at 153.81 67.54 0)
+			(at 133.49 67.54 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4357,7 +4125,7 @@
 			)
 		)
 		(property "Description" "Dual-line shunt TVS/ESD protector, signal pins 1/2 and common ground pin 3"
-			(at 153.81 65 0)
+			(at 133.49 65 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4368,7 +4136,7 @@
 			)
 		)
 		(property "MPN" "PESD2CANFD27V-TR"
-			(at 153.81 75.16 0)
+			(at 133.49 75.16 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4379,7 +4147,7 @@
 			)
 		)
 		(property "Manufacturer" "Nexperia"
-			(at 153.81 75.16 0)
+			(at 133.49 75.16 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4390,7 +4158,7 @@
 			)
 		)
 		(property "LCSC" "C552488"
-			(at 153.81 75.16 0)
+			(at 133.49 75.16 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4401,7 +4169,7 @@
 			)
 		)
 		(property "Package" "SOT-23"
-			(at 153.81 75.16 0)
+			(at 133.49 75.16 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4779,7 +4547,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 153.67 82.55 0)
+		(at 133.35 82.55 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -4790,7 +4558,7 @@
 		(fields_autoplaced yes)
 		(uuid "c594303b-689a-490a-89c9-bebf9ac5eb07")
 		(property "Reference" "#PWR59"
-			(at 153.67 88.9 0)
+			(at 133.35 88.9 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4801,7 +4569,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 153.67 87.63 0)
+			(at 133.35 87.63 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4811,7 +4579,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 153.67 82.55 0)
+			(at 133.35 82.55 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4822,7 +4590,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 153.67 82.55 0)
+			(at 133.35 82.55 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4833,7 +4601,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 153.67 82.55 0)
+			(at 133.35 82.55 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4986,7 +4754,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 185.42 81.28 0)
+		(at 165.1 81.28 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -4996,7 +4764,7 @@
 		(dnp no)
 		(uuid "cc661ed1-8f02-4d9e-b323-e7a7e0bc79f8")
 		(property "Reference" "R17"
-			(at 187.96 77.724 0)
+			(at 167.64 77.724 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5006,7 +4774,7 @@
 			)
 		)
 		(property "Value" "120R 1%"
-			(at 179.324 77.978 0)
+			(at 159.004 77.978 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5016,7 +4784,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 183.692 81.66 90)
+			(at 163.372 81.66 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5027,7 +4795,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 185.47 81.66 0)
+			(at 165.15 81.66 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5038,7 +4806,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 185.47 81.66 0)
+			(at 165.15 81.66 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5049,7 +4817,7 @@
 			)
 		)
 		(property "MPN" "0603WAF1200T5E"
-			(at 185.47 81.66 0)
+			(at 165.15 81.66 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5060,7 +4828,7 @@
 			)
 		)
 		(property "Manufacturer" "UNI-ROYAL (Uniroyal Elec)"
-			(at 185.47 81.66 0)
+			(at 165.15 81.66 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5071,7 +4839,7 @@
 			)
 		)
 		(property "LCSC" "C22787"
-			(at 185.47 81.66 0)
+			(at 165.15 81.66 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5082,7 +4850,7 @@
 			)
 		)
 		(property "Tolerance" "1%"
-			(at 185.47 81.66 0)
+			(at 165.15 81.66 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5180,83 +4948,6 @@
 			(project "backplane-prototype"
 				(path "/348cc909-6345-4013-9bef-98714057a65b/eb7e4e77-e42b-4b43-976a-f7a3e8147b95"
 					(reference "#PWR100")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:TestPoint")
-		(at 85.09 80.01 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp yes)
-		(uuid "cf219445-fa5d-4ebd-947a-1ab6ec860895")
-		(property "Reference" "TP16"
-			(at 85.09 71.628 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "CAN_BUS_N"
-			(at 85.1 64.77 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
-			(at 90.18 80.56 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 90.18 80.56 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "test point"
-			(at 85.1 80.56 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "f23ed62b-b310-4986-b4c9-d9789faf61d1")
-		)
-		(instances
-			(project "backplane-prototype"
-				(path "/348cc909-6345-4013-9bef-98714057a65b/eb7e4e77-e42b-4b43-976a-f7a3e8147b95"
-					(reference "TP16")
 					(unit 1)
 				)
 			)
@@ -5471,7 +5162,7 @@
 	)
 	(symbol
 		(lib_id "Connector:Screw_Terminal_01x03")
-		(at 212.09 62.23 180)
+		(at 191.77 62.23 180)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -5481,7 +5172,7 @@
 		(dnp yes)
 		(uuid "e3e2db7b-735b-4211-99a9-d285a6931f89")
 		(property "Reference" "J2"
-			(at 212.59 67.31 0)
+			(at 192.27 67.31 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5491,7 +5182,7 @@
 			)
 		)
 		(property "Value" "XY308-2.54-3P / EXTERNAL CAN"
-			(at 212.59 68.58 0)
+			(at 192.27 68.58 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5502,7 +5193,7 @@
 			)
 		)
 		(property "Footprint" "mini-rack-power:TerminalBlock_Xinya_XY308-2.54-3P_1x03_P2.54mm_Horizontal"
-			(at 212.59 61.84 0)
+			(at 192.27 61.84 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5513,7 +5204,7 @@
 			)
 		)
 		(property "Datasheet" "../../../docs/data-sheets/XINLAIYA/XY308-2.54.pdf"
-			(at 212.59 61.84 0)
+			(at 192.27 61.84 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5524,7 +5215,7 @@
 			)
 		)
 		(property "Description" "XINLAIYA XY308-2.54-3P, 3-position 2.54 mm side-entry screw terminal, 6 A 150 V"
-			(at 212.59 61.84 0)
+			(at 192.27 61.84 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5535,7 +5226,7 @@
 			)
 		)
 		(property "MPN" "XY308-2.54-3P"
-			(at 212.59 61.84 0)
+			(at 192.27 61.84 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5546,7 +5237,7 @@
 			)
 		)
 		(property "Manufacturer" "XINLAIYA"
-			(at 212.59 61.84 0)
+			(at 192.27 61.84 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5557,7 +5248,7 @@
 			)
 		)
 		(property "LCSC" "C557686"
-			(at 212.59 61.84 0)
+			(at 192.27 61.84 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5568,7 +5259,7 @@
 			)
 		)
 		(property "Package" "THT, 3-position, P2.54 mm, side entry"
-			(at 212.59 61.84 0)
+			(at 192.27 61.84 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5579,7 +5270,7 @@
 			)
 		)
 		(property "Population" "DNP — user-installed"
-			(at 212.59 61.84 0)
+			(at 192.27 61.84 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5687,7 +5378,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 217.17 64.77 0)
+		(at 196.85 64.77 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -5698,7 +5389,7 @@
 		(fields_autoplaced yes)
 		(uuid "fb8a2362-4d79-4bc9-814b-23f067ebe809")
 		(property "Reference" "#PWR63"
-			(at 217.17 71.12 0)
+			(at 196.85 71.12 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5709,7 +5400,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 219.71 66.0399 0)
+			(at 199.39 66.0399 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -5720,7 +5411,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 217.17 64.77 0)
+			(at 196.85 64.77 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5731,7 +5422,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 217.17 64.77 0)
+			(at 196.85 64.77 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5742,7 +5433,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 217.17 64.77 0)
+			(at 196.85 64.77 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
