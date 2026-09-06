@@ -155,6 +155,11 @@
 			(outputdirectory "")
 		)
 	)
+	(property "BOARD_NAME" "backplane")
+	(property "BOARD_VERSION" "2.1")
+	(property "BUILD_DATE" "YY.MM.DD")
+	(property "PROJECT_FAMILY" "mpr")
+	(property "SHORT_HASH" "UNRELEASED")
 	(footprint "mini-rack-power:Amass_XT30U_2plus2_F"
 		(locked yes)
 		(layer "F.Cu")
@@ -3019,6 +3024,7 @@
 		(property "Reference" "TP1"
 			(at -2.461773 1.360266 0)
 			(layer "B.SilkS")
+			(hide yes)
 			(uuid "7ef83263-feaa-4e68-a0fa-4554494f4b87")
 			(effects
 				(font
@@ -3132,7 +3138,7 @@
 		(descr "PROD Tech PSPMAA0805 power inductor, 8.0 x 8.5 mm, LCSC C2962892")
 		(tags "inductor power SMD 8x8.5 PSPMAA0805 C2962892")
 		(property "Reference" "L2"
-			(at 0 5 0)
+			(at -0.06347 -5.420035 0)
 			(layer "B.SilkS")
 			(uuid "87390cf3-0092-4f59-879b-a7eeb54e54cf")
 			(effects
@@ -9989,6 +9995,7 @@
 		(property "Reference" "TP3"
 			(at 2.618791 -1.166922 0)
 			(layer "B.SilkS")
+			(hide yes)
 			(uuid "9c2c23ea-4144-4db7-bd0d-0cab21e34a23")
 			(effects
 				(font
@@ -10439,7 +10446,7 @@
 		(descr "8-Lead Plastic PSOP, Exposed Die Pad (TI DDA0008B, see http://www.ti.com/lit/ds/symlink/lm3404.pdf)")
 		(tags "SSOP 0.50 exposed pad")
 		(property "Reference" "U2"
-			(at 0 3.3 0)
+			(at -0.07387 -5.251912 270)
 			(layer "B.SilkS")
 			(uuid "e38b9d65-00c3-41c9-8a5c-a14f65cafecf")
 			(effects
@@ -15055,7 +15062,7 @@
 		(descr "Resistor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "resistor")
 		(property "Reference" "R9"
-			(at 0 1.43 0)
+			(at 0 1.43 270)
 			(layer "B.SilkS")
 			(uuid "e36e84a0-fd62-45f9-82ca-50d64f23cf90")
 			(effects
@@ -18802,6 +18809,7 @@
 		(property "Reference" "TP5"
 			(at -2.172228 1.861534 0)
 			(layer "B.SilkS")
+			(hide yes)
 			(uuid "1c804eb5-0476-41ff-be43-7a63af60f970")
 			(effects
 				(font
@@ -22440,6 +22448,7 @@
 		(property "Reference" "TP2"
 			(at 0 1.648 0)
 			(layer "B.SilkS")
+			(hide yes)
 			(uuid "fe23f65b-e32d-4747-97ff-5669b6e0b394")
 			(effects
 				(font
@@ -23230,6 +23239,7 @@
 		(property "Reference" "TP4"
 			(at 0 1.648 0)
 			(layer "B.SilkS")
+			(hide yes)
 			(uuid "66b4206b-c065-4add-82ea-aef6bfff5493")
 			(effects
 				(font
@@ -23696,6 +23706,66 @@
 				(thickness 0.4)
 				(bold yes)
 			)
+		)
+	)
+	(gr_text "VCC"
+		(at 48.342669 63.75 0)
+		(layer "B.SilkS" knockout)
+		(uuid "aa7855e7-8506-4ebf-b004-e6c9a8256879")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(gr_text "GND"
+		(at 48.437907 60.455 0)
+		(layer "B.SilkS" knockout)
+		(uuid "8796917a-944c-4743-88cf-34352516583c")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(gr_text "3v3"
+		(at 56.803014 68.852109 0)
+		(layer "B.SilkS" knockout)
+		(uuid "4bc6254e-f1d8-4d94-8b21-70339aac77a6")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(gr_text "3v3"
+		(at 82.681218 69.798842 0)
+		(layer "B.SilkS" knockout)
+		(uuid "7185ce7a-9b9a-4cb3-a263-babab6065ef1")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(gr_text "12V"
+		(at 120.550594 69.830799 0)
+		(layer "B.SilkS" knockout)
+		(uuid "aa3f3340-5807-47b3-a5d1-747f0ecc70ef")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+			(justify mirror)
 		)
 	)
 	(gr_text "${PROJECT_FAMILY}.${BOARD_NAME}\nv${BOARD_VERSION}-${BUILD_DATE}\n${SHORT_HASH}"
