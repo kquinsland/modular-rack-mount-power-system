@@ -92,7 +92,13 @@ class BoardIntegrationTests(unittest.TestCase):
         self.assertEqual(report["inputs"]["total_current_a"], 33.0)
         self.assertEqual(len(report["inputs"]["sinks"]), 6)
         self.assertGreater(len(report["cuts"]), 100)
-        self.assertEqual(report["via_screening"]["count"], 6)
+        vias = report["via_screening"]["vias"]
+        self.assertEqual(report["via_screening"]["count"], len(vias))
+        self.assertGreater(len(vias), 0)
+        for via in vias:
+            self.assertGreater(via["drill_mm"], 0)
+            self.assertGreater(via["diameter_mm"], via["drill_mm"])
+            self.assertGreater(via["ipc2221_internal_proxy_capacity_a"][10.0], 0)
         self.assertEqual(len(report["board_sha256"]), 64)
         self.assertAlmostEqual(
             report["layers"][0]["copper_weight_oz_per_sq_ft"], 2.0, places=1
