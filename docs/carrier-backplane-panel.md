@@ -112,7 +112,7 @@ defaults live in each board's `.kicad_pro`; for example, the backplane uses
 `SHORT_HASH`. Its working-copy defaults render as:
 
 ```text
-mpr.backplane
+mrp.backplane
 v2.1-YY.MM.DD
 UNRELEASED
 ```
