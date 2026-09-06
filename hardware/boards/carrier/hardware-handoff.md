@@ -1,8 +1,11 @@
 # USB-C PD Carrier PCB Hardware Handoff
 
-**Status:** Carrier Rev A implementation notes; the checked-in KiCad schematic,
-PCB, and production BOM are authoritative where they differ from this historical
-handoff text.
+**Status:** Carrier Rev A implementation notes. The checked-in schematic now
+uses the common backplane `LM5164DDAR` and `PSPMAA0805-101M-ANP` buck pair. The
+PCB is intentionally transitional: U2 remains placed because its package is
+unchanged, while L1 has been removed for manual placement and routing with the
+new footprint. Existing production outputs remain historical until that layout
+work is complete and the release artifacts are regenerated.
 
 **Revision:** Rev A architectural handoff
 
@@ -171,7 +174,7 @@ If the source can exceed approximately 50 V continuously, revisit:
              HOUSEKEEPING POWER                         PD POWER BRANCH
                     │                                          │
              ┌──────▼──────┐                                   │
-             │ U2 LM5163   │                                   │
+             │ U2 LM5164   │                                   │
              │ 100 V buck  │                                   │
              └──────┬──────┘                                   │
                     │ +3V3                                      │
@@ -213,7 +216,7 @@ The housekeeping branch connects to `VCC` **before** the PD current shunt. There
 | Ref | Qty | Manufacturer / Part | LCSC | Package | Function |
 |---|---:|---|---|---|---|
 | U1 | 1 | **ST STM32C092GCU6** | **C44847705** | UFQFPN-28, 4 × 4 mm | MCU with FDCAN |
-| U2 | 1 | **TI LM5163DDAR** | **C2873264** | SO PowerPAD-8 | 6–100 V synchronous buck |
+| U2 | 1 | **TI LM5164DDAR** | **C477928** | SO PowerPAD-8 | 6–100 V, 1 A synchronous buck |
 | U3 | 1 | **Wuxi Maxinmicro LMX5069MS** | **C47967145** | MSOP-10 | Hot-swap / inrush controller |
 | U4 | 1 | **TI INA237AIDGSR** | **C2864837** | VSSOP-10 | I²C voltage/current/power monitor |
 | U5 | 1 | **TI TCAN3413DR** | — | SOIC-8 | 3.3 V CAN-FD transceiver |
@@ -223,7 +226,7 @@ The housekeeping branch connects to `VCC` **before** the PD current shunt. There
 | RSH1 | 1 | **Milliohm HoLLR2512-3W-6mR-1%** | **C2985709** | 2512 | 6 mΩ shared current shunt |
 | DTVS1 | 1 | **Hongjiacheng SMCJ48A** | **C19077611** | SMC | Input TVS |
 | D2 | 1 | **Nexperia PESD2CANFD27V-TR** | — | SOT-23 | CAN-FD bus ESD protection |
-| L1 | 1 | **Sunlord SWPA8040S680MT** | **C36418** | 8 × 8 mm | 68 µH buck inductor |
+| L1 | 1 | **PROD Tech PSPMAA0805-101M-ANP** | **C2962892** | 8 × 8.5 mm | 100 µH buck inductor |
 | L3 | 1 | **TDK ACT1210D-101-2P-TL00** | **C3039743** | ACT1210 | CAN common-mode choke |
 | LED1 | 1 | **Worldsemi WS2812B-2020-V6** | **C52917434** | 2020 | RGB status LED |
 
@@ -273,15 +276,17 @@ The useful concepts retained from the prototype are active-high control, passive
 
 ## 6.1 Regulator choice
 
-Use **LM5163DDAR** rather than the previously considered 60 V-class converter.
+Use **LM5164DDAR**, shared with both backplane converters, rather than the
+previously selected LM5163DDAR or a 60 V-class converter.
 
 Reasons:
 
 - 6–100 V operating range
 - appropriate margin for a future 48 V bus
 - synchronous architecture: no external freewheel diode
-- 500 mA output capability, far above expected housekeeping consumption
+- 1 A output capability, far above expected housekeeping consumption
 - suitable for direct conversion from the intended 24–50 V prototype range to 3.3 V
+- common regulator and inductor BOM with the backplane
 
 Expected housekeeping current is dominated by:
 
@@ -292,16 +297,23 @@ Expected housekeeping current is dominated by:
 
 It is expected to remain well below 100 mA.
 
+The RON, feedback, bootstrap, and Type-3 ripple-injection values remain
+unchanged because they already match the backplane's 3.3 V LM5164 stage. At
+24 V input, 3.3 V output, and approximately 300 kHz, the 100 µH inductor gives
+an estimated 95 mA peak-to-peak ripple in continuous conduction. Verify the
+actual switching frequency, transient response, ripple, and temperatures during
+bring-up.
+
 ## 6.2 Proposed buck values
 
 Target switching frequency: approximately **300 kHz**
 
 | Ref | Value | Notes |
 |---|---:|---|
-| RRON | **27.4 kΩ, 1%** | ~300 kHz target |
+| RRON | **27 kΩ, 1%** | ~300 kHz target |
 | RFB_TOP | **110 kΩ, 1%** | Feedback |
 | RFB_BOT | **62 kΩ, 1%** | Feedback |
-| L1 | **68 µH** | 1 A nominal / ~1.2 A saturation |
+| L1 | **100 µH** | 2.5 A Irms / 3 A saturation / 272 mΩ typical DCR |
 | CIN1 | **2.2 µF / 100 V X7R** | Input ceramic |
 | CIN2 | **2.2 µF / 100 V X7R** | Input ceramic |
 | COUT | **22 µF / 25 V** | Output ceramic |
@@ -341,7 +353,7 @@ Populate if cable/source inductance or bench measurements indicate useful input 
                 GND             GND              GND
                                  │
                            ┌─────▼────────────┐
-                           │ U2 LM5163        │
+                           │ U2 LM5164        │
 VCC ──────────────────►│ VIN             │
 VCC ──────────────────►│ EN/UVLO         │
                            │                 │
@@ -355,7 +367,7 @@ GND ───────────────────────│ GND
 
 BUCK_BST ── CBST 2.2n ── BUCK_SW
 
-BUCK_SW ── L1 68uH ───────────── +3V3
+BUCK_SW ── L1 100uH ──────────── +3V3
                                       │
                                  COUT 22uF
                                       │
@@ -1147,7 +1159,7 @@ NET GND
 
 
 # ============================================================
-# LM5163 BUCK
+# LM5164 BUCK
 # ============================================================
 
 NET BUCK_SW
@@ -1395,7 +1407,7 @@ For high-voltage ceramics, shunt components, and timing/programming values, pres
 | Ref | Qty | Value | Tolerance / notes |
 |---|---:|---:|---|
 | RSH1 | 1 | **6 mΩ** | 1%, 3 W, low TCR |
-| RRON | 1 | **27.4 kΩ** | 1% |
+| RRON | 1 | **27 kΩ** | 1% |
 | RFB_TOP | 1 | **110 kΩ** | 1% |
 | RFB_BOT | 1 | **62 kΩ** | 1% |
 | RA | 1 | **110 kΩ** | 1% |
@@ -1449,7 +1461,7 @@ These are convenience selections, not architectural requirements unless noted.
 | Function | Suggested part | LCSC |
 |---|---|---|
 | 6 mΩ / 3 W shunt | HoLLR2512-3W-6mR-1% | **C2985709** |
-| 68 µH inductor | Sunlord SWPA8040S680MT | **C36418** |
+| 100 µH inductor | PROD Tech PSPMAA0805-101M-ANP | **C2962892** |
 | 2.2 µF / 100 V X7R | Samsung CL32B225KCJSNNE, 1210 | **C55151** |
 | 22 µF / 25 V output MLCC | Samsung CL21A226MAQNNNE, 0805 | **C45783** |
 | 1 µF / 100 V X7R | Samsung CL31B105KCHNNNE | **C13832** |
@@ -1506,7 +1518,7 @@ System VIN applied
     │
     ├── DTVS1 clamps transient events
     │
-    └── LM5163 starts +3V3
+    └── LM5164 starts +3V3
              │
              ▼
         STM32 starts
@@ -1707,12 +1719,12 @@ Give the TO-263 drain/tab substantial copper and thermal vias.
 
 Do not optimize Q1 layout based only on its steady-state conduction loss.
 
-## 22.5 LM5163 layout
+## 22.5 LM5164 layout
 
 Critical converter loop:
 
 ```text
-CIN → LM5163 switching stage → GND → CIN
+CIN → LM5164 switching stage → GND → CIN
 ```
 
 Requirements:
@@ -1782,7 +1794,7 @@ Fit conclusion:
 
 - **Yes:** the existing 2D outline is sufficient for a first 140 W-capable carrier layout if the new circuitry is placed predominantly on the bottom side.
 - **No:** it is not credible as a top-side-only or two-layer implementation.
-- Q1 and the ~6 × 6 × 4.5 mm buck inductor are the limiting package/height items. Before placement is frozen, confirm at least their bottom-side mechanical clearance in the rack assembly.
+- Q1 and the 8 × 8.5 × 5.0 mm maximum buck inductor are the limiting package/height items. Before placement is frozen, confirm at least their bottom-side mechanical clearance in the rack assembly.
 - Reserve Q1's entire available local lobe width for copper and thermal vias where possible. Passing a courtyard check alone is not sufficient thermal validation.
 - Perform a real placement/routing review after the schematic is captured; the present result is a feasibility floorplan, not evidence that an unrouted board is production-ready.
 
@@ -1862,8 +1874,8 @@ Used for all I²C pull-ups.
 
 Can be shared by:
 
-- LM5163 CBST
-- LM5163 CA
+- LM5164 CBST
+- LM5164 CA
 
 ### 100 nF
 
@@ -1998,7 +2010,7 @@ LMX5069 protects only the switched PD branch.
 
 A short in:
 
-- the LM5163 branch
+- the LM5164 branch
 - TVS
 - raw VIN PCB copper
 
@@ -2034,7 +2046,7 @@ If this test passes, the direct I²C connection in this handoff is appropriate.
 
 ## 24.8 Regulator design cross-check
 
-The LM5163 values in this document are calculated starting values.
+The LM5164 values in this document are calculated starting values.
 
 Before release, cross-check the final:
 
@@ -2076,7 +2088,7 @@ then confirm it on the first physical assembly because the result depends on
 The existing outline only fits the added electronics by using the bottom side. The completed render check covered the rack, guides, neighboring boards, fasteners, and enclosure around:
 
 - Q1 D²PAK body and solder fillet
-- the approximately 4.5 mm-tall buck inductor
+- the 5.0 mm maximum-height buck inductor
 - TVS and shunt bodies
 - programming pogo-pin access
 
@@ -2171,7 +2183,8 @@ The KiCad engineer should use the latest manufacturer datasheets for final pin/f
 Primary references:
 
 - **Wuxi Maxinmicro LMX5069** datasheet
-- **Texas Instruments LM5163 / LM5163-Q1** datasheet
+- **Texas Instruments LM5164** datasheet
+- **PROD Tech PSPMAA0805 series** datasheet
 - **Texas Instruments INA237** datasheet
 - **STMicroelectronics STM32C092GC** datasheet
 - **Infineon IPB020N10N5LF** datasheet / OptiMOS Linear FET SOA documentation
@@ -2181,15 +2194,17 @@ Primary references:
 - LCSC catalog entries corresponding to the LCSC codes listed in this document
 
 The exact carrier U2 datasheet is archived as
-`docs/data-sheets/TI/LM5163.pdf`. `docs/data-sheets/TI/LMR516xx.pdf` is not a
-carrier substitute and remains in the repository for the backpack's populated
-LMR51610 regulators.
+`docs/data-sheets/TI/LM5164.pdf`. The common carrier/backplane inductor is
+covered by `docs/data-sheets/PROD-Tech/PSPMAA0805-101M-ANP.pdf`.
+`docs/data-sheets/TI/LMR516xx.pdf` is not a carrier substitute and remains in
+the repository for the backpack's populated LMR51610 regulators.
 
-The carrier datasheet audit found that exact local PDFs are still missing for
-the R1 shunt and C8 `CL21A226MAQNNNE`. The existing Samsung
+The carrier datasheet audit found that an exact local PDF is still missing for
+C8 `CL21A226MAQNNNE`. The existing Samsung
 `CL21A226MAYNNNE.pdf` is close but is not the exact populated C8 suffix. Local
-manufacturer data is now present for LM5163, INA237, IPB020N10N5LF, and the
-populated Hongjiacheng SMCJ48A family. Do not delete apparently unrelated
+manufacturer data is now present for LM5164, the PSPMAA0805 inductor, INA237,
+IPB020N10N5LF, the R1 shunt, and the populated Hongjiacheng SMCJ48A family. Do
+not delete apparently unrelated
 archive files solely because they are unused by the carrier; several are used
 by the backplane/backpack designs.
 
@@ -2213,7 +2228,7 @@ Backplane/carrier interface:
 ```text
 J1 = VCC + GND + backplane CANL/CANH
 No backplane 3.3 V rail
-Carrier generates local 3.3 V with LM5163
+Carrier generates local 3.3 V with LM5164
 ```
 
 The current intended architecture is:
@@ -2223,7 +2238,7 @@ The current intended architecture is:
    │
    ├── SMCJ48A input TVS
    │
-   ├── LM5163 100 V buck ──► 3.3 V
+   ├── LM5164 100 V buck ──► 3.3 V
    │                         ├── STM32C092GCU6
    │                         ├── INA237
    │                         ├── WS2812B-2020-V6
@@ -2271,9 +2286,9 @@ OVLO falling ≈ 54.4 V
 
 Housekeeping:
     3.33 V
-    LM5163
+    LM5164
     ~300 kHz
-    68 µH
+    100 µH
 
 INA237:
     address default 0x40
