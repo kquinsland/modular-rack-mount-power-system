@@ -7,12 +7,15 @@ Project automation goes here, such as KiCad CLI exports for schematics, BOMs, fa
 `pcb_power_capacity.py` reads the filled copper geometry for a KiCad net and
 estimates its current capacity at selected conductor temperature rises using
 the IPC-2221 relationship published by KiCad. It reports every participating
-copper layer separately, a natural current-sharing aggregate, an ideal-sharing
-ceiling, voltage drop, copper loss, and a separate via-barrel screening
-estimate. The generated SVG provides a readable aggregate overview, separate
-layer views, and a capacity-versus-distance profile with the limiting cut
-visible for engineering review. A dashed red line shows the full cut in every
-board view; thicker solid-red portions show where that cut intersects copper.
+copper layer's shared geometry, a natural current-sharing aggregate, an
+ideal-sharing ceiling, voltage drop, copper loss, and a separate via-barrel
+screening estimate. A scenario may compare multiple named copper stackups
+without duplicating the geometry views. The generated SVG provides stackup
+summary cards, color-coded limiting cuts, one conservative-temperature
+capacity profile per stackup, and aggregate temperature-rise proxy heatmaps.
+Each heatmap locally inverts the IPC-2221 capacity relationship; it is useful
+for locating relative hot regions but is not a thermal-spreading or airflow
+simulation.
 
 The host needs Python 3.11 or newer, KiCad 10 with its `pcbnew` Python
 bindings, and Shapely 2.x. The same dependencies are already used by the
@@ -34,10 +37,13 @@ mise run power:report --list
 
 Scenarios and their source/sink currents are defined in
 `pcb_power_scenarios.toml`. The backplane scenario uses six 5.5 A slot loads;
-the carrier scenario follows `VCC` from `J1.1` to the upstream side of the
-current shunt at `R1.1`. Copper thickness defaults to the board's KiCad
-stackup. Reports show both micrometres and the nominal PCB copper weight using
-34.8 µm per oz/ft². An ad-hoc invocation can override thickness per layer:
+it compares 2 oz outer / 1 oz inner copper with 1 oz outer / 0.5 oz inner
+copper in one report. The carrier scenario follows `VCC` from `J1.1` to the
+upstream side of the current shunt at `R1.1` and uses the board's KiCad
+stackup. Reports show both micrometres and nominal PCB copper weight using
+34.8 µm per oz/ft². Stackup comparisons use repeated `stackups` tables in the
+scenario configuration. An ad-hoc invocation—or explicit `--copper` overrides
+on a named scenario—generates a single custom-stackup report:
 
 ```sh
 mise run power:report -- \
@@ -66,9 +72,10 @@ the source pad itself cannot be reported as a downstream copper bottleneck.
 Each report directory contains:
 
 - `report.md`: concise human-readable results and qualifications;
-- `report.svg`: aggregate and per-layer geometry, the limiting cut, and the
-  capacity profile; and
-- `report.json`: machine-readable inputs, every scanned cut, and results for
+- `report.svg`: shared aggregate/per-layer geometry, stackup-specific limiting
+  cuts and capacity profiles, and estimated temperature-rise proxy maps; and
+- `report.json`: machine-readable inputs plus every stackup's scanned cuts,
+  electrical estimates, limiting results, and peak temperature-rise proxy for
   future CI checks.
 
 The all-scenarios task also writes `index.md` and `summary.json` at the report

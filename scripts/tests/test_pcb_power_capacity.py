@@ -89,9 +89,23 @@ class BoardIntegrationTests(unittest.TestCase):
     def test_analyzes_named_backplane_scenario(self) -> None:
         scenarios = power.load_scenarios(power.DEFAULT_CONFIG, ROOT)
         report, context = power.analyze_scenario(scenarios["backplane-vcc"])
+        self.assertEqual(report["schema_version"], 2)
         self.assertEqual(report["inputs"]["total_current_a"], 33.0)
         self.assertEqual(len(report["inputs"]["sinks"]), 6)
         self.assertGreater(len(report["cuts"]), 100)
+        self.assertEqual(
+            [stackup["name"] for stackup in report["stackups"]],
+            ["2oz-1oz", "1oz-0.5oz"],
+        )
+        heavy, light = report["stackups"]
+        self.assertGreater(
+            heavy["limiting_cuts"]["10.0"]["natural_capacity_a"]["10.0"],
+            light["limiting_cuts"]["10.0"]["natural_capacity_a"]["10.0"],
+        )
+        self.assertLess(
+            heavy["temperature_rise_proxy"]["peak_delta_c"],
+            light["temperature_rise_proxy"]["peak_delta_c"],
+        )
         vias = report["via_screening"]["vias"]
         self.assertEqual(report["via_screening"]["count"], len(vias))
         self.assertGreater(len(vias), 0)
@@ -111,10 +125,11 @@ class BoardIntegrationTests(unittest.TestCase):
             report["inputs"]["scan_pitch_mm"] / 2.0,
             places=6,
         )
-        for temperature in (10.0, 20.0):
-            limiting = report["limiting_cuts"][str(temperature)]
-            self.assertGreater(limiting["natural_capacity_a"][str(temperature)], 0)
-            self.assertGreater(limiting["distance_mm"], source_exit)
+        for stackup in report["stackups"]:
+            for temperature in (10.0, 20.0):
+                limiting = stackup["limiting_cuts"][str(temperature)]
+                self.assertGreater(limiting["natural_capacity_a"][str(temperature)], 0)
+                self.assertGreater(limiting["distance_mm"], source_exit)
         with tempfile.TemporaryDirectory() as temporary:
             output = Path(temporary)
             report_output = output / "backplane-vcc"
@@ -134,6 +149,12 @@ class BoardIntegrationTests(unittest.TestCase):
             self.assertIsNotNone(
                 svg_root.find("svg:g[@id='capacity-profile']", namespace)
             )
+            self.assertIsNotNone(
+                svg_root.find("svg:g[@id='stackup-summaries']", namespace)
+            )
+            self.assertIsNotNone(
+                svg_root.find("svg:g[@id='temperature-rise-heatmaps']", namespace)
+            )
             legend = svg_root.find(
                 "svg:g[@id='capacity-profile']/svg:g[@id='capacity-profile-legend']",
                 namespace,
@@ -150,16 +171,42 @@ class BoardIntegrationTests(unittest.TestCase):
             svg_text = svg_path.read_text(encoding="utf-8")
             self.assertNotIn("six lowest-margin", svg_text)
             self.assertIn('data-role="limiting-cut"', svg_text)
-            self.assertEqual(svg_text.count('data-role="cut-guide"'), 5)
-            self.assertIn("capacity ÷ load =", svg_text)
-            self.assertIn("70 µm (2 oz copper)", svg_text)
+            expected_board_views = 1 + len(report["layers"])
+            expected_cut_guides = expected_board_views * len(report["stackups"])
+            self.assertEqual(
+                svg_text.count('data-role="cut-guide"'), expected_cut_guides
+            )
+            self.assertEqual(
+                svg_text.count('data-role="stackup-summary"'),
+                len(report["stackups"]),
+            )
+            self.assertEqual(
+                svg_text.count('data-role="stackup-capacity"'),
+                len(report["stackups"]),
+            )
+            self.assertEqual(
+                svg_text.count('data-role="temperature-rise-map"'),
+                len(report["stackups"]),
+            )
+            self.assertIn("70 µm (2 oz)", svg_text)
+            layer_panel = svg_root.find("svg:g[@id='layer-panels']", namespace)
+            layer_panel_text = "".join(
+                element.text or ""
+                for element in layer_panel.findall(".//svg:text", namespace)
+            )
+            self.assertNotIn("µm", layer_panel_text)
+            self.assertNotIn(" oz", layer_panel_text)
             self.assertTrue((report_output / "report.md").is_file())
             power.write_report_index([report], output)
             summary = json.loads((output / "summary.json").read_text())
             result = summary["reports"][0]
-            self.assertFalse(
-                result["temperature_rises"]["10.0"]["passes_requested_load"]
-            )
+            self.assertEqual(len(result["stackups"]), len(report["stackups"]))
+            for stackup in result["stackups"]:
+                for values in stackup["temperature_rises"].values():
+                    self.assertEqual(
+                        values["passes_requested_load"],
+                        values["margin_ratio"] >= 1.0,
+                    )
             self.assertTrue((output / "index.md").is_file())
 
     def test_can_limit_analysis_to_selected_copper_layers(self) -> None:

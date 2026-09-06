@@ -17,6 +17,7 @@ import re
 import sys
 from collections.abc import Iterable
 from dataclasses import dataclass, field
+from itertools import pairwise
 from pathlib import Path
 from typing import Any
 
@@ -79,6 +80,19 @@ LAYER_COLORS = (
     "#6a4c93",
     "#2a9d8f",
 )
+STACKUP_COLORS = (
+    "#00798c",
+    "#d95f02",
+    "#6a4c93",
+    "#2a9d8f",
+)
+THERMAL_PALETTE = (
+    (0.0, (44, 123, 182)),
+    (0.35, (0, 166, 202)),
+    (0.55, (255, 255, 191)),
+    (0.75, (253, 174, 97)),
+    (1.0, (215, 25, 28)),
+)
 
 
 # KiCad 10's current Python bindings still use the Python 2-style ``next``
@@ -97,6 +111,13 @@ class Sink:
     current_a: float
 
 
+@dataclass(frozen=True)
+class StackupSpec:
+    name: str
+    label: str
+    copper_overrides_um: dict[str, float] = field(default_factory=dict)
+
+
 @dataclass
 class Scenario:
     name: str
@@ -109,6 +130,7 @@ class Scenario:
     scan_pitch_mm: float = 0.25
     include_layers: list[str] | None = None
     copper_overrides_um: dict[str, float] = field(default_factory=dict)
+    stackups: list[StackupSpec] = field(default_factory=list)
     manual_cuts: list[tuple[tuple[float, float], tuple[float, float]]] = field(
         default_factory=list
     )
@@ -1023,7 +1045,9 @@ def collect_validity_warnings(
     return warnings
 
 
-def analyze_scenario(scenario: Scenario) -> tuple[dict[str, Any], dict[str, Any]]:
+def _analyze_single_stackup(
+    scenario: Scenario,
+) -> tuple[dict[str, Any], dict[str, Any]]:
     if not scenario.sinks:
         raise AnalysisError("At least one sink is required")
     if any(sink.current_a <= 0 for sink in scenario.sinks):
@@ -1186,6 +1210,140 @@ def analyze_scenario(scenario: Scenario) -> tuple[dict[str, Any], dict[str, Any]
     return report, render_context
 
 
+def concise_copper_label(thickness_um: float) -> str:
+    return copper_thickness_label(thickness_um).replace(" copper", "")
+
+
+def stackup_thickness_summary(layers: list[dict[str, Any]]) -> str:
+    external = sorted(
+        {
+            float(layer["thickness_um"])
+            for layer in layers
+            if layer["kind"] == "external"
+        }
+    )
+    internal = sorted(
+        {
+            float(layer["thickness_um"])
+            for layer in layers
+            if layer["kind"] == "internal"
+        }
+    )
+    if len(external) == 1 and len(internal) == 1:
+        return (
+            f"Outer {concise_copper_label(external[0])} · "
+            f"inner {concise_copper_label(internal[0])}"
+        )
+    return " · ".join(
+        f"{layer['name']} {concise_copper_label(float(layer['thickness_um']))}"
+        for layer in layers
+    )
+
+
+def scenario_for_stackup(scenario: Scenario, stackup: StackupSpec) -> Scenario:
+    return Scenario(
+        name=scenario.name,
+        board=scenario.board,
+        net=scenario.net,
+        source=scenario.source,
+        sinks=list(scenario.sinks),
+        supply_voltage_v=scenario.supply_voltage_v,
+        temperature_rises_c=list(scenario.temperature_rises_c),
+        scan_pitch_mm=scenario.scan_pitch_mm,
+        include_layers=(
+            list(scenario.include_layers)
+            if scenario.include_layers is not None
+            else None
+        ),
+        copper_overrides_um={
+            **scenario.copper_overrides_um,
+            **stackup.copper_overrides_um,
+        },
+        stackups=[],
+        manual_cuts=list(scenario.manual_cuts),
+    )
+
+
+def estimated_temperature_rise_c(
+    cut: CutResult, reference_temperature_rise_c: float
+) -> float:
+    """Invert IPC-2221 to estimate local rise at the requested cut current."""
+    if cut.active_current_a <= 0:
+        return 0.0
+    reference_capacity = cut.natural_capacity_a[reference_temperature_rise_c]
+    if reference_capacity <= 0:
+        return math.inf
+    return reference_temperature_rise_c * (
+        cut.active_current_a / reference_capacity
+    ) ** (1.0 / 0.44)
+
+
+def analyze_scenario(scenario: Scenario) -> tuple[dict[str, Any], dict[str, Any]]:
+    stackup_specs = scenario.stackups or [StackupSpec("board", "Board stackup")]
+    analyzed: list[tuple[StackupSpec, dict[str, Any], dict[str, Any]]] = []
+    for stackup in stackup_specs:
+        child = scenario_for_stackup(scenario, stackup)
+        stackup_report, stackup_context = _analyze_single_stackup(child)
+        analyzed.append((stackup, stackup_report, stackup_context))
+
+    primary_report = analyzed[0][1]
+    primary_context = analyzed[0][2]
+    stackup_reports: list[dict[str, Any]] = []
+    stackup_contexts: list[dict[str, Any]] = []
+    combined_warnings: list[str] = []
+    reference_temperature = min(primary_report["inputs"]["temperature_rises_c"])
+    for index, (stackup, report, context) in enumerate(analyzed):
+        color = STACKUP_COLORS[index % len(STACKUP_COLORS)]
+        thermal_cuts = [
+            (cut, estimated_temperature_rise_c(cut, reference_temperature))
+            for cut in context["cuts"]
+            if cut.kind == "automatic" and cut.distance_mm is not None
+        ]
+        peak_cut, peak_delta = max(thermal_cuts, key=lambda item: item[1])
+        entry = {
+            "name": stackup.name,
+            "label": stackup.label,
+            "color": color,
+            "thickness_summary": stackup_thickness_summary(report["layers"]),
+            "layers": report["layers"],
+            "limiting_cuts": report["limiting_cuts"],
+            "cuts": report["cuts"],
+            "electrical_estimate": report["electrical_estimate"],
+            "temperature_rise_proxy": {
+                "method": (
+                    "local inversion of the IPC-2221 natural-sharing capacity; "
+                    "does not model thermal spreading or airflow"
+                ),
+                "reference_temperature_rise_c": reference_temperature,
+                "peak_delta_c": peak_delta,
+                "peak_cut": {
+                    "kind": peak_cut.kind,
+                    "index": peak_cut.index,
+                    "distance_mm": peak_cut.distance_mm,
+                },
+            },
+            "warnings": report["warnings"],
+        }
+        stackup_reports.append(entry)
+        stackup_contexts.append(
+            {
+                "name": stackup.name,
+                "label": stackup.label,
+                "color": color,
+                "layers": context["layers"],
+                "cuts": context["cuts"],
+                "limiting": context["limiting"],
+            }
+        )
+        combined_warnings.extend(report["warnings"])
+
+    primary_report["schema_version"] = 2
+    primary_report["stackups"] = stackup_reports
+    primary_report["warnings"] = list(dict.fromkeys(combined_warnings))
+    primary_context["stackups"] = stackup_contexts
+    return primary_report, primary_context
+
+
 def geometry_svg_path(geometry: Any) -> str:
     commands: list[str] = []
     for polygon in polygon_components(geometry):
@@ -1252,27 +1410,15 @@ def append_board_geometry(
     fill: str,
     stroke: str,
     title: str,
-    limiting_cut: CutResult,
+    stackup_cuts: list[dict[str, Any]],
     marker_terminals: list[tuple[str, Terminal]] | None = None,
     vias: list[dict[str, Any]] | None = None,
 ) -> None:
-    """Draw one uncluttered board view with its limiting cut clipped to copper."""
+    """Draw one board view with every stackup's limiting cut."""
     translate_x, translate_y, scale = svg_board_transform(bounds, panel)
     path = geometry_svg_path(geometry.simplify(0.015, preserve_topology=True))
-    cut_line = LineString([limiting_cut.start_mm, limiting_cut.end_mm])
     min_x, min_y, max_x, max_y = bounds
     guide_padding = max(max_x - min_x, max_y - min_y) * 0.015
-    cut_guide = line_geometry_svg_path(
-        cut_line.intersection(
-            box(
-                min_x - guide_padding,
-                min_y - guide_padding,
-                max_x + guide_padding,
-                max_y + guide_padding,
-            )
-        )
-    )
-    clipped_cut = line_geometry_svg_path(geometry.intersection(cut_line))
     svg.append(
         f'<g transform="translate({translate_x:.4f} {translate_y:.4f}) '
         f'scale({scale:.6f})">'
@@ -1282,20 +1428,53 @@ def append_board_geometry(
         'vector-effect="non-scaling-stroke" stroke-width="1.2">'
         f"<title>{html.escape(title)}</title></path>"
     )
-    if cut_guide:
-        svg.append(
-            f'<path d="{cut_guide}" class="cut-guide" data-role="cut-guide" '
-            'vector-effect="non-scaling-stroke">'
-            f"<title>Limiting cut guide {limiting_cut.kind}:{limiting_cut.index}</title>"
-            "</path>"
+    signatures = [
+        tuple(
+            round(value, 6)
+            for point in (item["cut"].start_mm, item["cut"].end_mm)
+            for value in point
         )
-    if clipped_cut:
-        svg.append(
-            f'<path d="{clipped_cut}" class="limiting-cut" '
-            'data-role="limiting-cut" vector-effect="non-scaling-stroke">'
-            f"<title>Limiting cut {limiting_cut.kind}:{limiting_cut.index}</title>"
-            "</path>"
+        for item in stackup_cuts
+    ]
+    for cut_index, item in enumerate(stackup_cuts):
+        limiting_cut: CutResult = item["cut"]
+        cut_line = LineString([limiting_cut.start_mm, limiting_cut.end_mm])
+        cut_guide = line_geometry_svg_path(
+            cut_line.intersection(
+                box(
+                    min_x - guide_padding,
+                    min_y - guide_padding,
+                    max_x + guide_padding,
+                    max_y + guide_padding,
+                )
+            )
         )
+        clipped_cut = line_geometry_svg_path(geometry.intersection(cut_line))
+        signature = signatures[cut_index]
+        coincident_total = signatures.count(signature)
+        coincident_rank = signatures[:cut_index].count(signature)
+        remaining_layers = coincident_total - coincident_rank - 1
+        guide_width = 2.0 + remaining_layers * 2.0
+        cut_width = 4.0 + remaining_layers * 3.0
+        common = (
+            f'data-stackup="{html.escape(item["name"])}" '
+            f'stroke="{item["color"]}" vector-effect="non-scaling-stroke"'
+        )
+        label = html.escape(item["label"])
+        if cut_guide:
+            svg.append(
+                f'<path d="{cut_guide}" class="cut-guide" data-role="cut-guide" '
+                f'{common} stroke-width="{guide_width:.1f}">'
+                f"<title>{label} limiting cut guide "
+                f"{limiting_cut.kind}:{limiting_cut.index}</title></path>"
+            )
+        if clipped_cut:
+            svg.append(
+                f'<path d="{clipped_cut}" class="limiting-cut" '
+                f'data-role="limiting-cut" {common} stroke-width="{cut_width:.1f}">'
+                f"<title>{label} limiting cut "
+                f"{limiting_cut.kind}:{limiting_cut.index}</title></path>"
+            )
     if vias:
         for via in vias:
             radius = max(via["diameter_mm"] / 2.0, 3.0 / scale)
@@ -1325,20 +1504,20 @@ def append_board_geometry(
 
 def append_capacity_profile(
     svg: list[str],
-    cuts: list[CutResult],
+    stackups: list[dict[str, Any]],
     temperatures: list[float],
-    limiting: dict[float, CutResult],
     source: Terminal,
     sinks: list[Terminal],
     direction: tuple[float, float],
     source_exit_distance_mm: float,
     panel: tuple[float, float, float, float],
 ) -> None:
-    """Draw current and aggregate-capacity versus sweep distance."""
+    """Draw the conservative-temperature capacity profile for each stackup."""
+    primary_temperature = min(temperatures)
     automatic = sorted(
         (
             cut
-            for cut in cuts
+            for cut in stackups[0]["cuts"]
             if cut.kind == "automatic" and cut.distance_mm is not None
         ),
         key=lambda cut: cut.distance_mm or 0.0,
@@ -1352,8 +1531,12 @@ def append_capacity_profile(
     plot_height = panel_height - 180.0
     maximum_distance = max(cut.distance_mm or 0.0 for cut in automatic)
     plotted_values = [cut.active_current_a for cut in automatic]
-    for cut in automatic:
-        plotted_values.extend(cut.natural_capacity_a[value] for value in temperatures)
+    for stackup in stackups:
+        plotted_values.extend(
+            cut.natural_capacity_a[primary_temperature]
+            for cut in stackup["cuts"]
+            if cut.kind == "automatic" and cut.distance_mm is not None
+        )
     maximum_current = max(plotted_values) * 1.1
     maximum_current = max(maximum_current, 1.0)
 
@@ -1366,19 +1549,14 @@ def append_capacity_profile(
     svg.append('<g id="capacity-profile">')
     svg.append(
         f'<text x="{panel_x + 20:.1f}" y="{panel_y + 30:.1f}" class="panel-title">'
-        "Capacity along the source-to-load sweep</text>"
+        f"{primary_temperature:g} °C capacity by stackup along the source-to-load sweep</text>"
     )
     svg.append(
         f'<text x="{panel_x + 20:.1f}" y="{panel_y + 50:.1f}" class="hint">'
-        "The lowest capacity-to-load separation is the thermal bottleneck.</text>"
+        "Each colored profile and limiting cut corresponds to one stackup.</text>"
     )
-    profile_colors = ("#00798c", "#7b2cbf", "#bc6c25", "#2a9d8f")
     legend_entries = [
-        (
-            profile_colors[index % len(profile_colors)],
-            f"capacity at {temperature:g} °C rise",
-        )
-        for index, temperature in enumerate(temperatures)
+        (stackup["color"], f"{stackup['label']} capacity") for stackup in stackups
     ]
     legend_entries.append(("#17212b", "load crossing each cut"))
     legend_y = panel_y + 82.0
@@ -1458,31 +1636,207 @@ def append_capacity_profile(
         for cut in automatic
     )
     svg.append(f'<polyline points="{load_points}" class="profile-load"/>')
-    for index, temperature in enumerate(temperatures):
-        color = profile_colors[index % len(profile_colors)]
+    for stackup in stackups:
+        stackup_automatic = sorted(
+            (
+                cut
+                for cut in stackup["cuts"]
+                if cut.kind == "automatic" and cut.distance_mm is not None
+            ),
+            key=lambda cut: cut.distance_mm or 0.0,
+        )
         points = " ".join(
             f"{chart_x(cut.distance_mm or 0.0):.2f},"
-            f"{chart_y(cut.natural_capacity_a[temperature]):.2f}"
-            for cut in automatic
+            f"{chart_y(cut.natural_capacity_a[primary_temperature]):.2f}"
+            for cut in stackup_automatic
         )
         svg.append(
-            f'<polyline points="{points}" fill="none" stroke="{color}" '
-            'stroke-width="3" stroke-linejoin="round"/>'
+            f'<polyline points="{points}" fill="none" '
+            f'stroke="{stackup["color"]}" stroke-width="3" '
+            f'data-role="stackup-capacity" '
+            f'data-stackup="{html.escape(stackup["name"])}" '
+            'stroke-linejoin="round"/>'
         )
-    primary_temperature = min(temperatures)
-    bottleneck = limiting[primary_temperature]
-    if bottleneck.distance_mm is not None:
+
+    bottlenecks = [stackup["limiting"][primary_temperature] for stackup in stackups]
+    distances = [
+        round(cut.distance_mm, 6) if cut.distance_mm is not None else None
+        for cut in bottlenecks
+    ]
+    labeled_distances: set[float] = set()
+    for stackup_index, (stackup, bottleneck) in enumerate(
+        zip(stackups, bottlenecks, strict=True)
+    ):
+        if bottleneck.distance_mm is None:
+            continue
+        distance_key = round(bottleneck.distance_mm, 6)
+        coincident_total = distances.count(distance_key)
+        coincident_rank = distances[:stackup_index].count(distance_key)
+        remaining_layers = coincident_total - coincident_rank - 1
         bottleneck_x = chart_x(bottleneck.distance_mm)
         svg.append(
             f'<line x1="{bottleneck_x:.1f}" y1="{plot_y:.1f}" '
             f'x2="{bottleneck_x:.1f}" y2="{plot_y + plot_height:.1f}" '
-            'class="profile-limit"/>'
+            f'class="profile-limit" stroke="{stackup["color"]}" '
+            f'stroke-width="{2.0 + remaining_layers * 3.0:.1f}" '
+            f'data-role="profile-limiting-cut" '
+            f'data-stackup="{html.escape(stackup["name"])}"/>'
+        )
+        if distance_key not in labeled_distances:
+            same_cut_labels = [
+                candidate["label"]
+                for candidate, candidate_cut in zip(stackups, bottlenecks, strict=True)
+                if candidate_cut.distance_mm is not None
+                and round(candidate_cut.distance_mm, 6) == distance_key
+            ]
+            label = (
+                "both stackups limit here"
+                if len(same_cut_labels) == len(stackups) and len(stackups) == 2
+                else " / ".join(same_cut_labels) + " limiting cut"
+            )
+            svg.append(
+                f'<text x="{bottleneck_x + 7:.1f}" '
+                f'y="{plot_y + plot_height - 10:.1f}" '
+                f'class="limit-label">{html.escape(label)}</text>'
+            )
+            labeled_distances.add(distance_key)
+
+    svg.append("</g>")
+
+
+def thermal_color(fraction: float) -> str:
+    fraction = min(max(fraction, 0.0), 1.0)
+    for (left_stop, left_color), (right_stop, right_color) in pairwise(THERMAL_PALETTE):
+        if fraction > right_stop:
+            continue
+        span = right_stop - left_stop
+        position = (fraction - left_stop) / span if span else 0.0
+        channels = tuple(
+            round(left + (right - left) * position)
+            for left, right in zip(left_color, right_color, strict=True)
+        )
+        return "#" + "".join(f"{channel:02x}" for channel in channels)
+    return "#" + "".join(f"{channel:02x}" for channel in THERMAL_PALETTE[-1][1])
+
+
+def append_temperature_rise_heatmaps(
+    svg: list[str],
+    geometry: Any,
+    bounds: tuple[float, float, float, float],
+    stackups: list[dict[str, Any]],
+    stackup_reports: list[dict[str, Any]],
+    source: Terminal,
+    direction: tuple[float, float],
+    reference_temperature: float,
+    panel: tuple[float, float, float, float],
+) -> None:
+    """Draw aggregate copper colored by an IPC-derived local rise proxy."""
+    panel_x, panel_y, panel_width, panel_height = panel
+    profiles: list[list[tuple[CutResult, float]]] = []
+    for stackup in stackups:
+        profile = [
+            (cut, estimated_temperature_rise_c(cut, reference_temperature))
+            for cut in stackup["cuts"]
+            if cut.kind == "automatic" and cut.distance_mm is not None
+        ]
+        profile.sort(key=lambda item: item[0].distance_mm or 0.0)
+        profiles.append(profile)
+    maximum_delta = max(delta for profile in profiles for _cut, delta in profile)
+    scale_maximum = max(5.0, math.ceil(maximum_delta / 5.0) * 5.0)
+
+    svg.append('<g id="temperature-rise-heatmaps">')
+    svg.append(
+        f'<text x="{panel_x + 20:.1f}" y="{panel_y + 30:.1f}" '
+        'class="panel-title">Estimated temperature-rise proxy at requested load</text>'
+    )
+    svg.append(
+        f'<text x="{panel_x + 20:.1f}" y="{panel_y + 51:.1f}" class="hint">'
+        "IPC-2221 capacity inverted at each sweep cut; colors omit thermal "
+        "spreading, components, airflow, and enclosure effects.</text>"
+    )
+    row_height = 140.0
+    row_start = panel_y + 68.0
+    path = geometry_svg_path(geometry.simplify(0.015, preserve_topology=True))
+    for index, (stackup, stackup_report, profile) in enumerate(
+        zip(stackups, stackup_reports, profiles, strict=True)
+    ):
+        row_y = row_start + index * row_height
+        peak_delta = stackup_report["temperature_rise_proxy"]["peak_delta_c"]
+        svg.append(
+            f'<text x="{panel_x + 24:.1f}" y="{row_y + 18:.1f}" '
+            f'class="stackup-title">{html.escape(stackup["label"])} · '
+            f"peak ΔT ≈ {peak_delta:.1f} °C</text>"
+        )
+        geometry_panel = (
+            panel_x + 20.0,
+            row_y + 27.0,
+            panel_width - 40.0,
+            row_height - 35.0,
+        )
+        translate_x, translate_y, scale = svg_board_transform(
+            bounds, geometry_panel, padding_px=10.0
+        )
+        first_distance = profile[0][0].distance_mm or 0.0
+        last_distance = profile[-1][0].distance_mm or first_distance + 1.0
+        span = max(last_distance - first_distance, 1e-9)
+        gradient_id = "thermal-gradient-" + re.sub(
+            r"[^A-Za-z0-9_-]", "-", stackup["name"]
+        )
+        start_x = source.x_mm + direction[0] * first_distance
+        start_y = source.y_mm + direction[1] * first_distance
+        end_x = source.x_mm + direction[0] * last_distance
+        end_y = source.y_mm + direction[1] * last_distance
+        svg.append("<defs>")
+        svg.append(
+            f'<linearGradient id="{gradient_id}" gradientUnits="userSpaceOnUse" '
+            f'x1="{start_x:.4f}" y1="{start_y:.4f}" '
+            f'x2="{end_x:.4f}" y2="{end_y:.4f}" spreadMethod="pad">'
+        )
+        for cut, delta in profile:
+            offset = ((cut.distance_mm or first_distance) - first_distance) / span
+            svg.append(
+                f'<stop offset="{offset:.6f}" '
+                f'stop-color="{thermal_color(delta / scale_maximum)}"/>'
+            )
+        svg.append("</linearGradient></defs>")
+        svg.append(
+            f'<g transform="translate({translate_x:.4f} {translate_y:.4f}) '
+            f'scale({scale:.6f})">'
         )
         svg.append(
-            f'<text x="{bottleneck_x + 7:.1f}" y="{plot_y + plot_height - 10:.1f}" '
-            'class="limit-label">limiting cut</text>'
+            f'<path d="{path}" fill="url(#{gradient_id})" stroke="#52616d" '
+            'fill-rule="evenodd" vector-effect="non-scaling-stroke" '
+            'stroke-width="1.2" data-role="temperature-rise-map" '
+            f'data-stackup="{html.escape(stackup["name"])}"/>'
         )
+        svg.append("</g>")
 
+    scale_id = "temperature-rise-color-scale"
+    bar_width = min(620.0, panel_width - 220.0)
+    bar_x = panel_x + (panel_width - bar_width) / 2.0
+    bar_y = panel_y + panel_height - 45.0
+    svg.append("<defs>")
+    svg.append(f'<linearGradient id="{scale_id}" x1="0%" y1="0%" x2="100%" y2="0%">')
+    for stop, _color in THERMAL_PALETTE:
+        svg.append(
+            f'<stop offset="{stop * 100:.1f}%" stop-color="{thermal_color(stop)}"/>'
+        )
+    svg.append("</linearGradient></defs>")
+    svg.append(
+        f'<text x="{bar_x:.1f}" y="{bar_y - 9:.1f}" class="axis-title">'
+        "Estimated ΔT above ambient (°C) · shared scale</text>"
+    )
+    svg.append(
+        f'<rect x="{bar_x:.1f}" y="{bar_y:.1f}" width="{bar_width:.1f}" '
+        f'height="14" rx="7" fill="url(#{scale_id})"/>'
+    )
+    for tick in range(5):
+        fraction = tick / 4.0
+        tick_x = bar_x + fraction * bar_width
+        svg.append(
+            f'<text x="{tick_x:.1f}" y="{bar_y + 32:.1f}" class="axis-label" '
+            f'text-anchor="middle">{scale_maximum * fraction:.1f}</text>'
+        )
     svg.append("</g>")
 
 
@@ -1493,11 +1847,19 @@ def write_svg(
     selected_geometry: dict[str, Any] = context["selected_geometry"]
     source: Terminal = context["source"]
     sinks: list[Terminal] = context["sinks"]
-    cuts: list[CutResult] = context["cuts"]
+    stackups: list[dict[str, Any]] = context["stackups"]
+    stackup_reports = report["stackups"]
     temperatures = [float(value) for value in report["inputs"]["temperature_rises_c"]]
     primary_temperature = min(temperatures)
-    limiting: dict[float, CutResult] = context["limiting"]
-    bottleneck = limiting[primary_temperature]
+    stackup_cuts = [
+        {
+            "name": stackup["name"],
+            "label": stackup["label"],
+            "color": stackup["color"],
+            "cut": stackup["limiting"][primary_temperature],
+        }
+        for stackup in stackups
+    ]
     combined = unary_union(
         [geometry for geometry in selected_geometry.values() if not geometry.is_empty]
     )
@@ -1506,15 +1868,17 @@ def write_svg(
     ]
     svg_width = 1400
     margin = 24.0
-    header_height = 190.0
-    overview_height = 400.0
+    header_height = 220.0
+    overview_height = 420.0
     layer_panel_height = 260.0
     layer_rows = math.ceil(len(nonempty_layers) / 2)
     section_gap = 22.0
     layer_section_y = margin + header_height + overview_height + section_gap * 2
     profile_y = layer_section_y + 34.0 + layer_rows * (layer_panel_height + 14.0)
     profile_height = 430.0
-    svg_height = math.ceil(profile_y + profile_height + margin)
+    thermal_y = profile_y + profile_height + section_gap
+    thermal_height = 150.0 + len(stackups) * 140.0
+    svg_height = math.ceil(thermal_y + thermal_height + margin)
     title = html.escape(f"{report['scenario']}: {report['net']} copper capacity")
     svg: list[str] = [
         '<?xml version="1.0" encoding="UTF-8"?>',
@@ -1541,6 +1905,10 @@ def write_svg(
             .metric-value { font-size: 17px; font-weight: 700; }
             .metric-detail { font-size: 13px; font-weight: 650; }
             .metric-card { stroke-width: 1.2; }
+            .stackup-card { fill: #ffffff; stroke: #d6dee4; stroke-width: 1.2; }
+            .stackup-title { font-size: 16px; font-weight: 700; }
+            .stackup-detail { font-size: 12px; fill: #647580; }
+            .stackup-result { font-size: 14px; font-weight: 650; }
             .pass-card { fill: #effaf5; stroke: #a8dbc4; }
             .fail-card { fill: #fff2f2; stroke: #e7b5b8; }
             .pass { fill: #147d50; }
@@ -1550,16 +1918,16 @@ def write_svg(
             .source-marker { fill: #17212b; stroke: #ffffff; }
             .sink-marker { fill: #26547c; stroke: #ffffff; }
             .terminal-marker-text { fill: #ffffff; font-weight: 700; text-anchor: middle; }
-            .cut-guide { fill: none; stroke: #d00000; stroke-width: 2; stroke-dasharray: 7 5; stroke-linecap: round; opacity: 0.72; }
-            .limiting-cut { fill: none; stroke: #d00000; stroke-width: 4; stroke-linecap: round; }
+            .cut-guide { fill: none; stroke-dasharray: 7 5; stroke-linecap: round; opacity: 0.72; }
+            .limiting-cut { fill: none; stroke-linecap: round; }
             .via { fill: none; stroke: #7b2cbf; stroke-width: 2; }
-            .cut-key { stroke: #d00000; stroke-width: 4; stroke-linecap: round; }
+            .cut-key { stroke-width: 4; stroke-linecap: round; }
             .grid { stroke: #e4e9ed; stroke-width: 1; }
             .axis-label { font-size: 12px; fill: #65747e; }
             .axis-title { font-size: 13px; fill: #52616d; }
             .legend-text { font-size: 13px; }
             .profile-load { fill: none; stroke: #17212b; stroke-width: 3; stroke-linejoin: round; }
-            .profile-limit { stroke: #d00000; stroke-width: 2; stroke-dasharray: 7 5; }
+            .profile-limit { stroke-dasharray: 7 5; }
             .limit-label { font-size: 12px; fill: #bc2f36; font-weight: 650; }
             .sink-guide { stroke: #8aa1b1; stroke-width: 1; stroke-dasharray: 3 5; }
             .sink-guide-label { font-size: 12px; fill: #52616d; font-weight: 650; }
@@ -1580,42 +1948,57 @@ def write_svg(
             ),
         ]
     )
-    metric_x = margin
-    metric_y = 92.0
-    metric_width = 316.0
-    metric_height = 78.0
-    for temperature in temperatures:
-        result = limiting[temperature]
-        margin_ratio = result.margin(temperature)
-        result_class = "pass" if margin_ratio >= 1.0 else "fail"
-        card_class = "pass-card" if margin_ratio >= 1.0 else "fail-card"
-        result_label = "PASS" if margin_ratio >= 1.0 else "FAIL"
+    card_gap = 14.0
+    card_y = 92.0
+    card_height = 110.0
+    card_width = (svg_width - margin * 2 - card_gap * (len(stackups) - 1)) / len(
+        stackups
+    )
+    svg.append('<g id="stackup-summaries">')
+    for stackup_index, (stackup, stackup_report) in enumerate(
+        zip(stackups, stackup_reports, strict=True)
+    ):
+        card_x = margin + stackup_index * (card_width + card_gap)
         svg.extend(
             [
                 (
-                    f'<rect x="{metric_x:.1f}" y="{metric_y:.1f}" '
-                    f'width="{metric_width:.1f}" height="{metric_height:.1f}" '
-                    f'rx="8" class="metric-card {card_class}"/>'
+                    f'<rect x="{card_x:.1f}" y="{card_y:.1f}" '
+                    f'width="{card_width:.1f}" height="{card_height:.1f}" '
+                    f'rx="8" class="stackup-card" data-role="stackup-summary" '
+                    f'data-stackup="{html.escape(stackup["name"])}"/>'
                 ),
                 (
-                    f'<text x="{metric_x + 14:.1f}" y="{metric_y + 20:.1f}" '
-                    'class="metric-label">'
-                    f"{temperature:g} °C RISE</text>"
+                    f'<line x1="{card_x + 5:.1f}" y1="{card_y + 9:.1f}" '
+                    f'x2="{card_x + 5:.1f}" y2="{card_y + card_height - 9:.1f}" '
+                    f'stroke="{stackup["color"]}" stroke-width="5" '
+                    'stroke-linecap="round"/>'
                 ),
                 (
-                    f'<text x="{metric_x + 14:.1f}" y="{metric_y + 45:.1f}" '
-                    f'class="metric-value {result_class}">'
-                    f"{result.natural_capacity_a[temperature]:.2f} A capacity / "
-                    f"{result.active_current_a:.2f} A load</text>"
+                    f'<text x="{card_x + 18:.1f}" y="{card_y + 24:.1f}" '
+                    f'class="stackup-title">{html.escape(stackup["label"])}</text>'
                 ),
                 (
-                    f'<text x="{metric_x + 14:.1f}" y="{metric_y + 66:.1f}" '
-                    f'class="metric-detail {result_class}">capacity ÷ load = '
-                    f"{margin_ratio:.2f}× · {result_label}</text>"
+                    f'<text x="{card_x + 18:.1f}" y="{card_y + 43:.1f}" '
+                    'class="stackup-detail">'
+                    f"{html.escape(stackup_report['thickness_summary'])}</text>"
                 ),
             ]
         )
-        metric_x += metric_width + 14.0
+        for temperature_index, temperature in enumerate(temperatures):
+            result = stackup["limiting"][temperature]
+            margin_ratio = result.margin(temperature)
+            result_class = "pass" if margin_ratio >= 1.0 else "fail"
+            result_label = "PASS" if margin_ratio >= 1.0 else "FAIL"
+            row_y = card_y + 69.0 + temperature_index * 23.0
+            svg.append(
+                f'<text x="{card_x + 18:.1f}" y="{row_y:.1f}" '
+                f'class="stackup-result {result_class}">'
+                f"{temperature:g} °C: "
+                f"{result.natural_capacity_a[temperature]:.2f} A capacity / "
+                f"{result.active_current_a:.2f} A load · "
+                f"{margin_ratio:.2f}× {result_label}</text>"
+            )
+    svg.append("</g>")
 
     overview_x = margin
     overview_y = margin + header_height
@@ -1628,7 +2011,7 @@ def write_svg(
     )
     svg.append(
         f'<text x="{overview_x + 20:.1f}" y="{overview_y + 52:.1f}" class="hint">'
-        "Neutral fill avoids layer-color blending; individual layers are shown below.</text>"
+        "Shared copper geometry with one color-coded limiting cut per stackup.</text>"
     )
     key_width = 300.0
     board_panel = (
@@ -1649,7 +2032,7 @@ def write_svg(
         "#b9c7cf",
         "#6d838f",
         "All connected selected-layer copper",
-        bottleneck,
+        stackup_cuts,
         marker_terminals=terminals,
         vias=report["via_screening"]["vias"],
     )
@@ -1663,7 +2046,7 @@ def write_svg(
         f'<text x="{key_x:.1f}" y="{overview_y + 91:.1f}" '
         'class="terminal-key" font-weight="650">Terminals</text>'
     )
-    key_y = overview_y + 118.0
+    key_y = overview_y + 112.0
     terminal_rows = [("S", source.selector, "source")]
     terminal_rows.extend(
         (str(index), sink.selector, f"{sink.current_a:g} A load")
@@ -1688,16 +2071,23 @@ def write_svg(
             f'<text x="{key_x + 30:.1f}" y="{key_y + 14:.1f}" '
             f'class="terminal-detail">{html.escape(detail)}</text>'
         )
-        key_y += 36.0
-    cut_key_y = min(key_y + 8.0, overview_y + overview_height - 34.0)
-    svg.append(
-        f'<line x1="{key_x:.1f}" y1="{cut_key_y:.1f}" '
-        f'x2="{key_x + 34:.1f}" y2="{cut_key_y:.1f}" class="cut-key"/>'
-    )
-    svg.append(
-        f'<text x="{key_x + 45:.1f}" y="{cut_key_y + 5:.1f}" class="terminal-key">'
-        f"limiting cut · {bottleneck.active_current_a:.2f} A load</text>"
-    )
+        key_y += 31.0
+    cut_key_y = key_y + 7.0
+    for cut_index, item in enumerate(stackup_cuts):
+        row_y = cut_key_y + cut_index * 24.0
+        cut = item["cut"]
+        distance = (
+            f"{cut.distance_mm:.2f} mm" if cut.distance_mm is not None else "manual"
+        )
+        svg.append(
+            f'<line x1="{key_x:.1f}" y1="{row_y:.1f}" '
+            f'x2="{key_x + 34:.1f}" y2="{row_y:.1f}" '
+            f'class="cut-key" stroke="{item["color"]}"/>'
+        )
+        svg.append(
+            f'<text x="{key_x + 45:.1f}" y="{row_y + 5:.1f}" '
+            f'class="terminal-key">{html.escape(item["label"])} · {distance}</text>'
+        )
     svg.append("</g>")
 
     svg.append(
@@ -1720,7 +2110,7 @@ def write_svg(
         )
         svg.append(
             f'<text x="{panel_x + 18:.1f}" y="{panel_y + 49:.1f}" class="hint">'
-            f"{copper_thickness_label(layer.thickness_um)} · {kind}</text>"
+            f"{kind} layer · shared copper geometry</text>"
         )
         append_board_geometry(
             svg,
@@ -1734,22 +2124,33 @@ def write_svg(
             ),
             color,
             color,
-            f"{layer.name}: {copper_thickness_label(layer.thickness_um)}, {kind}",
-            bottleneck,
+            f"{layer.name}: {kind} copper geometry",
+            stackup_cuts,
         )
     svg.append("</g>")
 
     svg_panel(svg, margin, profile_y, svg_width - margin * 2, profile_height)
     append_capacity_profile(
         svg,
-        cuts,
+        stackups,
         temperatures,
-        limiting,
         source,
         sinks,
         tuple(report["inputs"]["scan_direction"]),
         context["source_pad_exit_distance_mm"],
         (margin, profile_y, svg_width - margin * 2, profile_height),
+    )
+    svg_panel(svg, margin, thermal_y, svg_width - margin * 2, thermal_height)
+    append_temperature_rise_heatmaps(
+        svg,
+        combined,
+        combined.bounds,
+        stackups,
+        stackup_reports,
+        source,
+        tuple(report["inputs"]["scan_direction"]),
+        primary_temperature,
+        (margin, thermal_y, svg_width - margin * 2, thermal_height),
     )
     svg.append("</svg>")
     destination.write_text("\n".join(svg) + "\n", encoding="utf-8")
@@ -1788,22 +2189,23 @@ def write_markdown(report: dict[str, Any], destination: Path) -> None:
                 "from the pad center"
             ),
             "",
-            "## Layer stack used",
+            "## Connected copper geometry",
             "",
-            "| Layer | Type | Copper | Connected net area |",
-            "| --- | --- | ---: | ---: |",
+            "The geometry is shared by every compared stackup.",
+            "",
+            "| Layer | Type | Connected net area |",
+            "| --- | --- | ---: |",
         ]
     )
     for layer in report["layers"]:
         lines.append(
             f"| {layer['name']} | {layer['kind']} "
-            f"| {copper_thickness_label(layer['thickness_um'])} "
             f"| {layer['connected_copper_area_mm2']:.2f} mm² |"
         )
     lines.extend(
         [
             "",
-            "## Limiting results",
+            "## Stackup comparison",
             "",
             (
                 "Capacity/load is the estimated copper capacity divided by the "
@@ -1811,56 +2213,99 @@ def write_markdown(report: dict[str, Any], destination: Path) -> None:
                 "requested load."
             ),
             "",
-            "| Temperature rise | Load at cut | Natural-sharing capacity | Capacity/load | Ideal-sharing ceiling | Cut |",
-            "| ---: | ---: | ---: | ---: | ---: | --- |",
+            "| Stackup | Copper | Temperature rise | Load at cut | Natural-sharing capacity | Capacity/load | Ideal-sharing ceiling | Cut |",
+            "| --- | --- | ---: | ---: | ---: | ---: | ---: | --- |",
         ]
     )
-    for temperature in temperatures:
-        cut = report["limiting_cuts"][str(temperature)]
-        lines.append(
-            f"| {temperature:g} °C | {cut['active_current_a']:.2f} A "
-            f"| {cut['natural_capacity_a'][str(temperature)]:.2f} A "
-            f"| {cut['margin_ratio'][str(temperature)]:.2f}× "
-            f"| {cut['ideal_sharing_ceiling_a'][str(temperature)]:.2f} A "
-            f"| {cut['kind']}:{cut['index']} |"
-        )
     primary_temperature = min(temperatures)
-    limiting = report["limiting_cuts"][str(primary_temperature)]
+    for stackup in report["stackups"]:
+        for temperature in temperatures:
+            cut = stackup["limiting_cuts"][str(temperature)]
+            lines.append(
+                f"| {stackup['label']} | {stackup['thickness_summary']} "
+                f"| {temperature:g} °C | {cut['active_current_a']:.2f} A "
+                f"| {cut['natural_capacity_a'][str(temperature)]:.2f} A "
+                f"| {cut['margin_ratio'][str(temperature)]:.2f}× "
+                f"| {cut['ideal_sharing_ceiling_a'][str(temperature)]:.2f} A "
+                f"| {cut['kind']}:{cut['index']} |"
+            )
     lines.extend(
         [
             "",
-            f"### Per-layer detail at the {primary_temperature:g} °C limiting cut",
+            "## Estimated temperature-rise proxy",
             "",
-            "| Layer | Intersected width | Cross-section | Natural share | Requested current | IPC capacity |",
-            "| --- | ---: | ---: | ---: | ---: | ---: |",
+            (
+                "The SVG heatmaps invert the IPC-2221 natural-sharing capacity "
+                "at each sweep cut. They indicate relative hot regions but do "
+                "not model thermal spreading, components, airflow, or enclosure effects."
+            ),
+            "",
+            "| Stackup | Peak estimated ΔT | Peak cut |",
+            "| --- | ---: | --- |",
         ]
     )
-    for name, layer in limiting["layers"].items():
+    for stackup in report["stackups"]:
+        proxy = stackup["temperature_rise_proxy"]
+        peak = proxy["peak_cut"]
         lines.append(
-            f"| {name} | {layer['width_mm']:.3f} mm "
-            f"| {layer['cross_section_mm2']:.5f} mm² "
-            f"| {layer['natural_share'] * 100:.1f}% "
-            f"| {layer['current_at_requested_load_a']:.2f} A "
-            f"| {layer['capacity_a'][str(primary_temperature)]:.2f} A |"
+            f"| {stackup['label']} | {proxy['peak_delta_c']:.1f} °C "
+            f"| {peak['kind']}:{peak['index']} at {peak['distance_mm']:.2f} mm |"
         )
-    electrical = report["electrical_estimate"]
     lines.extend(
         [
             "",
             "## Electrical screening estimate",
             "",
-            f"- Copper loss at the requested load: {electrical['total_copper_loss_w']:.3f} W",
-            f"- Slice-integrated resistance to the farthest sink: {electrical['integrated_to_farthest_sink_ohm'] * 1000:.3f} mΩ",
+            "| Stackup | Copper loss | Resistance to farthest sink | Farthest-sink drop |",
+            "| --- | ---: | ---: | ---: |",
+        ]
+    )
+    for stackup in report["stackups"]:
+        electrical = stackup["electrical_estimate"]
+        farthest_drop = max(electrical["sink_voltage_drop_v"].values())
+        lines.append(
+            f"| {stackup['label']} | {electrical['total_copper_loss_w']:.3f} W "
+            f"| {electrical['integrated_to_farthest_sink_ohm'] * 1000:.3f} mΩ "
+            f"| {farthest_drop * 1000:.2f} mV |"
+        )
+    capacity_headings = " | ".join(
+        f"{stackup['label']} drop" for stackup in report["stackups"]
+    )
+    lines.extend(
+        [
             "",
-            "| Sink | Current | Estimated voltage drop |",
-            "| --- | ---: | ---: |",
+            f"| Sink | Current | {capacity_headings} |",
+            f"| --- | ---: | {' | '.join('---:' for _ in report['stackups'])} |",
         ]
     )
     currents = {sink["pad"]: sink["current_a"] for sink in report["inputs"]["sinks"]}
-    for selector, drop in electrical["sink_voltage_drop_v"].items():
-        lines.append(
-            f"| {selector} | {currents[selector]:.2f} A | {drop * 1000:.2f} mV |"
+    selectors = report["stackups"][0]["electrical_estimate"]["sink_voltage_drop_v"]
+    for selector in selectors:
+        drops = " | ".join(
+            f"{stackup['electrical_estimate']['sink_voltage_drop_v'][selector] * 1000:.2f} mV"
+            for stackup in report["stackups"]
         )
+        lines.append(f"| {selector} | {currents[selector]:.2f} A | {drops} |")
+
+    for stackup in report["stackups"]:
+        limiting = stackup["limiting_cuts"][str(primary_temperature)]
+        lines.extend(
+            [
+                "",
+                f"### {stackup['label']}: per-layer detail at the {primary_temperature:g} °C limiting cut",
+                "",
+                "| Layer | Intersected width | Cross-section | Natural share | Requested current | IPC capacity |",
+                "| --- | ---: | ---: | ---: | ---: | ---: |",
+            ]
+        )
+        for name, layer in limiting["layers"].items():
+            lines.append(
+                f"| {name} | {layer['width_mm']:.3f} mm "
+                f"| {layer['cross_section_mm2']:.5f} mm² "
+                f"| {layer['natural_share'] * 100:.1f}% "
+                f"| {layer['current_at_requested_load_a']:.2f} A "
+                f"| {layer['capacity_a'][str(primary_temperature)]:.2f} A |"
+            )
     via = report["via_screening"]
     lines.extend(
         [
@@ -1923,7 +2368,7 @@ def write_report(
 
 def write_report_index(reports: list[dict[str, Any]], output_root: Path) -> None:
     summary = {
-        "schema_version": 1,
+        "schema_version": 2,
         "reports": [
             {
                 "scenario": report["scenario"],
@@ -1931,18 +2376,30 @@ def write_report_index(reports: list[dict[str, Any]], output_root: Path) -> None
                 "board_sha256": report["board_sha256"],
                 "net": report["net"],
                 "requested_current_a": report["inputs"]["total_current_a"],
-                "temperature_rises": {
-                    temperature: {
-                        "natural_capacity_a": cut["natural_capacity_a"][temperature],
-                        "ideal_sharing_ceiling_a": cut["ideal_sharing_ceiling_a"][
-                            temperature
-                        ],
-                        "margin_ratio": cut["margin_ratio"][temperature],
-                        "passes_requested_load": cut["margin_ratio"][temperature]
-                        >= 1.0,
+                "stackups": [
+                    {
+                        "name": stackup["name"],
+                        "label": stackup["label"],
+                        "thickness_summary": stackup["thickness_summary"],
+                        "temperature_rises": {
+                            temperature: {
+                                "natural_capacity_a": cut["natural_capacity_a"][
+                                    temperature
+                                ],
+                                "ideal_sharing_ceiling_a": cut[
+                                    "ideal_sharing_ceiling_a"
+                                ][temperature],
+                                "margin_ratio": cut["margin_ratio"][temperature],
+                                "passes_requested_load": cut["margin_ratio"][
+                                    temperature
+                                ]
+                                >= 1.0,
+                            }
+                            for temperature, cut in stackup["limiting_cuts"].items()
+                        },
                     }
-                    for temperature, cut in report["limiting_cuts"].items()
-                },
+                    for stackup in report["stackups"]
+                ],
                 "report": f"{report['scenario']}/report.md",
             }
             for report in reports
@@ -1960,10 +2417,14 @@ def write_report_index(reports: list[dict[str, Any]], output_root: Path) -> None
         "| --- | --- | ---: | --- |",
     ]
     for item in summary["reports"]:
-        results = "; ".join(
-            f"{float(temperature):g} °C: {values['natural_capacity_a']:.2f} A, "
-            f"{values['margin_ratio']:.2f}× capacity/load"
-            for temperature, values in item["temperature_rises"].items()
+        results = "<br>".join(
+            f"{stackup['label']}: "
+            + "; ".join(
+                f"{float(temperature):g} °C {values['natural_capacity_a']:.2f} A, "
+                f"{values['margin_ratio']:.2f}×"
+                for temperature, values in stackup["temperature_rises"].items()
+            )
+            for stackup in item["stackups"]
         )
         lines.append(
             f"| [{item['scenario']}]({item['report']}) "
@@ -2029,6 +2490,19 @@ def load_scenarios(config_path: Path, root: Path) -> dict[str, Scenario]:
             sinks = [
                 Sink(item["pad"], float(item["current_a"])) for item in raw["sinks"]
             ]
+            stackups = [
+                StackupSpec(
+                    name=str(item["name"]),
+                    label=str(item.get("label", item["name"])),
+                    copper_overrides_um={
+                        key: float(value)
+                        for key, value in item.get("copper_overrides_um", {}).items()
+                    },
+                )
+                for item in raw.get("stackups", [])
+            ]
+            if len({stackup.name for stackup in stackups}) != len(stackups):
+                raise ValueError("stackup names must be unique")
             board_path = Path(raw["board"])
             if not board_path.is_absolute():
                 board_path = root / board_path
@@ -2054,6 +2528,7 @@ def load_scenarios(config_path: Path, root: Path) -> dict[str, Scenario]:
                     key: float(value)
                     for key, value in raw.get("copper_overrides_um", {}).items()
                 },
+                stackups=stackups,
                 manual_cuts=[parse_cut(value) for value in raw.get("manual_cuts", [])],
             )
         except (KeyError, TypeError, ValueError) as error:
@@ -2094,6 +2569,7 @@ def scenario_from_args(
                 list(base.include_layers) if base.include_layers is not None else None
             ),
             copper_overrides_um=dict(base.copper_overrides_um),
+            stackups=list(base.stackups),
             manual_cuts=list(base.manual_cuts),
         )
     else:
@@ -2126,7 +2602,9 @@ def scenario_from_args(
         scenario.scan_pitch_mm = args.scan_pitch
     if args.layer:
         scenario.include_layers = list(dict.fromkeys(args.layer))
-    scenario.copper_overrides_um.update(dict(args.copper or []))
+    if args.copper:
+        scenario.stackups = [StackupSpec("custom", "Custom stackup")]
+        scenario.copper_overrides_um.update(dict(args.copper))
     scenario.manual_cuts.extend(args.cut or [])
     return scenario
 
@@ -2178,13 +2656,17 @@ def print_summary(report: dict[str, Any], output_dir: Path) -> None:
     print(
         f"{report['scenario']}: {report['net']} at {report['inputs']['total_current_a']:.2f} A"
     )
-    for temperature in report["inputs"]["temperature_rises_c"]:
-        cut = report["limiting_cuts"][str(float(temperature))]
-        print(
-            f"  {float(temperature):g} C rise: {cut['natural_capacity_a'][str(float(temperature))]:.2f} A "
-            f"natural, {cut['ideal_sharing_ceiling_a'][str(float(temperature))]:.2f} A ideal, "
-            f"{cut['margin_ratio'][str(float(temperature))]:.2f}x capacity/load"
-        )
+    for stackup in report["stackups"]:
+        print(f"  {stackup['label']}:")
+        for temperature in report["inputs"]["temperature_rises_c"]:
+            key = str(float(temperature))
+            cut = stackup["limiting_cuts"][key]
+            print(
+                f"    {float(temperature):g} C rise: "
+                f"{cut['natural_capacity_a'][key]:.2f} A natural, "
+                f"{cut['ideal_sharing_ceiling_a'][key]:.2f} A ideal, "
+                f"{cut['margin_ratio'][key]:.2f}x capacity/load"
+            )
     print(f"  report: {output_dir / 'report.md'}")
 
 
