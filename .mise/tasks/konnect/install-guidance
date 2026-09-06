@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+#MISE description="Install Konnect's bundled Codex skills in the user profile"
+
+set -euo pipefail
+cd "${MISE_PROJECT_ROOT:?}"
+
+# This is deliberately separate from `mise install` because it writes to
+# ~/.agents/skills rather than only installing project-scoped tools.
+exec konnect init --client codex

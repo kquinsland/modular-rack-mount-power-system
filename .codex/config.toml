@@ -2,11 +2,7 @@
 max_threads = 6
 max_depth = 1
 
-[mcp_servers.kicad]
-# Note, must first run `mise run kicad-mcp:install` to fetch the MCP server (git submodule) and install dependencies.
+[mcp_servers.konnect]
+# Install the pinned Konnect release binary first with `mise install`.
 command = "mise"
-args = ["exec", "-C", ".", "--", "node", "kicad-mcp/server/dist/index.js"]
-
-[mcp_servers.kicad.env]
-LOG_LEVEL = "info"
-NODE_ENV = "production"
+args = ["exec", "-C", ".", "--", "konnect", "--client", "codex", "--config", "konnect/config.toml"]
