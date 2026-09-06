@@ -11,7 +11,8 @@ copper layer separately, a natural current-sharing aggregate, an ideal-sharing
 ceiling, voltage drop, copper loss, and a separate via-barrel screening
 estimate. The generated SVG provides a readable aggregate overview, separate
 layer views, and a capacity-versus-distance profile with the limiting cut
-visible for engineering review.
+visible for engineering review. A dashed red line shows the full cut in every
+board view; thicker solid-red portions show where that cut intersects copper.
 
 The host needs Python 3.11 or newer, KiCad 10 with its `pcbnew` Python
 bindings, and Shapely 2.x. The same dependencies are already used by the
@@ -35,7 +36,8 @@ Scenarios and their source/sink currents are defined in
 `pcb_power_scenarios.toml`. The backplane scenario uses six 5.5 A slot loads;
 the carrier scenario follows `VCC` from `J1.1` to the upstream side of the
 current shunt at `R1.1`. Copper thickness defaults to the board's KiCad
-stackup. An ad-hoc invocation can override it per layer:
+stackup. Reports show both micrometres and the nominal PCB copper weight using
+34.8 µm per oz/ft². An ad-hoc invocation can override thickness per layer:
 
 ```sh
 mise run power:report -- \

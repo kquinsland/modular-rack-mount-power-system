@@ -17,6 +17,11 @@ import pcb_power_capacity as power
 
 
 class FormulaTests(unittest.TestCase):
+    def test_formats_common_copper_weights(self) -> None:
+        self.assertEqual(power.copper_thickness_label(17.5), "17.5 µm (0.5 oz copper)")
+        self.assertEqual(power.copper_thickness_label(35.0), "35 µm (1 oz copper)")
+        self.assertEqual(power.copper_thickness_label(70.0), "70 µm (2 oz copper)")
+
     def test_matches_documented_backplane_single_layer_example(self) -> None:
         current = power.ipc2221_current_a(6.9, 70.0, 10.0, external=True)
         self.assertAlmostEqual(current, 16.04, places=2)
@@ -89,6 +94,9 @@ class BoardIntegrationTests(unittest.TestCase):
         self.assertGreater(len(report["cuts"]), 100)
         self.assertEqual(report["via_screening"]["count"], 6)
         self.assertEqual(len(report["board_sha256"]), 64)
+        self.assertAlmostEqual(
+            report["layers"][0]["copper_weight_oz_per_sq_ft"], 2.0, places=1
+        )
         for temperature in (10.0, 20.0):
             limiting = report["limiting_cuts"][str(temperature)]
             self.assertGreater(limiting["natural_capacity_a"][str(temperature)], 0)
@@ -111,9 +119,25 @@ class BoardIntegrationTests(unittest.TestCase):
             self.assertIsNotNone(
                 svg_root.find("svg:g[@id='capacity-profile']", namespace)
             )
+            legend = svg_root.find(
+                "svg:g[@id='capacity-profile']/svg:g[@id='capacity-profile-legend']",
+                namespace,
+            )
+            plot = svg_root.find(
+                "svg:g[@id='capacity-profile']/svg:rect[@id='capacity-profile-plot']",
+                namespace,
+            )
+            self.assertIsNotNone(legend)
+            self.assertIsNotNone(plot)
+            self.assertEqual(legend.attrib["data-position"], "outside-plot")
+            legend_line = legend.find("svg:line", namespace)
+            self.assertLess(float(legend_line.attrib["y1"]), float(plot.attrib["y"]))
             svg_text = svg_path.read_text(encoding="utf-8")
             self.assertNotIn("six lowest-margin", svg_text)
             self.assertIn('data-role="limiting-cut"', svg_text)
+            self.assertEqual(svg_text.count('data-role="cut-guide"'), 5)
+            self.assertIn("capacity ÷ load =", svg_text)
+            self.assertIn("70 µm (2 oz copper)", svg_text)
             self.assertTrue((report_output / "report.md").is_file())
             power.write_report_index([report], output)
             summary = json.loads((output / "summary.json").read_text())

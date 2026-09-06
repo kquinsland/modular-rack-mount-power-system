@@ -41,7 +41,13 @@ except ImportError as error:  # pragma: no cover - exercised on unprepared hosts
     ) from error
 
 try:
-    from shapely.geometry import GeometryCollection, LineString, MultiPolygon, Point
+    from shapely.geometry import (
+        GeometryCollection,
+        LineString,
+        MultiPolygon,
+        Point,
+        box,
+    )
     from shapely.geometry import Polygon as ShapelyPolygon
     from shapely.ops import unary_union
 except ImportError as error:  # pragma: no cover - exercised on unprepared hosts
@@ -54,6 +60,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 DEFAULT_CONFIG = SCRIPT_DIR / "pcb_power_scenarios.toml"
 DEFAULT_OUTPUT_ROOT = Path("build/power-capacity")
 COPPER_RESISTIVITY_OHM_M = 1.724e-8
+COPPER_WEIGHT_UM_PER_OZ = 34.8
 MM_PER_MIL = 0.0254
 UM_PER_MIL = 25.4
 GEOMETRY_ERROR_MM = 0.005
@@ -180,6 +187,17 @@ def mm(value: int) -> float:
 
 def point_mm(value: Any) -> tuple[float, float]:
     return mm(value.x), mm(value.y)
+
+
+def copper_weight_oz(thickness_um: float) -> float:
+    """Convert finished copper thickness to nominal PCB copper weight."""
+    return thickness_um / COPPER_WEIGHT_UM_PER_OZ
+
+
+def copper_thickness_label(thickness_um: float) -> str:
+    """Format copper thickness in both metric and customary PCB units."""
+    ounces = f"{copper_weight_oz(thickness_um):.1f}".rstrip("0").rstrip(".")
+    return f"{thickness_um:g} µm ({ounces} oz copper)"
 
 
 def load_board(board_path: Path) -> Any:
@@ -1103,6 +1121,7 @@ def analyze_scenario(scenario: Scenario) -> tuple[dict[str, Any], dict[str, Any]
                 "name": layer.name,
                 "kind": "external" if layer.external else "internal",
                 "thickness_um": layer.thickness_um,
+                "copper_weight_oz_per_sq_ft": copper_weight_oz(layer.thickness_um),
                 "connected_copper_area_mm2": selected_geometry[layer.name].area,
             }
             for layer in layers
@@ -1210,6 +1229,18 @@ def append_board_geometry(
     translate_x, translate_y, scale = svg_board_transform(bounds, panel)
     path = geometry_svg_path(geometry.simplify(0.015, preserve_topology=True))
     cut_line = LineString([limiting_cut.start_mm, limiting_cut.end_mm])
+    min_x, min_y, max_x, max_y = bounds
+    guide_padding = max(max_x - min_x, max_y - min_y) * 0.015
+    cut_guide = line_geometry_svg_path(
+        cut_line.intersection(
+            box(
+                min_x - guide_padding,
+                min_y - guide_padding,
+                max_x + guide_padding,
+                max_y + guide_padding,
+            )
+        )
+    )
     clipped_cut = line_geometry_svg_path(geometry.intersection(cut_line))
     svg.append(
         f'<g transform="translate({translate_x:.4f} {translate_y:.4f}) '
@@ -1220,6 +1251,13 @@ def append_board_geometry(
         'vector-effect="non-scaling-stroke" stroke-width="1.2">'
         f"<title>{html.escape(title)}</title></path>"
     )
+    if cut_guide:
+        svg.append(
+            f'<path d="{cut_guide}" class="cut-guide" data-role="cut-guide" '
+            'vector-effect="non-scaling-stroke">'
+            f"<title>Limiting cut guide {limiting_cut.kind}:{limiting_cut.index}</title>"
+            "</path>"
+        )
     if clipped_cut:
         svg.append(
             f'<path d="{clipped_cut}" class="limiting-cut" '
@@ -1276,10 +1314,10 @@ def append_capacity_profile(
     if not automatic:
         return
     panel_x, panel_y, panel_width, panel_height = panel
-    plot_x = panel_x + 72.0
-    plot_y = panel_y + 62.0
-    plot_width = panel_width - 104.0
-    plot_height = panel_height - 126.0
+    plot_x = panel_x + 92.0
+    plot_y = panel_y + 112.0
+    plot_width = panel_width - 128.0
+    plot_height = panel_height - 180.0
     maximum_distance = max(cut.distance_mm or 0.0 for cut in automatic)
     plotted_values = [cut.active_current_a for cut in automatic]
     for cut in automatic:
@@ -1302,6 +1340,34 @@ def append_capacity_profile(
         f'<text x="{panel_x + 20:.1f}" y="{panel_y + 50:.1f}" class="hint">'
         "The lowest capacity-to-load separation is the thermal bottleneck.</text>"
     )
+    profile_colors = ("#00798c", "#7b2cbf", "#bc6c25", "#2a9d8f")
+    legend_entries = [
+        (
+            profile_colors[index % len(profile_colors)],
+            f"capacity at {temperature:g} °C rise",
+        )
+        for index, temperature in enumerate(temperatures)
+    ]
+    legend_entries.append(("#17212b", "load crossing each cut"))
+    legend_y = panel_y + 82.0
+    legend_width = plot_width / len(legend_entries)
+    svg.append('<g id="capacity-profile-legend" data-position="outside-plot">')
+    for index, (color, label) in enumerate(legend_entries):
+        legend_x = plot_x + index * legend_width
+        svg.append(
+            f'<line x1="{legend_x:.1f}" y1="{legend_y:.1f}" '
+            f'x2="{legend_x + 28:.1f}" y2="{legend_y:.1f}" '
+            f'stroke="{color}" stroke-width="3"/>'
+        )
+        svg.append(
+            f'<text x="{legend_x + 38:.1f}" y="{legend_y + 5:.1f}" '
+            f'class="legend-text">{html.escape(label)}</text>'
+        )
+    svg.append("</g>")
+    svg.append(
+        f'<rect id="capacity-profile-plot" x="{plot_x:.1f}" y="{plot_y:.1f}" '
+        f'width="{plot_width:.1f}" height="{plot_height:.1f}" fill="none"/>'
+    )
     for tick in range(6):
         current = maximum_current * tick / 5.0
         y_value = chart_y(current)
@@ -1320,8 +1386,12 @@ def append_capacity_profile(
             f'<text x="{x_value:.1f}" y="{plot_y + plot_height + 25:.1f}" '
             f'class="axis-label" text-anchor="middle">{distance:.0f}</text>'
         )
+    y_axis_x = panel_x + 29.0
+    y_axis_y = plot_y + plot_height / 2.0
     svg.append(
-        f'<text x="{plot_x - 52:.1f}" y="{plot_y - 9:.1f}" class="axis-label">A</text>'
+        f'<text x="{y_axis_x:.1f}" y="{y_axis_y:.1f}" class="axis-title" '
+        f'text-anchor="middle" transform="rotate(-90 {y_axis_x:.1f} {y_axis_y:.1f})">'
+        "current and capacity (A)</text>"
     )
     svg.append(
         f'<text x="{plot_x + plot_width / 2:.1f}" '
@@ -1346,7 +1416,6 @@ def append_capacity_profile(
         for cut in automatic
     )
     svg.append(f'<polyline points="{load_points}" class="profile-load"/>')
-    profile_colors = ("#00798c", "#7b2cbf", "#bc6c25", "#2a9d8f")
     for index, temperature in enumerate(temperatures):
         color = profile_colors[index % len(profile_colors)]
         points = " ".join(
@@ -1372,35 +1441,6 @@ def append_capacity_profile(
             'class="limit-label">limiting cut</text>'
         )
 
-    legend_x = plot_x + 12.0
-    legend_top = plot_y + 7.0
-    legend_height = 16.0 + (len(temperatures) + 1) * 24.0
-    svg.append(
-        f'<rect x="{legend_x - 9:.1f}" y="{legend_top:.1f}" width="231" '
-        f'height="{legend_height:.1f}" rx="6" fill="#fff" fill-opacity="0.92" '
-        'stroke="#d6dee4"/>'
-    )
-    for index, temperature in enumerate(temperatures):
-        color = profile_colors[index % len(profile_colors)]
-        legend_y = plot_y + 25.0 + index * 24.0
-        svg.append(
-            f'<line x1="{legend_x:.1f}" y1="{legend_y:.1f}" '
-            f'x2="{legend_x + 28:.1f}" y2="{legend_y:.1f}" '
-            f'stroke="{color}" stroke-width="3"/>'
-        )
-        svg.append(
-            f'<text x="{legend_x + 38:.1f}" y="{legend_y + 5:.1f}" '
-            f'class="legend-text">capacity at {temperature:g} °C rise</text>'
-        )
-    load_legend_y = plot_y + 25.0 + len(temperatures) * 24.0
-    svg.append(
-        f'<line x1="{legend_x:.1f}" y1="{load_legend_y:.1f}" '
-        f'x2="{legend_x + 28:.1f}" y2="{load_legend_y:.1f}" class="profile-load"/>'
-    )
-    svg.append(
-        f'<text x="{legend_x + 38:.1f}" y="{load_legend_y + 5:.1f}" '
-        'class="legend-text">load crossing each cut</text>'
-    )
     svg.append("</g>")
 
 
@@ -1424,14 +1464,14 @@ def write_svg(
     ]
     svg_width = 1400
     margin = 24.0
-    header_height = 142.0
+    header_height = 190.0
     overview_height = 400.0
     layer_panel_height = 260.0
     layer_rows = math.ceil(len(nonempty_layers) / 2)
     section_gap = 22.0
     layer_section_y = margin + header_height + overview_height + section_gap * 2
     profile_y = layer_section_y + 34.0 + layer_rows * (layer_panel_height + 14.0)
-    profile_height = 380.0
+    profile_height = 430.0
     svg_height = math.ceil(profile_y + profile_height + margin)
     title = html.escape(f"{report['scenario']}: {report['net']} copper capacity")
     svg: list[str] = [
@@ -1456,7 +1496,11 @@ def write_svg(
             .panel-title { font-size: 20px; font-weight: 650; }
             .hint { font-size: 13px; fill: #647580; }
             .metric-label { font-size: 12px; fill: #65747e; }
-            .metric-value { font-size: 18px; font-weight: 700; }
+            .metric-value { font-size: 17px; font-weight: 700; }
+            .metric-detail { font-size: 13px; font-weight: 650; }
+            .metric-card { stroke-width: 1.2; }
+            .pass-card { fill: #effaf5; stroke: #a8dbc4; }
+            .fail-card { fill: #fff2f2; stroke: #e7b5b8; }
             .pass { fill: #147d50; }
             .fail { fill: #bc2f36; }
             .terminal-key { font-size: 14px; }
@@ -1464,11 +1508,13 @@ def write_svg(
             .source-marker { fill: #17212b; stroke: #ffffff; }
             .sink-marker { fill: #26547c; stroke: #ffffff; }
             .terminal-marker-text { fill: #ffffff; font-weight: 700; text-anchor: middle; }
+            .cut-guide { fill: none; stroke: #d00000; stroke-width: 2; stroke-dasharray: 7 5; stroke-linecap: round; opacity: 0.72; }
             .limiting-cut { fill: none; stroke: #d00000; stroke-width: 4; stroke-linecap: round; }
             .via { fill: none; stroke: #7b2cbf; stroke-width: 2; }
             .cut-key { stroke: #d00000; stroke-width: 4; stroke-linecap: round; }
             .grid { stroke: #e4e9ed; stroke-width: 1; }
             .axis-label { font-size: 12px; fill: #65747e; }
+            .axis-title { font-size: 13px; fill: #52616d; }
             .legend-text { font-size: 13px; }
             .profile-load { fill: none; stroke: #17212b; stroke-width: 3; stroke-linejoin: round; }
             .profile-limit { stroke: #d00000; stroke-width: 2; stroke-dasharray: 7 5; }
@@ -1491,25 +1537,41 @@ def write_svg(
         ]
     )
     metric_x = margin
+    metric_y = 92.0
+    metric_width = 316.0
+    metric_height = 78.0
     for temperature in temperatures:
         result = limiting[temperature]
         margin_ratio = result.margin(temperature)
         result_class = "pass" if margin_ratio >= 1.0 else "fail"
+        card_class = "pass-card" if margin_ratio >= 1.0 else "fail-card"
+        result_label = "PASS" if margin_ratio >= 1.0 else "FAIL"
         svg.extend(
             [
                 (
-                    f'<text x="{metric_x:.1f}" y="105" class="metric-label">'
+                    f'<rect x="{metric_x:.1f}" y="{metric_y:.1f}" '
+                    f'width="{metric_width:.1f}" height="{metric_height:.1f}" '
+                    f'rx="8" class="metric-card {card_class}"/>'
+                ),
+                (
+                    f'<text x="{metric_x + 14:.1f}" y="{metric_y + 20:.1f}" '
+                    'class="metric-label">'
                     f"{temperature:g} °C RISE</text>"
                 ),
                 (
-                    f'<text x="{metric_x:.1f}" y="128" '
+                    f'<text x="{metric_x + 14:.1f}" y="{metric_y + 45:.1f}" '
                     f'class="metric-value {result_class}">'
-                    f"{result.natural_capacity_a[temperature]:.2f} A · "
-                    f"{margin_ratio:.2f}×</text>"
+                    f"{result.natural_capacity_a[temperature]:.2f} A capacity / "
+                    f"{result.active_current_a:.2f} A load</text>"
+                ),
+                (
+                    f'<text x="{metric_x + 14:.1f}" y="{metric_y + 66:.1f}" '
+                    f'class="metric-detail {result_class}">capacity ÷ load = '
+                    f"{margin_ratio:.2f}× · {result_label}</text>"
                 ),
             ]
         )
-        metric_x += 230.0
+        metric_x += metric_width + 14.0
 
     overview_x = margin
     overview_y = margin + header_height
@@ -1614,7 +1676,7 @@ def write_svg(
         )
         svg.append(
             f'<text x="{panel_x + 18:.1f}" y="{panel_y + 49:.1f}" class="hint">'
-            f"{layer.thickness_um:g} µm · {kind}</text>"
+            f"{copper_thickness_label(layer.thickness_um)} · {kind}</text>"
         )
         append_board_geometry(
             svg,
@@ -1628,7 +1690,7 @@ def write_svg(
             ),
             color,
             color,
-            f"{layer.name}: {layer.thickness_um:g} µm {kind} copper",
+            f"{layer.name}: {copper_thickness_label(layer.thickness_um)}, {kind}",
             bottleneck,
         )
     svg.append("</g>")
@@ -1679,7 +1741,8 @@ def write_markdown(report: dict[str, Any], destination: Path) -> None:
     )
     for layer in report["layers"]:
         lines.append(
-            f"| {layer['name']} | {layer['kind']} | {layer['thickness_um']:.3f} µm "
+            f"| {layer['name']} | {layer['kind']} "
+            f"| {copper_thickness_label(layer['thickness_um'])} "
             f"| {layer['connected_copper_area_mm2']:.2f} mm² |"
         )
     lines.extend(
@@ -1687,7 +1750,13 @@ def write_markdown(report: dict[str, Any], destination: Path) -> None:
             "",
             "## Limiting results",
             "",
-            "| Temperature rise | Load at cut | Natural-sharing capacity | Margin | Ideal-sharing ceiling | Cut |",
+            (
+                "Capacity/load is the estimated copper capacity divided by the "
+                "current crossing the cut. Values below 1.00× do not meet the "
+                "requested load."
+            ),
+            "",
+            "| Temperature rise | Load at cut | Natural-sharing capacity | Capacity/load | Ideal-sharing ceiling | Cut |",
             "| ---: | ---: | ---: | ---: | ---: | --- |",
         ]
     )
@@ -1838,7 +1907,7 @@ def write_report_index(reports: list[dict[str, Any]], output_root: Path) -> None
     for item in summary["reports"]:
         results = "; ".join(
             f"{float(temperature):g} °C: {values['natural_capacity_a']:.2f} A, "
-            f"{values['margin_ratio']:.2f}×"
+            f"{values['margin_ratio']:.2f}× capacity/load"
             for temperature, values in item["temperature_rises"].items()
         )
         lines.append(
@@ -2059,7 +2128,7 @@ def print_summary(report: dict[str, Any], output_dir: Path) -> None:
         print(
             f"  {float(temperature):g} C rise: {cut['natural_capacity_a'][str(float(temperature))]:.2f} A "
             f"natural, {cut['ideal_sharing_ceiling_a'][str(float(temperature))]:.2f} A ideal, "
-            f"{cut['margin_ratio'][str(float(temperature))]:.2f}x margin"
+            f"{cut['margin_ratio'][str(float(temperature))]:.2f}x capacity/load"
         )
     print(f"  report: {output_dir / 'report.md'}")
 
