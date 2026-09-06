@@ -1,0 +1,60 @@
+{
+  "status": "pass_with_inherited_release_findings",
+  "fabrication_critical_violation_count": 0,
+  "unconnected_item_count": 0,
+  "reported_violation_count": 574,
+  "reported_violation_counts": {
+    "courtyards_overlap": 168,
+    "lib_footprint_issues": 68,
+    "lib_footprint_mismatch": 78,
+    "npth_inside_courtyard": 60,
+    "silk_edge_clearance": 6,
+    "silk_over_copper": 90,
+    "silk_overlap": 104
+  },
+  "mouse_bite_hole_count": 135,
+  "tooling_hole_count": 4,
+  "fiducial_count": 3,
+  "note": "Remaining findings are inherited courtyard, silkscreen, and library checks. Panel-created NPTH courtyard findings are mouse bites crossing the DNP MOD1 courtyard; they do not report copper, drill, or board-outline conflicts.",
+  "png_render": {
+    "file": "carrier6-backplane1-rev-a-top.png",
+    "source_board": "modular-rack-power-carrier6-backplane1-rev-a.kicad_pcb",
+    "source_revision": "f706cab",
+    "instances": 7,
+    "side": "top",
+    "requested_width_px": 1400,
+    "requested_height_px": 2000,
+    "actual_width_px": 1376,
+    "actual_height_px": 1992
+  },
+  "jlcpcb_gerbers": {
+    "file_count": 17,
+    "required_layer_groups": [
+      "bottom_copper",
+      "bottom_mask",
+      "edge_cuts",
+      "inner_1",
+      "inner_2",
+      "npth_drill",
+      "pth_drill",
+      "top_copper",
+      "top_mask",
+      "top_silkscreen"
+    ]
+  },
+  "pcbway_gerbers": {
+    "file_count": 17,
+    "required_layer_groups": [
+      "bottom_copper",
+      "bottom_mask",
+      "edge_cuts",
+      "inner_1",
+      "inner_2",
+      "npth_drill",
+      "pth_drill",
+      "top_copper",
+      "top_mask",
+      "top_silkscreen"
+    ]
+  }
+}
