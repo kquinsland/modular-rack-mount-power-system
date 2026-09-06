@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#MISE description="Build and validate the 6-carrier/1-backplane fabrication panel"
+
+set -euo pipefail
+cd "${MISE_PROJECT_ROOT:?}"
+
+export PANEL_GIT_HASH="${PANEL_GIT_HASH:-$(git rev-parse --short HEAD)}"
+exec python scripts/build_carrier_backplane_panel.py \
+  --release-dir releases/rev-a/carrier-backplane-panel \
+  --docs-render-dir docs/assets/generated/pcbs

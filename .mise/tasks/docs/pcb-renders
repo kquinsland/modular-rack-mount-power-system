@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#MISE description="Render carrier, backplane, and combined-panel documentation PNGs"
+
+set -euo pipefail
+cd "${MISE_PROJECT_ROOT:?}"
+
+export PANEL_GIT_HASH="${PANEL_GIT_HASH:-$(git rev-parse --short HEAD)}"
+exec python scripts/build_carrier_backplane_panel.py \
+  --docs-only \
+  --output-dir build/carrier-backplane-panel/docs-renders-only \
+  --docs-render-dir docs/assets/generated/pcbs
