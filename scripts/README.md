@@ -90,10 +90,10 @@ temperatures separately.
 ## Carrier/backplane fabrication panel
 
 `build_carrier_backplane_panel.py` uses KiKit to build one customer panel from
-six released carrier boards and one released backplane-prototype board. It pins
-the PCB and BOM inputs to the Git revisions matching their existing Rev A
-fabrication releases, then emits separate JLCPCB and PCBWay Gerber/BOM/positions
-bundles.
+six carrier boards and one backplane-prototype board. It materializes both PCB
+and BOM inputs from the build's Git revision, then emits separate JLCPCB and
+PCBWay Gerber/BOM/positions bundles. The mise tasks use the checked-out `HEAD`;
+`PANEL_GIT_HASH` may explicitly select another available commit.
 
 ```sh
 mise run panel:build
@@ -111,13 +111,13 @@ mise run docs:pcb-renders
 
 Board identity silkscreen is sourced from the KiCad project's text variables.
 For variable-bearing release sources, the builder replaces `BUILD_DATE` and
-`SHORT_HASH` with the pinned source revision's commit date and short hash before
+`SHORT_HASH` with the build revision's commit date and short hash before
 KiKit copies the board. Direct script invocations may override variables with
 `-D KEY=VALUE`, `--carrier-define-var KEY=VALUE`, or
 `--backplane-define-var KEY=VALUE`.
 
-Generate self-contained InteractiveHtmlBom assembly pages for the same pinned
-carrier and backplane revisions with:
+Generate self-contained InteractiveHtmlBom assembly pages for the same build
+revision with:
 
 ```sh
 mise run docs:pcb-iboms

@@ -29,8 +29,6 @@ from kikit.panelize import Origin, Panel
 from kikit.units import mm
 from shapely.geometry import LineString, box
 
-CARRIER_REVISION = "0896d29"
-BACKPLANE_REVISION = "085bb13"
 CARRIER_BOARD = "hardware/boards/carrier/carrier.kicad_pcb"
 CARRIER_BOM = "hardware/boards/carrier/production/bom.csv"
 CARRIER_PROJECT_FILES = (
@@ -44,7 +42,11 @@ BACKPLANE_BOM = "hardware/boards/backplane-prototype/production/bom.csv"
 BACKPLANE_PROJECT_FILES = (
     "hardware/boards/backplane-prototype/backplane-prototype.kicad_pro",
     "hardware/boards/backplane-prototype/backplane-prototype.kicad_sch",
-    "hardware/boards/backplane-prototype/slot_power_switch.kicad_sch",
+    "hardware/boards/backplane-prototype/01_power_input.kicad_sch",
+    "hardware/boards/backplane-prototype/02_control.kicad_sch",
+    "hardware/boards/backplane-prototype/03_can_slots.kicad_sch",
+    "hardware/boards/backplane-prototype/04_fan_status.kicad_sch",
+    "hardware/boards/backplane-prototype/05_buck_converters.kicad_sch",
 )
 
 CARRIER_PROJECT = CARRIER_PROJECT_FILES[0]
@@ -479,16 +481,22 @@ def build_panel(
 
     panel.save(reconstructArcs=True, refillAllZones=False, edgeWidth=int(0.1 * mm))
 
-    # The released backplane documentation specifies ENIG, but its KiCad stack
-    # descriptor was left at "None". Record the actual order finish in the
-    # generated panel so Gerber job metadata and order notes agree.
+    # Keep legacy source revisions with an unset finish reproducible, while
+    # accepting current sources that already record the required ENIG finish.
+    # Any other state means the generated panel no longer matches the order
+    # documentation and should stop the release.
     panel_text = panel_path.read_text(encoding="utf-8")
-    if panel_text.count('(copper_finish "None")') != 1:
-        raise RuntimeError("Expected one unset copper-finish entry in generated panel")
-    panel_path.write_text(
-        panel_text.replace('(copper_finish "None")', '(copper_finish "ENIG")'),
-        encoding="utf-8",
-    )
+    unset_finish_count = panel_text.count('(copper_finish "None")')
+    enig_finish_count = panel_text.count('(copper_finish "ENIG")')
+    if unset_finish_count == 1 and enig_finish_count == 0:
+        panel_path.write_text(
+            panel_text.replace('(copper_finish "None")', '(copper_finish "ENIG")'),
+            encoding="utf-8",
+        )
+    elif unset_finish_count != 0 or enig_finish_count != 1:
+        raise RuntimeError(
+            "Expected exactly one ENIG or unset copper-finish entry in generated panel"
+        )
 
     if panel.hasErrors():
         messages = "\n".join(
@@ -525,8 +533,8 @@ def build_panel(
         "mouse_bite_hole_count": EXPECTED_MOUSE_BITES,
         "tooling_hole_count": 4,
         "fiducial_count": 3,
-        "carrier_source_revision": CARRIER_REVISION,
-        "backplane_source_revision": BACKPLANE_REVISION,
+        "carrier_source_revision": build_git_hash,
+        "backplane_source_revision": build_git_hash,
         "panel_build_git_hash": build_git_hash,
     }
 
@@ -926,7 +934,7 @@ def render_documentation(
             "width_px": 1600,
             "height_px": 900,
             "source_board": CARRIER_BOARD,
-            "source_revision": CARRIER_REVISION,
+            "source_revision": panel_info["carrier_source_revision"],
             "instances": 1,
         },
         "backplane_prototype": {
@@ -934,7 +942,7 @@ def render_documentation(
             "width_px": 1600,
             "height_px": 900,
             "source_board": BACKPLANE_BOARD,
-            "source_revision": BACKPLANE_REVISION,
+            "source_revision": panel_info["backplane_source_revision"],
             "instances": 1,
         },
         "combined_panel": {
@@ -982,9 +990,9 @@ def render_documentation(
             "quality": "basic",
         },
         "panel_sources": {
-            "carrier_revision": CARRIER_REVISION,
+            "carrier_revision": panel_info["carrier_source_revision"],
             "carrier_instances": 6,
-            "backplane_revision": BACKPLANE_REVISION,
+            "backplane_revision": panel_info["backplane_source_revision"],
             "backplane_instances": 1,
             "panel_build_git_hash": panel_info["panel_build_git_hash"],
         },
@@ -1106,21 +1114,21 @@ def build(
     carrier_bom = sources / "carrier-bom.csv"
     backplane_board = sources / "backplane-prototype.kicad_pcb"
     backplane_bom = sources / "backplane-bom.csv"
-    materialize_git_file(root, CARRIER_REVISION, CARRIER_BOARD, carrier_board)
-    materialize_git_file(root, CARRIER_REVISION, CARRIER_BOM, carrier_bom)
-    materialize_git_file(root, BACKPLANE_REVISION, BACKPLANE_BOARD, backplane_board)
-    materialize_git_file(root, BACKPLANE_REVISION, BACKPLANE_BOM, backplane_bom)
+    materialize_git_file(root, build_git_hash, CARRIER_BOARD, carrier_board)
+    materialize_git_file(root, build_git_hash, CARRIER_BOM, carrier_bom)
+    materialize_git_file(root, build_git_hash, BACKPLANE_BOARD, backplane_board)
+    materialize_git_file(root, build_git_hash, BACKPLANE_BOM, backplane_bom)
 
     carrier_release_variables = release_text_variables(
         root,
-        CARRIER_REVISION,
+        build_git_hash,
         CARRIER_PROJECT,
         common_text_variables,
         carrier_text_variables,
     )
     backplane_release_variables = release_text_variables(
         root,
-        BACKPLANE_REVISION,
+        build_git_hash,
         BACKPLANE_PROJECT,
         common_text_variables,
         backplane_text_variables,
@@ -1168,14 +1176,14 @@ def build(
         for project_file in CARRIER_PROJECT_FILES:
             materialize_git_file(
                 root,
-                CARRIER_REVISION,
+                build_git_hash,
                 project_file,
                 sources / Path(project_file).name,
             )
         for project_file in BACKPLANE_PROJECT_FILES:
             materialize_git_file(
                 root,
-                BACKPLANE_REVISION,
+                build_git_hash,
                 project_file,
                 sources / Path(project_file).name,
             )

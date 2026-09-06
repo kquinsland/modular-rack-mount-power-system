@@ -27,7 +27,7 @@ mise run docs:pcb-iboms
 ```
 
 This task first runs `docs:pcb-renders`, ensuring that the iBOMs use the same
-pinned PCB revisions as the PNGs and panel. It currently uses the official
+Git revision as the PNGs and panel. It currently uses the official
 KiBot container because KiBot is not installed on the host and the host's
 KiCad 10/Python 3.14 bindings require a `SwigPyIterator` compatibility patch
 when InteractiveHtmlBom runs directly. The task contains a note to revisit the
@@ -40,10 +40,9 @@ multi-command implementations do not add noise to `mise.toml`.
 
 ## Documentation renders
 
-The individual images are rendered from the pinned board revisions used by the
-panel generator, not from whichever PCB files happen to be in the worktree.
-`renders.json` records those revisions, the panel build hash, KiCad version, and
-actual output dimensions.
+The individual images are rendered from the committed board files at the build
+revision, not from uncommitted PCB files in the worktree. `renders.json` records
+that revision, the panel build hash, KiCad version, and actual output dimensions.
 
 The iBOM configuration marks footprints carrying KiCad's native DNP flag as not
 fitted. The generated assembly tables therefore match the released BOMs: 57
@@ -85,14 +84,11 @@ combination, but it must be confirmed during engineering review before payment.
 
 ## Source authority
 
-The script intentionally does not consume the current backplane layout. That
-layout has moved beyond the fabricated prototype release. It materializes the
-PCB and BOM revisions corresponding to the completed fabrication packages:
-
-| Board | Git revision | Instances |
-| --- | --- | ---: |
-| Carrier | `0896d29` | 6 |
-| Backplane prototype | `085bb13` | 1 |
+The builder materializes both boards and both BOMs from one Git revision. The
+mise tasks set that revision to the checked-out `HEAD`; a deployment can set
+`PANEL_GIT_HASH` to another commit available in the checkout. This keeps the
+panel sources, board identity text, documentation renders, and provenance
+metadata on the same commit without source hashes embedded in the script.
 
 KiKit applies a unique prefix to every reference and net. The final assembly
 data contains 409 placed parts: 342 carrier placements and 67 backplane
@@ -104,8 +100,9 @@ negative Gerber coordinates while preserving origin agreement between KiKit's
 JLCPCB and PCBWay exporters.
 
 The mise task passes the current Git short hash through `PANEL_GIT_HASH`. The
-generator validates it and places `PANEL <hash>` on the top process rail on
-`F.SilkS`. Baking the resolved value into the generated PCB is intentional:
+generator validates it, uses it to materialize the source files, and places
+`PANEL <hash>` on the top process rail on `F.SilkS`. Baking the resolved value
+into the generated PCB is intentional:
 KiCad supports `${GIT_HASH}` project text variables and `kicad-cli -D`
 overrides, but KiKit's vendor fabrication commands do not expose that override.
 
@@ -120,9 +117,9 @@ v2.1-YY.MM.DD
 UNRELEASED
 ```
 
-When a variable-bearing board revision is pinned for a release, the panel
-builder deterministically replaces `BUILD_DATE` with that revision's commit
-date and `SHORT_HASH` with the pinned revision. It bakes those values before
+For a variable-bearing board, the panel builder deterministically replaces
+`BUILD_DATE` with the build revision's commit date and `SHORT_HASH` with that
+revision. It bakes those values before
 KiKit copies the board, so the standalone renders, panel PCB, and Gerbers all
 agree. Use `-D KEY=VALUE` for a shared override, or
 `--carrier-define-var KEY=VALUE` / `--backplane-define-var KEY=VALUE` for a
