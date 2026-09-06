@@ -150,8 +150,11 @@
 			(outputdirectory "")
 		)
 	)
-	(property "BOARD_NAME" "carrier")
+	(property "BOARD_NAME" "CARRIER")
 	(property "BOARD_ROLE" "Carrier PCB for one backplane slot and one fixed-address DC/USB-C PD module")
+	(property "BOARD_VERSION" "M2v1")
+	(property "BUILD_DATE" "26.08.29")
+	(property "PROJECT_FAMILY" "PD")
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(locked yes)
 		(layer "F.Cu")
@@ -22413,7 +22416,7 @@
 			(justify mirror)
 		)
 	)
-	(gr_text "PD-CARRIER\nM2v1.26.08.29"
+	(gr_text "${PROJECT_FAMILY}-${BOARD_NAME}\n${BOARD_VERSION}.${BUILD_DATE}"
 		(at 152.21 113.432037 0)
 		(layer "B.SilkS" knockout)
 		(uuid "694b2363-b407-40b7-8771-cb820ca3dad5")
