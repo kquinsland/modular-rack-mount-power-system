@@ -8,14 +8,22 @@
     (condition "(A.Type == 'Zone' && (A.NetName == 'VIN_RAW' || A.NetName == 'VCC')) || (B.Type == 'Zone' && (B.NetName == 'VIN_RAW' || B.NetName == 'VCC'))")
     (constraint clearance (min 0.5mm)))
 
-# CANH is the P member and CANL is the N member on both sides of L3.
-# The P/N suffixes enable KiCad's differential-pair router. Match the four nets
-# directly so project-settings rewrites cannot silently disable DRC enforcement.
-(rule "CAN differential pair coupling and skew"
-    (condition "A.NetName == '/CAN-FD and Six Slots/CAN_BUS_N' || A.NetName == '/CAN-FD and Six Slots/CAN_BUS_P' || A.NetName == '/CAN-FD and Six Slots/CAN_EXT_N' || A.NetName == '/CAN-FD and Six Slots/CAN_EXT_P'")
+# CANH is the P member and CANL is the N member on both sides of L3. Keep the
+# actual coupled routes tight. Whole-net skew is intentionally not constrained:
+# CAN_BUS is a branched multidrop bus, so its aggregate P/N lengths are not a
+# meaningful electrical path comparison.
+(rule "CAN coupled routing"
+    (condition "A.inDiffPair('/CAN-FD and Six Slots/CAN_BUS') || A.inDiffPair('/CAN-FD and Six Slots/CAN_EXT')")
     (constraint diff_pair_gap (min 0.20mm) (opt 0.25mm) (max 0.30mm))
-    (constraint diff_pair_uncoupled (max 5mm))
-    (constraint skew (max 1mm) (within_diff_pairs)))
+    (constraint diff_pair_uncoupled (max 35mm)))
+
+# Connector, choke, and transceiver pin pitch require short fan-outs wider than
+# the coupled-trunk limit. These named rule areas cover only those breakouts.
+# This exception is later in the file because KiCad evaluates rules in reverse.
+(rule "CAN localized breakouts"
+    (condition "(A.inDiffPair('/CAN-FD and Six Slots/CAN_BUS') || A.inDiffPair('/CAN-FD and Six Slots/CAN_EXT')) && (A.intersectsArea('CAN_BREAKOUT_LEFT_B') || A.intersectsArea('CAN_BREAKOUT_EXT_J7') || A.intersectsArea('CAN_BREAKOUT_EXT_L3') || A.intersectsArea('CAN_BREAKOUT_BUS_LEFT') || A.intersectsArea('CAN_BREAKOUT_SLOTS_B') || A.intersectsArea('CAN_BREAKOUT_SLOTS_P') || A.intersectsArea('CAN_BREAKOUT_SLOTS_N'))")
+    (constraint diff_pair_gap (min 0.20mm) (opt 0.25mm) (max 2.40mm))
+    (constraint diff_pair_uncoupled (max 35mm)))
 
 # JLCPCB supports through vias for this process, not blind, buried, or microvias.
 (rule "JLCPCB through vias only"

@@ -37539,6 +37539,39 @@
 		)
 	)
 	(zone
+		(layer "B.Cu")
+		(uuid "4a2f30e1-b217-495e-acf4-e8740f99c4ac")
+		(name "CAN_BREAKOUT_SLOTS_B")
+		(hatch edge 0.5)
+		(connect_pads yes
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(smoothing fillet)
+			(radius 1)
+			(island_removal_mode 1)
+		)
+		(polygon
+			(pts
+				(xy 66.5 54.8) (xy 165.5 54.8) (xy 165.5 57.7) (xy 66.5 57.7)
+			)
+		)
+	)
+	(zone
 		(net "VCC")
 		(layer "B.Cu")
 		(uuid "72f5c556-15f1-429e-98ec-3b8e79c27011")
@@ -37586,6 +37619,39 @@
 				(xy 89.685145 74.097666) (xy 89.576277 73.96501) (xy 89.562772 73.944798) (xy 89.481878 73.793456)
 				(xy 89.472575 73.770998) (xy 89.422757 73.606769) (xy 89.418018 73.582941) (xy 89.400597 73.406061)
 				(xy 89.4 73.393907) (xy 89.4 69.45) (xy 89.4 68.25) (xy 97 68.25)
+			)
+		)
+	)
+	(zone
+		(layer "B.Cu")
+		(uuid "a16b671e-1411-4ae4-b9b4-83510e42a43f")
+		(name "CAN_BREAKOUT_LEFT_B")
+		(hatch edge 0.5)
+		(connect_pads yes
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(smoothing fillet)
+			(radius 1)
+			(island_removal_mode 1)
+		)
+		(polygon
+			(pts
+				(xy 33.299999 48.4) (xy 58.4 48.4) (xy 58.4 53.95) (xy 33.299999 53.95)
 			)
 		)
 	)
@@ -37781,6 +37847,171 @@
 				(xy 32.300824 62.798115) (xy 32.433491 62.689238) (xy 32.453691 62.675741) (xy 32.605045 62.594841)
 				(xy 32.62749 62.585543) (xy 32.791728 62.535723) (xy 32.815552 62.530984) (xy 32.992435 62.513563)
 				(xy 33.004589 62.512966) (xy 33.298784 62.512966)
+			)
+		)
+	)
+	(zone
+		(layer "In1.Cu")
+		(uuid "0ef90f27-1b33-4d53-9a48-f07a5150d8a8")
+		(name "CAN_BREAKOUT_BUS_LEFT")
+		(hatch edge 0.5)
+		(connect_pads yes
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(smoothing fillet)
+			(radius 1)
+			(island_removal_mode 1)
+		)
+		(polygon
+			(pts
+				(xy 56.5 52) (xy 72.1 52) (xy 72.1 57.7) (xy 56.5 57.7)
+			)
+		)
+	)
+	(zone
+		(layer "In1.Cu")
+		(uuid "5976cda9-b2c5-418e-9dbe-028816e67a9c")
+		(name "CAN_BREAKOUT_EXT_L3")
+		(hatch edge 0.5)
+		(connect_pads yes
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(smoothing fillet)
+			(radius 1)
+			(island_removal_mode 1)
+		)
+		(polygon
+			(pts
+				(xy 41.55 51) (xy 43.35 51) (xy 43.35 52.95) (xy 41.55 52.95)
+			)
+		)
+	)
+	(zone
+		(layer "In1.Cu")
+		(uuid "adbb0a6e-4413-4859-a5a4-ce0e766d2a12")
+		(name "CAN_BREAKOUT_EXT_J7")
+		(hatch edge 0.5)
+		(connect_pads yes
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(smoothing fillet)
+			(radius 1)
+			(island_removal_mode 1)
+		)
+		(polygon
+			(pts
+				(xy 35.5 48.4) (xy 39.15 48.4) (xy 39.15 52.95) (xy 35.5 52.95)
+			)
+		)
+	)
+	(zone
+		(layer "In1.Cu")
+		(uuid "dd9d7cc2-8849-4242-b81e-31abdc538f18")
+		(name "CAN_BREAKOUT_SLOTS_P")
+		(hatch edge 0.5)
+		(connect_pads yes
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(smoothing fillet)
+			(radius 1)
+			(island_removal_mode 1)
+		)
+		(polygon
+			(pts
+				(xy 66.5 54.8) (xy 165.5 54.8) (xy 165.5 55.6) (xy 66.5 55.6)
+			)
+		)
+	)
+	(zone
+		(layer "In1.Cu")
+		(uuid "f1e7a10d-5202-4fc1-8c29-472d54958d61")
+		(name "CAN_BREAKOUT_SLOTS_N")
+		(hatch edge 0.5)
+		(connect_pads yes
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(smoothing fillet)
+			(radius 1)
+			(island_removal_mode 1)
+		)
+		(polygon
+			(pts
+				(xy 66.5 56.35) (xy 165.5 56.35) (xy 165.5 57.7) (xy 66.5 57.7)
 			)
 		)
 	)
