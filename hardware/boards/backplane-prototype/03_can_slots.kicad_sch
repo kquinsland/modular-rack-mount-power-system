@@ -2000,7 +2000,7 @@
 		)
 		(uuid "415c46db-a155-42d0-ba46-9d08531f777a")
 	)
-	(text "NOTES:\n\n  - J2 is small screw terminal block. DNP for factory, user solders on.\n    1 GND\n    2 CANL / CAN_EXT_N\n    3 CANH / CAN_EXT_P\n\n  - Only the external CAN boundary receives L3 common-mode filtering and D1 ESD protection.\n      Each mate already protects its slot interface with ESD.\n\n  - TCAN3413 STB is hard-tied low for permanent normal operation.\n\nLAYOUT:\n\n  - Keep SJ1 and R17 together on CAN_BUS_P/N, on the trunk side of L3.\n      Place them at the physical far end of the routed CAN trunk (currently beside J8), not beside L3/J2.\n      Connect the series jumper and 120 Ω resistor directly across CANH/CANL with the shortest practical branch and minimum loop area."
+	(text "NOTES:\n\n  - J7 is small screw terminal block. DNP for factory, user solders on.\n    1 GND\n    2 CANL / CAN_EXT_N\n    3 CANH / CAN_EXT_P\n\n  - Only the external CAN boundary receives L3 common-mode filtering and D1 ESD protection.\n      Each mate already protects its slot interface with ESD.\n\n  - TCAN3413 STB is hard-tied low for permanent normal operation.\n\nLAYOUT:\n\n  - Keep SJ1 and R17 together on CAN_BUS_P/N, on the trunk side of L3.\n      Place them at the physical far end of the routed CAN trunk (currently beside J6), not beside L3/J7.\n      Connect the series jumper and 120 Ω resistor directly across CANH/CANL with the shortest practical branch and minimum loop area."
 		(exclude_from_sim no)
 		(at 20.32 50.292 0)
 		(effects
@@ -3388,7 +3388,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "5577544c-3c14-4da8-9388-0f6d42975399")
-		(property "Reference" "J8"
+		(property "Reference" "J6"
 			(at 154.94 155.194 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3500,7 +3500,7 @@
 		(instances
 			(project "backplane-prototype"
 				(path "/348cc909-6345-4013-9bef-98714057a65b/eb7e4e77-e42b-4b43-976a-f7a3e8147b95"
-					(reference "J8")
+					(reference "J6")
 					(unit 1)
 				)
 			)
@@ -3673,7 +3673,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "8ccdd578-d346-4ac5-a534-f99969ec0d02")
-		(property "Reference" "J6"
+		(property "Reference" "J4"
 			(at 107.95 155.194 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3785,7 +3785,7 @@
 		(instances
 			(project "backplane-prototype"
 				(path "/348cc909-6345-4013-9bef-98714057a65b/eb7e4e77-e42b-4b43-976a-f7a3e8147b95"
-					(reference "J6")
+					(reference "J4")
 					(unit 1)
 				)
 			)
@@ -4286,7 +4286,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "b6f27976-f2d3-4252-9153-57006651c311")
-		(property "Reference" "J4"
+		(property "Reference" "J3"
 			(at 83.82 155.194 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4398,7 +4398,7 @@
 		(instances
 			(project "backplane-prototype"
 				(path "/348cc909-6345-4013-9bef-98714057a65b/eb7e4e77-e42b-4b43-976a-f7a3e8147b95"
-					(reference "J4")
+					(reference "J3")
 					(unit 1)
 				)
 			)
@@ -4634,7 +4634,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "c7fa38ab-3f06-4e76-98ac-5a53ae3853e9")
-		(property "Reference" "J3"
+		(property "Reference" "J2"
 			(at 60.96 155.194 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4746,7 +4746,7 @@
 		(instances
 			(project "backplane-prototype"
 				(path "/348cc909-6345-4013-9bef-98714057a65b/eb7e4e77-e42b-4b43-976a-f7a3e8147b95"
-					(reference "J3")
+					(reference "J2")
 					(unit 1)
 				)
 			)
@@ -4964,7 +4964,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "d84e36ee-164f-4c41-aaec-dabd08fa1363")
-		(property "Reference" "J7"
+		(property "Reference" "J5"
 			(at 132.08 155.194 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5076,7 +5076,7 @@
 		(instances
 			(project "backplane-prototype"
 				(path "/348cc909-6345-4013-9bef-98714057a65b/eb7e4e77-e42b-4b43-976a-f7a3e8147b95"
-					(reference "J7")
+					(reference "J5")
 					(unit 1)
 				)
 			)
@@ -5171,7 +5171,7 @@
 		(in_pos_files yes)
 		(dnp yes)
 		(uuid "e3e2db7b-735b-4211-99a9-d285a6931f89")
-		(property "Reference" "J2"
+		(property "Reference" "J7"
 			(at 192.27 67.31 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5292,7 +5292,7 @@
 		(instances
 			(project "backplane-prototype"
 				(path "/348cc909-6345-4013-9bef-98714057a65b/eb7e4e77-e42b-4b43-976a-f7a3e8147b95"
-					(reference "J2")
+					(reference "J7")
 					(unit 1)
 				)
 			)
