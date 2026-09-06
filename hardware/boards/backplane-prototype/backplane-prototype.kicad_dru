@@ -1,12 +1,12 @@
 (version 1)
 
-(rule "High-current DC clearance"
-    (condition "A.hasNetclass('HIGH_CURRENT_DC') || B.hasNetclass('HIGH_CURRENT_DC')")
+# The actual high-current trunk is implemented with VIN_RAW/VCC copper zones.
+# Match those zones directly so project-settings rewrites cannot disable the
+# clearance check.  Narrow tracks on these nets are intentional low-current
+# INA237 and buck-input branches, so a net-wide track-width rule is incorrect.
+(rule "High-current DC zone clearance"
+    (condition "(A.Type == 'Zone' && (A.NetName == 'VIN_RAW' || A.NetName == 'VCC')) || (B.Type == 'Zone' && (B.NetName == 'VIN_RAW' || B.NetName == 'VCC'))")
     (constraint clearance (min 0.5mm)))
-
-(rule "High-current DC track width"
-    (condition "A.hasNetclass('HIGH_CURRENT_DC')")
-    (constraint track_width (min 13.0mm)))
 
 # CANH is the P member and CANL is the N member on both sides of L3.
 # The P/N suffixes enable KiCad's differential-pair router. Match the four nets
