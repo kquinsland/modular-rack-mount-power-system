@@ -678,6 +678,25 @@ def dot(left: tuple[float, float], right: tuple[float, float]) -> float:
     return left[0] * right[0] + left[1] * right[1]
 
 
+def source_pad_exit_distance_mm(
+    source: Terminal, direction: tuple[float, float]
+) -> float:
+    """Return the furthest source-pad extent in the sweep direction."""
+    pad_geometry = item_polygon(source.pad, source.pad.GetLayer())
+    if pad_geometry.is_empty:
+        raise AnalysisError(
+            f"Could not extract copper geometry for source {source.selector}"
+        )
+    projections = [
+        dot((x - source.x_mm, y - source.y_mm), direction)
+        for polygon in polygon_components(pad_geometry)
+        for x, y in polygon.exterior.coords
+    ]
+    if not projections:
+        raise AnalysisError(f"Source {source.selector} has no usable pad boundary")
+    return max(0.0, max(projections))
+
+
 def automatic_cuts(
     source: Terminal,
     sinks: list[Terminal],
@@ -685,7 +704,7 @@ def automatic_cuts(
     selected_geometry: dict[str, Any],
     temperature_rises_c: list[float],
     scan_pitch_mm: float,
-) -> tuple[list[CutResult], tuple[float, float], list[tuple[Terminal, float]]]:
+) -> tuple[list[CutResult], tuple[float, float], list[tuple[Terminal, float]], float]:
     if scan_pitch_mm <= 0:
         raise AnalysisError("Scan pitch must be positive")
     total_load = sum(sink.current_a for sink in sinks)
@@ -722,10 +741,19 @@ def automatic_cuts(
     ).bounds
     span = max(bounds[2] - bounds[0], bounds[3] - bounds[1]) * 1.5 + 10.0
     farthest = max(projection for _, projection in sink_projections)
-    count = max(1, math.ceil(farthest / scan_pitch_mm))
+    source_exit_distance = source_pad_exit_distance_mm(source, direction)
+    if source_exit_distance >= farthest:
+        raise AnalysisError(
+            f"Every sink lies within the load-side extent of source {source.selector}"
+        )
+    sweep_length = farthest - source_exit_distance
+    count = max(1, math.ceil(sweep_length / scan_pitch_mm))
     cuts: list[CutResult] = []
     for index in range(count):
-        distance = min((index + 0.5) * scan_pitch_mm, farthest - 1e-6)
+        distance = min(
+            source_exit_distance + (index + 0.5) * scan_pitch_mm,
+            farthest - 1e-6,
+        )
         if distance <= 0:
             continue
         center = (
@@ -756,7 +784,7 @@ def automatic_cuts(
         )
     if not cuts:
         raise AnalysisError("The automatic sweep produced no current-carrying cuts")
-    return cuts, direction, sink_projections
+    return cuts, direction, sink_projections, source_exit_distance
 
 
 def current_across_manual_cut(
@@ -1029,7 +1057,7 @@ def analyze_scenario(scenario: Scenario) -> tuple[dict[str, Any], dict[str, Any]
         board, scenario.net, layers, source, sinks
     )
     warnings.extend(connectivity_warnings)
-    cuts, direction, sink_projections = automatic_cuts(
+    cuts, direction, sink_projections, source_exit_distance = automatic_cuts(
         source,
         sinks,
         layers,
@@ -1114,6 +1142,8 @@ def analyze_scenario(scenario: Scenario) -> tuple[dict[str, Any], dict[str, Any]
             "temperature_rises_c": scenario.temperature_rises_c,
             "scan_pitch_mm": scenario.scan_pitch_mm,
             "scan_direction": list(direction),
+            "source_pad_exit_distance_mm": source_exit_distance,
+            "first_automatic_cut_distance_mm": automatic[0].distance_mm,
             "selected_layers": [layer.name for layer in layers],
         },
         "layers": [
@@ -1151,6 +1181,7 @@ def analyze_scenario(scenario: Scenario) -> tuple[dict[str, Any], dict[str, Any]
         "sinks": sinks,
         "cuts": valid_cuts,
         "limiting": limiting,
+        "source_pad_exit_distance_mm": source_exit_distance,
     }
     return report, render_context
 
@@ -1300,6 +1331,7 @@ def append_capacity_profile(
     source: Terminal,
     sinks: list[Terminal],
     direction: tuple[float, float],
+    source_exit_distance_mm: float,
     panel: tuple[float, float, float, float],
 ) -> None:
     """Draw current and aggregate-capacity versus sweep distance."""
@@ -1386,6 +1418,16 @@ def append_capacity_profile(
             f'<text x="{x_value:.1f}" y="{plot_y + plot_height + 25:.1f}" '
             f'class="axis-label" text-anchor="middle">{distance:.0f}</text>'
         )
+    source_exit_x = chart_x(min(source_exit_distance_mm, maximum_distance))
+    svg.append(
+        f'<line x1="{source_exit_x:.1f}" y1="{plot_y:.1f}" '
+        f'x2="{source_exit_x:.1f}" y2="{plot_y + plot_height:.1f}" '
+        'class="source-pad-edge"/>'
+    )
+    svg.append(
+        f'<text x="{source_exit_x + 6:.1f}" y="{plot_y - 9:.1f}" '
+        'class="source-pad-edge-label">source pad exit</text>'
+    )
     y_axis_x = panel_x + 29.0
     y_axis_y = plot_y + plot_height / 2.0
     svg.append(
@@ -1521,6 +1563,8 @@ def write_svg(
             .limit-label { font-size: 12px; fill: #bc2f36; font-weight: 650; }
             .sink-guide { stroke: #8aa1b1; stroke-width: 1; stroke-dasharray: 3 5; }
             .sink-guide-label { font-size: 12px; fill: #52616d; font-weight: 650; }
+            .source-pad-edge { stroke: #687983; stroke-width: 1.5; stroke-dasharray: 4 4; }
+            .source-pad-edge-label { font-size: 12px; fill: #52616d; font-weight: 650; }
         </style>""",
         f'<rect width="{svg_width}" height="{svg_height}" class="page"/>',
     ]
@@ -1704,6 +1748,7 @@ def write_svg(
         source,
         sinks,
         tuple(report["inputs"]["scan_direction"]),
+        context["source_pad_exit_distance_mm"],
         (margin, profile_y, svg_width - margin * 2, profile_height),
     )
     svg.append("</svg>")
@@ -1732,6 +1777,16 @@ def write_markdown(report: dict[str, Any], destination: Path) -> None:
     lines.extend(
         [
             f"- Automatic scan pitch: {report['inputs']['scan_pitch_mm']:.3f} mm",
+            (
+                "- Source-pad exit in the scan direction: "
+                f"{report['inputs']['source_pad_exit_distance_mm']:.3f} mm from "
+                "the pad center"
+            ),
+            (
+                "- First automatic cut: "
+                f"{report['inputs']['first_automatic_cut_distance_mm']:.3f} mm "
+                "from the pad center"
+            ),
             "",
             "## Layer stack used",
             "",

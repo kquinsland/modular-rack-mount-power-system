@@ -97,9 +97,18 @@ class BoardIntegrationTests(unittest.TestCase):
         self.assertAlmostEqual(
             report["layers"][0]["copper_weight_oz_per_sq_ft"], 2.0, places=1
         )
+        source_exit = report["inputs"]["source_pad_exit_distance_mm"]
+        first_cut = report["inputs"]["first_automatic_cut_distance_mm"]
+        self.assertGreater(source_exit, 0.6)
+        self.assertAlmostEqual(
+            first_cut - source_exit,
+            report["inputs"]["scan_pitch_mm"] / 2.0,
+            places=6,
+        )
         for temperature in (10.0, 20.0):
             limiting = report["limiting_cuts"][str(temperature)]
             self.assertGreater(limiting["natural_capacity_a"][str(temperature)], 0)
+            self.assertGreater(limiting["distance_mm"], source_exit)
         with tempfile.TemporaryDirectory() as temporary:
             output = Path(temporary)
             report_output = output / "backplane-vcc"

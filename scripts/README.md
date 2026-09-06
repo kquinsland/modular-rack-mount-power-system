@@ -59,6 +59,9 @@ Omit `--layer` to use every enabled copper layer carrying the selected net.
 Add one or more `--cut X1,Y1:X2,Y2` arguments to evaluate explicit board-space
 cross-sections alongside the automatic sweep. A manual cut appears in the SVG
 when it is limiting; every cut remains available in the complete JSON inventory.
+The automatic sweep projects the source pad's actual polygon along the load
+direction and places its first sample half a scan pitch beyond the pad edge, so
+the source pad itself cannot be reported as a downstream copper bottleneck.
 
 Each report directory contains:
 
