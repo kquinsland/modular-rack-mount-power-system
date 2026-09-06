@@ -155,6 +155,11 @@
 			(outputdirectory "")
 		)
 	)
+	(property "BOARD_NAME" "backplane")
+	(property "BOARD_VERSION" "2.1")
+	(property "BUILD_DATE" "YY.MM.DD")
+	(property "PROJECT_FAMILY" "mpr")
+	(property "SHORT_HASH" "UNRELEASED")
 	(footprint "mini-rack-power:Amass_XT30U_2plus2_F"
 		(locked yes)
 		(layer "F.Cu")
@@ -24158,8 +24163,8 @@
 		(layer "Edge.Cuts")
 		(uuid "f2bdc212-2784-44fd-848f-f94c12542b4a")
 	)
-	(gr_text "PD-CARRIER\nM2v1.26.08.29"
-		(at 135.295 70.787495 0)
+	(gr_text "${PROJECT_FAMILY}.${BOARD_NAME}\nv${BOARD_VERSION}-${BUILD_DATE}\n${SHORT_HASH}"
+		(at 135.295 71.8 0)
 		(layer "F.SilkS" knockout)
 		(uuid "2d71dc5d-3790-441f-b0fc-563b8e43fd32")
 		(effects
@@ -24169,8 +24174,8 @@
 			)
 		)
 	)
-	(gr_text "PD-CARRIER\nM2v1.26.08.29"
-		(at 135.295 70.787495 0)
+	(gr_text "${PROJECT_FAMILY}.${BOARD_NAME}\nv${BOARD_VERSION}-${BUILD_DATE}\n${SHORT_HASH}"
+		(at 135.295 71.8 0)
 		(layer "B.SilkS" knockout)
 		(uuid "06151622-d20c-4fe5-95c6-9f5b109c339e")
 		(effects

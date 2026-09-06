@@ -47,6 +47,9 @@ BACKPLANE_PROJECT_FILES = (
     "hardware/boards/backplane-prototype/slot_power_switch.kicad_sch",
 )
 
+CARRIER_PROJECT = CARRIER_PROJECT_FILES[0]
+BACKPLANE_PROJECT = BACKPLANE_PROJECT_FILES[0]
+
 PANEL_NAME = "modular-rack-power-carrier6-backplane1-rev-a"
 RENDER_NAME = f"{PANEL_NAME}-top.png"
 DOC_RENDER_NAMES = {
@@ -143,6 +146,117 @@ def materialize_git_file(
     )
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_bytes(result.stdout)
+
+
+def git_file_json(root: Path, revision: str, source: str) -> dict[str, object]:
+    result = subprocess.run(
+        ["git", "show", f"{revision}:{source}"],
+        cwd=root,
+        check=True,
+        capture_output=True,
+    )
+    return json.loads(result.stdout)
+
+
+def project_text_variables(
+    root: Path, revision: str, project_file: str
+) -> dict[str, str]:
+    project = git_file_json(root, revision, project_file)
+    variables = project.get("text_variables", {})
+    if not isinstance(variables, dict) or not all(
+        isinstance(key, str) and isinstance(value, str)
+        for key, value in variables.items()
+    ):
+        raise RuntimeError(f"Invalid text_variables in {revision}:{project_file}")
+    return dict(variables)
+
+
+def git_revision_date(root: Path, revision: str) -> str:
+    result = subprocess.run(
+        ["git", "show", "-s", "--format=%cd", "--date=format:%y.%m.%d", revision],
+        cwd=root,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    value = result.stdout.strip()
+    if not re.fullmatch(r"\d{2}\.\d{2}\.\d{2}", value):
+        raise RuntimeError(f"Unexpected Git date for {revision}: {value!r}")
+    return value
+
+
+def release_text_variables(
+    root: Path,
+    revision: str,
+    project_file: str,
+    common_overrides: dict[str, str],
+    board_overrides: dict[str, str],
+) -> dict[str, str]:
+    variables = project_text_variables(root, revision, project_file)
+
+    # A working project deliberately advertises itself as unreleased. Once its
+    # revision is pinned by this release builder, the source commit supplies
+    # deterministic provenance unless the release command explicitly overrides
+    # either value.
+    if "BUILD_DATE" in variables:
+        variables["BUILD_DATE"] = git_revision_date(root, revision)
+    if "SHORT_HASH" in variables:
+        variables["SHORT_HASH"] = revision[:12].lower()
+
+    variables.update(common_overrides)
+    variables.update(board_overrides)
+    return variables
+
+
+def bake_board_text_variables(board_path: Path, variables: dict[str, str]) -> set[str]:
+    """Bake project text variables into board-level text for KiKit.
+
+    KiCad CLI accepts ``-D KEY=VALUE``, but KiKit's board-copy path does not.
+    Only board-level PCB_TEXT is touched here, leaving footprint fields such as
+    ``${REFERENCE}`` and model paths such as ``${KIPRJMOD}`` intact.
+    """
+
+    board = pcbnew.LoadBoard(str(board_path))
+    used: set[str] = set()
+    changed = False
+
+    for drawing in board.GetDrawings():
+        if not isinstance(drawing, pcbnew.PCB_TEXT):
+            continue
+        original = drawing.GetText()
+        updated = original
+        for name, value in variables.items():
+            token = f"${{{name}}}"
+            if token in updated:
+                updated = updated.replace(token, value)
+                used.add(name)
+        if updated != original:
+            drawing.SetText(updated)
+            changed = True
+
+    if changed:
+        pcbnew.SaveBoard(str(board_path), board)
+    return used
+
+
+def parse_text_variable(value: str) -> tuple[str, str]:
+    try:
+        name, replacement = value.split("=", 1)
+    except ValueError as error:
+        raise argparse.ArgumentTypeError(
+            "text variables must use KEY=VALUE syntax"
+        ) from error
+    if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", name):
+        raise argparse.ArgumentTypeError(f"invalid text-variable name: {name!r}")
+    if not replacement or "\n" in replacement or "\r" in replacement:
+        raise argparse.ArgumentTypeError(
+            "text-variable values must be non-empty single-line strings"
+        )
+    return name, replacement
+
+
+def text_variable_map(values: list[tuple[str, str]] | None) -> dict[str, str]:
+    return dict(values or [])
 
 
 def board_dimensions(board_path: Path) -> tuple[int, int]:
@@ -977,6 +1091,9 @@ def build(
     release_dir: Path | None,
     docs_render_dir: Path | None,
     docs_only: bool,
+    common_text_variables: dict[str, str],
+    carrier_text_variables: dict[str, str],
+    backplane_text_variables: dict[str, str],
 ) -> None:
     root = git_root()
     build_git_hash = panel_git_hash(root)
@@ -994,8 +1111,39 @@ def build(
     materialize_git_file(root, BACKPLANE_REVISION, BACKPLANE_BOARD, backplane_board)
     materialize_git_file(root, BACKPLANE_REVISION, BACKPLANE_BOM, backplane_bom)
 
+    carrier_release_variables = release_text_variables(
+        root,
+        CARRIER_REVISION,
+        CARRIER_PROJECT,
+        common_text_variables,
+        carrier_text_variables,
+    )
+    backplane_release_variables = release_text_variables(
+        root,
+        BACKPLANE_REVISION,
+        BACKPLANE_PROJECT,
+        common_text_variables,
+        backplane_text_variables,
+    )
+    carrier_used_variables = bake_board_text_variables(
+        carrier_board, carrier_release_variables
+    )
+    backplane_used_variables = bake_board_text_variables(
+        backplane_board, backplane_release_variables
+    )
+
     panel_path = output_dir / f"{PANEL_NAME}.kicad_pcb"
     panel_info = build_panel(carrier_board, backplane_board, panel_path, build_git_hash)
+    panel_info["board_silkscreen_variables"] = {
+        "carrier": {
+            name: carrier_release_variables[name]
+            for name in sorted(carrier_used_variables)
+        },
+        "backplane": {
+            name: backplane_release_variables[name]
+            for name in sorted(backplane_used_variables)
+        },
+    }
     (output_dir / "panel-info.json").write_text(
         json.dumps(panel_info, indent=2) + "\n", encoding="utf-8"
     )
@@ -1135,6 +1283,28 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Build the panel and documentation PNGs without fabrication outputs",
     )
+    parser.add_argument(
+        "-D",
+        "--define-var",
+        action="append",
+        type=parse_text_variable,
+        metavar="KEY=VALUE",
+        help="Override a project text variable for every source board",
+    )
+    parser.add_argument(
+        "--carrier-define-var",
+        action="append",
+        type=parse_text_variable,
+        metavar="KEY=VALUE",
+        help="Override a project text variable for the carrier board",
+    )
+    parser.add_argument(
+        "--backplane-define-var",
+        action="append",
+        type=parse_text_variable,
+        metavar="KEY=VALUE",
+        help="Override a project text variable for the backplane board",
+    )
     return parser.parse_args()
 
 
@@ -1148,6 +1318,9 @@ if __name__ == "__main__":
             arguments.release_dir.resolve() if arguments.release_dir else None,
             arguments.docs_render_dir.resolve() if arguments.docs_render_dir else None,
             arguments.docs_only,
+            text_variable_map(arguments.define_var),
+            text_variable_map(arguments.carrier_define_var),
+            text_variable_map(arguments.backplane_define_var),
         )
     except Exception as error:
         print(f"error: {error}", file=sys.stderr)

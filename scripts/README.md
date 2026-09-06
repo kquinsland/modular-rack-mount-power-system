@@ -24,6 +24,13 @@ carrier, backplane, and combined-panel documentation PNGs under
 mise run docs:pcb-renders
 ```
 
+Board identity silkscreen is sourced from the KiCad project's text variables.
+For variable-bearing release sources, the builder replaces `BUILD_DATE` and
+`SHORT_HASH` with the pinned source revision's commit date and short hash before
+KiKit copies the board. Direct script invocations may override variables with
+`-D KEY=VALUE`, `--carrier-define-var KEY=VALUE`, or
+`--backplane-define-var KEY=VALUE`.
+
 Generate self-contained InteractiveHtmlBom assembly pages for the same pinned
 carrier and backplane revisions with:
 

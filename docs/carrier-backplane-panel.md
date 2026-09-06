@@ -109,6 +109,26 @@ generator validates it and places `PANEL <hash>` on the top process rail on
 KiCad supports `${GIT_HASH}` project text variables and `kicad-cli -D`
 overrides, but KiKit's vendor fabrication commands do not expose that override.
 
+Board identity text uses native KiCad project text variables. The editable
+defaults live in each board's `.kicad_pro`; for example, the backplane uses
+`PROJECT_FAMILY`, `BOARD_NAME`, `BOARD_VERSION`, `BUILD_DATE`, and
+`SHORT_HASH`. Its working-copy defaults render as:
+
+```text
+mpr.backplane
+v2.1-YY.MM.DD
+UNRELEASED
+```
+
+When a variable-bearing board revision is pinned for a release, the panel
+builder deterministically replaces `BUILD_DATE` with that revision's commit
+date and `SHORT_HASH` with the pinned revision. It bakes those values before
+KiKit copies the board, so the standalone renders, panel PCB, and Gerbers all
+agree. Use `-D KEY=VALUE` for a shared override, or
+`--carrier-define-var KEY=VALUE` / `--backplane-define-var KEY=VALUE` for a
+board-specific override. Explicit overrides take precedence over both project
+defaults and the automatically derived date/hash.
+
 ## Mechanical design
 
 The backplane is rotated 90 degrees at the left of a vertical column of six
