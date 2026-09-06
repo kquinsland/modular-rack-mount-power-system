@@ -1675,7 +1675,7 @@
 		(uuid "d8ec11b7-504e-4c39-aafa-7c8b466df3ab")
 	)
 	(junction
-		(at 233.68 72.39)
+		(at 246.38 72.39)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "14488776-6071-4836-8300-db61fcd7eaf0")
@@ -1711,7 +1711,7 @@
 		(uuid "75d74e31-28aa-426c-9f23-6a443845f829")
 	)
 	(junction
-		(at 242.57 80.01)
+		(at 237.49 80.01)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "78249f33-a824-4712-980a-9e35b59b126f")
@@ -1968,7 +1968,7 @@
 	)
 	(wire
 		(pts
-			(xy 252.73 80.01) (xy 242.57 80.01)
+			(xy 227.33 80.01) (xy 237.49 80.01)
 		)
 		(stroke
 			(width 0)
@@ -1978,7 +1978,7 @@
 	)
 	(wire
 		(pts
-			(xy 233.68 72.39) (xy 242.57 72.39)
+			(xy 246.38 72.39) (xy 237.49 72.39)
 		)
 		(stroke
 			(width 0)
@@ -2018,7 +2018,7 @@
 	)
 	(wire
 		(pts
-			(xy 233.68 72.39) (xy 233.68 77.47)
+			(xy 246.38 72.39) (xy 246.38 77.47)
 		)
 		(stroke
 			(width 0)
@@ -2028,7 +2028,7 @@
 	)
 	(wire
 		(pts
-			(xy 242.57 80.01) (xy 233.68 80.01)
+			(xy 237.49 80.01) (xy 246.38 80.01)
 		)
 		(stroke
 			(width 0)
@@ -2130,16 +2130,16 @@
 	)
 	(global_label "DS18B20_DATA"
 		(shape bidirectional)
-		(at 252.73 80.01 0)
+		(at 227.33 80.01 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left)
+			(justify right)
 		)
 		(uuid "70766a15-cbe7-49f8-b4ab-4239c52f7765")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 252.73 80.01 0)
+			(at 227.33 80.01 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2473,6 +2473,7 @@
 	(symbol
 		(lib_id "Connector_Generic:Conn_01x03")
 		(at 198.12 78.74 0)
+		(mirror x)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -2482,7 +2483,7 @@
 		(dnp yes)
 		(uuid "22d0d722-2be7-4d67-9cf0-7cf4d9ac2b53")
 		(property "Reference" "J11"
-			(at 197.55 83.82 0)
+			(at 197.55 73.66 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -2492,7 +2493,8 @@
 			)
 		)
 		(property "Value" "12V 3-WIRE FAN"
-			(at 197.55 85.09 0)
+			(at 197.55 72.39 0)
+			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -2502,7 +2504,7 @@
 			)
 		)
 		(property "Footprint" "Connector_MiniRackPower:FanPinHeader_1x03_P2.54mm_Vertical_JLC_Edge"
-			(at 202.5 72.08 0)
+			(at 202.5 85.4 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2513,7 +2515,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 202.5 72.08 0)
+			(at 202.5 85.4 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2524,7 +2526,7 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"
-			(at 202.5 72.08 0)
+			(at 202.5 85.4 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2535,7 +2537,7 @@
 			)
 		)
 		(property "MPN" "TBD / user fan header"
-			(at 202.5 72.08 0)
+			(at 202.5 85.4 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2546,7 +2548,7 @@
 			)
 		)
 		(property "Manufacturer" "TBD"
-			(at 202.5 72.08 0)
+			(at 202.5 85.4 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2557,7 +2559,7 @@
 			)
 		)
 		(property "LCSC" ""
-			(at 202.5 72.08 0)
+			(at 202.5 85.4 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2568,7 +2570,7 @@
 			)
 		)
 		(property "Package" "1x3 2.54 mm fan header"
-			(at 202.5 72.08 0)
+			(at 202.5 85.4 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2799,7 +2801,8 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 242.57 76.2 0)
+		(at 237.49 76.2 0)
+		(mirror y)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -2809,7 +2812,7 @@
 		(dnp no)
 		(uuid "4d554ad9-da3c-4e63-a010-18803a34e0ec")
 		(property "Reference" "R24"
-			(at 245.618 74.676 0)
+			(at 234.442 74.676 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -2819,7 +2822,7 @@
 			)
 		)
 		(property "Value" "4.7k 1%"
-			(at 247.65 77.47 0)
+			(at 232.41 77.47 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -2829,7 +2832,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 240.222 76.07 90)
+			(at 239.838 76.07 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2840,7 +2843,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 242 76.07 0)
+			(at 238.06 76.07 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2851,7 +2854,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 242 76.07 0)
+			(at 238.06 76.07 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2862,7 +2865,7 @@
 			)
 		)
 		(property "MPN" "0603WAF4701T5E"
-			(at 242 76.07 0)
+			(at 238.06 76.07 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2873,7 +2876,7 @@
 			)
 		)
 		(property "Manufacturer" "UNI-ROYAL (Uniroyal Elec)"
-			(at 242 76.07 0)
+			(at 238.06 76.07 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2884,7 +2887,7 @@
 			)
 		)
 		(property "LCSC" "C23162"
-			(at 242 76.07 0)
+			(at 238.06 76.07 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2895,7 +2898,7 @@
 			)
 		)
 		(property "Tolerance" "1%"
-			(at 242 76.07 0)
+			(at 238.06 76.07 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3174,7 +3177,8 @@
 	)
 	(symbol
 		(lib_id "Connector_Generic:Conn_01x03")
-		(at 228.6 80.01 180)
+		(at 251.46 80.01 0)
+		(mirror x)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -3184,7 +3188,7 @@
 		(dnp yes)
 		(uuid "6002b3eb-085a-4b1f-800e-b208203e195b")
 		(property "Reference" "J12"
-			(at 229.17 85.09 0)
+			(at 250.89 85.09 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3194,7 +3198,7 @@
 			)
 		)
 		(property "Value" "DS18B20 EXT SUPPLY"
-			(at 224.79 87.884 0)
+			(at 255.27 87.884 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3205,7 +3209,7 @@
 			)
 		)
 		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical"
-			(at 229.17 79.7 0)
+			(at 250.89 79.7 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3216,7 +3220,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 229.17 79.7 0)
+			(at 250.89 79.7 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3227,7 +3231,7 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"
-			(at 229.17 79.7 0)
+			(at 250.89 79.7 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3238,7 +3242,7 @@
 			)
 		)
 		(property "MPN" "TBD / user pin header"
-			(at 229.17 79.7 0)
+			(at 250.89 79.7 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3249,7 +3253,7 @@
 			)
 		)
 		(property "Manufacturer" "TBD"
-			(at 229.17 79.7 0)
+			(at 250.89 79.7 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3260,7 +3264,7 @@
 			)
 		)
 		(property "LCSC" ""
-			(at 229.17 79.7 0)
+			(at 250.89 79.7 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3271,7 +3275,7 @@
 			)
 		)
 		(property "Package" "1x3 2.54 mm pin header"
-			(at 229.17 79.7 0)
+			(at 250.89 79.7 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4324,7 +4328,8 @@
 	)
 	(symbol
 		(lib_id "power:+3V3")
-		(at 233.68 72.39 0)
+		(at 246.38 72.39 0)
+		(mirror y)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -4335,7 +4340,7 @@
 		(fields_autoplaced yes)
 		(uuid "ae3e180d-4f1a-4071-904c-6778beb01055")
 		(property "Reference" "#PWR01"
-			(at 233.68 76.2 0)
+			(at 246.38 76.2 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4346,7 +4351,7 @@
 			)
 		)
 		(property "Value" "+3V3"
-			(at 233.68 67.31 0)
+			(at 246.38 67.31 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4356,7 +4361,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 233.68 72.39 0)
+			(at 246.38 72.39 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4367,7 +4372,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 233.68 72.39 0)
+			(at 246.38 72.39 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4378,7 +4383,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+3V3\""
-			(at 233.68 72.39 0)
+			(at 246.38 72.39 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4531,7 +4536,8 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 233.68 82.55 0)
+		(at 246.38 82.55 0)
+		(mirror y)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -4542,7 +4548,7 @@
 		(fields_autoplaced yes)
 		(uuid "cc7d5fa7-f26c-4498-82e6-ebc4327436c8")
 		(property "Reference" "#PWR02"
-			(at 233.68 88.9 0)
+			(at 246.38 88.9 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4553,7 +4559,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 233.68 87.63 0)
+			(at 246.38 87.63 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4563,7 +4569,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 233.68 82.55 0)
+			(at 246.38 82.55 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4574,7 +4580,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 233.68 82.55 0)
+			(at 246.38 82.55 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4585,7 +4591,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 233.68 82.55 0)
+			(at 246.38 82.55 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
