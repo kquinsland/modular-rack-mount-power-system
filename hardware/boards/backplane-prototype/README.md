@@ -43,24 +43,27 @@ of this design. Carrier communication is CAN-FD.
 
 ## Connectors
 
-`J5` is the main DC input:
+`J8` is the main DC input:
 
 1. GND
 2. VIN_RAW
 
-`J2` is a XINLAIYA XY308-2.54-3P three-position screw terminal, LCSC
+`J7` is a XINLAIYA XY308-2.54-3P three-position screw terminal, LCSC
 `C557686`:
 
 1. GND
 2. CANL
 3. CANH
 
-`J2` is intentionally marked DNP and excluded from pick-and-place output because
+`J7` is intentionally marked DNP and excluded from pick-and-place output because
 the user installs it by hand after assembly. D1 and L3 protect only this external
 CAN boundary. Each carrier has its own connector-side CAN protection, so the
 backplane does not duplicate ESD parts at every slot. `SJ1` and `R17` provide
 normally-open 120 ohm termination for use only when this backplane is at a
 physical bus end.
+
+`J8` is likewise marked DNP and excluded from pick-and-place output for hand
+installation after assembly.
 
 The six carrier slots retain the authoritative combined XT30 plus two-signal
 footprint. Their physical pinout is:
@@ -70,15 +73,18 @@ footprint. Their physical pinout is:
 3. CANH
 4. CANL
 
-The slot references are `J1`, `J3`, `J4`, `J6`, `J7`, and `J8`, from slot 1
-through slot 6. `J9` and `J11` are independently controlled 3-wire fan
-connections: GND, switched 12 V, and tach.
+The slot references are `J1` through `J6`, from slot 1 through slot 6. `J9` and
+`J11` are independently controlled 3-wire fan connections: GND, switched 12 V,
+and tach.
 
 CAN differential nets use KiCad's `_P`/`_N` naming convention on both sides of
 the common-mode choke: `CAN_BUS_P`/`CAN_BUS_N` and
 `CAN_EXT_P`/`CAN_EXT_N`, with `P = CANH` and `N = CANL`. Custom DRC rules
-enforce a 0.20-0.30 mm gap, 5 mm maximum uncoupled length, and 1 mm maximum
-within-pair skew.
+enforce a 0.20-0.30 mm gap on coupled routes and a 35 mm maximum uncoupled
+length. Narrowly scoped breakout areas permit up to 2.40 mm pair spacing at
+connector, choke, and transceiver fan-outs. Whole-net skew is intentionally not
+constrained because the six-drop `CAN_BUS` trunk is branched; aggregate P/N net
+lengths do not describe a meaningful point-to-point signal path.
 
 `J12` is the externally powered DS18B20 header:
 
@@ -112,17 +118,20 @@ second connector does not increase the regulator's 1 A output rating.
 
 ## PCB status
 
-The consolidated schematic is synchronized into the PCB, with functional groups
-staged outside the authoritative outline for placement and routing. Do not
-fabricate the current board yet. The next PCB stage must:
+The consolidated schematic is synchronized into a fully placed and routed PCB.
+The current design passes ERC and PCB DRC and can be released for prototype
+fabrication after its design inputs are committed and the production package is
+regenerated from that commit.
 
-- retain the authoritative outline, cutouts, holes, and slot placement;
-- place the selected external CAN terminal; confirm the two generic 2.54 mm
-  fan-header footprints and DS18B20 pin header against the sourced parts;
-- import and place the new control, CAN, monitor, fan, and regulator circuitry;
-- re-engineer the high-current pours, shunt Kelvin routing, regulator loops,
-  CAN-FD trunk/stubs, grounding, thermal paths, and test access; and
-- pass PCB DRC, schematic/PCB parity, assembly, and first-article review.
+Before ordering and assigning a production current rating:
+
+- verify the mirrored `J1`-`J6` mating geometry, power polarity, and CANH/CANL
+  ordering against a carrier;
+- confirm the hand-installed `J7`, `J8`, `J9`, `J11`, and `J12` footprints and
+  entry directions against the sourced parts;
+- review the generated BOM, placement, Gerber, drill, and validation files; and
+- perform first-article high-current, thermal, fan startup/stall, CAN-FD, and
+  protection testing under the intended enclosure and airflow conditions.
 
 See `../../../docs/interfaces.md`, `../../../docs/system-overview.md`, and
 `../../../docs/power-budget.md` for the system-level definitions.
