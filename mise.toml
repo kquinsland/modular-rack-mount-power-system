@@ -9,6 +9,9 @@ slsa = true
 # Don't need windows support, just arm64/x64 mac/linux
 lockfile_platforms = ["macos-arm64", "linux-x64", "linux-arm64"]
 
+[env]
+GH_REPO = "kquinsland/modular-rack-power"
+
 [settings.python]
 uv_venv_auto = "create|source" # create .venv if missing, then activate
 
