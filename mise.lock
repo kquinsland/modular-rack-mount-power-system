@@ -17,6 +17,25 @@ checksum = "sha256:d066a35f019f843f3c568a57bca6b7f52ca69253746474582f48721d32762
 url = "https://github.com/mixelpixx/Konnect/releases/download/v0.11.0/konnect-v0.11.0-aarch64-apple-darwin.tar.gz"
 url_api = "https://api.github.com/repos/mixelpixx/Konnect/releases/assets/534760600"
 
+[[tools.hugo-extended]]
+version = "0.165.0"
+backend = "aqua:gohugoio/hugo/hugo-extended"
+
+[tools.hugo-extended."platforms.linux-arm64"]
+checksum = "sha256:f40ebc44dfda3896cecd3ae7ed44f5c44c4b4a30a2b7d976ece6da62da699a58"
+url = "https://github.com/gohugoio/hugo/releases/download/v0.165.0/hugo_extended_0.165.0_linux-arm64.tar.gz"
+url_api = "https://api.github.com/repos/gohugoio/hugo/releases/assets/511697465"
+
+[tools.hugo-extended."platforms.linux-x64"]
+checksum = "sha256:f43494894cdf4a8630a201d5c828051c77f523cc66bb3938b30806835470ac20"
+url = "https://github.com/gohugoio/hugo/releases/download/v0.165.0/hugo_extended_0.165.0_linux-amd64.tar.gz"
+url_api = "https://api.github.com/repos/gohugoio/hugo/releases/assets/511697439"
+
+[tools.hugo-extended."platforms.macos-arm64"]
+checksum = "sha256:538be8435ded71e561cdc0bc42b9c9822c855b768e7028bc3f7f624b6e2c5185"
+url = "https://github.com/gohugoio/hugo/releases/download/v0.165.0/hugo_extended_0.165.0_darwin-universal.pkg"
+url_api = "https://api.github.com/repos/gohugoio/hugo/releases/assets/511697489"
+
 [[tools."pipx:easyeda2kicad"]]
 version = "1.0.1"
 backend = "pipx:easyeda2kicad"
@@ -71,15 +90,15 @@ version = "0.12.5"
 backend = "aqua:astral-sh/uv"
 
 [tools.uv."platforms.linux-arm64"]
-checksum = "sha256:8767a0e77f2cd45436401b1b42bf7e9ed5a4a91a74a5305d6fe93249d0f6dbc5"
-url = "https://github.com/astral-sh/uv/releases/download/0.12.5/uv-aarch64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/astral-sh/uv/releases/assets/514850993"
+checksum = "sha256:9bf43b4d1a07665bf64d4c4e710930b382321a785e0eb10aac07f46471f86a31"
+url = "https://github.com/astral-sh/uv/releases/download/0.12.5/uv-aarch64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/astral-sh/uv/releases/assets/514850990"
 provenance = "github-attestations"
 
 [tools.uv."platforms.linux-x64"]
-checksum = "sha256:a4742988791c9aeae68c78150d6cba762062ad2a47e53738c2779d2b596bfcdb"
-url = "https://github.com/astral-sh/uv/releases/download/0.12.5/uv-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/astral-sh/uv/releases/assets/514851105"
+checksum = "sha256:68a509da24b06b4223a1c0175fb5eb5bc79342b76cbeff0cfe51ac3f5b17b6b2"
+url = "https://github.com/astral-sh/uv/releases/download/0.12.5/uv-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/astral-sh/uv/releases/assets/514851093"
 provenance = "github-attestations"
 
 [tools.uv."platforms.macos-arm64"]

@@ -47,6 +47,14 @@ releases/
 See [`firmware/plan.md`](firmware/plan.md) for the reviewed implementation and
 repository-integration plan.
 
+## Documentation site
+
+The public-facing project documentation is maintained in [`site/`](site/) and
+is intended for <https://mrp.karlquinsland.com/>. Run `mise run site:serve` for
+local preview or `mise run site:build` for a production build. Create journal
+entries with `mise run worklog:new -- "Concise Summary"` so their filenames and
+front matter follow the project convention.
+
 ## Misc
 
 I can't believe that it's STILL such a pain in the ass to use LCSC to search for parts that are stocked by the SMT service.

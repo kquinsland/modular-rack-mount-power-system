@@ -1,0 +1,58 @@
+# {{ .Site.Title }}
+
+> {{ .Site.Params.description }}
+
+{{ .Site.BaseURL }}
+
+## Site
+
+{{- with .OutputFormats.Get "markdown" }}
+- [Home]({{ .Permalink }}): Project overview and documentation entry points.
+{{- end }}
+{{- with .Site.GetPage "/worklog" }}
+  {{- with .OutputFormats.Get "markdown" }}
+- [Worklog]({{ .Permalink }}): Version-independent project journal and development updates.
+  {{- end }}
+{{- end }}
+
+## Technical documentation versions
+
+{{- range .Site.Params.versions }}
+  {{- $version := . -}}
+  {{- with site.GetPage (printf "/%s" $version) }}
+    {{- with .OutputFormats.Get "markdown" }}
+- [{{ $version }}]({{ .Permalink }}): Technical documentation for {{ $version }}.
+    {{- end }}
+  {{- end }}
+{{- end }}
+
+## Latest technical documentation
+
+{{- with .Site.GetPage "/latest" }}
+  {{- $latestPages := where site.Pages "Section" "latest" -}}
+  {{- $latestPages = where $latestPages "RelPermalink" "ne" .RelPermalink -}}
+  {{- range $latestPages.ByLinkTitle }}
+    {{- $page := . -}}
+    {{- with .OutputFormats.Get "markdown" }}
+- [{{ $page.Title }}]({{ .Permalink }}){{ with $page.Description }}: {{ . | htmlUnescape | safeHTML }}{{ end }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+
+## Worklog entries
+
+{{- range (where .Site.RegularPages "Section" "worklog").ByDate.Reverse }}
+  {{- $page := . -}}
+  {{- with .OutputFormats.Get "markdown" }}
+- [{{ $page.Title }}]({{ .Permalink }}){{ with $page.Description }}: {{ . | htmlUnescape | safeHTML }}{{ end }}
+  {{- end }}
+{{- end }}
+
+## Source
+
+- [GitHub repository]({{ .Site.Params.github_repository }}): Hardware, engineering notes, scripts, firmware workspace, and site source.
+
+## Notes
+
+- Every page publishes Markdown as `index.md` beside its rendered `index.html`.
+- Worklogs are version-independent; technical documentation is organized by version.
