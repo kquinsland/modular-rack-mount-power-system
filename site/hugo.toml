@@ -1,0 +1,65 @@
+title = "Modular Rack Power"
+theme = "hudocs"
+baseURL = "https://mrp.karlquinsland.com/"
+
+enableRobotsTXT = true
+enableInlineShortcodes = true
+enableGitInfo = true
+disableKinds = ["taxonomy", "term", "RSS"]
+summaryLength = 30
+
+[languages.en]
+label = "English"
+weight = 1
+
+[markup.highlight]
+noClasses = false
+
+[markup.goldmark.renderer]
+unsafe = true
+
+[markup.tableOfContents]
+startLevel = 2
+endLevel = 3
+
+[mediaTypes."text/markdown"]
+suffixes = ["md"]
+
+[mediaTypes."text/plain"]
+suffixes = ["txt"]
+
+[outputFormats.markdown]
+baseName = "index"
+mediaType = "text/markdown"
+isPlainText = true
+isHTML = false
+
+[outputFormats.llms]
+baseName = "llms"
+mediaType = "text/plain"
+isPlainText = true
+isHTML = false
+
+[outputs]
+home = ["HTML", "markdown", "llms"]
+section = ["HTML", "markdown"]
+page = ["HTML", "markdown"]
+
+[[server.headers]]
+for = "**.md"
+[server.headers.values]
+Content-Type = "text/markdown; charset=utf-8"
+
+[[server.headers]]
+for = "**.txt"
+[server.headers.values]
+Content-Type = "text/plain; charset=utf-8"
+
+[params]
+description = "Development journal and technical documentation for a modular mini-rack power system."
+versions = ["latest"]
+main_icon = "bolt"
+date_format = "January 2, 2006"
+copyright = "© {{Year}} Karl Quinsland · [Theme by HuDocs](https://github.com/zkreations/hudocs) | [Powered by Hugo](https://gohugo.io/)"
+github_repository = "https://github.com/kquinsland/modular-rack-power"
+github_source_base = "https://github.com/kquinsland/modular-rack-power/blob"

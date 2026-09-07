@@ -1,0 +1,41 @@
+{{ define "main" }}
+<main class="main-section project-home">
+  <div class="container">
+    <div class="section-info">
+      <h1 class="section-title">{{ .Title }}</h1>
+      <p class="section-description">{{ .Description }}</p>
+    </div>
+    <div class="article-body markdown home-intro">{{ .Summary }}</div>
+
+    <div class="home-cards">
+      <a class="home-card" href='{{ "/latest/" | relLangURL }}'>
+        <strong>Technical documentation</strong>
+        <span>Architecture, hardware assemblies, interfaces, and power design.</span>
+      </a>
+      <a class="home-card" href='{{ "/worklog/" | relLangURL }}'>
+        <strong>Project worklog</strong>
+        <span>Informal development updates and expanded release notes.</span>
+      </a>
+      <a class="home-card" href="{{ site.Params.github_repository }}">
+        <strong>Source repository</strong>
+        <span>Hardware design files, engineering notes, scripts, and firmware workspace.</span>
+      </a>
+    </div>
+
+    <section class="version-browser" id="versions">
+      <h2>Browse technical documentation by version</h2>
+      <ul class="section-list">
+        {{- range site.Params.versions }}
+          <li><a href="{{ printf "/%s/" . | relLangURL }}">{{ . }}</a></li>
+        {{- end }}
+      </ul>
+    </section>
+
+    <section class="article-body markdown inspiration">
+      {{ .ContentWithoutSummary }}
+    </section>
+
+    {{ partial "footer" . }}
+  </div>
+</main>
+{{ end }}

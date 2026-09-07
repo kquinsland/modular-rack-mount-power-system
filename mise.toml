@@ -16,6 +16,7 @@ uv_venv_auto = "create|source" # create .venv if missing, then activate
 uvx = true
 
 [tools]
+hugo-extended = "0.165.0"
 prek = "latest"
 uv = "0.12.5"
 rust = "1.97.1"
@@ -41,3 +42,19 @@ run = [
   "git submodule sync --recursive -- hardware/libraries/vendor/wt32-eth01",
   "git submodule update --init --recursive -- hardware/libraries/vendor/wt32-eth01",
 ]
+
+[tasks."site:build"]
+description = "Validate and build the documentation site"
+run = "site/scripts/build.sh"
+
+[tasks."site:serve"]
+description = "Run the local documentation server with drafts"
+run = "hugo server --source site --buildDrafts"
+
+[tasks."site:validate"]
+description = "Validate documentation source and generated outputs"
+run = "site/scripts/validate.sh"
+
+[tasks."worklog:new"]
+description = "Create a dated worklog entry with the required filename"
+run = "site/scripts/new-worklog.sh"
