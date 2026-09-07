@@ -156,6 +156,99 @@
 	(property "BUILD_DATE" "YY-MM-DD")
 	(property "PROJECT_FAMILY" "mrp")
 	(property "SHORT_HASH" "UNRELEASED")
+	(zone
+		(layer "F.Cu")
+		(uuid "0da5b2e4-42a1-49f2-99e2-f000ba4a57b0")
+		(name "CAN_BUS_L3_BREAKOUT")
+		(hatch edge 0.5)
+		(connect_pads
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(island_removal_mode 0)
+		)
+		(polygon
+			(pts
+				(xy 115.45 102.95) (xy 116.95 102.95) (xy 116.95 104.36) (xy 115.45 104.36)
+			)
+		)
+	)
+	(zone
+		(layer "B.Cu")
+		(uuid "26d41365-4be1-4e0d-a8c3-b33ed9e02bc1")
+		(name "CAN_BUS_J1_BREAKOUT")
+		(hatch edge 0.5)
+		(connect_pads
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(island_removal_mode 0)
+		)
+		(polygon
+			(pts
+				(xy 106.5 115.2) (xy 111.45 115.2) (xy 111.45 118.25) (xy 106.5 118.25)
+			)
+		)
+	)
+	(zone
+		(layer "F.Cu")
+		(uuid "e7f25069-ad7c-4a8b-a30b-6025d16faf4b")
+		(name "CAN_PHY_BREAKOUT")
+		(hatch edge 0.5)
+		(connect_pads
+			(clearance 0)
+		)
+		(min_thickness 0.25)
+		(keepout
+			(tracks allowed)
+			(vias allowed)
+			(pads allowed)
+			(copperpour allowed)
+			(footprints allowed)
+		)
+		(placement
+			(enabled no)
+			(sheetname "")
+		)
+		(fill
+			(thermal_gap 0.5)
+			(thermal_bridge_width 0.5)
+			(island_removal_mode 0)
+		)
+		(polygon
+			(pts
+				(xy 118.5 102.75) (xy 121.35 102.75) (xy 121.35 104.35) (xy 118.5 104.35)
+			)
+		)
+	)
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(locked yes)
 		(layer "F.Cu")
