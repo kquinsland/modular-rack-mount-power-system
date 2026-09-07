@@ -5,6 +5,12 @@ It snapshots the selected commit, including the complete hardware library tree,
 and runs KiBot/KiCad/KiKit inside the digest-pinned image defined by `IMAGE`.
 Source projects in the checkout are never modified by a build.
 
+Active projects are `hardware/boards/carrier/carrier.kicad_pro` and
+`hardware/boards/backplane/backplane.kicad_pro`. The builder recognizes the
+former `backplane-prototype` path in historical revisions and refuses to treat
+the earlier split backplane as the consolidated board. Historical revisions
+that used retired submodules need those pinned objects available locally.
+
 ```sh
 mise run release:setup             # download the pinned image once
 mise run release:test              # Python validation/conversion tests

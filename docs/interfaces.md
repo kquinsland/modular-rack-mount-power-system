@@ -1,7 +1,7 @@
 # Consolidated Backplane Interfaces
 
 This document describes the active second-generation backplane hardware in
-`hardware/boards/backplane-prototype`. The former backpack-to-backplane I2C
+`hardware/boards/backplane`. The former backpack-to-backplane I2C
 boundary is superseded; the controller and all six slots now live on one PCB.
 
 ## DC Input

@@ -39,13 +39,6 @@ run = "cargo xtask firmware build --board rev-a --release"
 description = "Regenerate the PDCAN DBC from protocol definitions"
 run = "cargo xtask dbc"
 
-[tasks."wt32-eth01:submodule"]
-description = "Initialize and update the WT32-ETH01 KiCad library submodule"
-run = [
-  "git submodule sync --recursive -- hardware/libraries/vendor/wt32-eth01",
-  "git submodule update --init --recursive -- hardware/libraries/vendor/wt32-eth01",
-]
-
 [tasks."site:build"]
 description = "Validate and build the documentation site"
 run = "site/scripts/build.sh"

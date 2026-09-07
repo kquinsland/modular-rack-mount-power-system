@@ -35,18 +35,18 @@ CARRIER_PROJECT_FILES = (
     "hardware/boards/carrier/01_power_control.kicad_sch",
     "hardware/boards/carrier/02_housekeeping.kicad_sch",
 )
-BACKPLANE_BOARD = "hardware/boards/backplane-prototype/backplane-prototype.kicad_pcb"
-BACKPLANE_BOM = "hardware/boards/backplane-prototype/production/bom.csv"
-BACKPLANE_PRODUCTION_DIR = Path("hardware/boards/backplane-prototype/production")
-BACKPLANE_ARCHIVE = "Backplane_Prototype_A.zip"
+BACKPLANE_BOARD = "hardware/boards/backplane/backplane.kicad_pcb"
+BACKPLANE_BOM = "hardware/boards/backplane/production/bom.csv"
+BACKPLANE_PRODUCTION_DIR = Path("hardware/boards/backplane/production")
+BACKPLANE_ARCHIVE = "Backplane_A.zip"
 BACKPLANE_PROJECT_FILES = (
-    "hardware/boards/backplane-prototype/backplane-prototype.kicad_pro",
-    "hardware/boards/backplane-prototype/backplane-prototype.kicad_sch",
-    "hardware/boards/backplane-prototype/01_power_input.kicad_sch",
-    "hardware/boards/backplane-prototype/02_control.kicad_sch",
-    "hardware/boards/backplane-prototype/03_can_slots.kicad_sch",
-    "hardware/boards/backplane-prototype/04_fan_status.kicad_sch",
-    "hardware/boards/backplane-prototype/05_buck_converters.kicad_sch",
+    "hardware/boards/backplane/backplane.kicad_pro",
+    "hardware/boards/backplane/backplane.kicad_sch",
+    "hardware/boards/backplane/01_power_input.kicad_sch",
+    "hardware/boards/backplane/02_control.kicad_sch",
+    "hardware/boards/backplane/03_can_slots.kicad_sch",
+    "hardware/boards/backplane/04_fan_status.kicad_sch",
+    "hardware/boards/backplane/05_buck_converters.kicad_sch",
 )
 
 CARRIER_PROJECT = CARRIER_PROJECT_FILES[0]
@@ -887,7 +887,7 @@ def write_release_readme(destination: Path, panel_info: dict[str, float]) -> Non
         f"""# Carrier + backplane Rev A fabrication panel
 
 This customer panel contains six released carrier PCBs and one released
-backplane-prototype PCB. It measures {panel_info["width_mm"]:.3f} x
+backplane PCB. It measures {panel_info["width_mm"]:.3f} x
 {panel_info["height_mm"]:.3f} mm and is intended for top-side assembly.
 The top rail is marked `PANEL {panel_info["panel_build_git_hash"]}` on F.SilkS.
 

@@ -41,4 +41,4 @@ as fabrication-ready merely because production-export tooling can generate an
 archive.
 
 Detailed implementation notes remain in the
-[backplane README](https://github.com/kquinsland/modular-rack-power/blob/main/hardware/boards/backplane-prototype/README.md).
+[backplane README](https://github.com/kquinsland/modular-rack-power/blob/main/hardware/boards/backplane/README.md).

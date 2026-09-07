@@ -134,6 +134,31 @@ class ValidationTests(unittest.TestCase):
 
 
 class PublicationTests(unittest.TestCase):
+    def test_backplane_rename_does_not_select_retired_split_board(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for relative in release.BOARDS.values():
+                path = root / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.touch()
+            with self.assertRaisesRegex(ValueError, "consolidated"):
+                release.select_boards(root)
+            legacy = (
+                root
+                / "hardware/boards/backplane-prototype/backplane-prototype.kicad_pcb"
+            )
+            legacy.parent.mkdir(parents=True)
+            legacy.touch()
+            legacy.with_name("05_buck_converters.kicad_sch").touch()
+            self.assertEqual(
+                release.select_boards(root)["backplane"],
+                legacy.relative_to(root).as_posix(),
+            )
+            legacy.unlink()
+            current = root / release.BOARDS["backplane"]
+            current.with_name("05_buck_converters.kicad_sch").touch()
+            self.assertEqual(release.select_boards(root), release.BOARDS)
+
     def test_bundle_publication_rolls_back_and_preserves_content(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

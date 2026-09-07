@@ -28,7 +28,7 @@ ROOT = Path(__file__).resolve().parents[1]
 IMAGE = "ghcr.io/inti-cmnb/kicad10_auto:1.9.0@sha256:493666a06d900ed3352c50b0f75a76ccdfe194999c097d455021cab9e3c723fa"
 BOARDS = {
     "carrier": "hardware/boards/carrier/carrier.kicad_pcb",
-    "backplane": "hardware/boards/backplane-prototype/backplane-prototype.kicad_pcb",
+    "backplane": "hardware/boards/backplane/backplane.kicad_pcb",
 }
 BUNDLES = {
     "carrier": Path("site/content/latest/hardware/modules/carrier"),
@@ -57,8 +57,7 @@ def resolve_identity(ref: str, root: Path = ROOT) -> dict:
 
 
 def materialize(commit: str, destination: Path, root: Path = ROOT) -> dict:
-    # The active boards also reference symbols in the older backpack project.
-    # Archive the complete hardware dependency tree, omitting generated exports.
+    # Archive the complete shared hardware dependency tree, omitting exports.
     paths = ["hardware"]
     archive = subprocess.check_output(["git", "archive", commit, *paths], cwd=root)
     destination.mkdir(parents=True)
@@ -82,9 +81,18 @@ def materialize(commit: str, destination: Path, root: Path = ROOT) -> dict:
         mode, kind, revision = meta.split()
         if mode != "160000":
             continue
-        data = subprocess.check_output(
-            ["git", "-C", str(root / path), "archive", revision]
-        )
+        if (root / path / ".git").exists():
+            repository_args = ["-C", str(root / path)]
+        else:
+            # Retired submodules may still be needed by a historical source
+            # revision. Use their retained object database after deinit.
+            database = Path(
+                git("rev-parse", "--git-path", "modules/" + path, root=root)
+            )
+            if not database.is_absolute():
+                database = root / database
+            repository_args = ["--git-dir", str(database)]
+        data = subprocess.check_output(["git", *repository_args, "archive", revision])
         target = destination / path
         target.mkdir(parents=True, exist_ok=True)
         with tarfile.open(fileobj=io.BytesIO(data)) as stream:
@@ -94,6 +102,26 @@ def materialize(commit: str, destination: Path, root: Path = ROOT) -> dict:
         for p in sorted(destination.rglob("*"))
         if p.is_file()
     }
+
+
+def select_boards(sources: Path) -> dict[str, str]:
+    """Resolve the consolidation rename without selecting the old split board."""
+    boards = dict(BOARDS)
+    legacy = "hardware/boards/backplane-prototype/backplane-prototype.kicad_pcb"
+    if (sources / legacy).is_file():
+        boards["backplane"] = legacy
+    for key, path in boards.items():
+        if not (sources / path).is_file():
+            raise ValueError(f"Missing {key} board in selected revision: {path}")
+    if (
+        not (sources / boards["backplane"])
+        .with_name("05_buck_converters.kicad_sch")
+        .is_file()
+    ):
+        raise ValueError(
+            "Selected revision does not contain the consolidated backplane"
+        )
+    return boards
 
 
 def worker(work: Path, phase: str, *args: str) -> None:
@@ -318,13 +346,14 @@ def build(args: argparse.Namespace) -> Path:
         shutil.copyfile(path, destination)
         tooling[relative.as_posix()] = sha256(destination)
     sources = materialize(identity["git_commit"], work / "sources")
+    source_boards = select_boards(work / "sources")
     request = {
         "work": "/work",
         "identity": identity,
         "boards": {},
         "artwork": {"jlcpcb": ["barcode"], "pcbway": ["job-number", "logo"]},
     }
-    for key, pcb in BOARDS.items():
+    for key, pcb in source_boards.items():
         project = json.loads(
             (work / "sources" / Path(pcb).with_suffix(".kicad_pro")).read_text()
         )
@@ -372,7 +401,7 @@ def build(args: argparse.Namespace) -> Path:
                 "file": name,
                 "board": board,
                 "side": side,
-                "source_board": BOARDS[board],
+                "source_board": source_boards[board],
             }
         if args.ibom:
             worker(work, "ibom", "--board", board)

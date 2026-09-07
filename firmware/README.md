@@ -1,6 +1,9 @@
 # Firmware
 
-The active firmware target is the STM32C092FCP6 on the Backplane Backpack.
+The implemented firmware target is the STM32C092FCP6 on the legacy Backplane
+Backpack. Its KiCad project is retired; the current hardware is the consolidated
+[`backplane`](../hardware/boards/backplane/). This firmware has not yet been
+ported to that board's pinout and direct-CAN slot architecture.
 Board-specific embedded code lives under
 [`backplane-backpack/`](backplane-backpack/), while reusable `no_std` types,
 business logic, protocol code, and drivers live in the repository's root

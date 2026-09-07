@@ -80,9 +80,9 @@ BOARD_CONFIGS = {
     ),
     "backplane": BoardConfig(
         key="backplane",
-        label="Backplane prototype",
-        directory=ROOT / "hardware/boards/backplane-prototype",
-        stem="backplane-prototype",
+        label="Backplane",
+        directory=ROOT / "hardware/boards/backplane",
+        stem="backplane",
         sheet_names=(
             "01_power_input.kicad_sch",
             "02_control.kicad_sch",
@@ -90,7 +90,7 @@ BOARD_CONFIGS = {
             "04_fan_status.kicad_sch",
             "05_buck_converters.kicad_sch",
         ),
-        archive_name="Backplane_Prototype_A.zip",
+        archive_name="Backplane_A.zip",
         expected_layer_count=4,
         expected_thickness_mm=1.6,
         expected_finish="ENIG",

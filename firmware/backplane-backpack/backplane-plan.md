@@ -1,6 +1,10 @@
 # Backplane Backpack Firmware and Tooling Implementation Plan
 
-Everything below describes firmware that will run on the [`backplane-backpack` board](../../hardware/boards/backplane-backpack/README.md) and a host-side CLI for discovery, commissioning, and control.
+Everything below describes firmware for the retired `backplane-backpack` board
+(available in Git history) and a host-side CLI for discovery, commissioning, and
+control. The current consolidated hardware is
+[`backplane`](../../hardware/boards/backplane/README.md); this plan does not
+constitute a firmware port to its different pinout and peripheral architecture.
 
 > [!IMPORTANT]
 > This was the original detailed design input. The reviewed execution plan in

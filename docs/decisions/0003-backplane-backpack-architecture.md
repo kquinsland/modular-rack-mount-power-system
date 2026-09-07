@@ -4,6 +4,13 @@
 
 Accepted. Supersedes decision 0002.
 
+Hardware update: the split backplane/backpack and WT32 controller KiCad projects
+have since been retired in favor of `hardware/boards/backplane` (formerly
+`backplane-prototype`). Their original sources remain in Git history. The
+firmware described below still targets the legacy revisions; a directory
+cleanup does not port it to the consolidated board. The original architectural
+rationale is retained below as historical context.
+
 ## Decision
 
 The active controller is one STM32C092-based Backplane Backpack per managed

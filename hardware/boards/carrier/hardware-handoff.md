@@ -243,9 +243,10 @@ Any substitute must have a manufacturer-specified DC/pulsed linear-mode SOA that
 
 Q1 is currently expected to be one of the more expensive and sourcing-sensitive parts in the design, so it should be treated as a procurement-review item before production.
 
-## 5.2 Comparison with the backplane-prototype switch
+## 5.2 Historical comparison with the backplane-prototype switch
 
-The `backplane-prototype` uses the following discrete per-slot switch:
+The earlier `backplane-prototype` revision used the following discrete per-slot
+switch (this is not the current consolidated `hardware/boards/backplane`):
 
 - Vishay `SQD50P06-15L_GE3`, 60 V P-channel MOSFET in TO-252/DPAK
 - BSS123 N-channel MOSFET to pull the P-MOS gate down
@@ -1811,7 +1812,8 @@ The PCB implements the internal planes as the `GND_IN1` and `GND_IN2` zones. Ref
 
 ## 22.10 JLCPCB fabrication rules
 
-`carrier.kicad_dru` ports the JLCPCB-specific custom rules from `backplane-prototype`:
+`carrier.kicad_dru` ports the JLCPCB-specific custom rules from the backplane
+(formerly `backplane-prototype`):
 
 - through vias only; blind, buried, and microvias disallowed
 - 0.255 mm minimum PTH annular ring for the selected 1 oz outer-copper process

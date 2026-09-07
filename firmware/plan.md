@@ -3,7 +3,9 @@
 - Status: Draft for review
 - Scope: Backplane Backpack firmware, shared PDCAN crates, host CLI, documentation, and repository integration
 - Source plan: [`backplane-backpack/backplane-plan.md`](backplane-backpack/backplane-plan.md)
-- Target hardware: [`hardware/boards/backplane-backpack`](../hardware/boards/backplane-backpack/)
+- Original target hardware: retired `hardware/boards/backplane-backpack` (Git
+  history). Current hardware is [`backplane`](../hardware/boards/backplane/);
+  this historical firmware plan is not a completed port to the consolidated PCB.
 
 > RPLY: Note! The current revA hardware is targeting the sw3538 PD controller. You can see the registers here: docs/data-sheets/iSmartWare/sw3538.registry.pdf
 
