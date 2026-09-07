@@ -3,7 +3,7 @@
 This customer panel contains six released carrier PCBs and one released
 backplane-prototype PCB. It measures 163.800 x
 237.350 mm and is intended for top-side assembly.
-The top rail is marked `PANEL da60563` on F.SilkS.
+The top rail is marked `PANEL 35e47c0` on F.SilkS.
 
 - `jlcpcb/`: JLCPCB upload bundle, separate files, and order notes.
 - `pcbway/`: PCBWay upload bundle, separate files, and order notes.
