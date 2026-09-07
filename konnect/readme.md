@@ -1,7 +1,7 @@
 # Konnect
 
-This repository uses [Konnect](https://github.com/mixelpixx/Konnect), the Rust
-successor to KiCAD-MCP-Server, for AI-assisted KiCad work through MCP.
+This repository uses [Konnect](https://github.com/mixelpixx/Konnect), a Rust MCP
+server, for AI-assisted KiCad work.
 
 Mise downloads the precompiled upstream GitHub release. The version and release
 artifact checksums are pinned in `mise.toml` and `mise.lock`:
@@ -10,14 +10,13 @@ artifact checksums are pinned in `mise.toml` and `mise.lock`:
 version: v0.11.0
 ```
 
-Konnect is currently beta software and is licensed AGPL-3.0-only. The previous
-KiCAD-MCP-Server integration was MIT licensed. Review Konnect's `LICENSE` and
+Konnect is currently beta software and is licensed AGPL-3.0-only.
+Review Konnect's `LICENSE` and
 `COMMERCIAL.md` before using it in a commercial workflow.
 
-## Why the integration changed
+## Architecture
 
-Konnect replaces the old Node, Python, third-party Python package, and KiCad
-SWIG-binding stack with one Rust binary. It uses KiCad 10's supported IPC API
+Konnect runs as one Rust binary. It uses KiCad 10's supported IPC API
 for live PCB edits and direct, atomic S-expression editing for schematics.
 
 ## Setup
@@ -71,6 +70,10 @@ standalone MCP server. Install the matching `konnect-pcm-v0.11.0-*` release if
 you also want Konnect's KiCad GUI integration or native Specctra bridge.
 
 ## Optional Codex guidance
+
+This repository includes the six v0.11.0 Konnect skills and their references
+in `.codex/skills`. The `.agents/skills` symlink points there so Codex can
+discover them using its repository skill search path.
 
 Konnect bundles KiCad skills for Codex. Installing them writes outside this
 repository to `~/.agents/skills`, so it is intentionally not part of the normal
