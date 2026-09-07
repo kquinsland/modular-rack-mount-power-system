@@ -6,6 +6,12 @@
 - Success exit status: `0`
 - Usage, validation, timeout, or node rejection status: `2`
 
+Sources live in `firmware/tools/pdcan/` and `firmware/tools/pdcan-sim/`.
+From the repository's `firmware/` directory, build with
+`cargo build --package pdcan --package pdcan-sim --release`, or use
+`cargo run --package pdcan -- --help`. The commands below assume the binaries
+from `firmware/target/release/` are on your `PATH`.
+
 Run `pdcan --help` for the complete option list. Common request options include
 `--interface`, `--requester`, `--request-id`, `--timeout-ms`, `--retries`, and
 `--json`. Retries preserve the exact request identity and payload so firmware can

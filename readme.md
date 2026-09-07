@@ -25,8 +25,13 @@ to the consolidated board.
 ## Layout
 
 ```text
-crates/
 firmware/
+  Cargo.toml
+  backplane-backpack/
+  crates/
+  tools/
+  xtask/
+  docs/pdcan/
 hardware/
   boards/
     backplane/
@@ -37,7 +42,6 @@ hardware/
     3dmodels/
   mechanical/
 docs/
-tools/
 scripts/
 build/
 releases/
@@ -45,8 +49,10 @@ releases/
 
 `build/` is for generated local outputs. `releases/` is for fabrication packages that should be preserved exactly as sent to a board house.
 
-See [`firmware/plan.md`](firmware/plan.md) for the reviewed implementation and
-repository-integration plan.
+See [`firmware/README.md`](firmware/README.md) for workspace commands and the
+legacy firmware's hardware limitations. Run `mise run firmware:check` from this
+directory, or run Cargo commands from `firmware/`. The reviewed implementation
+plan is kept in [`firmware/plan.md`](firmware/plan.md).
 
 ## Documentation site
 

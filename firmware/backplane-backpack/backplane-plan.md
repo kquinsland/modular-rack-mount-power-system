@@ -15,6 +15,12 @@ constitute a firmware port to its different pinout and peripheral architecture.
 > multiple requester IDs, exact-version operational compatibility, and repository
 > integration.
 
+The implemented workspace now lives entirely under `firmware/`. See the
+[workspace README](../README.md) for current paths and commands; the proposed
+tree and command wishlist below are historical design input. Protocol docs are
+in [`firmware/docs/pdcan/`](../docs/pdcan/), and all direct Cargo commands run
+from `firmware/`.
+
 ## 1. Purpose
 
 This repository will implement firmware and host-side tooling for a CAN-FD-connected USB-C Power Delivery controller board built around an `STM32C092FCP6`.
@@ -1048,7 +1054,8 @@ Recommended approach:
 4. the full 96-bit UID remains authoritative in the CAN-FD payload;
 5. the CLI may perform multiple rounds with different nonces and merge results.
 
-The executable pre-v1 layout is documented in `docs/pdcan/protocol.md` and remains
+The executable pre-v1 layout is documented in
+[`firmware/docs/pdcan/protocol.md`](../docs/pdcan/protocol.md) and remains
 unfrozen until Rev A HIL acceptance.
 
 ### 15.5 Identify

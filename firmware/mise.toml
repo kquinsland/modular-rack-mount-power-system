@@ -1,0 +1,14 @@
+[tools]
+rust = "1.97.1"
+
+[tasks.check]
+description = "Run host tests, Clippy, DBC drift checks, and both legacy firmware builds"
+run = "cargo xtask ci"
+
+[tasks.build]
+description = "Build the legacy Backplane Backpack Rev A firmware"
+run = "cargo xtask firmware build --board rev-a --release"
+
+[tasks.dbc]
+description = "Regenerate the PDCAN DBC from protocol definitions"
+run = "cargo xtask dbc"

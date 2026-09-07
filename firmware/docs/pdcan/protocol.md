@@ -400,7 +400,7 @@ measurement.
 
 ## Generated DBC
 
-Run:
+Run from the repository's `firmware/` directory:
 
 ```text
 cargo xtask dbc

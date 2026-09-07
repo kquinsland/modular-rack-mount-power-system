@@ -2,6 +2,12 @@
 
 ## Workspace Boundaries
 
+All Rust sources, host tools, protocol docs, and build configuration live under
+the repository's `firmware/` directory. Run Cargo commands from that directory;
+see the [workspace README](../../README.md) for setup. The board descriptions
+below refer to the retained legacy backpack targets, not the consolidated
+backplane hardware.
+
 ```mermaid
 flowchart TD
     types[pdcan-types / no_std vocabulary]
@@ -31,7 +37,7 @@ and their mechanisms.
 
 ## Board Selection
 
-Firmware builds require an explicit board feature:
+Firmware builds require an explicit board feature (run from `firmware/`):
 
 ```text
 cargo xtask firmware build --board rev-a --release

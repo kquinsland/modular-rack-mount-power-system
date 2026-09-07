@@ -70,7 +70,7 @@ fn run(arguments: impl Iterator<Item = String>) -> Result<(), String> {
 fn print_help() {
     println!(
         "\
-Repository automation
+Firmware workspace automation (run from firmware/)
 
 Usage:
   cargo xtask ci

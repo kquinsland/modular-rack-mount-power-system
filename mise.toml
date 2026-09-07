@@ -22,22 +22,21 @@ uvx = true
 hugo-extended = "0.165.0"
 prek = "latest"
 uv = "0.12.5"
-rust = "1.97.1"
 "github:mixelpixx/Konnect" = { version = "0.11.0", matching_regex = "^konnect-v", os = ["linux/x64", "macos/arm64"] }
 "pipx:easyeda2kicad" = "1.0.1"
 ripgrep = "15.2.0"
 
 [tasks."firmware:check"]
-description = "Run the host tests, generated-file checks, and Rev A firmware build"
-run = "cargo xtask ci"
+description = "Check the firmware workspace and build both legacy board revisions"
+run = "mise -C firmware run check"
 
 [tasks."firmware:build"]
 description = "Build the Backplane Backpack Rev A firmware"
-run = "cargo xtask firmware build --board rev-a --release"
+run = "mise -C firmware run build"
 
 [tasks."firmware:dbc"]
 description = "Regenerate the PDCAN DBC from protocol definitions"
-run = "cargo xtask dbc"
+run = "mise -C firmware run dbc"
 
 [tasks."site:build"]
 description = "Validate and build the documentation site"
