@@ -1,42 +1,5 @@
 #!/usr/bin/env bash
-#MISE description="Generate carrier and backplane interactive HTML BOMs"
-#MISE depends=["docs:pcb-renders"]
-
+#MISE description="Render WebP PCB views and interactive BOMs into Hugo bundles"
 set -euo pipefail
 cd "${MISE_PROJECT_ROOT:?}"
-
-# Keep KiBot and InteractiveHtmlBom in their official container for now. The
-# host does not have KiBot installed, and its KiCad 10/Python 3.14 bindings need
-# a SwigPyIterator compatibility patch when InteractiveHtmlBom runs directly.
-# Revisit this once the host toolchain can provide both tools without the patch.
-readonly kibot_image="${KIBOT_IMAGE:-ghcr.io/inti-cmnb/kicad10_auto:1.9.0}"
-readonly source_dir="build/carrier-backplane-panel/docs-renders-only/sources"
-readonly output_dir="docs/assets/generated/pcbs"
-
-if ! command -v podman >/dev/null; then
-  echo "error: docs:pcb-iboms requires Podman" >&2
-  exit 1
-fi
-
-mkdir -p "$output_dir"
-
-for board in carrier backplane-prototype; do
-  podman run --rm \
-    --userns=keep-id \
-    --env HOME=/tmp \
-    --env INTERACTIVE_HTML_BOM_NO_DISPLAY=True \
-    --volume "$MISE_PROJECT_ROOT:/work" \
-    --workdir /work \
-    "$kibot_image" \
-    kibot \
-      -c .kibot/docs-ibom.kibot.yaml \
-      -e "$source_dir/$board.kicad_sch" \
-      -b "$source_dir/$board.kicad_pcb" \
-      -d "$output_dir" \
-      docs_ibom
-done
-
-for ibom in carrier-rev-a-ibom.html backplane-prototype-rev-a-ibom.html; do
-  test -s "$output_dir/$ibom"
-  grep -q "var pcbdata" "$output_dir/$ibom"
-done
+exec python scripts/build_pcb_release.py preview --panel --ibom --publish-site "$@"

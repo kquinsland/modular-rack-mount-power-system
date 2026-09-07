@@ -9,10 +9,14 @@ distribution on one PCB. The prototype board outline, airflow cutouts, mounting
 features, and slot locations provide the mechanical foundation for the current
 design.
 
-![Placeholder for the consolidated backplane PCB render](backplane.png)
+![Consolidated backplane, top side](backplane.webp)
 
-_Placeholder illustration. Release tooling will replace this image with the
-current PCB render._
+![Consolidated backplane, bottom side](backplane-bottom.webp)
+
+_Generated from the committed PCB. Render provenance is recorded in
+[renders.json](renders.json); a preview does not establish fabrication readiness._
+
+[Interactive assembly BOM](/assembly/backplane-ibom.html)
 
 ## Responsibilities
 

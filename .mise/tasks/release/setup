@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#MISE description="Download the pinned KiBot/KiCad/KiKit release image"
+set -euo pipefail
+cd "${MISE_PROJECT_ROOT:?}"
+image=$(python -c 'import sys; sys.path.insert(0, "scripts"); from build_pcb_release import IMAGE; print(IMAGE)')
+exec podman pull "$image"

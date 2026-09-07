@@ -1,0 +1,29 @@
+kibot:
+  version: 1
+
+outputs:
+  - name: gerbers
+    type: gerber
+    dir: cam
+    options:
+      output: '%i.%x'
+      use_protel_extensions: true
+      subtract_mask_from_silk: true
+      create_gerber_job_file: false
+      use_aux_axis_as_origin: true
+    layers: [F.Cu, In1.Cu, In2.Cu, B.Cu, F.Mask, B.Mask, F.Silkscreen, B.Silkscreen, F.Paste, B.Paste, Edge.Cuts]
+  - name: drills
+    type: excellon
+    dir: cam
+    options:
+      output: '%i.%x'
+      pth_id: PTH
+      npth_id: NPTH
+      pth_and_npth_single_file: false
+      metric_units: true
+      use_aux_axis_as_origin: true
+  - name: electrical_netlist
+    type: netlist
+    options:
+      output: netlist.d356
+      format: ipc

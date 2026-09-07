@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#MISE description="Test PCB release validation, WebP conversion, and publication"
+set -euo pipefail
+cd "${MISE_PROJECT_ROOT:?}"
+exec uv run --with Pillow==12.1.0 python -m unittest discover -s scripts/tests -p 'test_pcb_release.py' -v

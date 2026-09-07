@@ -1,18 +1,20 @@
-name: KiBot PCB renders
+name: PCB WebP previews
 
 on:
   push:
     paths:
       - ".github/workflows/kibot-renders.yml"
       - ".kibot/**"
-      - "hardware/boards/**"
-      - "hardware/libraries/**"
+      - "scripts/*pcb*.py"
+      - "scripts/panel_layout.py"
+      - "hardware/**"
   pull_request:
     paths:
       - ".github/workflows/kibot-renders.yml"
       - ".kibot/**"
-      - "hardware/boards/**"
-      - "hardware/libraries/**"
+      - "scripts/*pcb*.py"
+      - "scripts/panel_layout.py"
+      - "hardware/**"
   workflow_dispatch:
 
 permissions:
@@ -20,45 +22,41 @@ permissions:
 
 jobs:
   render:
-    name: Render ${{ matrix.board }}
+    name: Preview ${{ matrix.board }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - board: backplane
-            schematic: hardware/boards/backplane/backplane.kicad_sch
-            pcb: hardware/boards/backplane/backplane.kicad_pcb
-          - board: carrier
-            schematic: hardware/boards/carrier/carrier.kicad_sch
-            pcb: hardware/boards/carrier/carrier.kicad_pcb
-
+        board: [carrier, backplane]
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v7
+      - name: Check out source revision
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          submodules: recursive
+
+      - name: Install uv
+        uses: jdx/mise-action@7e36c90d9ab29c415a2384db3006f3ec8a8cc654 # v4.2.4
+        with:
+          install_args: uv
 
       - name: Install Podman
         run: |
           sudo apt-get update
           sudo apt-get install -y podman
 
-      - name: Render PCB images
-        run: |
-          mkdir -p "build/kibot/${{ matrix.board }}"
-          podman run --rm \
-            -v "${{ github.workspace }}:/work" \
-            -w /work \
-            ghcr.io/inti-cmnb/kicad10_auto_full:latest \
-            kibot \
-              -c .kibot/kibot-double-sided.yaml \
-              -e "${{ matrix.schematic }}" \
-              -b "${{ matrix.pcb }}" \
-              -d "build/kibot/${{ matrix.board }}" \
-              pcb_top_image pcb_bottom_image
+      - name: Install pinned PCB tools
+        run: mise run release:setup
 
-      - name: Upload PCB render artifact
-        if: always()
+      - name: Test release helpers
+        run: mise run release:test
+
+      - name: Render committed PCB to WebP
+        run: python scripts/build_pcb_release.py preview --board "${{ matrix.board }}" --output "build/preview-${{ matrix.board }}"
+
+      - name: Upload preview and provenance
         uses: actions/upload-artifact@v7
         with:
-          name: ${{ matrix.board }}-pcb-renders
-          path: build/kibot/${{ matrix.board }}/
+          name: ${{ matrix.board }}-pcb-webp
+          path: build/preview-${{ matrix.board }}/
+          if-no-files-found: error
