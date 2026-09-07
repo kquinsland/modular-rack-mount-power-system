@@ -2,10 +2,8 @@
 
 **Status:** Carrier Rev A implementation notes. The checked-in schematic now
 uses the common backplane `LM5164DDAR` and `PSPMAA0805-101M-ANP` buck pair. The
-PCB is intentionally transitional: U2 remains placed because its package is
-unchanged, while L1 has been removed for manual placement and routing with the
-new footprint. Existing production outputs remain historical until that layout
-work is complete and the release artifacts are regenerated.
+PCB now has both parts placed and routed, and its production outputs are
+generated with `mise run production:carrier`.
 
 **Revision:** Rev A architectural handoff
 

@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "board_key": "backplane",
+  "status": "pass_with_warnings",
+  "source": {
+    "git_commit": "b1d2b742b1f8c51b25415278ff965cdc93883cec",
+    "short_hash": "b1d2b74",
+    "build_date": "26.09.06",
+    "commit_time": "2026-09-06T17:26:22-07:00",
+    "board": "hardware/boards/backplane-prototype/backplane-prototype.kicad_pcb",
+    "board_sha256": "eb3feb60a3065e2403d07a6323adad1613466c4f79d88bfcbee0d618c744d3d8",
+    "schematic": "hardware/boards/backplane-prototype/backplane-prototype.kicad_sch",
+    "schematic_sha256": "0d4f7e25124e9a4cc67ec4858506e376b4ad2906d7b0064ff4f5a17d40841aa6"
+  },
+  "tools": {
+    "kicad_cli": "10.0.5"
+  },
+  "silkscreen_variables": {
+    "BOARD_NAME": "backplane",
+    "BOARD_VERSION": "2.1",
+    "BUILD_DATE": "26.09.06",
+    "PROJECT_FAMILY": "mrp",
+    "SHORT_HASH": "b1d2b74"
+  },
+  "electrical_checks": {
+    "erc_violation_count": 0,
+    "drc_error_count": 0,
+    "drc_unconnected_count": 0,
+    "drc_schematic_parity_error_count": 0,
+    "drc_schematic_parity_warning_count": 35,
+    "drc_warning_count": 39,
+    "drc_warning_counts": {
+      "lib_footprint_mismatch": 3,
+      "missing_courtyard": 1,
+      "schematic_parity:footprint_filters_mismatch": 9,
+      "schematic_parity:net_conflict": 26
+    }
+  },
+  "assembly": {
+    "bom_reference_count": 59,
+    "position_reference_count": 59,
+    "bom_position_references_match": true,
+    "pcb_footprint_count_including_dnp_and_board_only": 89
+  },
+  "cam": {
+    "file_count": 16,
+    "files": [
+      "backplane-prototype-B_Cu.gbl",
+      "backplane-prototype-B_Mask.gbs",
+      "backplane-prototype-B_Paste.gbp",
+      "backplane-prototype-B_Silkscreen.gbo",
+      "backplane-prototype-Edge_Cuts.gm1",
+      "backplane-prototype-F_Cu.gtl",
+      "backplane-prototype-F_Mask.gts",
+      "backplane-prototype-F_Paste.gtp",
+      "backplane-prototype-F_Silkscreen.gto",
+      "backplane-prototype-In1_Cu.g1",
+      "backplane-prototype-In2_Cu.g2",
+      "backplane-prototype-NPTH-drl_map.gbr",
+      "backplane-prototype-NPTH.drl",
+      "backplane-prototype-PTH-drl_map.gbr",
+      "backplane-prototype-PTH.drl",
+      "backplane-prototype-job.gbrjob"
+    ],
+    "board_size_mm": {
+      "X": 151.85,
+      "Y": 30.85
+    },
+    "layer_count": 4,
+    "board_thickness_mm": 1.6,
+    "finish": "ENIG"
+  },
+  "artifacts": {
+    "bom.csv": {
+      "bytes": 1499,
+      "sha256": "74da8d77cf4ebaa55ad444376ada37b56f58d6e64129241905bad34d2c25e4d5"
+    },
+    "positions.csv": {
+      "bytes": 2540,
+      "sha256": "39b66c3d797887c902c5c4f87988c1333ae149be79c483f22d32e4d5201f6ba1"
+    },
+    "designators.csv": {
+      "bytes": 498,
+      "sha256": "a1de6f6f432df0878f5cf9f7cb2004f4e3fbad1b9bdf03eaa6a5a73c364b04a2"
+    },
+    "netlist.ipc": {
+      "bytes": 31497,
+      "sha256": "ab5d9844d5b58e7becb5de373d9ed6dd942778a47d2e317d50da0e2131641e1d"
+    },
+    "Backplane_Prototype_A.zip": {
+      "bytes": 378772,
+      "sha256": "0038698cf961521ce503d7249be91d4cf3bc989e5dd34a27afee0710087f48f9"
+    }
+  }
+}

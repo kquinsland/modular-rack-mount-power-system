@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#MISE description="Generate and validate backplane Gerber, BOM, and CPL files"
+
+set -euo pipefail
+cd "${MISE_PROJECT_ROOT:?}"
+
+exec python scripts/export_pcb_production.py backplane "$@"

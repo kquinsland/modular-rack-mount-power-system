@@ -2,12 +2,10 @@
 
 **Audit date:** 2026-09-06
 
-**Scope:** Current carrier schematic and planned BOM compared with
-`docs/data-sheets/`. The PCB already carries the new U2 identity, but L1 is
-intentionally absent pending manual placement and routing. Existing production
-outputs describe the previous completed layout and must be regenerated after
-that work. `J1` and `MOD1` are intentionally user-installed and are listed
-separately from assembly-populated parts.
+**Scope:** Current carrier schematic and generated production BOM compared with
+`docs/data-sheets/`. The PCB and production outputs use the common LM5164 and
+100 µH inductor. `J1` and `MOD1` are intentionally user-installed and are
+listed separately from assembly-populated parts.
 
 ## Remaining release-critical exact-part gap
 

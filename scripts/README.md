@@ -94,6 +94,35 @@ electro-thermal simulation. Review the SVG, heed extrapolation warnings, and
 validate connectors, components, via topology, airflow, and first-article
 temperatures separately.
 
+## PCB production exports
+
+Generate either board's checked-in BOM, component-placement file, Gerber/drill
+archive, IPC-D-356 netlist, designator inventory, and validation manifest with:
+
+```sh
+mise run production:carrier
+mise run production:backplane
+```
+
+The task runs ERC and DRC with schematic-parity checking before publishing any
+files. It requires the selected board's design inputs to be committed, verifies
+that the BOM and placement references agree exactly, checks the required
+four-layer CAM file set, and stages everything before replacing that board's
+`production/` directory. DRC warnings are retained in
+`validation.json`; ERC findings, DRC errors, unconnected items, parity errors,
+missing sourcing fields, or BOM/CPL disagreement stop the export and leave the
+previous production directory intact.
+
+The bottom silkscreen's `BUILD_DATE` and `SHORT_HASH` variables are baked from
+the source commit. KiCad CAM timestamps are normalized to that same commit time
+so every file carries consistent source provenance. For an isolated test
+export, pass another output directory after `--`:
+
+```sh
+mise run production:carrier -- --output-dir /tmp/carrier-production
+mise run production:backplane -- --output-dir /tmp/backplane-production
+```
+
 ## Carrier/backplane fabrication panel
 
 `build_carrier_backplane_panel.py` uses KiKit to build one customer panel from
@@ -105,6 +134,11 @@ PCBWay Gerber/BOM/positions bundles. The mise tasks use the checked-out `HEAD`;
 ```sh
 mise run panel:build
 ```
+
+Run both production export tasks and commit the reviewed production artifacts
+before building a release panel. The panel builder intentionally materializes
+its board and BOM inputs from `HEAD` (or `PANEL_GIT_HASH`) so one immutable
+revision controls the complete panel package.
 
 The generated panel source and intermediate files are written under
 `build/carrier-backplane-panel/`. The release directory also contains a

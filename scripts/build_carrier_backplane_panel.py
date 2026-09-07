@@ -74,7 +74,6 @@ FIDUCIAL_COPPER_DIAMETER = 1 * mm
 FIDUCIAL_MASK_OPENING = 2 * mm
 MAX_PANEL_SIZE = 250 * mm
 COORDINATE_MARGIN = 1 * mm
-EXPECTED_PLACEMENTS = 409
 EXPECTED_MOUSE_BITES = 135
 
 # These indicate that panelization introduced a fabrication geometry problem.
@@ -295,7 +294,8 @@ def build_panel(
     backplane_path: Path,
     panel_path: Path,
     build_git_hash: str,
-) -> dict[str, float]:
+    placed_component_count: int,
+) -> dict[str, object]:
     carrier_w, carrier_h = board_dimensions(carrier_path)
     backplane_w, backplane_h = board_dimensions(backplane_path)
 
@@ -517,7 +517,7 @@ def build_panel(
         "carrier_count": 6,
         "backplane_count": 1,
         "different_design_count": 2,
-        "placed_component_count": EXPECTED_PLACEMENTS,
+        "placed_component_count": placed_component_count,
         "layer_count": 4,
         "board_thickness_mm": 1.6,
         "outer_copper_oz": 2,
@@ -1140,8 +1140,23 @@ def build(
         backplane_board, backplane_release_variables
     )
 
+    carrier_entries = expanded_bom_entries(
+        read_csv(carrier_bom), [f"CARRIER{index}" for index in range(1, 7)]
+    )
+    backplane_entries = expanded_bom_entries(read_csv(backplane_bom), ["BACKPLANE1"])
+    entries = carrier_entries + backplane_entries
+    allowed_references = {entry["Designator"] for entry in entries}
+    if len(allowed_references) != len(entries):
+        raise RuntimeError("Expanded panel BOM contains duplicate designators")
+
     panel_path = output_dir / f"{PANEL_NAME}.kicad_pcb"
-    panel_info = build_panel(carrier_board, backplane_board, panel_path, build_git_hash)
+    panel_info = build_panel(
+        carrier_board,
+        backplane_board,
+        panel_path,
+        build_git_hash,
+        len(allowed_references),
+    )
     panel_info["board_silkscreen_variables"] = {
         "carrier": {
             name: carrier_release_variables[name]
@@ -1189,17 +1204,6 @@ def build(
             )
         print(json.dumps(render_manifest, indent=2))
         return
-
-    carrier_entries = expanded_bom_entries(
-        read_csv(carrier_bom), [f"CARRIER{index}" for index in range(1, 7)]
-    )
-    backplane_entries = expanded_bom_entries(read_csv(backplane_bom), ["BACKPLANE1"])
-    entries = carrier_entries + backplane_entries
-    allowed_references = {entry["Designator"] for entry in entries}
-    if len(allowed_references) != EXPECTED_PLACEMENTS:
-        raise RuntimeError(
-            f"Expected {EXPECTED_PLACEMENTS} placed components, got {len(allowed_references)}"
-        )
 
     common_positions = output_dir / "positions.csv"
     write_positions(panel_path, allowed_references, common_positions)

@@ -16,9 +16,8 @@ Assembly notes:
   module after assembly.
 - The housekeeping converter shares the backplane's LM5164DDAR regulator and
   PSPMAA0805-101M-ANP 100 µH inductor.
-- The checked-in PCB is temporarily missing L1 so its new footprint can be
-  placed and routed manually. The existing production outputs describe the
-  previous completed layout and must be regenerated after that work.
+- L1 is placed and routed. The checked-in assembly and fabrication outputs are
+  generated and validated with `mise run production:carrier`.
 
 Relevant docs:
 

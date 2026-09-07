@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "board_key": "carrier",
+  "status": "pass_with_warnings",
+  "source": {
+    "git_commit": "b1d2b742b1f8c51b25415278ff965cdc93883cec",
+    "short_hash": "b1d2b74",
+    "build_date": "26.09.06",
+    "commit_time": "2026-09-06T17:26:22-07:00",
+    "board": "hardware/boards/carrier/carrier.kicad_pcb",
+    "board_sha256": "62b1f79de1e59cf60c54dc26fba4f62067ea34500171ef73583161ffea132ae5",
+    "schematic": "hardware/boards/carrier/carrier.kicad_sch",
+    "schematic_sha256": "05dd0eaee75e97433ecd6b6dbd1cbf8daeffa206e9ea02990a940d800ddc9031"
+  },
+  "tools": {
+    "kicad_cli": "10.0.5"
+  },
+  "silkscreen_variables": {
+    "BOARD_NAME": "carrier",
+    "BOARD_VERSION": "2.1",
+    "BUILD_DATE": "26.09.06",
+    "PROJECT_FAMILY": "mrp",
+    "SHORT_HASH": "b1d2b74"
+  },
+  "electrical_checks": {
+    "erc_violation_count": 0,
+    "drc_error_count": 0,
+    "drc_unconnected_count": 0,
+    "drc_schematic_parity_error_count": 0,
+    "drc_schematic_parity_warning_count": 0,
+    "drc_warning_count": 31,
+    "drc_warning_counts": {
+      "lib_footprint_mismatch": 14,
+      "silk_edge_clearance": 3,
+      "silk_over_copper": 12,
+      "silk_overlap": 2
+    }
+  },
+  "assembly": {
+    "bom_reference_count": 57,
+    "position_reference_count": 57,
+    "bom_position_references_match": true,
+    "pcb_footprint_count_including_dnp_and_board_only": 83
+  },
+  "cam": {
+    "file_count": 16,
+    "files": [
+      "carrier-B_Cu.gbl",
+      "carrier-B_Mask.gbs",
+      "carrier-B_Paste.gbp",
+      "carrier-B_Silkscreen.gbo",
+      "carrier-Edge_Cuts.gm1",
+      "carrier-F_Cu.gtl",
+      "carrier-F_Mask.gts",
+      "carrier-F_Paste.gtp",
+      "carrier-F_Silkscreen.gto",
+      "carrier-In1_Cu.g1",
+      "carrier-In2_Cu.g2",
+      "carrier-NPTH-drl_map.gbr",
+      "carrier-NPTH.drl",
+      "carrier-PTH-drl_map.gbr",
+      "carrier-PTH.drl",
+      "carrier-job.gbrjob"
+    ],
+    "board_size_mm": {
+      "X": 100.0,
+      "Y": 34.9
+    },
+    "layer_count": 4,
+    "board_thickness_mm": 1.6,
+    "finish": "ENIG"
+  },
+  "artifacts": {
+    "bom.csv": {
+      "bytes": 1536,
+      "sha256": "d3b7a33688f9651c1fbaaf7026f568160ef74e3edc26171ff5c51e6ac85b7420"
+    },
+    "positions.csv": {
+      "bytes": 2370,
+      "sha256": "25064ac8c81c3350add31d8ec7f06ee0b809b453e272517ebe76ce5c8db14c5d"
+    },
+    "designators.csv": {
+      "bytes": 483,
+      "sha256": "d95fd0390c46542b8dd867ce38efa74477dda25aa9a8916ba913731180dc4c3b"
+    },
+    "netlist.ipc": {
+      "bytes": 24245,
+      "sha256": "a65f8143fe0995f978a9fbb3b738732aff58144dc09ba7624e5b0eb59a678e57"
+    },
+    "Mini_Rack_Power_Carrier_A.zip": {
+      "bytes": 327533,
+      "sha256": "db9d96ab0107840385e7ce3f3dc4f29144551f50c5a281960d18475bc5266d76"
+    }
+  }
+}

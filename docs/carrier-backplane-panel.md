@@ -91,8 +91,8 @@ panel sources, board identity text, documentation renders, and provenance
 metadata on the same commit without source hashes embedded in the script.
 
 KiKit applies a unique prefix to every reference and net. The final assembly
-data contains 409 placed parts: 342 carrier placements and 67 backplane
-placements.
+placement count is derived from the released carrier and backplane BOMs, so it
+tracks design changes without a duplicated hard-coded total.
 
 The panel, both Gerber exports, and the position file use the same absolute
 origin. A 1 mm positive coordinate margin keeps plotted edge strokes away from
@@ -170,8 +170,9 @@ Vendor references checked for this design:
 ## Validation
 
 The build checks for all four copper layers, masks, top silkscreen, edge cuts,
-and plated/non-plated drill files in both Gerber archives. It also verifies 409
-positions, 135 mouse-bite holes, four tooling holes, and three fiducials.
+and plated/non-plated drill files in both Gerber archives. It also verifies one
+position for every released BOM reference, 135 mouse-bite holes, four tooling
+holes, and three fiducials.
 
 KiCad DRC reports zero unconnected items and no copper-clearance, drill-
 clearance, or outline failures. It still reports inherited release-board

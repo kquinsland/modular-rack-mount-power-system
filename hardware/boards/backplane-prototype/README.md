@@ -31,6 +31,12 @@ feedback, on-time, ripple-injection, and capacitor networks remain separate.
 The PCB stackup specifies 2 oz outer copper, 1 oz inner copper, and an ENIG
 surface finish.
 
+Generate the backplane BOM, placement file, Gerber/drill archive, IPC-D-356
+netlist, designator inventory, and validation manifest with
+`mise run production:backplane`. A successful export records warnings in the
+manifest; it does not by itself supersede the fabrication-readiness status
+below.
+
 The local I2C2 bus uses STM32 PA6/PA7 and exists only between the STM32 and INA237. The old TCA9548A,
 PCA9554, per-slot I2C protection, and per-slot power-switch sheets are not part
 of this design. Carrier communication is CAN-FD.
