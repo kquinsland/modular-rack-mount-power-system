@@ -31,6 +31,9 @@ class ProductionExportUnitTests(unittest.TestCase):
         for key, config in production.BOARD_CONFIGS.items():
             with self.subTest(board=key):
                 self.assertTrue(all(path.is_file() for path in config.design_inputs))
+                references = production.board_references(config.board)
+                self.assertGreater(len(references), 0)
+                self.assertEqual(len(references), len(set(references)))
                 self.assertIn(
                     f"{config.stem}-job.gbrjob",
                     production.required_cam_files(config),

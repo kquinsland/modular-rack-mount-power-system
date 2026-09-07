@@ -7,19 +7,30 @@
     "quality": "basic"
   },
   "panel_sources": {
-    "carrier_revision": "0896d29",
+    "carrier_revision": "da60563",
     "carrier_instances": 6,
-    "backplane_revision": "085bb13",
+    "backplane_revision": "da60563",
     "backplane_instances": 1,
-    "panel_build_git_hash": "f706cab"
+    "panel_build_git_hash": "da60563"
   },
   "renders": {
     "carrier": {
       "file": "carrier-rev-a-top.png",
       "source_board": "hardware/boards/carrier/carrier.kicad_pcb",
-      "source_revision": "0896d29",
+      "source_revision": "da60563",
       "instances": 1,
       "side": "top",
+      "requested_width_px": 1600,
+      "requested_height_px": 900,
+      "actual_width_px": 1568,
+      "actual_height_px": 872
+    },
+    "carrier_bottom": {
+      "file": "carrier-rev-a-bottom.png",
+      "source_board": "hardware/boards/carrier/carrier.kicad_pcb",
+      "source_revision": "da60563",
+      "instances": 1,
+      "side": "bottom",
       "requested_width_px": 1600,
       "requested_height_px": 900,
       "actual_width_px": 1568,
@@ -28,9 +39,20 @@
     "backplane_prototype": {
       "file": "backplane-prototype-rev-a-top.png",
       "source_board": "hardware/boards/backplane-prototype/backplane-prototype.kicad_pcb",
-      "source_revision": "085bb13",
+      "source_revision": "da60563",
       "instances": 1,
       "side": "top",
+      "requested_width_px": 1600,
+      "requested_height_px": 900,
+      "actual_width_px": 1568,
+      "actual_height_px": 872
+    },
+    "backplane_prototype_bottom": {
+      "file": "backplane-prototype-rev-a-bottom.png",
+      "source_board": "hardware/boards/backplane-prototype/backplane-prototype.kicad_pcb",
+      "source_revision": "da60563",
+      "instances": 1,
+      "side": "bottom",
       "requested_width_px": 1600,
       "requested_height_px": 900,
       "actual_width_px": 1568,
@@ -39,7 +61,7 @@
     "combined_panel": {
       "file": "carrier6-backplane1-rev-a-top.png",
       "source_board": "modular-rack-power-carrier6-backplane1-rev-a.kicad_pcb",
-      "source_revision": "f706cab",
+      "source_revision": "da60563",
       "instances": 7,
       "side": "top",
       "requested_width_px": 1400,

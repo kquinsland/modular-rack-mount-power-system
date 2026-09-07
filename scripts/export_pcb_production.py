@@ -10,14 +10,13 @@ import json
 import re
 import shutil
 import subprocess
+import sys
 import tempfile
 import zipfile
 from collections import Counter, defaultdict
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-
-import pcbnew
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -134,20 +133,18 @@ CAM_FILE_SUFFIXES = {
     "job.gbrjob",
 }
 
+FOOTPRINT_START_RE = re.compile(r"^\s*\(footprint(?:\s|$)", re.MULTILINE)
+REFERENCE_PROPERTY_RE = re.compile(
+    r'^\s*\(property\s+"Reference"\s+"([^"]+)"(?:\s|$)', re.MULTILINE
+)
+
 
 def required_cam_files(config: BoardConfig) -> set[str]:
     return {f"{config.stem}-{suffix}" for suffix in CAM_FILE_SUFFIXES}
 
 
-# KiCad 10's Python 3.14 bindings still have helpers that call the old
-# iterator .next() method. Keep local board inspection working until the
-# distribution bindings remove that compatibility gap.
-if not hasattr(pcbnew.SwigPyIterator, "next"):
-    pcbnew.SwigPyIterator.next = pcbnew.SwigPyIterator.__next__
-
-
 def run(*args: str, cwd: Path = ROOT) -> None:
-    print("+", " ".join(args))
+    print("+", " ".join(args), flush=True)
     subprocess.run(args, cwd=cwd, check=True)
 
 
@@ -229,6 +226,20 @@ def sha256(path: Path) -> str:
         for block in iter(lambda: source.read(1024 * 1024), b""):
             digest.update(block)
     return digest.hexdigest()
+
+
+def board_references(path: Path) -> list[str]:
+    """Read every footprint reference without loading noisy pcbnew bindings."""
+
+    board_text = path.read_text(encoding="utf-8")
+    footprint_count = len(FOOTPRINT_START_RE.findall(board_text))
+    references = REFERENCE_PROPERTY_RE.findall(board_text)
+    if len(references) != footprint_count:
+        raise RuntimeError(
+            f"Expected one Reference property for each footprint in {path}: "
+            f"footprints={footprint_count}, references={len(references)}"
+        )
+    return references
 
 
 def run_electrical_checks(config: BoardConfig, work: Path) -> dict[str, object]:
@@ -422,11 +433,7 @@ def export_positions(
 
 
 def export_designators(config: BoardConfig, destination: Path) -> int:
-    board = pcbnew.LoadBoard(str(config.board))
-    references = sorted(
-        (str(footprint.GetReference()) for footprint in board.GetFootprints()),
-        key=natural_ref_key,
-    )
+    references = sorted(board_references(config.board), key=natural_ref_key)
     if len(references) != len(set(references)):
         raise RuntimeError("PCB contains duplicate footprint references")
     destination.write_text(
@@ -740,5 +747,5 @@ if __name__ == "__main__":
     try:
         main()
     except Exception as error:
-        print(f"error: {error}", file=__import__("sys").stderr)
+        print(f"error: {error}", file=sys.stderr)
         raise SystemExit(1) from error

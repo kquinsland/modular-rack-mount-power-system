@@ -127,24 +127,28 @@ mise run production:backplane -- --output-dir /tmp/backplane-production
 
 `build_carrier_backplane_panel.py` uses KiKit to build one customer panel from
 six carrier boards and one backplane-prototype board. It materializes both PCB
-and BOM inputs from the build's Git revision, then emits separate JLCPCB and
-PCBWay Gerber/BOM/positions bundles. The mise tasks use the checked-out `HEAD`;
+inputs from the build's Git revision, then emits separate JLCPCB and PCBWay
+Gerber/BOM/positions bundles. The mise tasks use the checked-out `HEAD`;
 `PANEL_GIT_HASH` may explicitly select another available commit.
 
 ```sh
 mise run panel:build
 ```
 
-Run both production export tasks and commit the reviewed production artifacts
-before building a release panel. The panel builder intentionally materializes
-its board and BOM inputs from `HEAD` (or `PANEL_GIT_HASH`) so one immutable
-revision controls the complete panel package.
+`panel:build` runs the carrier production export first and the backplane export
+second. Either task stops the pipeline if its ERC, DRC, source, BOM, placement,
+or fabrication checks fail. Panelization starts only after both pass. The panel
+builder then verifies both production manifests identify `HEAD` (or
+`PANEL_GIT_HASH`) and consumes their freshly generated BOMs; the panel geometry
+comes from the KiCad boards at that same immutable revision.
 
 The generated panel source and intermediate files are written under
 `build/carrier-backplane-panel/`. The release directory also contains a
-top-side PNG render for visual review. The full task also regenerates the
-carrier, backplane, and combined-panel documentation PNGs under
-`docs/assets/generated/pcbs/`. To rebuild only those documentation assets:
+top-side PNG render for visual review. The full task also regenerates top- and
+bottom-side carrier and backplane PNGs plus the top-side combined-panel PNG
+under `docs/assets/generated/pcbs/`. Repository-local 3D models are staged from
+the selected Git revision so their `${KIPRJMOD}` paths remain valid during
+rendering. To rebuild only those documentation assets:
 
 ```sh
 mise run docs:pcb-renders
