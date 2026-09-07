@@ -1,5 +1,10 @@
 # Carrier and backplane fabrication panel
 
+The current implementation is described below. The proposed KiBot-centered
+release architecture, including vendor-specific silkscreen outputs and
+WebP-only documentation renders, is documented in
+[`pcb-release-pipeline-refactor.md`](pcb-release-pipeline-refactor.md).
+
 Build the complete release, including its top-side PNG render, with:
 
 ```sh

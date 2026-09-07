@@ -178,3 +178,8 @@ These workflows are file-based mise tasks under `.mise/tasks/`, keeping the
 multi-command implementation out of `mise.toml`. See
 [`docs/carrier-backplane-panel.md`](../docs/carrier-backplane-panel.md) for the
 layout, ordering constraints, and validation caveats.
+
+The proposed division of responsibilities between KiBot, KiKit, the release
+orchestrator, the validator, and the PEP 723 WebP conversion tool is documented
+in
+[`docs/pcb-release-pipeline-refactor.md`](../docs/pcb-release-pipeline-refactor.md).
