@@ -15,17 +15,11 @@ uv_venv_auto = "create|source" # create .venv if missing, then activate
 [settings.pipx]
 uvx = true
 
-# Below we explicitly depend on MarkdownLint CLI 2 which is run via Node.
-[settings.npm]
-package_manager = "bun"
-
-
 [tools]
 prek = "latest"
 uv = "0.12.5"
-bun = "latest"
-node = "26.7.0"
 rust = "1.97.1"
+"github:mixelpixx/Konnect" = { version = "0.11.0", matching_regex = "^konnect-v", os = ["linux/x64", "macos/arm64"] }
 "pipx:easyeda2kicad" = "1.0.1"
 ripgrep = "15.2.0"
 
@@ -41,35 +35,9 @@ run = "cargo xtask firmware build --board rev-a --release"
 description = "Regenerate the PDCAN DBC from protocol definitions"
 run = "cargo xtask dbc"
 
-[tasks."kicad-mcp:install"]
-description = "Install KiCAD MCP Server Node and Python dependencies"
-depends = ["kicad-mcp:submodule"]
-dir = "kicad-mcp/server"
-run = [
-  "npm ci",
-  "uv venv --python \"$(../../scripts/kicad-mcp-python)\" --system-site-packages .venv",
-  "uv pip install --python .venv/bin/python -r requirements.txt",
-  "npm run build",
-]
-
-[tasks."kicad-mcp:submodule"]
-description = "Initialize and update the KiCAD MCP Server submodule"
-run = [
-  "git submodule sync --recursive -- kicad-mcp/server",
-  "git submodule update --init --recursive -- kicad-mcp/server",
-]
-
 [tasks."wt32-eth01:submodule"]
 description = "Initialize and update the WT32-ETH01 KiCad library submodule"
 run = [
   "git submodule sync --recursive -- hardware/libraries/vendor/wt32-eth01",
   "git submodule update --init --recursive -- hardware/libraries/vendor/wt32-eth01",
-]
-
-[tasks."kicad-mcp:verify"]
-description = "Verify KiCAD MCP Server build and Python runtime"
-dir = "kicad-mcp/server"
-run = [
-  "test -f dist/index.js",
-  ".venv/bin/python -c \"import pcbnew, sexpdata, skip, PIL, cairosvg, colorlog, pydantic, dotenv; print(pcbnew.GetBuildVersion())\"",
 ]

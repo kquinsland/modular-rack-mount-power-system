@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#MISE description="Generate all configured PCB net power-capacity reports"
+
+set -euo pipefail
+cd "${MISE_PROJECT_ROOT:?}"
+
+exec python scripts/pcb_power_capacity.py --all "$@"

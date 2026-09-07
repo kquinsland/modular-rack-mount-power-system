@@ -1,0 +1,24 @@
+kibot:
+  version: 1
+
+filters:
+  - name: kicad_dnp
+    comment: Mark footprints carrying KiCad's native DNP flag as not fitted
+    type: generic
+    exclude_kicad_dnp: true
+
+outputs:
+  - name: docs_ibom
+    comment: Interactive assembly BOM for PCB documentation
+    type: ibom
+    options:
+      output: "%f-rev-a-ibom.%x"
+      dnf_filter: kicad_dnp
+      bom_view: left-right
+      layer_view: F
+      highlight_pin1: selected
+      include_nets: true
+      show_fields: "Value,Footprint,Manufacturer,MPN,LCSC"
+      group_fields: "Value,Footprint,MPN"
+      checkboxes: "Sourced,Placed,Inspected"
+      mark_when_checked: Placed

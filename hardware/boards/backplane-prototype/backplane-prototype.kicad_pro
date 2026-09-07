@@ -52,8 +52,8 @@
         "zones": {
           "border_display_style": 2,
           "border_hatch_pitch": 0.5,
-          "corner_radius": 0.0,
-          "corner_smoothing": 0,
+          "corner_radius": 1.0,
+          "corner_smoothing": 2,
           "fill_mode": 0,
           "hatch_gap": 1.5,
           "hatch_orientation": 0.0,
@@ -63,8 +63,8 @@
           "min_clearance": 0.5,
           "min_island_area": 10.0,
           "min_thickness": 0.25,
-          "pad_connection": 1,
-          "remove_islands": 1,
+          "pad_connection": 2,
+          "remove_islands": 0,
           "thermal_relief_gap": 0.5,
           "thermal_relief_spoke_width": 0.5
         }
@@ -254,7 +254,7 @@
       "internal_id": "",
       "mfg": "",
       "mpn": "",
-      "sch_revision": "A"
+      "sch_revision": ""
     },
     "layer_pairs": [],
     "layer_presets": [],
@@ -535,7 +535,7 @@
         "tuning_profile": ""
       },
       {
-        "clearance": 0.5,
+        "clearance": 0.2,
         "name": "HIGH_CURRENT_DC",
         "pcb_color": "rgb(194, 0, 0)",
         "priority": 1,
@@ -553,7 +553,11 @@
     "netclass_patterns": [
       {
         "netclass": "HIGH_CURRENT_DC",
-        "pattern": "+24V"
+        "pattern": "VIN_RAW"
+      },
+      {
+        "netclass": "HIGH_CURRENT_DC",
+        "pattern": "VCC"
       },
       {
         "netclass": "3v3",
@@ -690,7 +694,7 @@
         "uuid": "348cc909-6345-4013-9bef-98714057a65b"
       }
     ],
-    "used_designators": "Q1-12,U1-2,#FLG1-3,#FLG101-102,H1-6,J1-8,J14,#PWR1-58,#PWR301-302,#PWR308,#PWR312,#PWR321,#PWR325-326,#PWR337-339,C1-2,D1-12,TP1-8,TP13-20,JP1-7,R1-39",
+    "used_designators": "Q1-12,U1-2,#FLG1-3,#FLG101-102,H1-6,J1-8,J14,#PWR1-58,#PWR74-76,#PWR85,#PWR87,#PWR105-107,#PWR301-302,#PWR308,#PWR312,#PWR321,#PWR325-326,#PWR337-339,C1-3,D1-12,TP1-8,TP13-20,JP1-7,R1-39",
     "variants": []
   },
   "sheets": [
@@ -699,11 +703,33 @@
       "backplane-prototype"
     ],
     [
-      "ec3c44d8-d9d2-43be-bb72-fd3a79a51f47",
-      "Slot Power Switches"
+      "077a6190-5781-45af-8c40-d2834d2d8f2c",
+      "Power Input and Monitor"
+    ],
+    [
+      "eb7e4e77-e42b-4b43-976a-f7a3e8147b95",
+      "CAN-FD and Six Slots"
+    ],
+    [
+      "4275522b-7aaa-4a22-8d94-d30e15c87e30",
+      "MCU and Local Control"
+    ],
+    [
+      "5d5cc60b-4c39-4882-898d-1aa7068798ee",
+      "Fan Control and Status"
+    ],
+    [
+      "9f6d14f1-eef5-43ec-a5a0-8ac65326e3cb",
+      "Buck Converters"
     ]
   ],
-  "text_variables": {},
+  "text_variables": {
+    "BOARD_NAME": "backplane",
+    "BOARD_VERSION": "2.1",
+    "BUILD_DATE": "YY.MM.DD",
+    "PROJECT_FAMILY": "mpr",
+    "SHORT_HASH": "UNRELEASED"
+  },
   "tuning_profiles": {
     "meta": {
       "version": 0

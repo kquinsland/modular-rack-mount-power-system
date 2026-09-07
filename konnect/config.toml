@@ -1,0 +1,9 @@
+# Project-local Konnect defaults. Platform-specific KiCad paths can be added
+# here when kicad and kicad-cli are not available on PATH (notably macOS).
+project_dir = "."
+transport = "stdio"
+log_level = "info"
+
+# Keep Konnect's small starter toolset and load other toolsets on demand.
+auto_load_toolsets = false
+eager_toolsets = false

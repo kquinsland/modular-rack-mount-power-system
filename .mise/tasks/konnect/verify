@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+#MISE description="Verify the Konnect binary, KiCad CLI, and MCP handshake"
+
+set -euo pipefail
+cd "${MISE_PROJECT_ROOT:?}"
+
+readonly binary="$(command -v konnect)"
+
+test "$($binary --version)" = "konnect 0.11.0"
+test "$(kicad-cli --version | cut -d. -f1)" = "10"
+
+readonly response="$({
+  printf '%s\n' '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"mise-konnect-verify","version":"1"}}}'
+  printf '%s\n' '{"jsonrpc":"2.0","method":"notifications/initialized"}'
+  printf '%s\n' '{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}'
+} | "$binary" --client codex --config konnect/config.toml)"
+
+printf '%s\n' "$response" | grep -Fq '"serverInfo":{"name":"konnect"'
+printf '%s\n' "$response" | grep -Fq '"name":"load_toolset"'
+
+printf 'Verified %s with KiCad CLI %s and a working MCP handshake.\n' \
+  "$($binary --version)" \
+  "$(kicad-cli --version)"
