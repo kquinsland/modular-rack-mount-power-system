@@ -143,9 +143,12 @@ under-module overlaps and reference-specific courtyard exceptions pass DRC.
 
 Full mixed-panel release acceptance is **not complete**:
 
-- Carrier D1's stock 0.12 mm silkscreen needs the project-local 0.15 mm footprint
-  correction on the PCB. A fresh check must use a source revision containing
-  the actual PCB replacement, not only a new schematic footprint assignment.
+- Carrier D1 now uses `mini-rack-power:D_SMC_Silk0.15mm` in both the schematic
+  and PCB, retaining its pad geometry and fitted status. Native carrier checks
+  after replacement report zero ERC/DRC errors and zero unconnected items;
+  28 existing DRC warnings remain, with no D1 library-mismatch warning.
+  The diagnostic counts below use an older source revision, not this PCB fix;
+  repeat the mixed-panel check using the updated committed source.
 - A diagnostic using source checkpoint `f12cc7b` and the compatibility fixes
   plus the mouse-bite policy below reports 215 panel errors: 126 repeated D1
   line-width assertions, 31 mouse-bite/courtyard findings,
