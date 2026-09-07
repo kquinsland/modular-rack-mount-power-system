@@ -25,4 +25,4 @@
     - Some things can be ADRs, some things are no longer needed
 
 - Firmware
-  - re-do ... all of it :D
+  - rebuild all of it now that PCBs are consolidated and there's a single STM32 in the mix
