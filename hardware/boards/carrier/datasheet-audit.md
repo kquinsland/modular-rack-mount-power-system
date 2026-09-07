@@ -1,10 +1,11 @@
 # Carrier Datasheet Archive Audit
 
-**Audit date:** 2026-08-29
+**Audit date:** 2026-09-06
 
-**Scope:** Current populated carrier production BOM and PCB properties compared
-with `docs/data-sheets/`. `J1` and `MOD1` are intentionally user-installed and
-are listed separately from assembly-populated parts.
+**Scope:** Current carrier schematic and generated production BOM compared with
+`docs/data-sheets/`. The PCB and production outputs use the common LM5164 and
+100 µH inductor. `J1` and `MOD1` are intentionally user-installed and are
+listed separately from assembly-populated parts.
 
 ## Remaining release-critical exact-part gap
 
@@ -32,15 +33,16 @@ are listed separately from assembly-populated parts.
   covering the populated `SMCJ48A`, LCSC `C19077611`.
 - D2: Nexperia `PESD2CANFD27V.pdf`; the populated `-TR` suffix appears to be
   packaging.
-- L1: Sunlord `SWPA8040S680MT.pdf`.
+- L1: PROD Tech `PSPMAA0805-101M-ANP.pdf` covers the exact 100 µH value and
+  its PSPMAA0805 family land pattern.
 - L3: TDK `ACT1210D.pdf`, covering the populated
   `ACT1210D-101-2P-TL00` family/value.
 - LED1: Worldsemi `WS2812B-2020-V6.pdf`.
 - U1: retained `stm32c092fc.pdf` covers the STM32C091/092 xB/xC family,
   including the populated `STM32C092GCU6`; the byte-identical
   `stm32c092fb.pdf` duplicate was removed.
-- U2: TI `LM5163.pdf` is the exact family datasheet for populated
-  `LM5163DDAR`.
+- U2: TI `LM5164.pdf` is the exact family datasheet for planned
+  `LM5164DDAR`.
 - U3: Wuxi Maxinmicro `LMX5069MS.pdf`.
 - U4: TI `INA237.pdf` covers populated `INA237AIDGSR`.
 - U5: TI `TCAN3413.pdf`, covering TCAN3413/TCAN3414.
@@ -68,8 +70,7 @@ searches show that most serve another board or historical design:
   populated carrier part is now Hongjiacheng `C19077611`, whose exact family
   datasheet is archived separately.
 - `TI/LMR516xx.pdf` must remain for the backpack's populated
-  `LMR51610YDBVR` regulators. `TI/LM5163.pdf` is the carrier U2 reference;
-  LM5163 is not a substitute for LMR51610.
+  `LMR51610YDBVR` regulators. LM5164 is not a substitute for LMR51610.
 - `BOURNS/SRN6045TA.pdf`, `SAMSUNG/CL21A226MAYNNNE.pdf`,
   `IHHEC/C1206X225K101T.pdf`, and `WS/WS2812B-MINI-V6_V1.2_EN.pdf` are also
   used by backpack designs.
@@ -83,6 +84,8 @@ searches show that most serve another board or historical design:
   and is the clearest optional archive candidate, but it may still be useful as
   family-level connector documentation.
 
+The obsolete carrier-only `TI/LM5163.pdf` and
+`Sunlord/SWPA8040S680MT.pdf` files were removed with the BOM consolidation.
 The safest remaining cleanup is therefore to label board scope and
 exact-versus-family coverage and add the exact C8 PDF or document its suffix
 equivalence. Broad deletion is not recommended.

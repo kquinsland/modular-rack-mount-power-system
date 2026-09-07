@@ -18,11 +18,10 @@ Both backplane converters use PSPMAA0805-101M-ANP, LCSC/JLCPCB C2962892,
 100 uH as their common inductor. Their feedback, RON, ripple-injection, and
 capacitor values remain rail-specific.
 
-At the first JLCPCB quote, confirm whether C2962892 or the completed board
-requires an assembly fixture. Continue with the part through design and quoting;
-if no fixture is required, the carrier housekeeping converter may subsequently
-be migrated to the same LM5164DDAR/C477928 and C2962892 pair. If a fixture is
-required, revisit the inductor selection before changing the carrier.
+The carrier housekeeping converter now uses the same LM5164DDAR/C477928 and
+C2962892 pair. At the first JLCPCB quote, confirm whether C2962892 or either
+completed board requires an assembly fixture. If a fixture is required, revisit
+the common inductor selection across both boards before production release.
 
 ## Protection Checklist
 

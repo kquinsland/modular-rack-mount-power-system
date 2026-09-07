@@ -12,6 +12,7 @@ import argparse
 import csv
 import json
 import os
+import posixpath
 import re
 import shutil
 import struct
@@ -20,7 +21,7 @@ import sys
 import zipfile
 from collections import Counter, defaultdict
 from itertools import pairwise
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 import pcbnew
 from kikit.common import fromDegrees
@@ -31,6 +32,8 @@ from shapely.geometry import LineString, box
 
 CARRIER_BOARD = "hardware/boards/carrier/carrier.kicad_pcb"
 CARRIER_BOM = "hardware/boards/carrier/production/bom.csv"
+CARRIER_PRODUCTION_DIR = Path("hardware/boards/carrier/production")
+CARRIER_ARCHIVE = "Mini_Rack_Power_Carrier_A.zip"
 CARRIER_PROJECT_FILES = (
     "hardware/boards/carrier/carrier.kicad_pro",
     "hardware/boards/carrier/carrier.kicad_sch",
@@ -39,6 +42,8 @@ CARRIER_PROJECT_FILES = (
 )
 BACKPLANE_BOARD = "hardware/boards/backplane-prototype/backplane-prototype.kicad_pcb"
 BACKPLANE_BOM = "hardware/boards/backplane-prototype/production/bom.csv"
+BACKPLANE_PRODUCTION_DIR = Path("hardware/boards/backplane-prototype/production")
+BACKPLANE_ARCHIVE = "Backplane_Prototype_A.zip"
 BACKPLANE_PROJECT_FILES = (
     "hardware/boards/backplane-prototype/backplane-prototype.kicad_pro",
     "hardware/boards/backplane-prototype/backplane-prototype.kicad_sch",
@@ -56,9 +61,13 @@ PANEL_NAME = "modular-rack-power-carrier6-backplane1-rev-a"
 RENDER_NAME = f"{PANEL_NAME}-top.png"
 DOC_RENDER_NAMES = {
     "carrier": "carrier-rev-a-top.png",
+    "carrier_bottom": "carrier-rev-a-bottom.png",
     "backplane_prototype": "backplane-prototype-rev-a-top.png",
+    "backplane_prototype_bottom": "backplane-prototype-rev-a-bottom.png",
     "combined_panel": "carrier6-backplane1-rev-a-top.png",
 }
+
+KIPRJMOD_MODEL_RE = re.compile(r'\(model "\$\{KIPRJMOD\}/([^"\n]+)"')
 
 BOARD_GAP = 2 * mm
 INTER_DESIGN_GAP = 9 * mm
@@ -74,7 +83,6 @@ FIDUCIAL_COPPER_DIAMETER = 1 * mm
 FIDUCIAL_MASK_OPENING = 2 * mm
 MAX_PANEL_SIZE = 250 * mm
 COORDINATE_MARGIN = 1 * mm
-EXPECTED_PLACEMENTS = 409
 EXPECTED_MOUSE_BITES = 135
 
 # These indicate that panelization introduced a fabrication geometry problem.
@@ -107,7 +115,7 @@ if not hasattr(pcbnew.SwigPyIterator, "next"):
 
 
 def run(*args: str, cwd: Path | None = None) -> None:
-    print("+", " ".join(args))
+    print("+", " ".join(args), flush=True)
     subprocess.run(args, cwd=cwd, check=True)
 
 
@@ -137,6 +145,61 @@ def panel_git_hash(root: Path) -> str:
     return value.lower()
 
 
+def resolve_git_revision(root: Path, revision: str) -> str:
+    result = subprocess.run(
+        ["git", "rev-parse", revision],
+        cwd=root,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    return result.stdout.strip()
+
+
+def validate_production_package(
+    production_dir: Path,
+    expected_revision: str,
+    expected_board: str,
+    archive_name: str,
+) -> dict[str, object]:
+    required_files = (
+        production_dir / "bom.csv",
+        production_dir / "positions.csv",
+        production_dir / "validation.json",
+        production_dir / archive_name,
+    )
+    missing = [str(path) for path in required_files if not path.is_file()]
+    if missing:
+        raise RuntimeError(f"Production package is incomplete: {missing}")
+
+    validation = json.loads(
+        (production_dir / "validation.json").read_text(encoding="utf-8")
+    )
+    if validation.get("status") not in {"pass", "pass_with_warnings"}:
+        raise RuntimeError(f"Production package did not pass checks: {production_dir}")
+
+    source = validation.get("source")
+    if not isinstance(source, dict):
+        raise TypeError(f"Production package has no source metadata: {production_dir}")
+    if source.get("git_commit") != expected_revision:
+        raise RuntimeError(
+            f"Production package revision does not match panel revision: {production_dir}"
+        )
+    if source.get("board") != expected_board:
+        raise RuntimeError(
+            f"Production package board does not match expected board: {production_dir}"
+        )
+
+    assembly = validation.get("assembly")
+    if not isinstance(assembly, dict) or not assembly.get(
+        "bom_position_references_match"
+    ):
+        raise RuntimeError(
+            f"Production package BOM and positions do not match: {production_dir}"
+        )
+    return validation
+
+
 def materialize_git_file(
     root: Path, revision: str, source: str, destination: Path
 ) -> None:
@@ -148,6 +211,36 @@ def materialize_git_file(
     )
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_bytes(result.stdout)
+
+
+def materialize_git_board(
+    root: Path,
+    revision: str,
+    source: str,
+    destination: Path,
+    staging_root: Path,
+) -> None:
+    """Stage a board and its repository-relative 3D models."""
+
+    materialize_git_file(root, revision, source, destination)
+    project_directory = PurePosixPath(source).parent
+    board_text = destination.read_text(encoding="utf-8")
+    for relative_model in sorted(set(KIPRJMOD_MODEL_RE.findall(board_text))):
+        repository_model = PurePosixPath(
+            posixpath.normpath((project_directory / relative_model).as_posix())
+        )
+        if repository_model.is_absolute() or (
+            repository_model.parts and repository_model.parts[0] == ".."
+        ):
+            raise RuntimeError(
+                f"3D model path escapes the repository: {source}: {relative_model}"
+            )
+        materialize_git_file(
+            root,
+            revision,
+            repository_model.as_posix(),
+            staging_root.joinpath(*repository_model.parts),
+        )
 
 
 def git_file_json(root: Path, revision: str, source: str) -> dict[str, object]:
@@ -295,7 +388,8 @@ def build_panel(
     backplane_path: Path,
     panel_path: Path,
     build_git_hash: str,
-) -> dict[str, float]:
+    placed_component_count: int,
+) -> dict[str, object]:
     carrier_w, carrier_h = board_dimensions(carrier_path)
     backplane_w, backplane_h = board_dimensions(backplane_path)
 
@@ -517,7 +611,7 @@ def build_panel(
         "carrier_count": 6,
         "backplane_count": 1,
         "different_design_count": 2,
-        "placed_component_count": EXPECTED_PLACEMENTS,
+        "placed_component_count": placed_component_count,
         "layer_count": 4,
         "board_thickness_mm": 1.6,
         "outer_copper_oz": 2,
@@ -888,6 +982,7 @@ def render_board(
     destination: Path,
     width_px: int,
     height_px: int,
+    side: str,
 ) -> dict[str, int]:
     destination.parent.mkdir(parents=True, exist_ok=True)
     run(
@@ -901,7 +996,7 @@ def render_board(
         "--height",
         str(height_px),
         "--side",
-        "top",
+        side,
         "--background",
         "opaque",
         "--quality",
@@ -933,6 +1028,16 @@ def render_documentation(
             "board": carrier_board,
             "width_px": 1600,
             "height_px": 900,
+            "side": "top",
+            "source_board": CARRIER_BOARD,
+            "source_revision": panel_info["carrier_source_revision"],
+            "instances": 1,
+        },
+        "carrier_bottom": {
+            "board": carrier_board,
+            "width_px": 1600,
+            "height_px": 900,
+            "side": "bottom",
             "source_board": CARRIER_BOARD,
             "source_revision": panel_info["carrier_source_revision"],
             "instances": 1,
@@ -941,6 +1046,16 @@ def render_documentation(
             "board": backplane_board,
             "width_px": 1600,
             "height_px": 900,
+            "side": "top",
+            "source_board": BACKPLANE_BOARD,
+            "source_revision": panel_info["backplane_source_revision"],
+            "instances": 1,
+        },
+        "backplane_prototype_bottom": {
+            "board": backplane_board,
+            "width_px": 1600,
+            "height_px": 900,
+            "side": "bottom",
             "source_board": BACKPLANE_BOARD,
             "source_revision": panel_info["backplane_source_revision"],
             "instances": 1,
@@ -949,6 +1064,7 @@ def render_documentation(
             "board": panel_path,
             "width_px": 1400,
             "height_px": 2000,
+            "side": "top",
             "source_board": panel_path.name,
             "source_revision": panel_info["panel_build_git_hash"],
             "instances": 7,
@@ -964,6 +1080,7 @@ def render_documentation(
             destination,
             spec["width_px"],
             spec["height_px"],
+            spec["side"],
         )
         render_paths[key] = destination
         render_entries[key] = {
@@ -971,7 +1088,7 @@ def render_documentation(
             "source_board": spec["source_board"],
             "source_revision": spec["source_revision"],
             "instances": spec["instances"],
-            "side": "top",
+            "side": spec["side"],
             **dimensions,
         }
 
@@ -1098,6 +1215,8 @@ def build(
     output_dir: Path,
     release_dir: Path | None,
     docs_render_dir: Path | None,
+    carrier_production_dir: Path,
+    backplane_production_dir: Path,
     docs_only: bool,
     common_text_variables: dict[str, str],
     carrier_text_variables: dict[str, str],
@@ -1105,19 +1224,52 @@ def build(
 ) -> None:
     root = git_root()
     build_git_hash = panel_git_hash(root)
+    build_revision = resolve_git_revision(root, build_git_hash)
+    production_validations: dict[str, dict[str, object]] = {}
+    if not docs_only:
+        production_validations = {
+            "carrier": validate_production_package(
+                carrier_production_dir,
+                build_revision,
+                CARRIER_BOARD,
+                CARRIER_ARCHIVE,
+            ),
+            "backplane": validate_production_package(
+                backplane_production_dir,
+                build_revision,
+                BACKPLANE_BOARD,
+                BACKPLANE_ARCHIVE,
+            ),
+        }
     if output_dir.exists():
         shutil.rmtree(output_dir)
     output_dir.mkdir(parents=True)
 
     sources = output_dir / "sources"
-    carrier_board = sources / "carrier.kicad_pcb"
+    carrier_board = sources / CARRIER_BOARD
     carrier_bom = sources / "carrier-bom.csv"
-    backplane_board = sources / "backplane-prototype.kicad_pcb"
+    backplane_board = sources / BACKPLANE_BOARD
     backplane_bom = sources / "backplane-bom.csv"
-    materialize_git_file(root, build_git_hash, CARRIER_BOARD, carrier_board)
-    materialize_git_file(root, build_git_hash, CARRIER_BOM, carrier_bom)
-    materialize_git_file(root, build_git_hash, BACKPLANE_BOARD, backplane_board)
-    materialize_git_file(root, build_git_hash, BACKPLANE_BOM, backplane_bom)
+    materialize_git_board(
+        root,
+        build_git_hash,
+        CARRIER_BOARD,
+        carrier_board,
+        sources,
+    )
+    materialize_git_board(
+        root,
+        build_git_hash,
+        BACKPLANE_BOARD,
+        backplane_board,
+        sources,
+    )
+    if docs_only:
+        materialize_git_file(root, build_git_hash, CARRIER_BOM, carrier_bom)
+        materialize_git_file(root, build_git_hash, BACKPLANE_BOM, backplane_bom)
+    else:
+        shutil.copy2(carrier_production_dir / "bom.csv", carrier_bom)
+        shutil.copy2(backplane_production_dir / "bom.csv", backplane_bom)
 
     carrier_release_variables = release_text_variables(
         root,
@@ -1140,8 +1292,26 @@ def build(
         backplane_board, backplane_release_variables
     )
 
+    carrier_entries = expanded_bom_entries(
+        read_csv(carrier_bom), [f"CARRIER{index}" for index in range(1, 7)]
+    )
+    backplane_entries = expanded_bom_entries(read_csv(backplane_bom), ["BACKPLANE1"])
+    entries = carrier_entries + backplane_entries
+    allowed_references = {entry["Designator"] for entry in entries}
+    if len(allowed_references) != len(entries):
+        raise RuntimeError("Expanded panel BOM contains duplicate designators")
+
     panel_path = output_dir / f"{PANEL_NAME}.kicad_pcb"
-    panel_info = build_panel(carrier_board, backplane_board, panel_path, build_git_hash)
+    panel_info = build_panel(
+        carrier_board,
+        backplane_board,
+        panel_path,
+        build_git_hash,
+        len(allowed_references),
+    )
+    panel_render_board = sources / "hardware/boards/panel-render" / panel_path.name
+    panel_render_board.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(panel_path, panel_render_board)
     panel_info["board_silkscreen_variables"] = {
         "carrier": {
             name: carrier_release_variables[name]
@@ -1152,6 +1322,19 @@ def build(
             for name in sorted(backplane_used_variables)
         },
     }
+    if production_validations:
+        panel_info["production_packages"] = {
+            "carrier": {
+                "status": production_validations["carrier"]["status"],
+                "source_revision": build_revision,
+                "archive": CARRIER_ARCHIVE,
+            },
+            "backplane": {
+                "status": production_validations["backplane"]["status"],
+                "source_revision": build_revision,
+                "archive": BACKPLANE_ARCHIVE,
+            },
+        }
     (output_dir / "panel-info.json").write_text(
         json.dumps(panel_info, indent=2) + "\n", encoding="utf-8"
     )
@@ -1159,7 +1342,7 @@ def build(
     render_paths, render_manifest_path, render_manifest = render_documentation(
         carrier_board,
         backplane_board,
-        panel_path,
+        panel_render_board,
         output_dir,
         panel_info,
     )
@@ -1189,17 +1372,6 @@ def build(
             )
         print(json.dumps(render_manifest, indent=2))
         return
-
-    carrier_entries = expanded_bom_entries(
-        read_csv(carrier_bom), [f"CARRIER{index}" for index in range(1, 7)]
-    )
-    backplane_entries = expanded_bom_entries(read_csv(backplane_bom), ["BACKPLANE1"])
-    entries = carrier_entries + backplane_entries
-    allowed_references = {entry["Designator"] for entry in entries}
-    if len(allowed_references) != EXPECTED_PLACEMENTS:
-        raise RuntimeError(
-            f"Expected {EXPECTED_PLACEMENTS} placed components, got {len(allowed_references)}"
-        )
 
     common_positions = output_dir / "positions.csv"
     write_positions(panel_path, allowed_references, common_positions)
@@ -1287,6 +1459,16 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--release-dir", type=Path)
     parser.add_argument("--docs-render-dir", type=Path)
     parser.add_argument(
+        "--carrier-production-dir",
+        type=Path,
+        default=CARRIER_PRODUCTION_DIR,
+    )
+    parser.add_argument(
+        "--backplane-production-dir",
+        type=Path,
+        default=BACKPLANE_PRODUCTION_DIR,
+    )
+    parser.add_argument(
         "--docs-only",
         action="store_true",
         help="Build the panel and documentation PNGs without fabrication outputs",
@@ -1325,6 +1507,8 @@ if __name__ == "__main__":
             arguments.output_dir.resolve(),
             arguments.release_dir.resolve() if arguments.release_dir else None,
             arguments.docs_render_dir.resolve() if arguments.docs_render_dir else None,
+            arguments.carrier_production_dir.resolve(),
+            arguments.backplane_production_dir.resolve(),
             arguments.docs_only,
             text_variable_map(arguments.define_var),
             text_variable_map(arguments.carrier_define_var),

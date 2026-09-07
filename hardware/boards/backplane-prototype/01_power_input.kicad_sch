@@ -2416,12 +2416,6 @@
 		(uuid "22ac010d-e08a-4b8c-9f19-f5cdcbfce221")
 	)
 	(junction
-		(at 68.58 58.42)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "52af88b4-20a7-4877-b406-c9e4d132181a")
-	)
-	(junction
 		(at 21.59 55.88)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2459,23 +2453,13 @@
 	)
 	(wire
 		(pts
-			(xy 68.58 58.42) (xy 66.04 58.42)
+			(xy 72.39 58.42) (xy 66.04 58.42)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "03a93936-1cc4-45c3-9014-a1d55ef5be55")
-	)
-	(wire
-		(pts
-			(xy 26.67 55.88) (xy 29.21 55.88)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "0674b17c-b7c7-443a-b878-fe3a3e8e94a9")
 	)
 	(wire
 		(pts
@@ -2576,16 +2560,6 @@
 			(type default)
 		)
 		(uuid "6a2a9ff6-d09c-4033-a52f-16473d20f34b")
-	)
-	(wire
-		(pts
-			(xy 72.39 58.42) (xy 68.58 58.42)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "6d83476b-dcc5-4889-81fc-ccae8b8a16f3")
 	)
 	(wire
 		(pts
@@ -3202,7 +3176,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
-		(dnp no)
+		(dnp yes)
 		(uuid "231d849c-eeb9-44c7-9801-8cef26ef2e85")
 		(property "Reference" "J8"
 			(at 15.24 52.578 0)
@@ -3301,6 +3275,17 @@
 				)
 			)
 		)
+		(property "Population" "DNP — user-installed"
+			(at 15.64 58.98 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "c5bc912c-64dd-4403-a072-9cd81b19ee46")
 		)
@@ -3311,84 +3296,6 @@
 			(project "backplane-prototype"
 				(path "/348cc909-6345-4013-9bef-98714057a65b/077a6190-5781-45af-8c40-d2834d2d8f2c"
 					(reference "J8")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:TestPoint")
-		(at 68.58 58.42 0)
-		(mirror y)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp yes)
-		(uuid "29341456-cc74-47c8-865c-3e0f8f154798")
-		(property "Reference" "TP2"
-			(at 68.58 51.816 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "VIN_BUS"
-			(at 69.18 62.23 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
-			(at 64.1 58.41 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 64.1 58.41 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "test point"
-			(at 69.18 58.41 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "0d64d435-baf0-47d8-9e80-db81d4eb31d0")
-		)
-		(instances
-			(project "backplane-prototype"
-				(path "/348cc909-6345-4013-9bef-98714057a65b/077a6190-5781-45af-8c40-d2834d2d8f2c"
-					(reference "TP2")
 					(unit 1)
 				)
 			)
@@ -4535,83 +4442,6 @@
 			(project "backplane-prototype"
 				(path "/348cc909-6345-4013-9bef-98714057a65b/077a6190-5781-45af-8c40-d2834d2d8f2c"
 					(reference "#PWR0106")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:TestPoint")
-		(at 29.21 55.88 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp yes)
-		(uuid "b997d783-8f86-47ac-a6ab-509244aad935")
-		(property "Reference" "TP1"
-			(at 29.21 48.768 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "VIN_RAW"
-			(at 28.81 41.91 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm"
-			(at 33.89 55.87 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 33.89 55.87 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "test point"
-			(at 28.81 55.87 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "e94f5cfa-f7a1-45aa-b940-d85eca2f51a8")
-		)
-		(instances
-			(project "backplane-prototype"
-				(path "/348cc909-6345-4013-9bef-98714057a65b/077a6190-5781-45af-8c40-d2834d2d8f2c"
-					(reference "TP1")
 					(unit 1)
 				)
 			)

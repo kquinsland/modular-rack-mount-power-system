@@ -6,11 +6,14 @@ Build the complete release, including its top-side PNG render, with:
 mise run panel:build
 ```
 
-This also generates three top-side documentation PNGs and a provenance manifest
-under `docs/assets/generated/pcbs/`:
+This also generates top- and bottom-side documentation PNGs for both source
+boards, a top-side panel PNG, and a provenance manifest under
+`docs/assets/generated/pcbs/`:
 
 - `carrier-rev-a-top.png`
+- `carrier-rev-a-bottom.png`
 - `backplane-prototype-rev-a-top.png`
+- `backplane-prototype-rev-a-bottom.png`
 - `carrier6-backplane1-rev-a-top.png`
 - `renders.json`
 
@@ -41,8 +44,10 @@ multi-command implementations do not add noise to `mise.toml`.
 ## Documentation renders
 
 The individual images are rendered from the committed board files at the build
-revision, not from uncommitted PCB files in the worktree. `renders.json` records
-that revision, the panel build hash, KiCad version, and actual output dimensions.
+revision, not from uncommitted PCB files in the worktree. Repository-local 3D
+models are staged at their original relative paths so `${KIPRJMOD}` references
+resolve exactly as they do in the source projects. `renders.json` records the
+revision, panel build hash, KiCad version, side, and actual output dimensions.
 
 The iBOM configuration marks footprints carrying KiCad's native DNP flag as not
 fitted. The generated assembly tables therefore match the released BOMs: 57
@@ -58,11 +63,15 @@ the generated fitted-reference counts.
 
 ![Carrier Rev A top-side render](assets/generated/pcbs/carrier-rev-a-top.png)
 
+![Carrier Rev A bottom-side render](assets/generated/pcbs/carrier-rev-a-bottom.png)
+
 [Open the carrier InteractiveHtmlBom](assets/generated/pcbs/carrier-rev-a-ibom.html)
 
 ### Backplane prototype Rev A
 
 ![Backplane prototype Rev A top-side render](assets/generated/pcbs/backplane-prototype-rev-a-top.png)
+
+![Backplane prototype Rev A bottom-side render](assets/generated/pcbs/backplane-prototype-rev-a-bottom.png)
 
 [Open the backplane prototype InteractiveHtmlBom](assets/generated/pcbs/backplane-prototype-rev-a-ibom.html)
 
@@ -84,15 +93,19 @@ combination, but it must be confirmed during engineering review before payment.
 
 ## Source authority
 
-The builder materializes both boards and both BOMs from one Git revision. The
-mise tasks set that revision to the checked-out `HEAD`; a deployment can set
-`PANEL_GIT_HASH` to another commit available in the checkout. This keeps the
-panel sources, board identity text, documentation renders, and provenance
-metadata on the same commit without source hashes embedded in the script.
+The `panel:build` task first regenerates the carrier and backplane production
+packages. Both production checks must pass before panelization starts. The
+builder verifies that each validation manifest identifies the selected Git
+revision, consumes the freshly exported BOMs, and materializes both KiCad boards
+from that revision for panel geometry. The mise tasks select the checked-out
+`HEAD`; a deployment can set `PANEL_GIT_HASH` to another commit available in the
+checkout, provided the generated production packages identify that same commit.
+This keeps the panel sources, assembly data, board identity text, documentation
+renders, and provenance metadata aligned.
 
 KiKit applies a unique prefix to every reference and net. The final assembly
-data contains 409 placed parts: 342 carrier placements and 67 backplane
-placements.
+placement count is derived from the released carrier and backplane BOMs, so it
+tracks design changes without a duplicated hard-coded total.
 
 The panel, both Gerber exports, and the position file use the same absolute
 origin. A 1 mm positive coordinate margin keeps plotted edge strokes away from
@@ -112,7 +125,7 @@ defaults live in each board's `.kicad_pro`; for example, the backplane uses
 `SHORT_HASH`. Its working-copy defaults render as:
 
 ```text
-mpr.backplane
+mrp.backplane
 v2.1-YY.MM.DD
 UNRELEASED
 ```
@@ -170,8 +183,9 @@ Vendor references checked for this design:
 ## Validation
 
 The build checks for all four copper layers, masks, top silkscreen, edge cuts,
-and plated/non-plated drill files in both Gerber archives. It also verifies 409
-positions, 135 mouse-bite holes, four tooling holes, and three fiducials.
+and plated/non-plated drill files in both Gerber archives. It also verifies one
+position for every released BOM reference, 135 mouse-bite holes, four tooling
+holes, and three fiducials.
 
 KiCad DRC reports zero unconnected items and no copper-clearance, drill-
 clearance, or outline failures. It still reports inherited release-board

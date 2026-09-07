@@ -6,7 +6,8 @@ boundary is superseded; the controller and all six slots now live on one PCB.
 
 ## DC Input
 
-Backplane `J5` uses DORABO `DB910-6.35-2P-GN-S`, LCSC `C395872`.
+Backplane `J8` uses DORABO `DB910-6.35-2P-GN-S`, LCSC `C395872`, and is
+intentionally DNP for manual installation.
 
 | Pin | Signal | Direction | Notes |
 | ---: | --- | --- | --- |

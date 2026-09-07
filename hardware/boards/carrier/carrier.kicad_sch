@@ -2715,14 +2715,14 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "mini-rack-power:LM5163DDA"
+		(symbol "mini-rack-power:LM5164DDA"
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
 			(in_pos_files yes)
 			(duplicate_pin_numbers_are_jumpers no)
 			(property "Reference" "U"
-				(at -8.89 11.43 0)
+				(at 0 15.494 0)
 				(show_name no)
 				(do_not_autoplace no)
 				(effects
@@ -2731,8 +2731,8 @@
 					)
 				)
 			)
-			(property "Value" "LM5163DDA"
-				(at 5.08 11.43 0)
+			(property "Value" "LM5164DDA"
+				(at -0.254 12.7 0)
 				(show_name no)
 				(do_not_autoplace no)
 				(effects
@@ -2742,7 +2742,7 @@
 				)
 			)
 			(property "Footprint" "Package_SO:TI_SO-PowerPAD-8"
-				(at 1.27 -11.43 0)
+				(at 0 -23.876 0)
 				(show_name no)
 				(do_not_autoplace no)
 				(hide yes)
@@ -2752,8 +2752,8 @@
 					)
 				)
 			)
-			(property "Datasheet" "https://www.ti.com/lit/ds/symlink/lm5163.pdf"
-				(at -7.62 8.89 0)
+			(property "Datasheet" "https://www.ti.com/lit/ds/symlink/lm5164.pdf"
+				(at 0.254 -26.162 0)
 				(show_name no)
 				(do_not_autoplace no)
 				(hide yes)
@@ -2763,7 +2763,18 @@
 					)
 				)
 			)
-			(property "Description" "0.5A synchronous buck converter, 6V to 100V input, SO PowerPAD-8"
+			(property "Description" "100-V, 1-A synchronous buck converter with programmable on-time, PowerPAD SO-8 (DDA)"
+				(at 0 -28.448 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "LM5164 buck regulator 100V 1A synchronous"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -2774,29 +2785,7 @@
 					)
 				)
 			)
-			(property "ki_keywords" "step-down dc-dc buck regulator adjustable"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "ki_fp_filters" "TI_SO-PowerPAD-8*"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(symbol "LM5163DDA_1_1"
+			(symbol "LM5164DDA_0_1"
 				(rectangle
 					(start -10.16 10.16)
 					(end 10.16 -10.16)
@@ -2808,6 +2797,8 @@
 						(type background)
 					)
 				)
+			)
+			(symbol "LM5164DDA_1_1"
 				(pin power_in line
 					(at -2.54 -12.7 90)
 					(length 2.54)
@@ -4481,7 +4472,7 @@
 		)
 		(uuid "11007418-c6da-4bd4-9780-929374b3d360")
 	)
-	(text "ASSEMBLY / FOOTPRINT CHECKS\nL1: Sunlord SWPA8040S680MT / C36418; footprint Inductor_SMD:L_Sunlord_SWPA8040S.\nC8: current PCB/BOM is authoritative: Samsung CL21A226MAQNNNE, 22uF 25V, 0805, LCSC C45783.\nJ1 and MOD1 are intentionally DNP; user solders the XT30PW(2+2) connector and SW3538 module after assembly.\nVerify U2 package pin numbering and exposed-pad requirements against manufacturer drawings."
+	(text "ASSEMBLY / FOOTPRINT CHECKS\nL1: PROD Tech PSPMAA0805-101M-ANP / C2962892; footprint mini-rack-power:L_PRODTech_PSPMAA0805.\nC8: current PCB/BOM is authoritative: Samsung CL21A226MAQNNNE, 22uF 25V, 0805, LCSC C45783.\nJ1 and MOD1 are intentionally DNP; user solders the XT30PW(2+2) connector and SW3538 module after assembly.\nVerify U2 package pin numbering and exposed-pad requirements against manufacturer drawings."
 		(exclude_from_sim no)
 		(at 292.1 151 0)
 		(effects
@@ -4504,7 +4495,7 @@
 		)
 		(uuid "231e2050-8460-44bb-b955-0f1a66079306")
 	)
-	(text "LM5163 Type-3 ripple injection; nominal 3.3 V / ~300 kHz. Keep SW/BST/ripple loop compact during PCB layout.\nTODO: During bring-up, measure VIN ringing directly at U2 pin 2 using a short ground spring."
+	(text "LM5164 Type-3 ripple injection; nominal 3.3 V / ~300 kHz. Keep SW/BST/ripple loop compact during PCB layout.\nTODO: During bring-up, measure VIN ringing directly at U2 pin 2 using a short ground spring."
 		(exclude_from_sim no)
 		(at 20.32 99.06 0)
 		(effects
@@ -5686,7 +5677,7 @@
 		)
 	)
 	(symbol
-		(lib_id "mini-rack-power:LM5163DDA")
+		(lib_id "mini-rack-power:LM5164DDA")
 		(at 45.72 158.75 0)
 		(unit 1)
 		(body_style 1)
@@ -5706,7 +5697,7 @@
 				)
 			)
 		)
-		(property "Value" "LM5163DDAR"
+		(property "Value" "LM5164DDAR"
 			(at 45.72 161.29 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5727,7 +5718,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/lm5163.pdf"
+		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/lm5164.pdf"
 			(at 38.1 167.64 0)
 			(hide yes)
 			(show_name no)
@@ -5738,7 +5729,7 @@
 				)
 			)
 		)
-		(property "Description" "0.5A synchronous buck converter, 6V to 100V input, SO PowerPAD-8"
+		(property "Description" "1A synchronous buck converter, 6V to 100V input, SO PowerPAD-8"
 			(at 45.72 158.75 0)
 			(hide yes)
 			(show_name no)
@@ -5749,7 +5740,7 @@
 				)
 			)
 		)
-		(property "MPN" "LM5163DDAR"
+		(property "MPN" "LM5164DDAR"
 			(at 45.72 158.75 0)
 			(hide yes)
 			(show_name no)
@@ -5771,7 +5762,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C2873264"
+		(property "LCSC" "C477928"
 			(at 45.72 158.75 0)
 			(hide yes)
 			(show_name no)
@@ -6107,7 +6098,7 @@
 				)
 			)
 		)
-		(property "Value" "68μH"
+		(property "Value" "100uH"
 			(at 126.238 153.162 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6117,7 +6108,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Inductor_SMD:L_Sunlord_SWPA8040S"
+		(property "Footprint" "mini-rack-power:L_PRODTech_PSPMAA0805"
 			(at 123.19 153.67 0)
 			(hide yes)
 			(show_name no)
@@ -6128,7 +6119,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.sunlordinc.com/UploadFiles/PDF_Cat/20120704094224784.pdf"
+		(property "Datasheet" "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2202081030_PROD-Tech-PSPMAA0805-101M-ANP_C2962892.pdf"
 			(at 123.19 153.67 0)
 			(hide yes)
 			(show_name no)
@@ -6139,7 +6130,7 @@
 				)
 			)
 		)
-		(property "Description" "68uH 20%, 1.25A, Isat 1.45A, shielded power inductor"
+		(property "Description" "100uH 20%, Irms 2.5A, Isat 3A, DCR 272mOhm typical, shielded power inductor"
 			(at 123.19 153.67 0)
 			(hide yes)
 			(show_name no)
@@ -6150,7 +6141,7 @@
 				)
 			)
 		)
-		(property "MPN" "SWPA8040S680MT"
+		(property "MPN" "PSPMAA0805-101M-ANP"
 			(at 123.19 153.67 0)
 			(hide yes)
 			(show_name no)
@@ -6161,7 +6152,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" "Sunlord"
+		(property "Manufacturer" "PROD Tech"
 			(at 123.19 153.67 0)
 			(hide yes)
 			(show_name no)
@@ -6172,7 +6163,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C36418"
+		(property "LCSC" "C2962892"
 			(at 123.19 153.67 0)
 			(hide yes)
 			(show_name no)
@@ -6183,7 +6174,7 @@
 				)
 			)
 		)
-		(property "Footprint_Status" "ASSIGNED - KiCad Sunlord SWPA8040S manufacturer land pattern"
+		(property "Footprint_Status" "ASSIGNED - custom PROD Tech PSPMAA0805 manufacturer land pattern"
 			(at 123.19 153.67 0)
 			(hide yes)
 			(show_name no)
