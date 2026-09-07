@@ -5,6 +5,10 @@ backplane-prototype PCB. It measures 163.800 x
 237.350 mm and is intended for top-side assembly.
 The top rail is marked `PANEL 35e47c0` on F.SilkS.
 
+This is a historical snapshot. Its old 2 × 2 mm LED model has been removed from
+the active libraries; use its original source revision for complete historical
+3D dependencies. Do not substitute the current side-view LED model in this panel.
+
 - `jlcpcb/`: JLCPCB upload bundle, separate files, and order notes.
 - `pcbway/`: PCBWay upload bundle, separate files, and order notes.
 - `modular-rack-power-carrier6-backplane1-rev-a.kicad_pcb`: generated panel source for CAM review.
