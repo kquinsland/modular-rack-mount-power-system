@@ -9,7 +9,7 @@ distribution on one PCB. The prototype board outline, airflow cutouts, mounting
 features, and slot locations provide the mechanical foundation for the current
 design.
 
-![Placeholder for the consolidated backplane PCB render](/images/pcbs/backplane.png)
+![Placeholder for the consolidated backplane PCB render](backplane.png)
 
 _Placeholder illustration. Release tooling will replace this image with the
 current PCB render._

@@ -24,6 +24,14 @@ mise run worklog:new -- "Concise Summary"
 The helper creates `site/content/worklog/wl.YYYY-MM-DD - Concise Summary.md`.
 The filename date and front-matter date must agree.
 
+## Content organization
+
+Use Hugo page bundles for documentation with page-specific assets. Leaf pages
+use `page-name/index.md`; section pages remain branch bundles with `_index.md`.
+Store renders and other page-specific files beside the owning Markdown file and
+reference them with relative paths. Reserve `static/` for assets shared across
+multiple pages.
+
 ## Documentation versions
 
 `content/latest/` is the moving technical reference. Worklogs live separately
