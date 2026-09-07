@@ -38,7 +38,6 @@ Preview is explicitly marked `preview-unchecked` and creates no fabrication
 ZIPs. Release has no option to skip electrical checks. ERC findings, DRC errors,
 unconnected items, and parity errors block it. Existing KiCad exclusions are
 respected; active DRC/parity warnings are retained in validation summaries.
-The current carrier's three DRC errors therefore prevent a complete release.
 The mixed-panel validation policy also needs reconciliation before release use;
 see the acceptance status below.
 
@@ -123,22 +122,69 @@ source and tooling hashes for traceability.
 
 Verified locally: both board previews, the mixed-panel preview, Hugo publication,
 interactive BOMs, both boards' KiBot/native-KiCad BOM and LCSC agreement, both
-vendors' standalone backplane CAM exports, proof rendering, ten unit tests,
+vendors' standalone backplane CAM exports, proof rendering, twenty-one unit tests,
 and Mermaid diagram rendering.
+
+Panel compatibility fixes preserve explicit component-class reference lists
+for each board instance, namespace `A.Reference`/`B.Reference` comparisons in
+inherited rules, and bake only visible reference fields on their original
+layers. Hidden fields must not become visible panel silkscreen. Component-class
+filters other than explicit reference lists fail closed until supported; this
+is not a general evaluator for all KiCad rule expressions or rule-area names.
+
+The carrier source currently retains 27 `Under_PD_Module` members. Git history
+shows the assignment list cleared in `b4fcf69`, `67bfaca`, and `8def932`, then
+restored most recently in `361c928`. The commits record project saves but cannot
+identify the process responsible; an editor saving stale in-memory settings is
+a plausible explanation. The current panel problem was separate: KiKit did not
+copy these top-level project assignments or rename the rule's `MOD1` reference.
+The generated panel now has six assignments with 162 namespaced members; its
+under-module overlaps and reference-specific courtyard exceptions pass DRC.
 
 Full mixed-panel release acceptance is **not complete**:
 
-- The carrier source has three legend-line-width DRC errors at D1; the backplane
-  passes the electrical/error gate, with warnings recorded.
-- A diagnostic DRC on the preview panel reports 530 errors, including six
-  unconnected items after refill. Inherited rules are not yet consistently
-  scoped to their originating board: for example, a carrier legend rule
-  applies to other carrier instances, and the backplane hole-spacing rule
-  applies to panel mouse bites. Component-class exceptions and differing board
-  defaults also need to survive panelization. These are generated-panel
-  integration findings, not evidence of 530 errors in either source PCB.
-  Reconcile this policy and repeat the full checked-source/refill/panel sequence
-  before accepting CAM equivalence. Do not blanket-ignore the findings.
+- Carrier D1's stock 0.12 mm silkscreen needs the project-local 0.15 mm footprint
+  correction on the PCB. A fresh check must use a source revision containing
+  the actual PCB replacement, not only a new schematic footprint assignment.
+- A diagnostic using source checkpoint `f12cc7b` and the compatibility fixes
+  plus the mouse-bite policy below reports 215 panel errors: 126 repeated D1
+  line-width assertions, 31 mouse-bite/courtyard findings,
+  48 narrow GND connections, six visible carrier LED1 text-height findings,
+  and four unconnected items. Under-module and reference-specific courtyard
+  exceptions now work. These are generated-panel integration findings, not
+  evidence of 215 errors in either source PCB. Reconcile the remaining policy
+  and repeat the full checked-source/refill/panel sequence before accepting
+  CAM equivalence. Do not blanket-ignore the findings.
+- The 0.45 mm pad-hole spacing rule originates in `d28e3ec` and was copied to
+  the carrier in `bedac27`. It also matches NPTH mouse bites, whose current
+  0.6 mm holes have 0.4 mm edge-to-edge spacing. JLCPCB documents separate
+  [mouse-bite guidance](https://jlcpcb.com/blog/pcb-design-efficiency-mouse-bites)
+  from its general [pad-hole spacing limit](https://jlcpcb.com/capabilities/pcb-capabilities).
+  The generated panel now appends a 0.30 mm hole-to-hole rule matching only
+  **pairs of generated NPTH mouse bites** (`KiKit_MB_*`), eliminating all 108
+  false generic pad-hole spacing findings in this diagnostic. Ordinary holes,
+  tooling holes, mixed mouse-bite/ordinary-hole pairs, copper clearances, and
+  component courtyards retain their existing checks. No source rule is changed.
+  The generator validates actual 0.6 mm round unconnected NPTHs, 5–8 per set,
+  0.30–0.40 mm edge gaps, and the expected 27 sets/135 holes. Metadata records
+  the measured 1.0 mm pitch and 0.4 mm gap separately from KiKit's requested
+  0.95 mm pitch. The capabilities table recommends 0.2–0.3 mm gaps while the
+  more detailed mouse-bite guide recommends 0.35–0.4 mm (minimum 0.3 mm);
+  this policy explicitly follows the latter. Confirm the panel with JLCPCB's
+  engineering review when ordering rather than treating DRC as vendor approval.
+- The panel inherits the backplane's 0.20 mm minimum copper connection width.
+  The carrier leaves this check disabled (minimum 0.0 mm). Its In1/In2 GND
+  zones contain 0.1651–0.1871 mm necks: widths of copper bridges, not copper
+  thickness or clearances. Check the affected ground-current paths before
+  widening the geometry or adopting a narrowly scoped alternate policy.
+  Recommended next step: enable the same 0.20 mm connection check on the
+  carrier, then address the eight findings per carrier (four on each inner
+  layer) in the source layout. These zones already use solid pad connections
+  and 0.25 mm minimum fill thickness, so this is not a thermal-spoke setting
+  to turn up. Adjust nearby obstacles/connection geometry or remove unnecessary
+  copper tongues only after checking alternate ground paths. Refill and verify
+  connectivity before rebuilding. The common 0.20 mm policy is a design margin,
+  not a claim that JLCPCB cannot fabricate any narrower copper.
 - Vendor artwork still needs placement/registration as described above.
 - Run both complete mixed-panel vendor branches and compare their CAM/assembly
   geometry once those gates pass. No fabrication-ready mixed-panel package has

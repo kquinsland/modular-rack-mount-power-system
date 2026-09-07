@@ -1,14 +1,24 @@
 """Project-specific mixed-design panel geometry, executed in the pinned KiKit image."""
 
 from itertools import pairwise
+import json
 from pathlib import Path
 
 import pcbnew
 from kikit.common import fromDegrees
 from kikit.defs import Layer
 from kikit.panelize import Origin, Panel
+from kikit.sexpr import parseSexprS
 from kikit.units import mm
 from shapely.geometry import LineString, box
+
+from pcb_panel_policy import (
+    bake_visible_reference,
+    namespace_component_classes,
+    namespace_reference_conditions,
+)
+from pcb_panel_mousebites import MOUSE_BITE_RULE, validate_mouse_bites
+from validate_pcb_release import write_json
 
 if not hasattr(pcbnew.SwigPyIterator, "next"):
     pcbnew.SwigPyIterator.next = pcbnew.SwigPyIterator.__next__
@@ -44,6 +54,7 @@ def add_board(
     prefix: str,
     rotation_degrees: float = 0,
 ) -> object:
+    first_rule = len(panel.customDRCRules)
     panel.appendBoard(
         board_path,
         pcbnew.VECTOR2I(x, y),
@@ -54,8 +65,29 @@ def add_board(
         refRenamer=lambda _index, ref: f"{prefix}-{ref}",
         inheritDrc=False,
         bakeText=True,
-        bakeRef=True,
+        bakeRef=False,
     )
+    footprints = [
+        fp
+        for fp in panel.board.GetFootprints()
+        if fp.GetReference().startswith(prefix + "-")
+    ]
+    references = {fp.GetReference()[len(prefix) + 1 :] for fp in footprints}
+    for fp in footprints:
+        bake_visible_reference(
+            panel.board,
+            fp.Reference(),
+            fp.GetReference()[len(prefix) + 1 :],
+            pcbnew.PCB_TEXT,
+        )
+    # KiKit namespaces NetName comparisons, but leaves Reference comparisons
+    # untouched. Fix the rules of this instance only, not those already appended.
+    for rule in panel.customDRCRules[first_rule:]:
+        for clause in rule.items[2:]:
+            if clause.items[0].value == "condition":
+                clause.items[1].value = namespace_reference_conditions(
+                    clause.items[1].value, prefix, references
+                )
     return panel.substrates[-1]
 
 
@@ -197,12 +229,41 @@ def build_panel(
             )
         )
 
+    before_mouse_bites = {fp.m_Uuid.AsString() for fp in panel.board.GetFootprints()}
     panel.makeMouseBites(
         tab_cuts,
         diameter=MOUSE_BITE_DIAMETER,
         spacing=MOUSE_BITE_PITCH,
         offset=int(-0.1 * mm),
     )
+    mouse_bites = []
+    for fp in panel.board.GetFootprints():
+        if fp.m_Uuid.AsString() in before_mouse_bites:
+            continue
+        pads = list(fp.Pads())
+        if len(pads) != 1:
+            raise ValueError(
+                f"Mouse bite {fp.GetReference()} must contain exactly one pad"
+            )
+        pad = pads[0]
+        mouse_bites.append(
+            {
+                "reference": fp.GetReference(),
+                "x": pad.GetPosition().x / mm,
+                "y": pad.GetPosition().y / mm,
+                "drill_x": pad.GetDrillSize().x / mm,
+                "drill_y": pad.GetDrillSize().y / mm,
+                "npth": pad.GetAttribute() == pcbnew.PAD_ATTRIB_NPTH,
+                "net": pad.GetNetname(),
+            }
+        )
+    mouse_bite_info = validate_mouse_bites(mouse_bites, expected_sets=len(tab_cuts))
+    if mouse_bite_info["mouse_bite_hole_count"] != EXPECTED_MOUSE_BITES:
+        raise ValueError("Mouse-bite hole count changed; review the panel geometry")
+    # Later rules take precedence. This overrides only the hole-to-hole limit
+    # between generated NPTH mouse bites, never ordinary holes or a mixed pair.
+    # Copper clearance and component courtyards remain fully checked.
+    panel.customDRCRules.append(parseSexprS(MOUSE_BITE_RULE))
 
     # KiKit's JLCPCB exporter plots relative to the auxiliary origin, while its
     # PCBWay exporter uses the absolute board origin. Normalize both to (0, 0)
@@ -255,6 +316,31 @@ def build_panel(
 
     panel.save(reconstructArcs=True, refillAllZones=False, edgeWidth=int(0.1 * mm))
 
+    # This is disposable generated project metadata, never a source project.
+    # KiKit's inheritDesignSettings only transfers board design settings; KiCad
+    # stores component-class assignments separately at the project top level.
+    panel_project_path = panel_path.with_suffix(".kicad_pro")
+    panel_project = json.loads(panel_project_path.read_text())
+    assignments = []
+    for source, prefixes in (
+        (carrier_path, [f"CARRIER{i}" for i in range(1, 7)]),
+        (backplane_path, ["BACKPLANE1"]),
+    ):
+        source_project = json.loads(source.with_suffix(".kicad_pro").read_text())
+        for prefix in prefixes:
+            references = {
+                fp.GetReference()[len(prefix) + 1 :]
+                for fp in panel.board.GetFootprints()
+                if fp.GetReference().startswith(prefix + "-")
+            }
+            assignments.extend(
+                namespace_component_classes(source_project, prefix, references)
+            )
+    panel_project.setdefault("component_class_settings", {})["assignments"] = (
+        assignments
+    )
+    write_json(panel_project_path, panel_project)
+
     if panel.hasErrors():
         messages = "\n".join(
             f"at ({position.x / mm:.3f}, {position.y / mm:.3f}) mm: {message}"
@@ -284,10 +370,8 @@ def build_panel(
         "coordinate_margin_mm": COORDINATE_MARGIN / mm,
         "minimum_routed_gap_mm": BOARD_GAP / mm,
         "tab_width_mm": TAB_WIDTH / mm,
-        "mouse_bite_diameter_mm": MOUSE_BITE_DIAMETER / mm,
-        "mouse_bite_pitch_mm": MOUSE_BITE_PITCH / mm,
-        "mouse_bite_edge_spacing_mm": (MOUSE_BITE_PITCH - MOUSE_BITE_DIAMETER) / mm,
-        "mouse_bite_hole_count": EXPECTED_MOUSE_BITES,
+        **mouse_bite_info,
+        "mouse_bite_requested_pitch_mm": MOUSE_BITE_PITCH / mm,
         "tooling_hole_count": 4,
         "fiducial_count": 3,
         "carrier_source_revision": build_git_hash,
