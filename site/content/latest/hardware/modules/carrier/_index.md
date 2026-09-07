@@ -8,10 +8,14 @@ One carrier mates with each backplane slot and hosts one user-installed power
 output module. It receives unswitched DC plus CAN-FD from the backplane and
 generates its own 3.3 V housekeeping rail.
 
-![Placeholder for the carrier PCB render](carrier.png)
+![Carrier PCB, top side](carrier.webp)
 
-_Placeholder illustration. Release tooling will replace this image with the
-current PCB render._
+![Carrier PCB, bottom side](carrier-bottom.webp)
+
+_Generated from the committed PCB. Render provenance is recorded in
+[renders.json](renders.json); a preview does not establish fabrication readiness._
+
+[Interactive assembly BOM](/assembly/carrier-ibom.html)
 
 ## Responsibilities
 

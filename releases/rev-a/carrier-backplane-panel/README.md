@@ -8,7 +8,7 @@ The top rail is marked `PANEL 35e47c0` on F.SilkS.
 - `jlcpcb/`: JLCPCB upload bundle, separate files, and order notes.
 - `pcbway/`: PCBWay upload bundle, separate files, and order notes.
 - `modular-rack-power-carrier6-backplane1-rev-a.kicad_pcb`: generated panel source for CAM review.
-- `modular-rack-power-carrier6-backplane1-rev-a-top.png`: top-side PNG render for visual review.
+- `modular-rack-power-carrier6-backplane1-rev-a-top.webp`: top-side WebP render for visual review.
 - `panel-info.json`: dimensions, construction, source revisions, and counts.
 - `validation.json`: generated DRC and Gerber archive checks.
 

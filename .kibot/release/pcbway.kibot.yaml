@@ -1,0 +1,33 @@
+kibot:
+  version: 1
+import:
+  - file: PCBWay
+    outputs: [_PCBWay_gerbers, _PCBWay_drill]
+  - file: cam.kibot.yaml
+    outputs: [electrical_netlist]
+outputs:
+  - name: gerbers
+    type: gerber
+    extends: _PCBWay_gerbers
+    disable_run_by_default: true
+    dir: cam
+    options:
+      output: '%i.%x'
+      inner_extension_pattern: '.g%n'
+      use_aux_axis_as_origin: true
+      subtract_mask_from_silk: true
+      create_gerber_job_file: true
+      gerber_job_file: stackup.gbrjob
+      plot_footprint_values: false
+    layers: [F.Cu, In1.Cu, In2.Cu, B.Cu, F.Mask, B.Mask, F.Silkscreen, B.Silkscreen, F.Paste, B.Paste, Edge.Cuts]
+  - name: drills
+    type: excellon
+    extends: _PCBWay_drill
+    disable_run_by_default: true
+    dir: cam
+    options:
+      output: '%i.%x'
+      pth_id: PTH
+      npth_id: NPTH
+      metric_units: true
+      use_aux_axis_as_origin: true

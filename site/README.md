@@ -32,6 +32,14 @@ Store renders and other page-specific files beside the owning Markdown file and
 reference them with relative paths. Reserve `static/` for assets shared across
 multiple pages.
 
+PCB images are generated with `mise run docs:pcb-renders` and stored as WebP
+beside each board's Markdown. Carrier and backplane bundles contain top and
+bottom views plus `renders.json`; the hardware section owns `panel.webp`.
+`mise run docs:pcb-iboms` also publishes interactive assembly HTML under
+`static/assembly/` (Hugo otherwise interprets HTML as content). Preview
+images do not imply that the PCB passed release checks. See the
+[release tooling guide](../.kibot/release/README.md) for the validated build.
+
 ## Documentation versions
 
 `content/latest/` is the moving technical reference. Worklogs live separately

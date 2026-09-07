@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#MISE description="Build the gated KiBot/KiKit dual-vendor panel release"
+set -euo pipefail
+cd "${MISE_PROJECT_ROOT:?}"
+exec python scripts/build_pcb_release.py release "$@"

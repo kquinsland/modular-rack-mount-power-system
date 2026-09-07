@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#MISE description="Run the pinned KiBot ERC/DRC release gates on committed PCB sources"
+set -euo pipefail
+cd "${MISE_PROJECT_ROOT:?}"
+exec python scripts/build_pcb_release.py check "$@"

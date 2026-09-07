@@ -1,7 +1,13 @@
 # PCB release pipeline refactor
 
-Status: proposed; this document does not describe the currently implemented
-release pipeline.
+Status: initial implementation available. The executable entry point is
+`scripts/build_pcb_release.py`; commands and current limitations are documented
+in the [release tooling guide](../.kibot/release/README.md). Full mixed-panel
+release validation remains gated on the carrier DRC errors, generated-panel
+rule/refill reconciliation, and vendor artwork registration. Preview rendering
+and both vendors' standalone CAM exports have been exercised against the real
+boards. See the release tooling guide's acceptance status for the outstanding
+panel-integration findings; no fabrication-ready mixed-panel release is claimed.
 
 This refactor moves PCB release generation toward a KiBot-centered pipeline,
 while retaining custom code where the release has repository-specific needs.
@@ -10,7 +16,7 @@ the Hugo site. All committed raster images produced by this pipeline will be
 WebP files; temporary PNGs or other intermediate formats stay in the build
 workspace.
 
-The current implementation remains documented in
+The original panel geometry and historical artifacts remain documented in
 [`carrier-backplane-panel.md`](carrier-backplane-panel.md) and
 [`scripts/README.md`](../scripts/README.md).
 
@@ -26,7 +32,8 @@ The current implementation remains documented in
 - Use KiBot for standard KiCad checks and exports, KiKit for panel geometry,
   and small, testable scripts for repository-specific policy.
 - Make vendor-specific silkscreen content explicit and verifiable.
-- Preserve deterministic output names, manifests, timestamps, and archives.
+- Preserve stable output names, provenance manifests, and canonical CAM/ZIP
+  timestamps. Ray-traced image bytes can vary between runs.
 
 This proposal does not change board geometry, design rules, fabrication
 capabilities, or component selection. It also does not require vendor proof
@@ -65,9 +72,9 @@ flowchart TD
 | Area | Proposed owner | Responsibility |
 | --- | --- | --- |
 | Tool versions and entry points | `mise` | Pin and invoke Python/uv, KiCad, KiBot, KiKit, and documentation tools. |
-| Standard board checks and exports | KiBot and KiCad CLI | ERC, DRC, schematic/PCB parity, Gerbers, drills, IPC-D-356, BOM, placement, plotting, and source-board renders. |
+| Standard board checks and exports | KiBot and KiCad CLI | KiBot runs checks and CAM/assembly exports; KiCad CLI supplies source-board 3D renders and an independent BOM check. |
 | Panel construction | KiKit plus a project panel module | Mixed-design placement, rotations, tabs, rails, tooling holes, fiducials, reference/net prefixes, and panel text. |
-| Vendor variants | KiBot configurations and filters | Select vendor-only artwork, format vendor BOM/CPL output, and generate vendor fabrication files. |
+| Vendor variants | Container worker and KiBot configurations | Filter tagged padless artwork on disposable panel copies, then export with vendor templates. |
 | Release coordination | Thin Python orchestrator | Resolve the revision, create the isolated workspace, order phases, stop on failures, and publish atomically. |
 | Image normalization | PEP 723 Python tool | Convert temporary renderer output to deterministic WebP and verify image properties. |
 | Release policy | Python validator | Check file sets, references, geometry, vendor artwork, manifests, hashes, and ZIP contents. |
@@ -78,17 +85,16 @@ multiple boards, tools, or vendor packages. Panel geometry remains custom
 because the release combines different board designs in a fixed physical
 arrangement.
 
-Possible file boundaries are:
+Implemented file boundaries are:
 
 - `scripts/build_pcb_release.py`: release orchestration only;
-- `hardware/production/kibot/common.kibot.yaml`: shared checks and plots;
-- `hardware/production/kibot/jlcpcb.kibot.yaml`: JLCPCB output and filters;
-- `hardware/production/kibot/pcbway.kibot.yaml`: PCBWay output and filters;
+- `.kibot/release/`: checks, normalized BOM/CPL, proofs, and vendor CAM configs;
+- `scripts/pcb_release_worker.py`: container operations and board-only artwork filtering;
 - `scripts/panel_layout.py`: the reusable KiKit panel callback/module;
 - `scripts/convert_pcb_render.py`: the PEP 723 WebP converter; and
 - `scripts/validate_pcb_release.py`: repository release policy.
 
-These names are illustrative. The important constraint is that panel layout,
+The important constraint is that panel layout,
 image conversion, validation, and orchestration remain independently testable.
 
 ## Ordered release phases
@@ -96,8 +102,9 @@ image conversion, validation, and orchestration remain independently testable.
 ### 1. Select the source revision
 
 Resolve `HEAD` or an explicit release commit to a full Git object ID. Record
-its short hash and commit date. Reject a dirty source when the requested
-revision is meant to represent the working tree.
+its short hash and UTC commit date. Always archive the selected commit;
+working-tree PCB changes are never implicit build inputs. Snapshot the running
+pipeline scripts/configuration once and record their hashes as tooling inputs.
 
 ### 2. Create an isolated build workspace
 
@@ -123,10 +130,10 @@ failure stops both vendor branches.
 Generate normalized component data and render the top and bottom of each PCB.
 This is the first image checkpoint and produces the most useful Hugo images:
 
-- `carrier-rev-a-top.webp`;
-- `carrier-rev-a-bottom.webp`;
-- `backplane-prototype-rev-a-top.webp`; and
-- `backplane-prototype-rev-a-bottom.webp`.
+- `site/content/latest/hardware/modules/carrier/carrier.webp`;
+- `site/content/latest/hardware/modules/carrier/carrier-bottom.webp`;
+- `site/content/latest/hardware/backplane/backplane.webp`; and
+- `site/content/latest/hardware/backplane/backplane-bottom.webp`.
 
 The renderer may use a temporary format internally. The publishing boundary
 accepts only validated WebP files.
@@ -140,7 +147,7 @@ origin. Do not apply vendor-specific silkscreen filtering yet.
 ### 7. Validate and render the common panel
 
 Run panel DRC and structural checks, then render an overview such as
-`carrier6-backplane1-rev-a-top.webp`. This second image checkpoint is useful
+`site/content/latest/hardware/panel.webp`. This second image checkpoint is useful
 for both release review and the Hugo site.
 
 ### 8. Fork vendor variants
@@ -153,14 +160,16 @@ Each vendor branch starts from the checked common panel:
   logo.
 
 The conditional artwork should be represented by uniquely identifiable,
-padless board footprints. KiBot filters can then select the intended content
-without editing arbitrary graphic coordinates.
+padless board footprints with `ReleaseVendor` and `ReleaseArtwork` fields.
+The container worker selects the intended content before KiBot exports it.
+Missing required artwork causes the vendor branch to fail.
 
 ### 9. Render vendor proofs
 
-Render the final plotted silkscreen state after vendor filters are applied.
-Examples are `jlcpcb-silkscreen-proof.webp` and
-`pcbway-silkscreen-proof.webp`. These files belong in the release review
+Render both sides of the final filtered PCB after vendor filters are applied.
+Examples are `jlcpcb-top.webp` and `pcbway-bottom.webp`. These PcbDraw views are
+artwork proofs, not simulations of Gerber solder-mask subtraction. Inspect the
+actual plotted silk in GerbView too. These files belong in the release review
 directory and manifest, not in the fabricator upload ZIP.
 
 The proofs should make it easy to verify that exactly one vendor's artwork is
@@ -170,7 +179,7 @@ job-number or barcode target was accidentally sent to the other vendor.
 ### 10. Generate and validate manufacturing outputs
 
 Generate Gerbers, drills, IPC-D-356, BOM, and placement files. Validate layer
-sets, design/reference counts, positive coordinates, board/panel bounds,
+sets, design/reference counts, the common coordinate origin, board/panel bounds,
 vendor column names, DNP policy, and the absence of documentation images from
 upload archives.
 
@@ -263,8 +272,10 @@ to enforce that no generated `.png`, `.jpg`, or `.jpeg` file is committed.
 Stable filenames are preferable for Hugo URLs. The exact Git revision,
 resolved identity strings, renderer version, image dimensions, and SHA-256
 belong in `renders.json` rather than in every filename. During cutover, replace
-the existing committed PNGs and update all Markdown/Hugo references in the
-same commit; until then, the existing PNG documentation remains authoritative.
+the existing committed PNGs and update all Markdown/Hugo references together.
+That conversion is included in the initial implementation. Hugo publication
+updates only named generated files inside each content bundle, preserving its
+Markdown and other assets.
 
 ## Proposed artifact layout
 
@@ -279,30 +290,45 @@ build/pcb-release/
       BOM.csv
       positions.csv
     proofs/
-      jlcpcb-silkscreen-proof.webp
+      jlcpcb-top.webp
+      jlcpcb-bottom.webp
   pcbway/
     upload/
       gerbers.zip
       BOM.csv
       positions.csv
     proofs/
-      pcbway-silkscreen-proof.webp
+      pcbway-top.webp
+      pcbway-bottom.webp
   manifest.json
 
-docs/assets/generated/pcbs/
-  carrier-rev-a-top.webp
-  carrier-rev-a-bottom.webp
-  backplane-prototype-rev-a-top.webp
-  backplane-prototype-rev-a-bottom.webp
-  carrier6-backplane1-rev-a-top.webp
+site/content/latest/hardware/
+  _index.md
+  panel.webp
   renders.json
+  backplane/
+    index.md
+    backplane.webp
+    backplane-bottom.webp
+    renders.json
+  modules/carrier/
+    _index.md
+    carrier.webp
+    carrier-bottom.webp
+    renders.json
 ```
 
 The release validator should explicitly compare each vendor upload ZIP against
 an allowlist. Proofs, manifests, logs, renders, and source KiCad files remain
 available for review without being uploaded to the fabricator.
 
-## Migration plan
+## Migration status
+
+Steps 1–6 and 8 below have an initial implementation. The old production
+exporter remains as a comparison path. Step 7 has passed standalone backplane
+CAM generation and both boards' BOM/CPL checks; full mixed-panel CAM equivalence
+and step 9 remain pending the source/artwork gates. Preview renders are always
+labeled unchecked and cannot produce fabrication archives.
 
 1. Extract the current mixed-design panel geometry into a tested KiKit module
    without changing the manufactured result.
@@ -332,9 +358,11 @@ available for review without being uploaded to the fabricator.
 - No generated PNG/JPEG is committed or included in a published release.
 - Proof images are absent from fabricator upload ZIPs.
 - BOM, placement, panel references, and design counts agree.
-- Repeating a release for the same commit and tool versions yields identical
-  archives and manifests.
-- Publication is atomic and preserves the previous release on failure.
+- Repeating CAM packaging for the same input files yields identical archives.
+  Full mixed-panel CAM reproducibility still needs acceptance testing; upstream
+  ray-traced images can vary and are fingerprinted individually.
+- Publication uses atomic file/directory renames and rolls back on I/O failure;
+  it is not crash-atomic across multiple content bundles.
 
 ## Mermaid validation
 
