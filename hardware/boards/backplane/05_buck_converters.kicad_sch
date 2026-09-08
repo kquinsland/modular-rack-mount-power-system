@@ -1759,9 +1759,9 @@
 		)
 		(uuid "0ac74439-c4ad-5a28-9e7b-6e486351e7ef")
 	)
-	(text "NOTES:\n\n  - Both regulators are LM5164DDAR at approximately 300 kHz with 100 µH inductors.\n  - The +12 V rail follows TI's 12 V / 1 A Type-3 network except for the qualified 100 µH inductor.\n  - +3V3 reuses carrier's schematic.\n  - Input ceramics are rated for 100 V.\n  - Each rail uses two 22 µF / 25 V output capacitors.\n\nTODO:\n\n  - [ ] Verify VIN ringing at each regulator, output ripple, PGOOD inductor temperature, and fan startup/stall.\n\nLAYOUT:\n\n  - Place input ceramics directly at each regulator's VIN/GND pins with a minimum-area loop.\n  - Place L1/L2 close to SW and minimize the SW copper area.\n  - Place C4/C14 at L1's output and C10/C11 at L2's output; return each pair directly to regulator GND/EP.\n  - Keep feedback and ripple-injection parts close to FB and away from SW."
+	(text "NOTES:\n\n  - Both regulators are LM5164DDAR at approximately 300 kHz with 100 µH inductors.\n  - The +12 V Type-3 network is retuned for 21.6-55 V at U3 VIN (24-50 V nominal, +/-10%).\n  - R9 + R25 + R26 = 330 kohm; C12 = 2.2 nF; C13 = 56 pF. Reuses existing BOM parts.\n  - Verify FB injection, +12 V accuracy and load transients across input voltage and temperature.\n  - +3V3 reuses carrier's schematic.\n  - Input ceramics are rated for 100 V.\n  - Each rail uses two 22 µF / 25 V output capacitors.\n\nTODO:\n\n  - [ ] Verify VIN ringing at each regulator, output ripple, PGOOD inductor temperature, and fan startup/stall.\n\nLAYOUT:\n\n  - Place input ceramics directly at each regulator's VIN/GND pins with a minimum-area loop.\n  - Place L1/L2 close to SW and minimize the SW copper area.\n  - Place C4/C14 at L1's output and C10/C11 at L2's output; return each pair directly to regulator GND/EP.\n  - Keep feedback and ripple-injection parts close to FB and away from SW."
 		(exclude_from_sim no)
-		(at 14.986 51.816 0)
+		(at 14.986 55.88 0)
 		(effects
 			(font
 				(size 1.143 1.143)
@@ -1971,6 +1971,36 @@
 	(no_connect
 		(at 83.82 173.99)
 		(uuid "40c6d395-f868-4d19-9e09-7b4769afffda")
+	)
+	(wire
+		(pts
+			(xy 161.29 129.54) (xy 176.53 129.54)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8f71ced0-ed2d-46c0-b169-ec8e45b0c59f")
+	)
+	(wire
+		(pts
+			(xy 176.53 105.41) (xy 176.53 107.95)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "27156e8e-5108-4097-bffa-577562eb6230")
+	)
+	(wire
+		(pts
+			(xy 176.53 115.57) (xy 176.53 118.11)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a0aeaf79-e981-4f86-beb7-7f0c46d0acdb")
 	)
 	(wire
 		(pts
@@ -2184,7 +2214,7 @@
 	)
 	(wire
 		(pts
-			(xy 161.29 109.22) (xy 176.53 109.22)
+			(xy 161.29 109.22) (xy 161.29 129.54)
 		)
 		(stroke
 			(width 0)
@@ -2654,7 +2684,7 @@
 	)
 	(wire
 		(pts
-			(xy 176.53 109.22) (xy 176.53 105.41)
+			(xy 176.53 129.54) (xy 176.53 125.73)
 		)
 		(stroke
 			(width 0)
@@ -2793,7 +2823,7 @@
 		(uuid "4df4cb9c-c523-4dad-8b8a-475e91c509af")
 	)
 	(label "SW_12V"
-		(at 176.53 109.22 0)
+		(at 176.53 129.54 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3295,7 +3325,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "3.3nF 50V X7R"
+		(property "Value" "2.2nF 50V"
 			(at 181.102 92.964 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3339,7 +3369,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603B332K500NT"
+		(property "MPN" "0603B222K500NT"
 			(at 176.0633 90.98 0)
 			(hide yes)
 			(show_name no)
@@ -3361,7 +3391,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C92203"
+		(property "LCSC" "C1604"
 			(at 176.0633 90.98 0)
 			(hide yes)
 			(show_name no)
@@ -7260,7 +7290,7 @@
 				)
 			)
 		)
-		(property "Value" "453k 1%"
+		(property "Value" "110k 1%"
 			(at 185.674 103.378 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7303,7 +7333,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF4533T5E"
+		(property "MPN" "0603WAF1103T5E"
 			(at 176.7591 102.13 0)
 			(hide yes)
 			(show_name no)
@@ -7325,7 +7355,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25818"
+		(property "LCSC" "C25805"
 			(at 176.7591 102.13 0)
 			(hide yes)
 			(show_name no)
@@ -7827,6 +7857,252 @@
 			(project "backplane"
 				(path "/348cc909-6345-4013-9bef-98714057a65b/9f6d14f1-eef5-43ec-a5a0-8ac65326e3cb"
 					(reference "#PWR0111")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 176.53 111.76 180)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "c15655f1-deca-49a4-b010-f6b67747ddda")
+		(property "Reference" "R25"
+			(at 181.102 109.982 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "110k 1%"
+			(at 185.674 113.538 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 179.6685 112.29 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 176.7591 112.29 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 176.7591 112.29 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF1103T5E"
+			(at 176.7591 112.29 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL (Uniroyal Elec)"
+			(at 176.7591 112.29 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C25805"
+			(at 176.7591 112.29 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Tolerance" "1%"
+			(at 176.7591 112.29 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "1d6e27b9-3a3a-431f-be1b-c630baf9f6a9")
+		)
+		(pin "2"
+			(uuid "4e70cc43-e6f2-4b55-8beb-c0db39ef9c10")
+		)
+		(instances
+			(project "backplane"
+				(path "/348cc909-6345-4013-9bef-98714057a65b/9f6d14f1-eef5-43ec-a5a0-8ac65326e3cb"
+					(reference "R25")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 176.53 121.92 180)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "4b2fb88f-4e2a-4703-86a7-501e94d05281")
+		(property "Reference" "R26"
+			(at 181.102 120.142 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "110k 1%"
+			(at 185.674 123.698 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 179.6685 122.45 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 176.7591 122.45 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 176.7591 122.45 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF1103T5E"
+			(at 176.7591 122.45 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL (Uniroyal Elec)"
+			(at 176.7591 122.45 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C25805"
+			(at 176.7591 122.45 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Tolerance" "1%"
+			(at 176.7591 122.45 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "8fc7ab45-79d7-49d1-8578-83b39f05fe99")
+		)
+		(pin "2"
+			(uuid "1e8a6f1d-4809-4cb4-8fb1-7965d99c0f44")
+		)
+		(instances
+			(project "backplane"
+				(path "/348cc909-6345-4013-9bef-98714057a65b/9f6d14f1-eef5-43ec-a5a0-8ac65326e3cb"
+					(reference "R26")
 					(unit 1)
 				)
 			)
