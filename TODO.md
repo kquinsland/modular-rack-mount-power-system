@@ -2,12 +2,12 @@
 
 - Fix production issues
   - [ ] Backplane:
-    - [ ] R10 pulls an STM32 input to 12 V. Fixed on schematic, but PCB needs to be updated.
+    - [X] R10 pulls an STM32 input to 12 V. Fixed on schematic, but PCB needs to be updated.
     - [ ] U5 needs better local VCC bypassing. C20 serves the VIO side; another nearby 100 nF at VCC/
     GND is advisable.
     - [ ] Fix/re-adjust the layout after new schematic changes for ripple injection network.
   - [ ] Carrier:
-    - [ ] C17 is approximately 12 mm from LED1. Move it beside the LED’s supply pins.
+    - [X] C17 is approximately 12 mm from LED1. Move it beside the LED’s supply pins.
   - [ ] BOTH:
     - [ ] INA current sens traces need to be isolated from other pours!
     - [ ] Import the PCBWay logo and `waywayway` placeholder into the silkscreen layer for the backplane and carrier, get working with KiBot export pipe
