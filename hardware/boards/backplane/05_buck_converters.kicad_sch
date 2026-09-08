@@ -2534,16 +2534,6 @@
 	)
 	(wire
 		(pts
-			(xy 88.9 87.63) (xy 109.22 87.63)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a8716d3a-9e96-4d1d-ab36-41ef5f2c0e44")
-	)
-	(wire
-		(pts
 			(xy 24.13 160.02) (xy 24.13 163.83)
 		)
 		(stroke
@@ -7776,6 +7766,67 @@
 			(project "backplane"
 				(path "/348cc909-6345-4013-9bef-98714057a65b/9f6d14f1-eef5-43ec-a5a0-8ac65326e3cb"
 					(reference "C13")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3V3")
+		(at 88.9 87.63 0)
+		(unit 1)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "c9b71b41-b2d7-4ad0-b51e-940ca6383803")
+		(property "Reference" "#PWR0111"
+			(at 88.9 91.44 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 88.9 84.074 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 88.9 87.63 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 88.9 87.63 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3V3\""
+			(at 88.9 87.63 0)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "backplane"
+				(path "/348cc909-6345-4013-9bef-98714057a65b/9f6d14f1-eef5-43ec-a5a0-8ac65326e3cb"
+					(reference "#PWR0111")
 					(unit 1)
 				)
 			)
