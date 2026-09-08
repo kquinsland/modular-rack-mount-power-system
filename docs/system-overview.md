@@ -7,7 +7,7 @@ transceiver; there is no backplane-to-carrier I2C bus.
 
 ```mermaid
 flowchart LR
-    supply[24 V prototype supply] --> input[J5 DC input]
+    supply["24-48 V nominal system; 24 V with current carriers"] --> input[J5 DC input]
     input --> shunt[1 mOhm shunt]
     shunt --> bus[VIN_BUS high-current distribution]
     bus --> slots[Six carrier slots]
@@ -56,13 +56,21 @@ backpack control boundary are superseded.
 
 ## Power Targets
 
+The backplane is designed for a **24–48 V nominal system**. The current SW3538
+carrier limits the first revision to **24 V nominal, 30 V maximum input**;
+48 V operation requires a second-generation carrier with a suitably rated
+module and protection. All slots receive the same unswitched bus voltage, so
+do not mix current carriers onto a 48 V-powered backplane. No nominal input
+below 24 V is specified; supply-tolerance and startup margins still require
+qualification at the carrier connector.
+
 The first population targets a nominal 24 V input and no more than 100 W output
 per slot, or approximately 30 A total backplane input current for six loaded
 slots. The board measures aggregate input current rather than switching or
 limiting individual slots.
 
-The longer-term hardware goal is approximately 48--50 V nominal input for up to
-240 W per slot. That goal is not a released rating until the raw-input
+The longer-term hardware goal is 48 V nominal input with a new carrier revision
+for up to 240 W per slot. That goal is not a released rating until the raw-input
 protection, shunt/current path, connector and copper temperatures, transients,
 regulators, carrier hot-swap path, and full-system first-article behavior have
 been validated.

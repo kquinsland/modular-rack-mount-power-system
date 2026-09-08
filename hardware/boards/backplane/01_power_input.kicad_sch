@@ -2375,7 +2375,18 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "NOTES:\n  - RSH1 is 1 mΩ: 30 A produces 30 mV and 0.9 W.\n  - Configure INA237 ADCRANGE=1 (±40.96 mV).\n\nLAYOUT:\n  - Route separate Kelvin sense traces from the resistor terminals to R11/R12; do not sample from the high-current pours.\n\nTODO:\r\n  - [ ] Verify aggregate current-sensor calibration on first articles."
+	(text "SYSTEM INPUT: 24-48 V nominal; all slots share the raw bus.\nCurrent SW3538 carrier: 24 V nominal / 30 V maximum.\n48 V requires a new carrier revision; do not fit current carriers on a 48 V bus.\nTODO: Specify upstream DC-rated fuse/breaker and fault-current limits;\nverify interruption, reverse-polarity prevention/protection and surge coordination.\nTODO: Qualify J8/RSH1/slot connectors and copper temperatures at the\n30 A target, worst ambient and enclosure airflow; include abnormal-load cases."
+		(exclude_from_sim no)
+		(at 90.17 63.5 0)
+		(effects
+			(font
+				(size 1.05 1.05)
+			)
+			(justify left bottom)
+		)
+		(uuid "82174f49-9358-462c-a766-9bf047006c37")
+	)
+	(text "NOTES:\n  - RSH1 is 1 mΩ: 30 A produces 30 mV and 0.9 W.\n  - Configure INA237 ADCRANGE=1 (±40.96 mV).\n\nLAYOUT:\n  - Route separate Kelvin sense traces from the resistor terminals to R11/R12; do not sample from the high-current pours.\n\nTODO:\n  - [ ] Verify aggregate current-sensor calibration on first articles."
 		(exclude_from_sim no)
 		(at 14.732 35.052 0)
 		(effects

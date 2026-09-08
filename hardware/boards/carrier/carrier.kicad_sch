@@ -4460,6 +4460,17 @@
 			(embedded_fonts no)
 		)
 	)
+	(text "CURRENT CARRIER INPUT: 24 V nominal, 30 V maximum.\nBackplane/system intent: 24-48 V nominal; 48 V requires a new carrier revision.\nTODO: Verify upstream fuse/current-limit and D1 surge coordination on the real harness.\nMeasure peaks at U2, U4 and MOD1; protect every device, not only the 85 V INA237.\nThe present TVS/OVLO does not enforce the 30 V input limit; enforce it at the source."
+		(exclude_from_sim no)
+		(at 100.33 58.42 0)
+		(effects
+			(font
+				(size 1.05 1.05)
+			)
+			(justify left bottom)
+		)
+		(uuid "00ff6d39-acbc-4db1-9763-d3f335f0432f")
+	)
 	(text "LOCAL 3.3 V HOUSEKEEPING BUCK"
 		(exclude_from_sim no)
 		(at 20.32 93.98 0)
@@ -4495,9 +4506,9 @@
 		)
 		(uuid "231e2050-8460-44bb-b955-0f1a66079306")
 	)
-	(text "LM5164 Type-3 ripple injection; nominal 3.3 V / ~300 kHz. Keep SW/BST/ripple loop compact during PCB layout.\nTODO: During bring-up, measure VIN ringing directly at U2 pin 2 using a short ground spring."
+	(text "LM5164 Type-3 ripple injection; nominal 3.3 V / ~300 kHz. Keep SW/BST/ripple loop compact during PCB layout.\nTODO: During bring-up, measure VIN ringing directly at U2 pin 2 using a short ground spring.\nTODO: Verify effective C3/C4 input and C8 output capacitance with DC bias, tolerance and temperature.\nTODO: Qualify U2/L1/capacitor temperatures and +3V3 transients with maximum MCU/CAN/LED load and worst enclosure airflow."
 		(exclude_from_sim no)
-		(at 20.32 99.06 0)
+		(at 20.32 103.124 0)
 		(effects
 			(font
 				(size 1.05 1.05)

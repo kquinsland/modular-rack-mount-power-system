@@ -12,6 +12,13 @@ The SW3538 datasheet defines the advertised maximum output as **140 W at 20 V ×
 
 The SW3538 is a synchronous **buck converter** with a recommended 5–36 V input range. With a 24 V DC supply, the input current will therefore be lower than 7 A.
 
+That IC range is not the system input specification: the backplane/system is
+designed for **24–48 V nominal**, while this carrier population is limited to
+**24 V nominal, 30 V maximum input**. A second-generation carrier and suitably
+rated module/protection are required for 48 V use. The lower-voltage IC test
+conditions and module observations below do not establish a below-24 V nominal
+backplane requirement or guarantee carrier startup at those voltages.
+
 For power-distribution design, a conservative allowance per module is:
 
 - **Input power:** approximately **160 W**

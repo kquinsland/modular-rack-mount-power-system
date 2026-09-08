@@ -28,6 +28,11 @@ _Generated from the committed PCB. Render provenance is recorded in
 - Support an externally powered DS18B20 temperature sensor.
 - Expose SWD for controller programming and debug.
 
+The backplane is designed for 24–48 V nominal input. The current SW3538 carrier
+limits the first population to 24 V nominal and 30 V maximum; a new carrier
+revision is required for 48 V operation. Do not fit current carriers to a 48 V
+bus. These design targets remain subject to first-article qualification.
+
 Each carrier slot has four electrical contacts: `VIN_BUS`, ground, CAN high,
 and CAN low. There is no backplane-to-carrier I²C bus and no per-slot logic
 supply.

@@ -36,13 +36,19 @@ architecture.
 
 | Property | Current target |
 | --- | --- |
+| System/backplane nominal input | 24–48 V DC |
 | Initial system input | Nominal 24 V DC |
+| Current SW3538 carrier input limit | 30 V maximum; a new carrier revision is required for 48 V |
 | Carrier slots | Six |
 | Initial USB-C policy ceiling | 20 V, 5 A, 100 W per port |
 | Working aggregate input budget | Approximately 30 A |
 | Inter-board communication | CAN-FD |
 | Backplane-local monitoring | INA237 over local I²C |
 | Cooling | Two independently switched 3-wire fans |
+
+There is no below-24 V nominal input specification. The current carrier is the
+first revision's voltage limit, not the intended limit of the backplane. Never
+fit a current-generation carrier to a backplane powered from 48 V.
 
 The design does not presently switch or limit each backplane slot. Slot power
 is present whenever the shared input bus is energized. Fault protection and

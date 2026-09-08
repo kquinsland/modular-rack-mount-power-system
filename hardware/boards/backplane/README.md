@@ -108,12 +108,22 @@ timer.
 
 ## Power assumptions
 
+The backplane is designed for a **24–48 V nominal system**, compatible with
+24 V and future 48 V carrier generations. The current SW3538 carrier is the
+limiting factor: **24 V nominal, 30 V maximum input**. A second-generation
+carrier with a suitably rated module and protection is required for 48 V use.
+Slot feeds are unswitched and do not provide voltage conversion; never connect
+a 48 V supply while any current-generation carrier is fitted. No nominal
+backplane voltage below 24 V is specified. Supply tolerance, harness drop,
+startup, fault protection, and thermal performance remain qualification items.
+
 The first population targets a nominal 24 V input and up to 100 W output per
 slot. Six fully loaded slots produce a working input budget of approximately
 30 A. `RSH1` is 1 mOhm, giving 30 mV and 0.9 W at 30 A; configure the INA237 for
 its narrow shunt range and route the sense pair as true Kelvin connections.
 
-The later design goal is approximately 48--50 V nominal and 240 W per slot.
+The later design goal is 48 V nominal with a new carrier revision and up to
+240 W per slot.
 That is a future characterization target, not a released rating, until the
 input-protection, current-path, thermal, transient, and first-article tests are
 complete.
