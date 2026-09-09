@@ -28,3 +28,8 @@ from BOM and position exports. The source is `PCBWay Logo PNG SVG Vector.svg`
 at the repository root. Copies and separate `WayWayWay` text are staged above
 the top-center of each individual board for later placement. The first
 prototype PCBWay submission is per project, not a combined panel.
+
+`mini-rack-power:PCBWay_Logo_15mm` is the same artwork scaled uniformly to
+15.000 × 4.204 mm. Both sizes remain available; the carrier and backplane
+now use the 15 mm version, preserving the placed centers, orientations and
+sides. The separate `WayWayWay` text is unchanged.
