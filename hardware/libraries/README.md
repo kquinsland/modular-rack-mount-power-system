@@ -19,3 +19,12 @@ Keep third-party vendor libraries out of this directory unless they are vendored
 
 The unused WT32-ETH01 submodule and library-table registrations were removed
 with the retired controller project.
+
+`mini-rack-power:PCBWay_Logo_25mm` is the supplied PCBWay SVG converted to
+filled front-silkscreen vector polygons, preserving the underline and letter
+openings. Visible artwork is 25.000 mm wide and approximately 7.007 mm high;
+the footprint origin is its center. It has no pads and is board-only, excluded
+from BOM and position exports. The source is `PCBWay Logo PNG SVG Vector.svg`
+at the repository root. Copies and separate `WayWayWay` text are staged above
+the top-center of each individual board for later placement. The first
+prototype PCBWay submission is per project, not a combined panel.
