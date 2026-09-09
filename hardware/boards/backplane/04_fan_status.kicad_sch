@@ -1641,9 +1641,9 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "NOTES:\n\n  - J9 and J11 support 3-wire fans only: \n      1 GND\n      2 independently switched +12 V\n      3 open-collector tach. \n\n  - Q1/Q2 and Q3/Q4 implement high-side supply PWM\n\n  - J12: External DS18B20 temp probe; with 4.7k pullup on data\n      1 GND\n      2 DQ\n      3 +3V3\n\nTODO:\n  - [ ] validate PWM, startup, stall, tach, and combined 12 V rail loading\n\n"
+	(text "NOTES:\n\n  - J9 and J11 support 3-wire fans only: \n      1 GND\n      2 independently switched +12 V\n      3 open-collector tach. \n\n  - Q1/Q2 and Q3/Q4 implement high-side supply PWM\n\n  - J12: External DS18B20 temp probe; with 4.7k pullup on data\n      1 GND\n      2 DQ\n      3 +3V3\n\nTODO:\n  - [ ] On assembled prototype, test paired Noctua fans: combined startup/stall within the 12 V / 1 A rail capability.\n    Verify intended supply-PWM frequency/duty, tach reliability and Q1/Q3/U3 temperatures.\n\n"
 		(exclude_from_sim no)
-		(at 19.812 50.292 0)
+		(at 19.812 52.197 0)
 		(effects
 			(font
 				(size 1.143 1.143)
