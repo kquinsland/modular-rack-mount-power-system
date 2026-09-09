@@ -3,7 +3,7 @@
 - Fix production issues
   - [ ] Backplane:
     - [X] R10 pulls an STM32 input to 12 V. Fixed on schematic, but PCB needs to be updated.
-    - [ ] U5 needs better local VCC bypassing. C20 serves the VIO side; another nearby 100 nF at VCC/
+    - [X] U5 needs better local VCC bypassing. C20 serves the VIO side; another nearby 100 nF at VCC/
     GND is advisable.
     - [X] Fix/re-adjust the layout after new schematic changes for ripple injection network.
   - [ ] Carrier:
