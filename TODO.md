@@ -5,7 +5,7 @@
     - [X] R10 pulls an STM32 input to 12 V. Fixed on schematic, but PCB needs to be updated.
     - [ ] U5 needs better local VCC bypassing. C20 serves the VIO side; another nearby 100 nF at VCC/
     GND is advisable.
-    - [ ] Fix/re-adjust the layout after new schematic changes for ripple injection network.
+    - [X] Fix/re-adjust the layout after new schematic changes for ripple injection network.
   - [ ] Carrier:
     - [X] C17 is approximately 12 mm from LED1. Move it beside the LED’s supply pins.
   - [ ] BOTH:
