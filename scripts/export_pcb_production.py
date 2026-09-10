@@ -143,9 +143,17 @@ def required_cam_files(config: BoardConfig) -> set[str]:
     return {f"{config.stem}-{suffix}" for suffix in CAM_FILE_SUFFIXES}
 
 
-def run(*args: str, cwd: Path = ROOT) -> None:
+def run(*args: str, cwd: Path = ROOT, log: Path | None = None) -> None:
     print("+", " ".join(args), flush=True)
-    subprocess.run(args, cwd=cwd, check=True)
+    if log is None:
+        subprocess.run(args, cwd=cwd, check=True)
+    else:
+        result = subprocess.run(
+            args, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True
+        )
+        log.write_text(result.stdout, encoding="utf-8")
+        print(result.stdout, end="", flush=True)
+        result.check_returncode()
 
 
 def git_output(*args: str) -> str:
@@ -475,16 +483,21 @@ def assembly_counts(bom_rows: list[dict[str, str]], footprints: dict) -> dict:
     }
 
 
-def export_assembly_report(config: BoardConfig, bom: Path, destination: Path) -> dict:
-    # Use KiCad's read-only board API; no editor or network lookup is required.
+def pcbnew_bindings():
+    """Load KiCad's read-only board API without its enum startup assertions."""
     try:
         import wx
         wx.DisableAsserts()  # KiCad 10 enum registration assertions; see power tool.
         import pcbnew
     except ImportError as error:
-        raise RuntimeError("Assembly report requires KiCad's Python bindings (pcbnew)") from error
+        raise RuntimeError("Production export requires KiCad's Python bindings (pcbnew)") from error
     if not hasattr(pcbnew.SwigPyIterator, "next"):
         pcbnew.SwigPyIterator.next = pcbnew.SwigPyIterator.__next__
+    return pcbnew
+
+
+def export_assembly_report(config: BoardConfig, bom: Path, destination: Path) -> dict:
+    pcbnew = pcbnew_bindings()
     board = pcbnew.LoadBoard(str(config.board))
     footprints = {}
     for fp in board.GetFootprints():
@@ -541,6 +554,51 @@ def export_assembly_report(config: BoardConfig, bom: Path, destination: Path) ->
         encoding="utf-8",
     )
     return counts
+
+
+def export_step(
+    config: BoardConfig, destination: Path, variables: dict[str, str]
+) -> dict[str, object]:
+    pcbnew = pcbnew_bindings()
+    board = pcbnew.LoadBoard(str(config.board))
+    center = board.GetBoardEdgesBoundingBox().Centre()
+    origin = [pcbnew.ToMM(center.x), pcbnew.ToMM(center.y)]
+    definitions = [
+        arg for name, value in sorted(variables.items())
+        for arg in ("--define-var", f"{name}={value}")
+    ]
+    # Export the original path so KIPRJMOD-relative component models resolve.
+    # Match CAM's baked text through CLI overrides. Omitting --no-dnp and
+    # --no-unspecified deliberately includes all component categories.
+    run(
+        "kicad-cli", "pcb", "export", "step",
+        "--output", str(destination),
+        "--user-origin", f"{origin[0]:.6f}x{origin[1]:.6f}mm",
+        "--cut-vias-in-body", "--include-silkscreen", "--include-soldermask",
+        "--subst-models", *definitions, str(config.board),
+        log=destination.with_suffix(".step.log"),
+    )
+    if not destination.is_file() or destination.stat().st_size == 0:
+        raise RuntimeError(f"STEP export is missing or empty: {destination}")
+    with destination.open(encoding="utf-8", errors="replace") as step:
+        if step.readline().strip() != "ISO-10303-21;":
+            raise RuntimeError(f"Invalid STEP file header: {destination}")
+    without_models = sorted(
+        (fp.GetReference() for fp in board.GetFootprints() if not list(fp.Models())),
+        key=natural_ref_key,
+    )
+    return {
+        "origin": "board_outline_bounding_box_center",
+        "origin_mm": {"x": origin[0], "y": origin[1]},
+        "cut_vias_in_body": True,
+        "include_silkscreen": True,
+        "include_soldermask": True,
+        "include_dnp": True,
+        "include_unspecified": True,
+        "substitute_step_models": True,
+        "footprints_without_3d_models": without_models,
+        "export_log": destination.with_suffix(".step.log").name,
+    }
 
 
 def bake_release_board(
@@ -768,6 +826,9 @@ def build(config: BoardConfig, output: Path) -> dict[str, object]:
             config, work, release_board, cam, identity["commit_time"]
         )
         write_cam_archive(config, cam, staging / config.archive_name)
+        step_validation = export_step(
+            config, staging / f"{config.stem}.step", silkscreen_variables
+        )
 
         artifacts = [
             staging / "bom.csv",
@@ -776,6 +837,8 @@ def build(config: BoardConfig, output: Path) -> dict[str, object]:
             staging / "netlist.ipc",
             staging / "assembly-report.md",
             staging / config.archive_name,
+            staging / f"{config.stem}.step",
+            staging / f"{config.stem}.step.log",
         ]
         validation: dict[str, object] = {
             "schema_version": 1,
@@ -806,6 +869,7 @@ def build(config: BoardConfig, output: Path) -> dict[str, object]:
                 "pcbway_quote": quote_counts,
             },
             "cam": cam_validation,
+            "step": step_validation,
             "artifacts": {
                 artifact.name: {
                     "bytes": artifact.stat().st_size,

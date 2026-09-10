@@ -97,7 +97,7 @@ temperatures separately.
 ## PCB production exports
 
 Generate either board's checked-in BOM, component-placement file, Gerber/drill
-archive, IPC-D-356 netlist, designator inventory, assembly-count report, and validation manifest with:
+archive, STEP assembly, IPC-D-356 netlist, designator inventory, assembly-count report, and validation manifest with:
 
 ```sh
 mise run production:carrier
@@ -125,6 +125,18 @@ exposed-pad segments count once. Details are also stored under
 `assembly.pcbway_quote` in `validation.json`. KiCad's Python bindings (`pcbnew`)
 must be available to the task's Python interpreter. This report is published
 alongside the fabrication ZIP and is covered by the validation manifest hash.
+
+`backplane.step` / `carrier.step` are also published alongside the ZIP. STEP
+exports use the center of the Edge.Cuts bounding box as the XY origin, cut via
+holes in the board body, and include silkscreen and solder-mask faces. All
+component categories are included, including DNP and unspecified footprints,
+independently of BOM/CPL exclusions. VRML references use matching STEP/IGES models
+where available. Footprints without assigned models cannot contribute component
+geometry; their references and the export settings/origin are recorded under
+`step` in `validation.json`. KiCad's model/geometry diagnostics are preserved in
+`<board>.step.log` as well as the task output. STEP text variables match the CAM release, and model paths resolve
+relative to the original board project. STEP files are hashed in the manifest;
+their internal exporter timestamps are not normalized.
 
 The bottom silkscreen's `BUILD_DATE` and `SHORT_HASH` variables are baked from
 the source commit. KiCad CAM timestamps are normalized to that same commit time

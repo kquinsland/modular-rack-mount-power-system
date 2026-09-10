@@ -5,6 +5,7 @@ import json
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -14,6 +15,28 @@ import export_pcb_production as production
 
 
 class ProductionExportUnitTests(unittest.TestCase):
+    def test_step_uses_original_project_and_includes_all_component_categories(self) -> None:
+        config = production.BOARD_CONFIGS["carrier"]
+        with tempfile.TemporaryDirectory() as temporary:
+            output = Path(temporary) / "carrier.step"
+            with patch.object(production, "run") as run:
+                with self.assertRaisesRegex(RuntimeError, "missing or empty"):
+                    production.export_step(config, output, {})
+                output.write_text("ISO-10303-21;\nEND-ISO-10303-21;\n")
+                settings = production.export_step(config, output, {"SHORT_HASH": "abc1234"})
+            args = run.call_args.args
+            # Moving the input to a staging directory would break KIPRJMOD models.
+            self.assertEqual(args[-1], str(config.board))
+            self.assertIn("SHORT_HASH=abc1234", args)
+            self.assertEqual(args[args.index("--user-origin") + 1], "150.775000x113.225000mm")
+            for flag in ("--cut-vias-in-body", "--include-silkscreen",
+                         "--include-soldermask", "--subst-models"):
+                self.assertIn(flag, args)
+            for flag in ("--no-dnp", "--no-unspecified", "--no-components", "--board-only"):
+                self.assertNotIn(flag, args)
+            self.assertTrue(settings["include_dnp"])
+            self.assertIn("J2", settings["footprints_without_3d_models"])
+
     def test_quote_counts_follow_bom_scope_and_pcbway_thresholds(self) -> None:
         def part(mount="smd", pins=2, footprint="R_0603"):
             return {"mount": mount, "pin_count": pins, "footprint": footprint,
