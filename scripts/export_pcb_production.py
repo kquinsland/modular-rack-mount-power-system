@@ -556,6 +556,19 @@ def export_assembly_report(config: BoardConfig, bom: Path, destination: Path) ->
     return counts
 
 
+def step_filename(variables: dict[str, str]) -> str:
+    """Use the silkscreen release identity with filename-friendly date separators."""
+    names = ("PROJECT_FAMILY", "BOARD_NAME", "BOARD_VERSION", "BUILD_DATE", "SHORT_HASH")
+    for name in names:
+        if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", variables.get(name, "")):
+            raise RuntimeError(f"Missing or unsafe STEP filename variable: {name}")
+    date = variables["BUILD_DATE"].replace(".", "-")
+    return (
+        f"{variables['PROJECT_FAMILY']}.{variables['BOARD_NAME']}"
+        f"-v{variables['BOARD_VERSION']}-{date}-{variables['SHORT_HASH']}.step"
+    )
+
+
 def export_step(
     config: BoardConfig, destination: Path, variables: dict[str, str]
 ) -> dict[str, object]:
@@ -588,6 +601,7 @@ def export_step(
         key=natural_ref_key,
     )
     return {
+        "file": destination.name,
         "origin": "board_outline_bounding_box_center",
         "origin_mm": {"x": origin[0], "y": origin[1]},
         "cut_vias_in_body": True,
@@ -826,9 +840,8 @@ def build(config: BoardConfig, output: Path) -> dict[str, object]:
             config, work, release_board, cam, identity["commit_time"]
         )
         write_cam_archive(config, cam, staging / config.archive_name)
-        step_validation = export_step(
-            config, staging / f"{config.stem}.step", silkscreen_variables
-        )
+        step_path = staging / step_filename(silkscreen_variables)
+        step_validation = export_step(config, step_path, silkscreen_variables)
 
         artifacts = [
             staging / "bom.csv",
@@ -837,8 +850,8 @@ def build(config: BoardConfig, output: Path) -> dict[str, object]:
             staging / "netlist.ipc",
             staging / "assembly-report.md",
             staging / config.archive_name,
-            staging / f"{config.stem}.step",
-            staging / f"{config.stem}.step.log",
+            step_path,
+            step_path.with_suffix(".step.log"),
         ]
         validation: dict[str, object] = {
             "schema_version": 1,

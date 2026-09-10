@@ -15,6 +15,21 @@ import export_pcb_production as production
 
 
 class ProductionExportUnitTests(unittest.TestCase):
+    def test_step_filename_matches_silkscreen_identity(self) -> None:
+        variables = {
+            "PROJECT_FAMILY": "mrp", "BOARD_NAME": "carrier",
+            "BOARD_VERSION": "2.1", "BUILD_DATE": "26.09.10", "SHORT_HASH": "abcdef1",
+        }
+        self.assertEqual(production.step_filename(variables), "mrp.carrier-v2.1-26-09-10-abcdef1.step")
+        self.assertEqual(
+            production.step_filename({**variables, "BOARD_NAME": "backplane", "BUILD_DATE": "26-09-10"}),
+            "mrp.backplane-v2.1-26-09-10-abcdef1.step",
+        )
+        with self.assertRaisesRegex(RuntimeError, "BOARD_NAME"):
+            production.step_filename({**variables, "BOARD_NAME": "../carrier"})
+        with self.assertRaisesRegex(RuntimeError, "PROJECT_FAMILY"):
+            production.step_filename({})
+
     def test_step_uses_original_project_and_includes_all_component_categories(self) -> None:
         config = production.BOARD_CONFIGS["carrier"]
         with tempfile.TemporaryDirectory() as temporary:

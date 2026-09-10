@@ -126,7 +126,11 @@ exposed-pad segments count once. Details are also stored under
 must be available to the task's Python interpreter. This report is published
 alongside the fabrication ZIP and is covered by the validation manifest hash.
 
-`backplane.step` / `carrier.step` are also published alongside the ZIP. STEP
+STEP assemblies are published alongside the ZIP as
+`mrp.<board>-v<version>-YY-MM-DD-<hash>.step`, for example
+`mrp.carrier-v2.1-26-09-10-abcdef1.step`. The project family, board name,
+version, source-commit date and short hash come from the same release variables
+as the silkscreen; filename dates use hyphens. STEP
 exports use the center of the Edge.Cuts bounding box as the XY origin, cut via
 holes in the board body, and include silkscreen and solder-mask faces. All
 component categories are included, including DNP and unspecified footprints,
@@ -134,7 +138,8 @@ independently of BOM/CPL exclusions. VRML references use matching STEP/IGES mode
 where available. Footprints without assigned models cannot contribute component
 geometry; their references and the export settings/origin are recorded under
 `step` in `validation.json`. KiCad's model/geometry diagnostics are preserved in
-`<board>.step.log` as well as the task output. STEP text variables match the CAM release, and model paths resolve
+the matching `<release-name>.step.log` as well as the task output. The exact STEP
+filename is recorded in `step.file`. STEP text variables match the CAM release, and model paths resolve
 relative to the original board project. STEP files are hashed in the manifest;
 their internal exporter timestamps are not normalized.
 
