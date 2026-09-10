@@ -556,17 +556,21 @@ def export_assembly_report(config: BoardConfig, bom: Path, destination: Path) ->
     return counts
 
 
-def step_filename(variables: dict[str, str]) -> str:
+def silkscreen_id(variables: dict[str, str]) -> str:
     """Use the silkscreen release identity with filename-friendly date separators."""
     names = ("PROJECT_FAMILY", "BOARD_NAME", "BOARD_VERSION", "BUILD_DATE", "SHORT_HASH")
     for name in names:
         if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", variables.get(name, "")):
-            raise RuntimeError(f"Missing or unsafe STEP filename variable: {name}")
+            raise RuntimeError(f"Missing or unsafe release ID variable: {name}")
     date = variables["BUILD_DATE"].replace(".", "-")
     return (
         f"{variables['PROJECT_FAMILY']}.{variables['BOARD_NAME']}"
-        f"-v{variables['BOARD_VERSION']}-{date}-{variables['SHORT_HASH']}.step"
+        f"-v{variables['BOARD_VERSION']}-{date}-{variables['SHORT_HASH']}"
     )
+
+
+def step_filename(variables: dict[str, str]) -> str:
+    return f"{silkscreen_id(variables)}.step"
 
 
 def export_step(
@@ -804,17 +808,22 @@ def resolve_output(value: Path | None, config: BoardConfig) -> Path:
     return output
 
 
-def build(config: BoardConfig, output: Path) -> dict[str, object]:
+def build(config: BoardConfig, output_root: Path) -> dict[str, object]:
     ensure_design_inputs_are_committed(config)
     identity = release_identity()
-    output.parent.mkdir(parents=True, exist_ok=True)
+    output_root.parent.mkdir(parents=True, exist_ok=True)
 
     with tempfile.TemporaryDirectory(
-        prefix=f".{config.key}-production-", dir=output.parent
+        prefix=f".{config.key}-production-", dir=output_root.parent
     ) as temporary:
         work = Path(temporary)
         staging = work / "production"
         staging.mkdir()
+
+        release_board = work / f"{config.stem}.kicad_pcb"
+        silkscreen_variables = bake_release_board(config, release_board, identity)
+        release_id = silkscreen_id(silkscreen_variables)
+        output = output_root / release_id
 
         checks = run_electrical_checks(config, work)
         bom_references = export_bom(config, work, staging / "bom.csv")
@@ -833,8 +842,6 @@ def build(config: BoardConfig, output: Path) -> dict[str, object]:
             str(config.board),
         )
 
-        release_board = work / f"{config.stem}.kicad_pcb"
-        silkscreen_variables = bake_release_board(config, release_board, identity)
         cam = work / "cam"
         cam_validation = export_cam(
             config, work, release_board, cam, identity["commit_time"]
@@ -856,6 +863,7 @@ def build(config: BoardConfig, output: Path) -> dict[str, object]:
         validation: dict[str, object] = {
             "schema_version": 1,
             "board_key": config.key,
+            "release_id": release_id,
             "status": ("pass_with_warnings" if checks["drc_warning_count"] else "pass"),
             "source": {
                 **identity,
@@ -894,6 +902,7 @@ def build(config: BoardConfig, output: Path) -> dict[str, object]:
         (staging / "validation.json").write_text(
             json.dumps(validation, indent=2) + "\n", encoding="utf-8"
         )
+        output.parent.mkdir(parents=True, exist_ok=True)
         publish(staging, output)
 
     print(
@@ -915,7 +924,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--output-dir",
         type=Path,
-        help="production output directory (default: the selected board's production directory)",
+        help="output root; files go in <root>/<silkscreen-id>/ (default: the board's production directory)",
     )
     return parser.parse_args()
 

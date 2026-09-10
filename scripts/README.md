@@ -107,8 +107,13 @@ mise run production:backplane
 The task runs ERC and DRC with schematic-parity checking before publishing any
 files. It requires the selected board's design inputs to be committed, verifies
 that the BOM and placement references agree exactly, checks the required
-four-layer CAM file set, and stages everything before replacing that board's
-`production/` directory. DRC warnings are retained in
+four-layer CAM file set, and stages everything before publishing the complete
+file set in `hardware/boards/<board>/production/<silkscreen-id>/`, for example
+`hardware/boards/backplane/production/mrp.backplane-v2.1-26-09-10-abcdef1/`.
+The ZIP, CSVs, IPC netlist, reports, STEP and validation manifest all go inside
+that release directory. Re-exporting the same release replaces only that
+directory; other releases and any legacy files in the production root remain
+intact. The manifest records `release_id`. DRC warnings are retained in
 `validation.json`; ERC findings, DRC errors, unconnected items, parity errors,
 missing sourcing fields, or BOM/CPL disagreement stop the export and leave the
 previous production directory intact.
@@ -146,7 +151,8 @@ their internal exporter timestamps are not normalized.
 The bottom silkscreen's `BUILD_DATE` and `SHORT_HASH` variables are baked from
 the source commit. KiCad CAM timestamps are normalized to that same commit time
 so every file carries consistent source provenance. For an isolated test
-export, pass another output directory after `--`:
+export, pass another output root after `--`; the release-ID subdirectory is
+still appended:
 
 ```sh
 mise run production:carrier -- --output-dir /tmp/carrier-production

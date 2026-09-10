@@ -15,12 +15,34 @@ import export_pcb_production as production
 
 
 class ProductionExportUnitTests(unittest.TestCase):
+    def test_publish_replaces_only_selected_release(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            production_root = root / "production"
+            production_root.mkdir()
+            (production_root / "legacy.zip").write_text("legacy export")
+            older = production_root / "mrp.carrier-v2.1-26-09-09-abcdef0"
+            older.mkdir()
+            (older / "bom.csv").write_text("previous revision")
+            current = production_root / "mrp.carrier-v2.1-26-09-10-abcdef1"
+            current.mkdir()
+            (current / "obsolete.csv").write_text("superseded output")
+            staging = root / "staging"
+            staging.mkdir()
+            (staging / "bom.csv").write_text("new export")
+            production.publish(staging, current)
+            self.assertEqual((current / "bom.csv").read_text(), "new export")
+            self.assertFalse((current / "obsolete.csv").exists())
+            self.assertEqual((older / "bom.csv").read_text(), "previous revision")
+            self.assertEqual((production_root / "legacy.zip").read_text(), "legacy export")
+
     def test_step_filename_matches_silkscreen_identity(self) -> None:
         variables = {
             "PROJECT_FAMILY": "mrp", "BOARD_NAME": "carrier",
             "BOARD_VERSION": "2.1", "BUILD_DATE": "26.09.10", "SHORT_HASH": "abcdef1",
         }
         self.assertEqual(production.step_filename(variables), "mrp.carrier-v2.1-26-09-10-abcdef1.step")
+        self.assertEqual(production.silkscreen_id(variables), "mrp.carrier-v2.1-26-09-10-abcdef1")
         self.assertEqual(
             production.step_filename({**variables, "BOARD_NAME": "backplane", "BUILD_DATE": "26-09-10"}),
             "mrp.backplane-v2.1-26-09-10-abcdef1.step",
