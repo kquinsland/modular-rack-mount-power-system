@@ -8,12 +8,20 @@ weight: 4
 
 | Item | Working value |
 | --- | ---: |
-| Backplane input | Nominal 24 V |
+| System/backplane input | Nominal 24–48 V |
+| Initial population input | Nominal 24 V; current carrier maximum 30 V |
 | Carrier slots | Six |
 | Per-slot input budget | Approximately 4.7 A |
 | Aggregate backplane target | Approximately 30 A |
 | USB-C output policy | Up to 20 V, 5 A, 100 W |
 | Aggregate current shunt | 1 mΩ |
+
+The backplane is intended to support both 24 V and future 48 V carrier
+generations. The current SW3538 carrier is the limiting factor and must not be
+used on a 48 V bus; that requires a new carrier revision. The table's current
+and power budgets apply to the initial 24 V population, not a qualified future
+48 V/240 W configuration. Supply tolerance and low-line startup still need
+validation; voltages below 24 V are not separate nominal system ratings.
 
 At 30 A, the aggregate shunt develops about 30 mV and dissipates about 0.9 W.
 The INA237 must use the corresponding narrow measurement range, and the sense

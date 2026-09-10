@@ -97,7 +97,7 @@ temperatures separately.
 ## PCB production exports
 
 Generate either board's checked-in BOM, component-placement file, Gerber/drill
-archive, IPC-D-356 netlist, designator inventory, and validation manifest with:
+archive, STEP assembly, IPC-D-356 netlist, designator inventory, assembly-count report, and validation manifest with:
 
 ```sh
 mise run production:carrier
@@ -107,74 +107,86 @@ mise run production:backplane
 The task runs ERC and DRC with schematic-parity checking before publishing any
 files. It requires the selected board's design inputs to be committed, verifies
 that the BOM and placement references agree exactly, checks the required
-four-layer CAM file set, and stages everything before replacing that board's
-`production/` directory. DRC warnings are retained in
+four-layer CAM file set, and stages everything before publishing the complete
+file set in `hardware/boards/<board>/production/<silkscreen-id>/`, for example
+`hardware/boards/backplane/production/mrp.backplane-v2.1-26-09-10-abcdef1/`.
+The ZIP, CSVs, IPC netlist, reports, STEP and validation manifest all go inside
+that release directory. Re-exporting the same release replaces only that
+directory; other releases and any legacy files in the production root remain
+intact. The manifest records `release_id`. DRC warnings are retained in
 `validation.json`; ERC findings, DRC errors, unconnected items, parity errors,
 missing sourcing fields, or BOM/CPL disagreement stop the export and leave the
 previous production directory intact.
 
+`assembly-report.md` lists the four PCBWay quote fields per single board:
+unique parts (distinct LCSC codes), SMD components, BGA/QFP-category components,
+and through-hole components. It follows PCBWay's tooltip definitions: the fields
+count parts, despite the site's “SMT Pads” image labels. BGA/QFP includes ICs with
+more than 16 pins (including QFN/SOP) and other SMD parts with more than 10 pins;
+it is a subset of SMD. Only exported BOM/CPL references count, so hand-installed
+connectors/modules excluded from those files do not enter the assembly quote.
+The report includes a separate SMT contact count for reference. Repeated numbered
+exposed-pad segments count once. Details are also stored under
+`assembly.pcbway_quote` in `validation.json`. KiCad's Python bindings (`pcbnew`)
+must be available to the task's Python interpreter. This report is published
+alongside the fabrication ZIP and is covered by the validation manifest hash.
+
+STEP assemblies are published alongside the ZIP as
+`mrp.<board>-v<version>-YY-MM-DD-<hash>.step`, for example
+`mrp.carrier-v2.1-26-09-10-abcdef1.step`. The project family, board name,
+version, source-commit date and short hash come from the same release variables
+as the silkscreen; filename dates use hyphens. STEP
+exports use the center of the Edge.Cuts bounding box as the XY origin, cut via
+holes in the board body, and include silkscreen and solder-mask faces. All
+component categories are included, including DNP and unspecified footprints,
+independently of BOM/CPL exclusions. VRML references use matching STEP/IGES models
+where available. Footprints without assigned models cannot contribute component
+geometry; their references and the export settings/origin are recorded under
+`step` in `validation.json`. KiCad's model/geometry diagnostics are preserved in
+the matching `<release-name>.step.log` as well as the task output. The exact STEP
+filename is recorded in `step.file`. STEP text variables match the CAM release, and model paths resolve
+relative to the original board project. STEP files are hashed in the manifest;
+their internal exporter timestamps are not normalized.
+
 The bottom silkscreen's `BUILD_DATE` and `SHORT_HASH` variables are baked from
 the source commit. KiCad CAM timestamps are normalized to that same commit time
 so every file carries consistent source provenance. For an isolated test
-export, pass another output directory after `--`:
+export, pass another output root after `--`; the release-ID subdirectory is
+still appended:
 
 ```sh
 mise run production:carrier -- --output-dir /tmp/carrier-production
 mise run production:backplane -- --output-dir /tmp/backplane-production
 ```
 
-## Carrier/backplane fabrication panel
+## PCB release pipeline
 
-`build_carrier_backplane_panel.py` uses KiKit to build one customer panel from
-six carrier boards and one backplane-prototype board. It materializes both PCB
-inputs from the build's Git revision, then emits separate JLCPCB and PCBWay
-Gerber/BOM/positions bundles. The mise tasks use the checked-out `HEAD`;
-`PANEL_GIT_HASH` may explicitly select another available commit.
+The new KiBot/KiKit pipeline is described in the
+[release tooling guide](../.kibot/release/README.md).
 
 ```sh
-mise run panel:build
-```
-
-`panel:build` runs the carrier production export first and the backplane export
-second. Either task stops the pipeline if its ERC, DRC, source, BOM, placement,
-or fabrication checks fail. Panelization starts only after both pass. The panel
-builder then verifies both production manifests identify `HEAD` (or
-`PANEL_GIT_HASH`) and consumes their freshly generated BOMs; the panel geometry
-comes from the KiCad boards at that same immutable revision.
-
-The generated panel source and intermediate files are written under
-`build/carrier-backplane-panel/`. The release directory also contains a
-top-side PNG render for visual review. The full task also regenerates top- and
-bottom-side carrier and backplane PNGs plus the top-side combined-panel PNG
-under `docs/assets/generated/pcbs/`. Repository-local 3D models are staged from
-the selected Git revision so their `${KIPRJMOD}` paths remain valid during
-rendering. To rebuild only those documentation assets:
-
-```sh
+mise run release:setup
+mise run release:check
 mise run docs:pcb-renders
-```
-
-Board identity silkscreen is sourced from the KiCad project's text variables.
-For variable-bearing release sources, the builder replaces `BUILD_DATE` and
-`SHORT_HASH` with the build revision's commit date and short hash before
-KiKit copies the board. Direct script invocations may override variables with
-`-D KEY=VALUE`, `--carrier-define-var KEY=VALUE`, or
-`--backplane-define-var KEY=VALUE`.
-
-Generate self-contained InteractiveHtmlBom assembly pages for the same build
-revision with:
-
-```sh
 mise run docs:pcb-iboms
+mise run release:build
 ```
 
-The iBOM task depends on the PNG task so both documentation formats use the
-same staged source boards. It currently runs KiBot and InteractiveHtmlBom in a
-container; the task itself documents why and what should be revisited before
-moving those tools onto the host. Podman is required, and the first invocation
-pulls the pinned container image. Set `KIBOT_IMAGE` to test another image.
+`build_pcb_release.py` snapshots a committed hardware revision and stages the
+pipeline configuration. `pcb_release_worker.py` runs checks and exports in a
+digest-pinned container. `panel_layout.py` owns the six-carrier/one-backplane
+geometry. `convert_pcb_render.py` is the PEP 723 lossless WebP converter, and
+`validate_pcb_release.py` checks assembly and archive invariants.
 
-These workflows are file-based mise tasks under `.mise/tasks/`, keeping the
-multi-command implementation out of `mise.toml`. See
-[`docs/carrier-backplane-panel.md`](../docs/carrier-backplane-panel.md) for the
-layout, ordering constraints, and validation caveats.
+Renders and per-board manifests publish into the Hugo content bundles under
+`site/content/latest/hardware/`. Vendor proof WebPs stay outside fabrication
+upload ZIPs. Preview mode never produces fabrication packages. Release mode
+requires both source boards, the panel, and vendor variants to pass their gates.
+
+`panel:build` invokes the new release builder and publishes to
+`releases/pcb-release/`. The old `build_carrier_backplane_panel.py` and
+standalone production exporter remain for historical comparison; existing Rev A
+exports are not regenerated by this migration.
+
+The architecture and Mermaid diagrams are in
+[pcb-release-pipeline-refactor.md](../docs/pcb-release-pipeline-refactor.md).

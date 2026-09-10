@@ -80,9 +80,9 @@ BOARD_CONFIGS = {
     ),
     "backplane": BoardConfig(
         key="backplane",
-        label="Backplane prototype",
-        directory=ROOT / "hardware/boards/backplane-prototype",
-        stem="backplane-prototype",
+        label="Backplane",
+        directory=ROOT / "hardware/boards/backplane",
+        stem="backplane",
         sheet_names=(
             "01_power_input.kicad_sch",
             "02_control.kicad_sch",
@@ -90,7 +90,7 @@ BOARD_CONFIGS = {
             "04_fan_status.kicad_sch",
             "05_buck_converters.kicad_sch",
         ),
-        archive_name="Backplane_Prototype_A.zip",
+        archive_name="Backplane_A.zip",
         expected_layer_count=4,
         expected_thickness_mm=1.6,
         expected_finish="ENIG",
@@ -143,9 +143,17 @@ def required_cam_files(config: BoardConfig) -> set[str]:
     return {f"{config.stem}-{suffix}" for suffix in CAM_FILE_SUFFIXES}
 
 
-def run(*args: str, cwd: Path = ROOT) -> None:
+def run(*args: str, cwd: Path = ROOT, log: Path | None = None) -> None:
     print("+", " ".join(args), flush=True)
-    subprocess.run(args, cwd=cwd, check=True)
+    if log is None:
+        subprocess.run(args, cwd=cwd, check=True)
+    else:
+        result = subprocess.run(
+            args, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True
+        )
+        log.write_text(result.stdout, encoding="utf-8")
+        print(result.stdout, end="", flush=True)
+        result.check_returncode()
 
 
 def git_output(*args: str) -> str:
@@ -443,6 +451,174 @@ def export_designators(config: BoardConfig, destination: Path) -> int:
     return len(references)
 
 
+def assembly_counts(bom_rows: list[dict[str, str]], footprints: dict) -> dict:
+    """Count the assembly BOM, not every physical object on the PCB."""
+    references = [
+        ref.strip() for row in bom_rows for ref in row["Designator"].split(",")
+    ]
+    if len(references) != len(set(references)):
+        raise RuntimeError("Duplicate reference in assembly report BOM")
+    parts = []
+    for ref in sorted(references, key=natural_ref_key):
+        if ref not in footprints:
+            raise RuntimeError(f"Assembly report cannot find PCB footprint {ref}")
+        part = footprints[ref]
+        if part["mount"] not in {"smd", "through_hole"}:
+            raise RuntimeError(f"Assembly report needs an SMD/THT attribute for {ref}")
+        # PCBWay's quote tooltip includes >16-pin ICs and >10-pin irregular
+        # SMD parts. U is the repository's IC reference convention; common IC
+        # package names also cover symbols with another reference prefix.
+        is_ic = bool(re.match(r"U\d+$", ref)) or bool(
+            re.search(r"(?:^|[_:])(?:[A-Z]*QF[NP]|[A-Z]*BGA|[A-Z]*SOP|SOIC|LGA)(?:[-_]|$)", part["footprint"])
+        )
+        special = part["mount"] == "smd" and part["pin_count"] > (16 if is_ic else 10)
+        parts.append({"reference": ref, **part, "pcbway_bga_qfp": special})
+    return {
+        "unique_parts": len({row["LCSC Part #"].strip() for row in bom_rows}),
+        "smd_parts": sum(p["mount"] == "smd" for p in parts),
+        "bga_qfp_parts": sum(p["pcbway_bga_qfp"] for p in parts),
+        "through_hole_parts": sum(p["mount"] == "through_hole" for p in parts),
+        "smt_contacts": sum(p["smt_contacts"] for p in parts),
+        "parts": parts,
+    }
+
+
+def pcbnew_bindings():
+    """Load KiCad's read-only board API without its enum startup assertions."""
+    try:
+        import wx
+        wx.DisableAsserts()  # KiCad 10 enum registration assertions; see power tool.
+        import pcbnew
+    except ImportError as error:
+        raise RuntimeError("Production export requires KiCad's Python bindings (pcbnew)") from error
+    if not hasattr(pcbnew.SwigPyIterator, "next"):
+        pcbnew.SwigPyIterator.next = pcbnew.SwigPyIterator.__next__
+    return pcbnew
+
+
+def export_assembly_report(config: BoardConfig, bom: Path, destination: Path) -> dict:
+    pcbnew = pcbnew_bindings()
+    board = pcbnew.LoadBoard(str(config.board))
+    footprints = {}
+    for fp in board.GetFootprints():
+        attr = fp.GetAttributes()
+        pads = [p for p in fp.Pads() if p.GetNumber() and p.IsOnCopperLayer()]
+        mount = "smd" if attr & pcbnew.FP_SMD else (
+            "through_hole" if attr & pcbnew.FP_THROUGH_HOLE else "unspecified"
+        )
+        classification = "footprint attribute"
+        if mount == "unspecified":
+            # Some custom inductors omit the footprint mount attribute.
+            # Infer only unambiguous homogeneous electrical pads.
+            pad_types = {p.GetAttribute() for p in pads}
+            if pad_types == {pcbnew.PAD_ATTRIB_SMD}:
+                mount = "smd"
+            elif pad_types == {pcbnew.PAD_ATTRIB_PTH}:
+                mount = "through_hole"
+            classification = "pad types (unspecified footprint attribute)"
+        footprints[fp.GetReference()] = {
+            "footprint": str(fp.GetFPID().GetLibItemName()),
+            "mount": mount,
+            "mount_classification": classification,
+            "pin_count": len({p.GetNumber() for p in pads}),
+            "smt_contacts": len({p.GetNumber() for p in pads if p.GetAttribute() == pcbnew.PAD_ATTRIB_SMD}),
+        }
+    counts = assembly_counts(read_csv(bom), footprints)
+    special_refs = ", ".join(p["reference"] for p in counts["parts"] if p["pcbway_bga_qfp"]) or "none"
+    destination.write_text(
+        f"# {config.label} — PCBWay assembly quote\n\n"
+        "Counts per single board, for the exported BOM/CPL assembly scope.\n\n"
+        "| PCBWay field | Enter |\n|---|---:|\n"
+        f"| Number of Unique Parts | {counts['unique_parts']} |\n"
+        f"| Number of SMD Parts | {counts['smd_parts']} |\n"
+        f"| Number of BGA/QFP Parts | {counts['bga_qfp_parts']} |\n"
+        f"| Number of Through-Hole Parts | {counts['through_hole_parts']} |\n\n"
+        "These are component counts, not pad counts or batch totals. The form's "
+        "'SMT Pads'/'Thru Holes' image labels are misleading; its tooltips specify parts. "
+        "BGA/QFP is a subset of SMD: ICs with more than 16 pins (including SOP/QFN), "
+        "plus other SMD parts with more than 10 pins. "
+        f"Qualifying references: {special_refs}.\n\n"
+        f"For reference only: **{counts['smt_contacts']} SMT contacts** "
+        "(distinct numbered copper SMD pads per component; repeated exposed-pad "
+        "segments count once; paste-only apertures do not count).\n\n"
+        "Unique parts are distinct LCSC part numbers in bom.csv. Only BOM references "
+        "are counted; DNP, hand-installed parts excluded from the BOM, test points, "
+        "tooling and artwork are excluded. A zero THT count does not mean the PCB "
+        "has no through-hole connectors. Counts must change if the assembler's scope changes.\n\n"
+        "SMD/THT classification uses footprint attributes, or homogeneous electrical pad "
+        "types when the attribute is unspecified. IC classification uses U references "
+        "or common IC package names; review unusual packages before quoting. "
+        "Per-reference classification is retained in validation.json.\n\n"
+        "Source: [PCBWay assembly quote tooltips](https://www.pcbway.com/quotesmt.aspx) "
+        "(definitions checked 2026-09-09).\n",
+        encoding="utf-8",
+    )
+    return counts
+
+
+def silkscreen_id(variables: dict[str, str]) -> str:
+    """Use the silkscreen release identity with filename-friendly date separators."""
+    names = ("PROJECT_FAMILY", "BOARD_NAME", "BOARD_VERSION", "BUILD_DATE", "SHORT_HASH")
+    for name in names:
+        if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", variables.get(name, "")):
+            raise RuntimeError(f"Missing or unsafe release ID variable: {name}")
+    date = variables["BUILD_DATE"].replace(".", "-")
+    return (
+        f"{variables['PROJECT_FAMILY']}.{variables['BOARD_NAME']}"
+        f"-v{variables['BOARD_VERSION']}-{date}-{variables['SHORT_HASH']}"
+    )
+
+
+def step_filename(variables: dict[str, str]) -> str:
+    return f"{silkscreen_id(variables)}.step"
+
+
+def export_step(
+    config: BoardConfig, destination: Path, variables: dict[str, str]
+) -> dict[str, object]:
+    pcbnew = pcbnew_bindings()
+    board = pcbnew.LoadBoard(str(config.board))
+    center = board.GetBoardEdgesBoundingBox().Centre()
+    origin = [pcbnew.ToMM(center.x), pcbnew.ToMM(center.y)]
+    definitions = [
+        arg for name, value in sorted(variables.items())
+        for arg in ("--define-var", f"{name}={value}")
+    ]
+    # Export the original path so KIPRJMOD-relative component models resolve.
+    # Match CAM's baked text through CLI overrides. Omitting --no-dnp and
+    # --no-unspecified deliberately includes all component categories.
+    run(
+        "kicad-cli", "pcb", "export", "step",
+        "--output", str(destination),
+        "--user-origin", f"{origin[0]:.6f}x{origin[1]:.6f}mm",
+        "--cut-vias-in-body", "--include-silkscreen", "--include-soldermask",
+        "--subst-models", *definitions, str(config.board),
+        log=destination.with_suffix(".step.log"),
+    )
+    if not destination.is_file() or destination.stat().st_size == 0:
+        raise RuntimeError(f"STEP export is missing or empty: {destination}")
+    with destination.open(encoding="utf-8", errors="replace") as step:
+        if step.readline().strip() != "ISO-10303-21;":
+            raise RuntimeError(f"Invalid STEP file header: {destination}")
+    without_models = sorted(
+        (fp.GetReference() for fp in board.GetFootprints() if not list(fp.Models())),
+        key=natural_ref_key,
+    )
+    return {
+        "file": destination.name,
+        "origin": "board_outline_bounding_box_center",
+        "origin_mm": {"x": origin[0], "y": origin[1]},
+        "cut_vias_in_body": True,
+        "include_silkscreen": True,
+        "include_soldermask": True,
+        "include_dnp": True,
+        "include_unspecified": True,
+        "substitute_step_models": True,
+        "footprints_without_3d_models": without_models,
+        "export_log": destination.with_suffix(".step.log").name,
+    }
+
+
 def bake_release_board(
     config: BoardConfig, destination: Path, identity: dict[str, str]
 ) -> dict[str, str]:
@@ -632,22 +808,30 @@ def resolve_output(value: Path | None, config: BoardConfig) -> Path:
     return output
 
 
-def build(config: BoardConfig, output: Path) -> dict[str, object]:
+def build(config: BoardConfig, output_root: Path) -> dict[str, object]:
     ensure_design_inputs_are_committed(config)
     identity = release_identity()
-    output.parent.mkdir(parents=True, exist_ok=True)
+    output_root.parent.mkdir(parents=True, exist_ok=True)
 
     with tempfile.TemporaryDirectory(
-        prefix=f".{config.key}-production-", dir=output.parent
+        prefix=f".{config.key}-production-", dir=output_root.parent
     ) as temporary:
         work = Path(temporary)
         staging = work / "production"
         staging.mkdir()
 
+        release_board = work / f"{config.stem}.kicad_pcb"
+        silkscreen_variables = bake_release_board(config, release_board, identity)
+        release_id = silkscreen_id(silkscreen_variables)
+        output = output_root / release_id
+
         checks = run_electrical_checks(config, work)
         bom_references = export_bom(config, work, staging / "bom.csv")
         export_positions(config, work, staging / "positions.csv", bom_references)
         footprint_count = export_designators(config, staging / "designators.csv")
+        quote_counts = export_assembly_report(
+            config, staging / "bom.csv", staging / "assembly-report.md"
+        )
         run(
             "kicad-cli",
             "pcb",
@@ -658,24 +842,28 @@ def build(config: BoardConfig, output: Path) -> dict[str, object]:
             str(config.board),
         )
 
-        release_board = work / f"{config.stem}.kicad_pcb"
-        silkscreen_variables = bake_release_board(config, release_board, identity)
         cam = work / "cam"
         cam_validation = export_cam(
             config, work, release_board, cam, identity["commit_time"]
         )
         write_cam_archive(config, cam, staging / config.archive_name)
+        step_path = staging / step_filename(silkscreen_variables)
+        step_validation = export_step(config, step_path, silkscreen_variables)
 
         artifacts = [
             staging / "bom.csv",
             staging / "positions.csv",
             staging / "designators.csv",
             staging / "netlist.ipc",
+            staging / "assembly-report.md",
             staging / config.archive_name,
+            step_path,
+            step_path.with_suffix(".step.log"),
         ]
         validation: dict[str, object] = {
             "schema_version": 1,
             "board_key": config.key,
+            "release_id": release_id,
             "status": ("pass_with_warnings" if checks["drc_warning_count"] else "pass"),
             "source": {
                 **identity,
@@ -699,8 +887,10 @@ def build(config: BoardConfig, output: Path) -> dict[str, object]:
                 "position_reference_count": len(bom_references),
                 "bom_position_references_match": True,
                 "pcb_footprint_count_including_dnp_and_board_only": footprint_count,
+                "pcbway_quote": quote_counts,
             },
             "cam": cam_validation,
+            "step": step_validation,
             "artifacts": {
                 artifact.name: {
                     "bytes": artifact.stat().st_size,
@@ -712,6 +902,7 @@ def build(config: BoardConfig, output: Path) -> dict[str, object]:
         (staging / "validation.json").write_text(
             json.dumps(validation, indent=2) + "\n", encoding="utf-8"
         )
+        output.parent.mkdir(parents=True, exist_ok=True)
         publish(staging, output)
 
     print(
@@ -719,6 +910,7 @@ def build(config: BoardConfig, output: Path) -> dict[str, object]:
         f"  revision: {identity['short_hash']} ({identity['build_date']})\n"
         f"  BOM/CPL references: {len(bom_references)}\n"
         f"  DRC warnings: {checks['drc_warning_count']}\n"
+        f"  assembly counts: {output / 'assembly-report.md'}\n"
         f"  output: {output}"
     )
     return validation
@@ -732,7 +924,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--output-dir",
         type=Path,
-        help="production output directory (default: the selected board's production directory)",
+        help="output root; files go in <root>/<silkscreen-id>/ (default: the board's production directory)",
     )
     return parser.parse_args()
 

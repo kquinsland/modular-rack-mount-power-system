@@ -7,9 +7,10 @@ generated with `mise run production:carrier`.
 
 **Revision:** Rev A architectural handoff
 
-**Design intent:** Per-module USB-C PD carrier with a 24 V initial input and
-48–50 V future prototype characterization, protected power switching,
-current/power telemetry, CAN-FD, local I²C control, and a local 3.3 V
+**Design intent:** Per-module USB-C PD carrier for a 24–48 V nominal backplane
+system. This SW3538 population is limited to **24 V nominal, 30 V maximum
+input**; a second-generation carrier is required for 48 V operation. It provides
+protected power switching, current/power telemetry, CAN-FD, local I²C control, and a local 3.3 V
 housekeeping supply. The first population is product-limited to 100 W while
 the component choices support investigation toward a future 240 W EPR system.
 
@@ -21,7 +22,7 @@ This carrier PCB is intended to sit between a shared high-current DC distributio
 
 The carrier shall:
 
-- Accept approximately **24–36 VDC nominally**, with future support for **48 VDC continuous input**.
+- Accept **24 VDC nominally, 30 VDC maximum** in this revision; **48 VDC nominal** requires a new carrier revision and suitably rated module/protection.
 - Supply a local **3.3 V housekeeping rail** for:
   - STM32 MCU
   - INA237 power monitor
@@ -93,7 +94,7 @@ Keep these three ratings distinct:
 |---|---:|---|
 | First production population | **100 W maximum** | Nominal 24 V input; MOD1 supplies at most 20 V / 5 A under the selected configuration and system policy. |
 | Rev-A carrier sizing case | **140 W capable** | Size the carrier power path, current limit, connector contacts, copper, and thermal design for this 24 V high-current case. |
-| Prototype program target | **240 W USB-C EPR, 48 V / 5 A** | Component selection anticipates a later approximately 48–50 V input/module experiment, but first-article characterization and a fresh system/module review are required before assigning that rating. |
+| Prototype program target | **240 W USB-C EPR, 48 V / 5 A** | Requires a second-generation carrier, a suitably rated module/protection, and first-article characterization plus a fresh system/module review. Not supported by the populated Rev-A SW3538 carrier. |
 
 The 140 W architecture case is the electrical sizing corner for this carrier.
 Rev A is also a prototype vehicle for learning toward the 240 W target; that
@@ -127,22 +128,25 @@ This substantially reduces aggregate bus inrush, but each carrier still retains 
 
 ### 3.3 48 V interpretation
 
-The first production run uses a **24 V nominal input**. The longer-term
-prototype goal is an approximately **48–50 V nominal input** supporting a
-future 48 V / 5 A USB-C EPR implementation. Sustained input above approximately
-50 V is an unsupported gross misconfiguration, not a required operating case;
-short transients above that level must still be contained within every
-component's limits.
+The backplane is intended for a **24–48 V nominal system**, compatible with
+both carrier generations. The populated Rev-A SW3538 carrier limits the first
+revision to **24 V nominal and 30 V maximum input**. All slots share the raw
+bus voltage; do not fit this carrier to a backplane powered from 48 V.
 
-The populated Rev-A protection values put 50 V at the edge of the present
-design: D1 has a 48 V stand-off rating and the calculated low OVLO corner is
-approximately 49.8 V at 25 °C. Therefore 48–50 V is a controlled
-characterization range for the first boards, not yet a guaranteed continuous
-rating. Before treating 50 V as supported, measure D1 leakage/temperature and
-actual OVLO thresholds across boards and temperature, then revise the TVS or
-divider if necessary.
+A **second-generation carrier** with a suitably rated module and coordinated
+protection is required for 48 V input. The eventual 240 W USB-C EPR goal is
+separate from the nominal backplane voltage and still needs full qualification.
+Characterization cannot make the present SW3538 population 48 V-compatible.
 
-If the source can exceed approximately 50 V continuously, revisit:
+Rev-A D1 has a 48 V stand-off rating and OVLO is approximately 56.4 V nominal;
+neither enforces the 30 V operating limit nor protects the SW3538's 36 V
+recommended input maximum. Enforce the current population's voltage limit at
+the source. The 48 V/50 V calculations elsewhere in this handoff are component
+stress/future-design studies, not permission to power this populated carrier at
+those voltages. Supply tolerance and transients are not additional nominal
+system ratings.
+
+For a future 48 V carrier, define supply tolerance and transients and revisit:
 
 - TVS selection
 - INA237 85 V bus/common-mode limit
@@ -155,7 +159,7 @@ If the source can exceed approximately 50 V continuously, revisit:
 # 4. Functional architecture
 
 ```text
-                         24 V initial / 48–50 V prototype
+                         Rev A: 24 V nominal / 30 V maximum
                                          │
                                   J1 DC + CAN-FD
                                          │
@@ -243,9 +247,10 @@ Any substitute must have a manufacturer-specified DC/pulsed linear-mode SOA that
 
 Q1 is currently expected to be one of the more expensive and sourcing-sensitive parts in the design, so it should be treated as a procurement-review item before production.
 
-## 5.2 Comparison with the backplane-prototype switch
+## 5.2 Historical comparison with the backplane-prototype switch
 
-The `backplane-prototype` uses the following discrete per-slot switch:
+The earlier `backplane-prototype` revision used the following discrete per-slot
+switch (this is not the current consolidated `hardware/boards/backplane`):
 
 - Vishay `SQD50P06-15L_GE3`, 60 V P-channel MOSFET in TO-252/DPAK
 - BSS123 N-channel MOSFET to pull the P-MOS gate down
@@ -283,7 +288,7 @@ Reasons:
 - appropriate margin for a future 48 V bus
 - synchronous architecture: no external freewheel diode
 - 1 A output capability, far above expected housekeeping consumption
-- suitable for direct conversion from the intended 24–50 V prototype range to 3.3 V
+- suitable as a housekeeping converter for the 24–48 V nominal system architecture; the present SW3538 carrier remains limited to 24 V nominal / 30 V maximum
 - common regulator and inductor BOM with the backplane
 
 Expected housekeeping current is dominated by:
@@ -647,6 +652,13 @@ UVLO falling: ~17.8 V
 
 This prevents the 140 W branch from trying to operate on a substantially collapsed source.
 
+These are typical thresholds, not a 20 V nominal-input or guaranteed-startup
+specification. With the LMX5069's 25 °C threshold/hysteresis limits and ±1%
+R4/R5 resistors, turn-on can reach approximately **22.56 V**. The system is
+24–48 V nominal, with this carrier limited to 24 V nominal / 30 V maximum;
+specify supply tolerance and harness drop and validate cold/hot startup at the
+carrier connector. Do not lower UVLO solely to meet an unstated 20 V requirement.
+
 ## 8.2 OVLO
 
 ```text
@@ -664,7 +676,10 @@ OVLO rising:  ~56.4 V
 OVLO falling: ~54.4 V
 ```
 
-These values permit normal operation through 48 V while providing a hardware shutdown well below the 100 V pass FET rating.
+These divider values do not enforce the current carrier's 30 V input limit or
+the SW3538's 36 V recommended maximum. They must not be interpreted as 48 V
+compatibility. A future 48 V carrier needs protection coordinated with its own
+module ratings; the present population's voltage limit must be enforced upstream.
 
 ---
 
@@ -1052,12 +1067,14 @@ Place immediately behind the input connector with very short high-current and gr
 
 ## TVS validation concern
 
-The proposed SMCJ48A is an appropriate starting point at the 48 V
-characterization point, but 50 V is above its stated stand-off rating. Sustained
-48–50 V operation and transient behavior must be measured on the first boards;
-the production TVS or supported voltage range may need revision.
+The populated SMCJ48A must be qualified for transients on the current 24 V
+nominal / 30 V maximum system, including voltage at MOD1. It does not clamp
+the input to the SW3538's recommended range. Any 48 V/50 V TVS characterization
+belongs to a future appropriately rated carrier or a separately reviewed test
+fixture with the SW3538 removed, not to a populated Rev-A carrier.
 
-The important limiting device is the INA237:
+For raw-bus transients, the INA237 is one important limiting device; this does
+not supersede MOD1's lower input-voltage limit:
 
 ```text
 INA237 maximum bus/common-mode range: 85 V
@@ -1811,7 +1828,8 @@ The PCB implements the internal planes as the `GND_IN1` and `GND_IN2` zones. Ref
 
 ## 22.10 JLCPCB fabrication rules
 
-`carrier.kicad_dru` ports the JLCPCB-specific custom rules from `backplane-prototype`:
+`carrier.kicad_dru` ports the JLCPCB-specific custom rules from the backplane
+(formerly `backplane-prototype`):
 
 - through vias only; blind, buried, and microvias disallowed
 - 0.255 mm minimum PTH annular ring for the selected 1 oz outer-copper process
@@ -1902,8 +1920,8 @@ A converter behaving approximately as a constant-power load during startup can m
 Bench-test:
 
 - 24 V startup
-- 36 V startup
-- 48 V startup
+- low-line startup using the specified 24 V source tolerance and harness drop
+- startup up to the current carrier's 30 V input limit
 - no USB load
 - moderate USB load
 - maximum allowed USB load if the module permits it immediately after power-up
@@ -1948,11 +1966,11 @@ Validate SMCJ48A clamp behavior on actual hardware.
 
 The INA237 85 V bus/common-mode maximum is one of the tightest upper-voltage constraints.
 
-The first production configuration is 24 V nominal and 100 W maximum. The
-future prototype objective is approximately 48–50 V nominal input for a
-240 W, 48 V / 5 A USB-C EPR implementation. Sustained input above approximately
-50 V is explicitly unsupported; supply tolerance and ripple must be included
-when enforcing that boundary.
+The first production configuration is 24 V nominal input, 30 V maximum input,
+and 100 W maximum output. The backplane/system intent is 24–48 V nominal;
+48 V use requires a second-generation carrier with a suitably rated module and
+protection. The following high-voltage margins are component stress studies,
+not operating instructions or a voltage rating for the populated Rev-A carrier.
 
 Current first-pass voltage margins, using the populated Rev-A values, are:
 
@@ -1972,6 +1990,11 @@ OVLO trip depending on component corners. OVLO only turns off the switched PD
 branch; it cannot protect D1 or the always-on housekeeping branch from an
 excessive sustained raw input.
 
+For the current 24 V nominal / 30 V maximum population, qualify the TVS and
+upstream fault-interruption coordination at the actual harness and module.
+The 48 V/49 V/50 V checks below are reserved for a future carrier or a separately
+reviewed fixture without the SW3538; never perform them on populated Rev A.
+
 Before closing this release gate:
 
 - retain the archived exact Hongjiacheng `SMCJ48A` family datasheet for
@@ -1981,7 +2004,7 @@ Before closing this release gate:
   operation; replace D1 or narrow the supported range if it does not remain
   acceptably cool
 - decide whether the 49.8 V first-order minimum OVLO corner gives enough
-  nuisance-trip margin for the intended 48–50 V prototype range, and obtain a
+  nuisance-trip margin for a future 48 V carrier's specified tolerance range, and obtain a
   defensible full-temperature threshold bound
 - check the TVS maximum clamp at the credible surge current against every
   raw-VCC absolute maximum, especially INA237, Q1, U2, U3, and the 100 V
@@ -2097,9 +2120,11 @@ If this clearance is unavailable, the carrier outline or mechanical stack must c
 Perform bring-up on one board at a time with a current-limited source, suitable
 upstream fuse, remote power disconnect, and temperature monitoring. Record the
 board serial/revision, supply, harness, ambient temperature, load, firmware,
-probe locations, and saved waveforms. Do not proceed to the 48–50 V tests until
-the 24 V checks pass. Use appropriately rated differential/isolated probes for
-high-side and shunt measurements, and verify probe common-mode limits before
+probe locations, and saved waveforms. Keep the current population at 24 V
+nominal and at or below 30 V input; 48 V/50 V tests require a new carrier and
+suitably rated module/protection, not merely successful 24 V tests. Use
+appropriately rated differential/isolated probes for high-side and shunt
+measurements, and verify probe common-mode limits before
 connecting them.
 
 | Stage | Tests and measurements | Evidence to retain |
@@ -2111,14 +2136,15 @@ connecting them.
 | CAN-FD | Test with and without endpoint termination as appropriate at the intended arbitration/data rates. Scope CANH/CANL at J1 and U5; record differential amplitude, common-mode level, ringing, error counters, and long-duration traffic errors. | Bus waveforms and error-rate/test-duration record. |
 | INA237 | Compare bus voltage and shunt/current readings against calibrated DMM/electronic-load measurements at several currents, including zero, moderate load, and the 100 W operating point. Verify ALERT. | Calibration/error table. |
 | MOD1/I²C | Verify module discovery/configuration and powered-off SDA/SCL levels. Check for clamp distortion or measurable back-power with MOD1 unpowered. | Logic-analyzer captures and powered-off current/voltage readings. |
-| Normal hot-swap startup | At 24 V, capture VCC, HS_SENSE, PD_VIN_SW, Q1 VGS/VDS, R1 differential voltage, TIMER, supply current, and PD_PGOOD with no USB load, moderate load, and the allowed maximum load. Repeat at 36 V and 48 V only after the preceding cases pass. | Startup waveforms proving valid startup completes without TIMER timeout and with acceptable Q1 stress. |
+| Normal hot-swap startup | At 24 V, capture VCC, HS_SENSE, PD_VIN_SW, Q1 VGS/VDS, R1 differential voltage, TIMER, supply current, and PD_PGOOD with no USB load, moderate load, and the allowed maximum load. Repeat at the specified low-line corner and up to the current 30 V input limit; no 36 V/48 V testing with the SW3538 population. | Startup waveforms proving valid startup completes without TIMER timeout and with acceptable Q1 stress. |
 | Controlled fault/SOA | With a protected current-limited setup, apply a downstream short or controlled overload. Measure actual current/power limit, TIMER duration, Q1 VDS/ID, PD_PGOOD, retry interval/duty cycle, and Q1 case temperature. Stop testing if temperature or voltage approaches a device limit. | Worst-case single-pulse and repeated-retry waveforms plus temperature history. |
-| 48–50 V characterization | Slowly ramp the input and measure OVLO rising/falling thresholds on multiple boards at room temperature and, if possible, hot/cold. At 48 V, 49 V, and 50 V measure D1 current and body temperature, raw-VCC current, +3V3 regulation, and unexpected OVLO cycling. Do not leave 50 V operation unattended until this passes. | Per-board threshold table and D1 current/temperature plots. |
+| Future-carrier high-voltage qualification only | Use a second-generation carrier with a suitably rated module and coordinated protection. Define the 48 V nominal source's tolerance/transients, then measure OVLO, D1 current/temperature, +3V3 regulation, module input stress, and startup across temperature. This is not a Rev-A SW3538 test. | New-revision voltage/protection qualification record. |
 | Hot-plug/transients | Using the intended supply, upstream protection, and cable/harness, capture J1/VCC during connection, removal, branch turn-off, and fault interruption. Probe at D1 and the INA237/U2 supply points with a low-inductance technique. | Peak voltage and pulse-duration records demonstrating margin to the 85 V INA237 limit and every other absolute maximum. |
 | Full-load thermal | Run the first configuration at 24 V input and 100 W output to thermal equilibrium in the intended enclosure/airflow. Measure J1, copper, R1, Q1, U2, L1, D1, MOD1, and nearby capacitor temperatures. | Ambient-referenced temperature table and thermal images. |
 | System sequencing | Populate the intended number of slots and verify sequential startup, upstream-bus droop/inrush, fuse/current-monitor behavior, CAN traffic, and recovery from one failed/shorted carrier. | Multi-slot startup/fault captures and protection trip record. |
 
-Any later 240 W experiment requires a compatible EPR module, cable/connector
+Any later 48 V-input or 240 W experiment requires a new carrier revision,
+compatible module/protection, and, for 240 W, an EPR module, cable/connector
 path, firmware policy, load, and a new end-to-end power/thermal review; the
 carrier component choices alone do not establish a 240 W product rating.
 
@@ -2216,9 +2242,10 @@ Power-generation envelope:
 Current product limit       100 W
 Rev-A carrier architecture  140 W capable
 Prototype program target    240 W EPR (48 V / 5 A); validation/review required
-Initial nominal input       24 V
-Future characterization     approximately 48–50 V nominal
-Unsupported sustained input above approximately 50 V
+System/backplane nominal    24–48 V
+Current carrier nominal     24 V
+Current carrier maximum     30 V (enforce at source; OVLO does not enforce this)
+Future 48 V operation       Requires a second-generation carrier/module/protection
 ```
 
 Backplane/carrier interface:
@@ -2232,7 +2259,7 @@ Carrier generates local 3.3 V with LM5164
 The current intended architecture is:
 
 ```text
-24 V initial; 48–50 V future prototype characterization
+Current carrier: 24 V nominal / 30 V maximum; future 48 V requires a new revision
    │
    ├── SMCJ48A input TVS
    │
@@ -2278,6 +2305,7 @@ expected PD startup ≈ 8–9 ms typical at 48 V
 
 UVLO rising  ≈ 19.8 V
 UVLO falling ≈ 17.8 V
+UVLO rising high corner ≈ 22.56 V at 25 °C; no guaranteed 20 V startup requirement
 
 OVLO rising  ≈ 56.4 V
 OVLO falling ≈ 54.4 V

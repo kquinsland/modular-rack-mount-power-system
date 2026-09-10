@@ -10,6 +10,11 @@ elif [[ -n "${1:-}" ]]; then
   exit 2
 fi
 
+while IFS= read -r image; do
+  echo "generated/publication raster must be WebP: $image" >&2
+  failure=1
+done < <(find site/content docs/assets/generated/pcbs -type f \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' \))
+
 while IFS= read -r -d '' worklog; do
   filename="${worklog##*/}"
   if [[ ! "$filename" =~ ^wl\.([0-9]{4}-[0-9]{2}-[0-9]{2})\ -\ [A-Za-z0-9][A-Za-z0-9._+\ -]*\.md$ ]]; then

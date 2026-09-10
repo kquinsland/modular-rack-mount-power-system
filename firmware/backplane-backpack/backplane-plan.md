@@ -1,6 +1,10 @@
 # Backplane Backpack Firmware and Tooling Implementation Plan
 
-Everything below describes firmware that will run on the [`backplane-backpack` board](../../hardware/boards/backplane-backpack/README.md) and a host-side CLI for discovery, commissioning, and control.
+Everything below describes firmware for the retired `backplane-backpack` board
+(available in Git history) and a host-side CLI for discovery, commissioning, and
+control. The current consolidated hardware is
+[`backplane`](../../hardware/boards/backplane/README.md); this plan does not
+constitute a firmware port to its different pinout and peripheral architecture.
 
 > [!IMPORTANT]
 > This was the original detailed design input. The reviewed execution plan in
@@ -10,6 +14,12 @@ Everything below describes firmware that will run on the [`backplane-backpack` b
 > supported mask, SW3538/100 W scope, persistent policy and emergency latch,
 > multiple requester IDs, exact-version operational compatibility, and repository
 > integration.
+
+The implemented workspace now lives entirely under `firmware/`. See the
+[workspace README](../README.md) for current paths and commands; the proposed
+tree and command wishlist below are historical design input. Protocol docs are
+in [`firmware/docs/pdcan/`](../docs/pdcan/), and all direct Cargo commands run
+from `firmware/`.
 
 ## 1. Purpose
 
@@ -1044,7 +1054,8 @@ Recommended approach:
 4. the full 96-bit UID remains authoritative in the CAN-FD payload;
 5. the CLI may perform multiple rounds with different nonces and merge results.
 
-The executable pre-v1 layout is documented in `docs/pdcan/protocol.md` and remains
+The executable pre-v1 layout is documented in
+[`firmware/docs/pdcan/protocol.md`](../docs/pdcan/protocol.md) and remains
 unfrozen until Rev A HIL acceptance.
 
 ### 15.5 Identify

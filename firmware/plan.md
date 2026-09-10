@@ -3,7 +3,15 @@
 - Status: Draft for review
 - Scope: Backplane Backpack firmware, shared PDCAN crates, host CLI, documentation, and repository integration
 - Source plan: [`backplane-backpack/backplane-plan.md`](backplane-backpack/backplane-plan.md)
-- Target hardware: [`hardware/boards/backplane-backpack`](../hardware/boards/backplane-backpack/)
+- Original target hardware: retired `hardware/boards/backplane-backpack` (Git
+  history). Current hardware is [`backplane`](../hardware/boards/backplane/);
+  this historical firmware plan is not a completed port to the consolidated PCB.
+
+Repository-layout update: the implemented Cargo workspace, toolchain, crates,
+host tools, `xtask`, and protocol docs now all live under `firmware/`. The
+original review discussion and proposed root-level trees below are retained as
+historical context, not current checkout instructions. Use [README.md](README.md)
+for current paths and commands; direct Cargo commands run from `firmware/`.
 
 > RPLY: Note! The current revA hardware is targeting the sw3538 PD controller. You can see the registers here: docs/data-sheets/iSmartWare/sw3538.registry.pdf
 
@@ -1439,13 +1447,13 @@ Recommended long-term ownership:
 firmware/backplane-backpack/backplane-plan.md:
     temporary implementation roadmap/checklist
 
-docs/pdcan/protocol.md:
+firmware/docs/pdcan/protocol.md:
     authoritative wire protocol
 
-docs/pdcan/commissioning.md:
+firmware/docs/pdcan/commissioning.md:
     authoritative commissioning workflow
 
-docs/pdcan/firmware-architecture.md:
+firmware/docs/pdcan/firmware-architecture.md:
     tasks, core/action boundary, recovery, timing, and board model
 
 docs/decisions/:

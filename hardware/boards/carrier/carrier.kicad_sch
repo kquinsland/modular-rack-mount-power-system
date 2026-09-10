@@ -1169,7 +1169,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "LED:WS2812B-2020"
+		(symbol "mini-rack-power:WS2812B-4020-V6"
 			(pin_names
 				(offset 0.254)
 			)
@@ -1189,7 +1189,7 @@
 					(justify right bottom)
 				)
 			)
-			(property "Value" "WS2812B-2020"
+			(property "Value" "WS2812B-4020-V6"
 				(at 1.27 -5.715 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1200,7 +1200,7 @@
 					(justify left top)
 				)
 			)
-			(property "Footprint" "LED_SMD:LED_WS2812B-2020_PLCC4_2.0x2.0mm"
+			(property "Footprint" "mini-rack-power:LED_Worldsemi_WS2812B-4020-V6_SideView"
 				(at 1.27 -7.62 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1212,7 +1212,7 @@
 					(justify left top)
 				)
 			)
-			(property "Datasheet" "https://cdn-shop.adafruit.com/product-files/4684/4684_WS2812B-2020_V1.3_EN.pdf"
+			(property "Datasheet" "https://datasheet.lcsc.com/datasheet/pdf/3c7446a2926b999c6958534e0b9b6a1a.pdf?productCode=C52941387"
 				(at 2.54 -9.525 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1224,7 +1224,7 @@
 					(justify left top)
 				)
 			)
-			(property "Description" "RGB LED with integrated controller, 2.0 x 2.0 mm, 12 mA"
+			(property "Description" "Side-view RGB LED with integrated WS2812-compatible controller, 3.3 V capable, 3.98 x 2.00 x 1.70 mm"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1235,7 +1235,7 @@
 					)
 				)
 			)
-			(property "ki_keywords" "RGB LED NeoPixel Nano addressable"
+			(property "ki_keywords" "RGB LED NeoPixel addressable side-view right-angle"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1246,7 +1246,7 @@
 					)
 				)
 			)
-			(property "ki_fp_filters" "LED*WS2812*-2020_PLCC4*"
+			(property "ki_fp_filters" "*WS2812B*4020-V6*SideView*"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1257,7 +1257,7 @@
 					)
 				)
 			)
-			(symbol "WS2812B-2020_0_0"
+			(symbol "WS2812B-4020-V6_0_0"
 				(text "RGB"
 					(at 2.286 -4.191 0)
 					(effects
@@ -1267,7 +1267,7 @@
 					)
 				)
 			)
-			(symbol "WS2812B-2020_0_1"
+			(symbol "WS2812B-4020-V6_0_1"
 				(polyline
 					(pts
 						(xy 1.27 -2.54) (xy 1.778 -2.54)
@@ -1364,7 +1364,7 @@
 					)
 				)
 			)
-			(symbol "WS2812B-2020_1_1"
+			(symbol "WS2812B-4020-V6_1_1"
 				(pin output line
 					(at 7.62 0 180)
 					(length 2.54)
@@ -1375,7 +1375,7 @@
 							)
 						)
 					)
-					(number "1"
+					(number "3"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1393,7 +1393,7 @@
 							)
 						)
 					)
-					(number "2"
+					(number "4"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1411,7 +1411,7 @@
 							)
 						)
 					)
-					(number "3"
+					(number "1"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1429,7 +1429,7 @@
 							)
 						)
 					)
-					(number "4"
+					(number "2"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -4460,6 +4460,17 @@
 			(embedded_fonts no)
 		)
 	)
+	(text "CURRENT CARRIER INPUT: 24 V nominal, 30 V maximum.\nBackplane/system intent: 24-48 V nominal; 48 V requires a new carrier revision.\nTODO: Verify upstream fuse/current-limit and D1 surge coordination on the real harness.\nMeasure peaks at U2, U4 and MOD1; protect every device, not only the 85 V INA237.\nThe present TVS/OVLO does not enforce the 30 V input limit; enforce it at the source."
+		(exclude_from_sim no)
+		(at 100.33 58.42 0)
+		(effects
+			(font
+				(size 1.05 1.05)
+			)
+			(justify left bottom)
+		)
+		(uuid "00ff6d39-acbc-4db1-9763-d3f335f0432f")
+	)
 	(text "LOCAL 3.3 V HOUSEKEEPING BUCK"
 		(exclude_from_sim no)
 		(at 20.32 93.98 0)
@@ -4495,9 +4506,9 @@
 		)
 		(uuid "231e2050-8460-44bb-b955-0f1a66079306")
 	)
-	(text "LM5164 Type-3 ripple injection; nominal 3.3 V / ~300 kHz. Keep SW/BST/ripple loop compact during PCB layout.\nTODO: During bring-up, measure VIN ringing directly at U2 pin 2 using a short ground spring."
+	(text "LM5164 Type-3 ripple injection; nominal 3.3 V / ~300 kHz. Keep SW/BST/ripple loop compact during PCB layout.\nTODO: During bring-up, measure VIN ringing directly at U2 pin 2 using a short ground spring.\nTODO: Verify effective C3/C4 input and C8 output capacitance with DC bias, tolerance and temperature.\nTODO: Qualify U2/L1/capacitor temperatures and +3V3 transients with maximum MCU/CAN/LED load and worst enclosure airflow."
 		(exclude_from_sim no)
-		(at 20.32 99.06 0)
+		(at 20.32 103.124 0)
 		(effects
 			(font
 				(size 1.05 1.05)

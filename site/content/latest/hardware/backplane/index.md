@@ -9,10 +9,14 @@ distribution on one PCB. The prototype board outline, airflow cutouts, mounting
 features, and slot locations provide the mechanical foundation for the current
 design.
 
-![Placeholder for the consolidated backplane PCB render](backplane.png)
+![Consolidated backplane, top side](backplane.webp)
 
-_Placeholder illustration. Release tooling will replace this image with the
-current PCB render._
+![Consolidated backplane, bottom side](backplane-bottom.webp)
+
+_Generated from the committed PCB. Render provenance is recorded in
+[renders.json](renders.json); a preview does not establish fabrication readiness._
+
+[Interactive assembly BOM](/assembly/backplane-ibom.html)
 
 ## Responsibilities
 
@@ -23,6 +27,11 @@ current PCB render._
 - Control two independent 3-wire fan power switches and read both tachometers.
 - Support an externally powered DS18B20 temperature sensor.
 - Expose SWD for controller programming and debug.
+
+The backplane is designed for 24–48 V nominal input. The current SW3538 carrier
+limits the first population to 24 V nominal and 30 V maximum; a new carrier
+revision is required for 48 V operation. Do not fit current carriers to a 48 V
+bus. These design targets remain subject to first-article qualification.
 
 Each carrier slot has four electrical contacts: `VIN_BUS`, ground, CAN high,
 and CAN low. There is no backplane-to-carrier I²C bus and no per-slot logic
@@ -37,4 +46,4 @@ as fabrication-ready merely because production-export tooling can generate an
 archive.
 
 Detailed implementation notes remain in the
-[backplane README](https://github.com/kquinsland/modular-rack-power/blob/main/hardware/boards/backplane-prototype/README.md).
+[backplane README](https://github.com/kquinsland/modular-rack-power/blob/main/hardware/boards/backplane/README.md).

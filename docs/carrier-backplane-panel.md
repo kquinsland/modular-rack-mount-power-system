@@ -1,83 +1,47 @@
 # Carrier and backplane fabrication panel
 
-Build the complete release, including its top-side PNG render, with:
+The current build commands and artifact paths are in the
+[release tooling guide](../.kibot/release/README.md). The architecture and Mermaid
+diagrams are in [pcb-release-pipeline-refactor.md](pcb-release-pipeline-refactor.md).
 
 ```sh
+mise run release:setup
+mise run docs:pcb-renders
+mise run docs:pcb-iboms
 mise run panel:build
 ```
 
-This also generates top- and bottom-side documentation PNGs for both source
-boards, a top-side panel PNG, and a provenance manifest under
-`docs/assets/generated/pcbs/`:
+Preview WebPs are written to the Hugo page bundles for the carrier, backplane,
+and hardware section. `panel:build` uses the new gated pipeline and publishes to
+`releases/pcb-release/`. The original Rev A pipeline and generated package are
+retained for comparison while the new full release receives acceptance testing.
 
-- `carrier-rev-a-top.png`
-- `carrier-rev-a-bottom.png`
-- `backplane-prototype-rev-a-top.png`
-- `backplane-prototype-rev-a-bottom.png`
-- `carrier6-backplane1-rev-a-top.png`
-- `renders.json`
+## Historical Rev A documentation renders
 
-To rebuild the PNGs without exporting the fabrication bundles, run:
-
-```sh
-mise run docs:pcb-renders
-```
-
-Generate the carrier and backplane InteractiveHtmlBom pages with:
-
-```sh
-mise run docs:pcb-iboms
-```
-
-This task first runs `docs:pcb-renders`, ensuring that the iBOMs use the same
-Git revision as the PNGs and panel. It currently uses the official
-KiBot container because KiBot is not installed on the host and the host's
-KiCad 10/Python 3.14 bindings require a `SwigPyIterator` compatibility patch
-when InteractiveHtmlBom runs directly. The task contains a note to revisit the
-container once the host toolchain no longer needs that workaround. Podman is
-required, and the first run pulls the pinned image. `KIBOT_IMAGE` can override
-the default image for testing.
-
-All three commands are file-based mise tasks under `.mise/tasks/`, so their
-multi-command implementations do not add noise to `mise.toml`.
-
-## Documentation renders
-
-The individual images are rendered from the committed board files at the build
-revision, not from uncommitted PCB files in the worktree. Repository-local 3D
-models are staged at their original relative paths so `${KIPRJMOD}` references
-resolve exactly as they do in the source projects. `renders.json` records the
-revision, panel build hash, KiCad version, side, and actual output dimensions.
-
-The iBOM configuration marks footprints carrying KiCad's native DNP flag as not
-fitted. The generated assembly tables therefore match the released BOMs: 57
-carrier references and 67 backplane references. Manufacturer, MPN, and LCSC
-fields are included alongside value and footprint.
-
-KiBot reports expected warnings about the container having no personal KiCad
-configuration, an unreferenced `REF**` board graphic, and backplane mounting
-holes `H7`/`H8` being matched by reference rather than UUID. These do not alter
-the generated fitted-reference counts.
+The images below are the previously committed renders, converted losslessly to
+WebP. Their original source revision is retained in
+[the historical manifest](assets/generated/pcbs/renders.json). Current previews
+and manifests belong to the Hugo content bundles instead.
 
 ### Carrier Rev A
 
-![Carrier Rev A top-side render](assets/generated/pcbs/carrier-rev-a-top.png)
+![Carrier Rev A top-side render](assets/generated/pcbs/carrier-rev-a-top.webp)
 
-![Carrier Rev A bottom-side render](assets/generated/pcbs/carrier-rev-a-bottom.png)
+![Carrier Rev A bottom-side render](assets/generated/pcbs/carrier-rev-a-bottom.webp)
 
 [Open the carrier InteractiveHtmlBom](assets/generated/pcbs/carrier-rev-a-ibom.html)
 
 ### Backplane prototype Rev A
 
-![Backplane prototype Rev A top-side render](assets/generated/pcbs/backplane-prototype-rev-a-top.png)
+![Backplane prototype Rev A top-side render](assets/generated/pcbs/backplane-prototype-rev-a-top.webp)
 
-![Backplane prototype Rev A bottom-side render](assets/generated/pcbs/backplane-prototype-rev-a-bottom.png)
+![Backplane prototype Rev A bottom-side render](assets/generated/pcbs/backplane-prototype-rev-a-bottom.webp)
 
 [Open the backplane prototype InteractiveHtmlBom](assets/generated/pcbs/backplane-prototype-rev-a-ibom.html)
 
 ### Six-carrier/one-backplane panel
 
-![Six-carrier/one-backplane panel top-side render](assets/generated/pcbs/carrier6-backplane1-rev-a-top.png)
+![Six-carrier/one-backplane panel top-side render](assets/generated/pcbs/carrier6-backplane1-rev-a-top.webp)
 
 The Rev A customer panel combines six carrier PCBs and one backplane-prototype
 PCB into one fabrication and top-side assembly unit. The generated result is
@@ -91,9 +55,9 @@ uses the heavier backplane construction: four layers, 1.6 mm FR-4, ENIG,
 2 oz outer copper, and 1 oz inner copper. Both vendors advertise this copper
 combination, but it must be confirmed during engineering review before payment.
 
-## Source authority
+## Historical Rev A source authority
 
-The `panel:build` task first regenerates the carrier and backplane production
+In the original Rev A implementation, `panel:build` first regenerated the carrier and backplane production
 packages. Both production checks must pass before panelization starts. The
 builder verifies that each validation manifest identifies the selected Git
 revision, consumes the freshly exported BOMs, and materializes both KiCad boards

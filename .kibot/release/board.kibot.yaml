@@ -1,0 +1,43 @@
+kibot:
+  version: 1
+
+filters:
+  - name: native_dnp
+    type: generic
+    exclude_kicad_dnp: true
+
+outputs:
+  - name: normalized_bom
+    type: bom
+    options:
+      output: bom.csv
+      format: CSV
+      dnf_filter: native_dnp
+      exclude_filter: _null
+      group_fields: [Value, Footprint, LCSC, Manufacturer, MPN]
+      merge_blank_fields: false
+      ref_separator: ', '
+      columns:
+        - field: References
+          name: Designator
+        - field: Quantity Per PCB
+          name: Quantity
+        - Value
+        - Footprint
+        - field: LCSC
+          name: 'LCSC Part #'
+        - Manufacturer
+        - MPN
+      csv:
+        hide_pcb_info: true
+        hide_stats_info: true
+  - name: raw_positions
+    type: position
+    options:
+      output: raw-positions.csv
+      format: CSV
+      only_smd: false
+      separate_files_for_front_and_back: false
+      use_aux_axis_as_origin: true
+      dnf_filter: native_dnp
+      right_digits: 6

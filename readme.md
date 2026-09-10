@@ -11,23 +11,29 @@ Hardware, firmware, and host tooling for a modular mini-rack power system.
 
 ## Boards
 
-- `backplane-backpack`: Active STM32C092 controller. It connects to CAN-FD,
-  manages as many as eight logical I2C/PD ports, and controls the fan/status LED.
-  Rev A physically exposes ports 0 through 5.
-- `backplane`: Hosts carrier slots and distributes the nominal 24 V power bus.
+- `backplane`: Consolidated STM32C092/CAN-FD backplane, formerly named
+  `backplane-prototype`; hosts six carrier slots, power distribution, current
+  monitoring, fan control, and status LED.
 - `carrier`: Mates with one backplane slot and hosts an SW3538 USB-C PD module.
 
-The former WT32 `controller` design is superseded. Its design files remain as
-project history but it is not part of the active firmware architecture.
+The former split backplane/backpack and WT32 controller projects are retired;
+their sources remain in Git history. Shared symbols are kept in the common
+library directory. The existing backpack firmware is retained as a legacy
+target; moving/renaming the hardware does not port its pinout or peripheral model
+to the consolidated board.
 
 ## Layout
 
 ```text
-crates/
 firmware/
+  Cargo.toml
+  backplane-backpack/
+  crates/
+  tools/
+  xtask/
+  docs/pdcan/
 hardware/
   boards/
-    backplane-backpack/
     backplane/
     carrier/
   libraries/
@@ -36,7 +42,6 @@ hardware/
     3dmodels/
   mechanical/
 docs/
-tools/
 scripts/
 build/
 releases/
@@ -44,8 +49,10 @@ releases/
 
 `build/` is for generated local outputs. `releases/` is for fabrication packages that should be preserved exactly as sent to a board house.
 
-See [`firmware/plan.md`](firmware/plan.md) for the reviewed implementation and
-repository-integration plan.
+See [`firmware/README.md`](firmware/README.md) for workspace commands and the
+legacy firmware's hardware limitations. Run `mise run firmware:check` from this
+directory, or run Cargo commands from `firmware/`. The reviewed implementation
+plan is kept in [`firmware/plan.md`](firmware/plan.md).
 
 ## Documentation site
 

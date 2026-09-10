@@ -8,10 +8,14 @@ One carrier mates with each backplane slot and hosts one user-installed power
 output module. It receives unswitched DC plus CAN-FD from the backplane and
 generates its own 3.3 V housekeeping rail.
 
-![Placeholder for the carrier PCB render](carrier.png)
+![Carrier PCB, top side](carrier.webp)
 
-_Placeholder illustration. Release tooling will replace this image with the
-current PCB render._
+![Carrier PCB, bottom side](carrier-bottom.webp)
+
+_Generated from the committed PCB. Render provenance is recorded in
+[renders.json](renders.json); a preview does not establish fabrication readiness._
+
+[Interactive assembly BOM](/assembly/carrier-ibom.html)
 
 ## Responsibilities
 
@@ -28,9 +32,12 @@ The carrier's housekeeping electronics connect ahead of the module current
 shunt. Module telemetry therefore excludes the carrier controller, CAN
 transceiver, and status LED consumption.
 
-The initial population is operated as a nominal 24 V, 100 W system. Although
-some component choices support future higher-voltage experiments, 48–50 V and
-240 W operation is not a released capability.
+The initial population is operated as a nominal 24 V, 100 W system, with a
+30 V maximum carrier input. This carrier is the limiting factor in the
+24–48 V nominal backplane/system architecture. A second-generation carrier
+with a suitably rated module and protection is required for 48 V input;
+the current SW3538 population must not be tested at 48 V. Future 240 W
+operation also requires a new end-to-end qualification.
 
 See the detailed
 [carrier hardware handoff](https://github.com/kquinsland/modular-rack-power/blob/main/hardware/boards/carrier/hardware-handoff.md)

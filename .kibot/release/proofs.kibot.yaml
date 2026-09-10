@@ -1,0 +1,20 @@
+kibot:
+  version: 1
+outputs:
+  - name: top_proof
+    type: pcbdraw
+    options:
+      output: top.png
+      format: png
+      dpi: 300
+      show_components: none
+      show_solderpaste: false
+  - name: bottom_proof
+    type: pcbdraw
+    options:
+      output: bottom.png
+      format: png
+      bottom: true
+      dpi: 300
+      show_components: none
+      show_solderpaste: false

@@ -4,9 +4,10 @@ Track the system and per-slot power assumptions here.
 
 | Item | Working value | Notes |
 | --- | ---: | --- |
-| Backplane nominal input | 24 V | Final supply tolerance remains to be documented. |
+| Backplane/system nominal input | 24–48 V | Designed for both carrier generations; final supply tolerance and first-article qualification remain open. |
+| Current carrier input envelope | 24 V nominal; 30 V maximum | The populated SW3538 carrier limits the first revision. A future carrier revision is required for 48 V operation. |
 | Backplane sustained load target | Approximately 30 A | Six ports near 4.7 A input plus system margin. |
-| Carrier slot voltage | Nominal 24 V | Direct high-current backplane feed. |
+| Carrier slot voltage | Same as backplane input | Direct, unswitched feed; use 24 V nominal and never exceed 30 V while any current-generation carrier is fitted. |
 | Carrier slot input target | Approximately 4.7 A | 100 W output at 90% efficiency is approximately 4.63 A input. |
 | Carrier slots | 6 | One unswitched high-current feed per physical slot. |
 | USB-C PD policy ceiling | 100 W | Maximum 20 V, 5 A; no EPR or proprietary 7 A mode. |
@@ -43,11 +44,19 @@ The carrier's MCU-controlled hot-swap can disconnect the PD branch, but it is
 not an independent 100 W limiter. The 100 W value is a system operating target,
 not a backplane hardware current limit.
 
-The carrier hardware is also a prototype platform toward a later 240 W USB-C
-EPR goal of 48 V / 5 A. The first production population remains a 24 V-input,
-20 V / 5 A-output, 100 W system. Approximately 48–50 V nominal input is a
-future characterization case and is not a released rating until the carrier
-first-article TVS, OVLO, SOA, transient, and thermal tests pass.
+The backplane is intended for a 24–48 V nominal system. The current SW3538
+carrier is the limiting population: 24 V nominal input, 30 V maximum input,
+and 20 V / 5 A-output, 100 W operating policy. A second-generation carrier
+with a suitable module and coordinated protection is required for 48 V input;
+testing alone cannot qualify the existing SW3538 population for that voltage.
+The later 240 W USB-C EPR goal also requires a fresh power-path, TVS, OVLO,
+SOA, transient, and thermal review. The backplane does not convert or limit
+slot voltage, so a 48 V source must never be used with a current carrier fitted.
+
+There is no below-24 V nominal system requirement. Low-line tests account for
+supply tolerance and harness drop; they are not additional nominal ratings.
+The carrier UVLO turn-on corner can reach approximately 22.56 V at 25 °C,
+so specify the minimum voltage at the carrier and validate cold/hot startup.
 
 The consolidated backplane does not retain the old PCA9554-controlled per-slot
 FETs. All six slot feeds are present whenever `VIN_BUS` is energized, so upstream

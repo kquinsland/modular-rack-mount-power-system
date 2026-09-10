@@ -4,6 +4,13 @@
 
 Accepted. Supersedes decision 0002.
 
+Hardware update: the split backplane/backpack and WT32 controller KiCad projects
+have since been retired in favor of `hardware/boards/backplane` (formerly
+`backplane-prototype`). Their original sources remain in Git history. The
+firmware described below still targets the legacy revisions; a directory
+cleanup does not port it to the consolidated board. The original architectural
+rationale is retained below as historical context.
+
 ## Decision
 
 The active controller is one STM32C092-based Backplane Backpack per managed
@@ -19,10 +26,11 @@ The firmware and PDCAN data model support eight zero-based logical ports. Rev A
 physically exposes ports 0 through 5 and advertises a supported-port bitmap of
 `0x3F`; its mux channels 6 and 7 are test pads and are never probed as ports.
 
-The repository root is the Cargo workspace. Reusable `no_std` types, pure state
-management, protocol encoding, and generic drivers live under `crates/`;
-board-specific firmware remains under `firmware/backplane-backpack/`; Linux host
-tools live under `tools/`.
+The original repository-root Cargo workspace has since moved into `firmware/`.
+Reusable `no_std` types, pure state management, protocol encoding, and generic
+drivers live under `firmware/crates/`; board-specific firmware remains under
+`firmware/backplane-backpack/`; Linux host tools live under `firmware/tools/`.
+The shared workspace, dependency policy, and crate boundaries are unchanged.
 
 The WT32 controller architecture from decision 0002 is no longer active. Existing
 hardware sources remain as history, but firmware and current system/interface

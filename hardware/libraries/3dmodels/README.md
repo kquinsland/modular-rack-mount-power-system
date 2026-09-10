@@ -42,18 +42,30 @@ This model is kept in the repository because KiCad 10's stock
 `QFN-28_4x4mm_P0.5mm.step`, but that model is not present in the KiCad 10
 3D model library.
 
-## `Worldsemi_WS2812B-2020-V6.step`
+## `Worldsemi_WS2812B-4020_SideView.wrl` / `.step`
 
-Project-local mechanical model for the Worldsemi WS2812B-2020-V6 addressable
-LED. The model uses the nominal dimensions from the Worldsemi V6 datasheet in
-[`docs/data-sheets/WorldSemi/WS2812B-2020-V6.pdf`](../../../docs/data-sheets/WorldSemi/WS2812B-2020-V6.pdf):
+Colored EasyEDA housing model for the side-view 4020 LED used by LED1 on the
+carrier and backplane. The exact V6 listing, LCSC C52941387, has no EasyEDA 3D
+model, so this uses the same-package WS2812B-4020 model from
+[LCSC C965557](https://www.lcsc.com/product-detail/C965557.html), exported with
+`easyeda2kicad` 1.0.1. This is a mechanical visualization substitute only; the
+schematic, BOM, electrical pinout, and land pattern still specify the V6 part.
+The V6 manufacturer drawing is stored in
+[`WS2812B-4020-V6.pdf`](../../../docs/data-sheets/WorldSemi/WS2812B-4020-V6.pdf).
 
-- 2.20 mm x 2.00 mm overall package
-- 0.84 mm overall height
-- 0.28 mm substrate height
-- 1.13 mm center body width
-- four side contacts aligned with the footprint pads
+- EasyEDA model UUID: `12fb8a9d7ac5442fbdb526964b6e9ee0`.
+- Side-view mounted envelope: 3.98 mm X × 1.70 mm Y × 2.00 mm Z.
+- Emitting face points along model +Y (footprint -Y); no axis rotation or scaling.
+- Both formats are centered in XY, with the mounting face at Z = 0.
+- WRL is the colored render model; same-basename STEP supports mechanical export.
 
-This model is kept in the repository because KiCad's
-`LED_WS2812B-2020_PLCC4_2.0x2.0mm` footprint references a matching model name,
-but that model is not present in the KiCad 3D model library.
+Retrieve with `mise exec -- easyeda2kicad --lcsc_id C965557 --3d --output /tmp/led`.
+EasyEDA's raw STEP origin is translated by (+2.14, +0.85, +1.55) mm. The WRL
+exporter separately bakes a footprint-origin offset into its coordinates; recenter
+that mesh in XY and put its minimum Z at zero as well. STEP normalization used
+CadQuery 2.6.1; its exported geometry is uncolored. Do not rotate the housing to
+make the 2 mm dimension the footprint depth: that would turn the emitting face
+away from its side-view orientation.
+
+The obsolete 2 × 2 mm LED model was removed. Historical release snapshots that
+still refer to it must be viewed from their original Git revision.

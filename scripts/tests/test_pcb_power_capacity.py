@@ -72,7 +72,7 @@ class FormulaTests(unittest.TestCase):
 class BoardIntegrationTests(unittest.TestCase):
     def test_reads_checked_in_stackups(self) -> None:
         backplane = power.stackup_copper_thicknesses_um(
-            ROOT / "hardware/boards/backplane-prototype/backplane-prototype.kicad_pcb"
+            ROOT / "hardware/boards/backplane/backplane.kicad_pcb"
         )
         carrier = power.stackup_copper_thicknesses_um(
             ROOT / "hardware/boards/carrier/carrier.kicad_pcb"
