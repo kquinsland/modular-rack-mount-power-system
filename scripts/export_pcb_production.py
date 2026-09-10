@@ -443,6 +443,106 @@ def export_designators(config: BoardConfig, destination: Path) -> int:
     return len(references)
 
 
+def assembly_counts(bom_rows: list[dict[str, str]], footprints: dict) -> dict:
+    """Count the assembly BOM, not every physical object on the PCB."""
+    references = [
+        ref.strip() for row in bom_rows for ref in row["Designator"].split(",")
+    ]
+    if len(references) != len(set(references)):
+        raise RuntimeError("Duplicate reference in assembly report BOM")
+    parts = []
+    for ref in sorted(references, key=natural_ref_key):
+        if ref not in footprints:
+            raise RuntimeError(f"Assembly report cannot find PCB footprint {ref}")
+        part = footprints[ref]
+        if part["mount"] not in {"smd", "through_hole"}:
+            raise RuntimeError(f"Assembly report needs an SMD/THT attribute for {ref}")
+        # PCBWay's quote tooltip includes >16-pin ICs and >10-pin irregular
+        # SMD parts. U is the repository's IC reference convention; common IC
+        # package names also cover symbols with another reference prefix.
+        is_ic = bool(re.match(r"U\d+$", ref)) or bool(
+            re.search(r"(?:^|[_:])(?:[A-Z]*QF[NP]|[A-Z]*BGA|[A-Z]*SOP|SOIC|LGA)(?:[-_]|$)", part["footprint"])
+        )
+        special = part["mount"] == "smd" and part["pin_count"] > (16 if is_ic else 10)
+        parts.append({"reference": ref, **part, "pcbway_bga_qfp": special})
+    return {
+        "unique_parts": len({row["LCSC Part #"].strip() for row in bom_rows}),
+        "smd_parts": sum(p["mount"] == "smd" for p in parts),
+        "bga_qfp_parts": sum(p["pcbway_bga_qfp"] for p in parts),
+        "through_hole_parts": sum(p["mount"] == "through_hole" for p in parts),
+        "smt_contacts": sum(p["smt_contacts"] for p in parts),
+        "parts": parts,
+    }
+
+
+def export_assembly_report(config: BoardConfig, bom: Path, destination: Path) -> dict:
+    # Use KiCad's read-only board API; no editor or network lookup is required.
+    try:
+        import wx
+        wx.DisableAsserts()  # KiCad 10 enum registration assertions; see power tool.
+        import pcbnew
+    except ImportError as error:
+        raise RuntimeError("Assembly report requires KiCad's Python bindings (pcbnew)") from error
+    if not hasattr(pcbnew.SwigPyIterator, "next"):
+        pcbnew.SwigPyIterator.next = pcbnew.SwigPyIterator.__next__
+    board = pcbnew.LoadBoard(str(config.board))
+    footprints = {}
+    for fp in board.GetFootprints():
+        attr = fp.GetAttributes()
+        pads = [p for p in fp.Pads() if p.GetNumber() and p.IsOnCopperLayer()]
+        mount = "smd" if attr & pcbnew.FP_SMD else (
+            "through_hole" if attr & pcbnew.FP_THROUGH_HOLE else "unspecified"
+        )
+        classification = "footprint attribute"
+        if mount == "unspecified":
+            # Some custom inductors omit the footprint mount attribute.
+            # Infer only unambiguous homogeneous electrical pads.
+            pad_types = {p.GetAttribute() for p in pads}
+            if pad_types == {pcbnew.PAD_ATTRIB_SMD}:
+                mount = "smd"
+            elif pad_types == {pcbnew.PAD_ATTRIB_PTH}:
+                mount = "through_hole"
+            classification = "pad types (unspecified footprint attribute)"
+        footprints[fp.GetReference()] = {
+            "footprint": str(fp.GetFPID().GetLibItemName()),
+            "mount": mount,
+            "mount_classification": classification,
+            "pin_count": len({p.GetNumber() for p in pads}),
+            "smt_contacts": len({p.GetNumber() for p in pads if p.GetAttribute() == pcbnew.PAD_ATTRIB_SMD}),
+        }
+    counts = assembly_counts(read_csv(bom), footprints)
+    special_refs = ", ".join(p["reference"] for p in counts["parts"] if p["pcbway_bga_qfp"]) or "none"
+    destination.write_text(
+        f"# {config.label} — PCBWay assembly quote\n\n"
+        "Counts per single board, for the exported BOM/CPL assembly scope.\n\n"
+        "| PCBWay field | Enter |\n|---|---:|\n"
+        f"| Number of Unique Parts | {counts['unique_parts']} |\n"
+        f"| Number of SMD Parts | {counts['smd_parts']} |\n"
+        f"| Number of BGA/QFP Parts | {counts['bga_qfp_parts']} |\n"
+        f"| Number of Through-Hole Parts | {counts['through_hole_parts']} |\n\n"
+        "These are component counts, not pad counts or batch totals. The form's "
+        "'SMT Pads'/'Thru Holes' image labels are misleading; its tooltips specify parts. "
+        "BGA/QFP is a subset of SMD: ICs with more than 16 pins (including SOP/QFN), "
+        "plus other SMD parts with more than 10 pins. "
+        f"Qualifying references: {special_refs}.\n\n"
+        f"For reference only: **{counts['smt_contacts']} SMT contacts** "
+        "(distinct numbered copper SMD pads per component; repeated exposed-pad "
+        "segments count once; paste-only apertures do not count).\n\n"
+        "Unique parts are distinct LCSC part numbers in bom.csv. Only BOM references "
+        "are counted; DNP, hand-installed parts excluded from the BOM, test points, "
+        "tooling and artwork are excluded. A zero THT count does not mean the PCB "
+        "has no through-hole connectors. Counts must change if the assembler's scope changes.\n\n"
+        "SMD/THT classification uses footprint attributes, or homogeneous electrical pad "
+        "types when the attribute is unspecified. IC classification uses U references "
+        "or common IC package names; review unusual packages before quoting. "
+        "Per-reference classification is retained in validation.json.\n\n"
+        "Source: [PCBWay assembly quote tooltips](https://www.pcbway.com/quotesmt.aspx) "
+        "(definitions checked 2026-09-09).\n",
+        encoding="utf-8",
+    )
+    return counts
+
+
 def bake_release_board(
     config: BoardConfig, destination: Path, identity: dict[str, str]
 ) -> dict[str, str]:
@@ -648,6 +748,9 @@ def build(config: BoardConfig, output: Path) -> dict[str, object]:
         bom_references = export_bom(config, work, staging / "bom.csv")
         export_positions(config, work, staging / "positions.csv", bom_references)
         footprint_count = export_designators(config, staging / "designators.csv")
+        quote_counts = export_assembly_report(
+            config, staging / "bom.csv", staging / "assembly-report.md"
+        )
         run(
             "kicad-cli",
             "pcb",
@@ -671,6 +774,7 @@ def build(config: BoardConfig, output: Path) -> dict[str, object]:
             staging / "positions.csv",
             staging / "designators.csv",
             staging / "netlist.ipc",
+            staging / "assembly-report.md",
             staging / config.archive_name,
         ]
         validation: dict[str, object] = {
@@ -699,6 +803,7 @@ def build(config: BoardConfig, output: Path) -> dict[str, object]:
                 "position_reference_count": len(bom_references),
                 "bom_position_references_match": True,
                 "pcb_footprint_count_including_dnp_and_board_only": footprint_count,
+                "pcbway_quote": quote_counts,
             },
             "cam": cam_validation,
             "artifacts": {
@@ -719,6 +824,7 @@ def build(config: BoardConfig, output: Path) -> dict[str, object]:
         f"  revision: {identity['short_hash']} ({identity['build_date']})\n"
         f"  BOM/CPL references: {len(bom_references)}\n"
         f"  DRC warnings: {checks['drc_warning_count']}\n"
+        f"  assembly counts: {output / 'assembly-report.md'}\n"
         f"  output: {output}"
     )
     return validation

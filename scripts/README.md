@@ -97,7 +97,7 @@ temperatures separately.
 ## PCB production exports
 
 Generate either board's checked-in BOM, component-placement file, Gerber/drill
-archive, IPC-D-356 netlist, designator inventory, and validation manifest with:
+archive, IPC-D-356 netlist, designator inventory, assembly-count report, and validation manifest with:
 
 ```sh
 mise run production:carrier
@@ -112,6 +112,19 @@ four-layer CAM file set, and stages everything before replacing that board's
 `validation.json`; ERC findings, DRC errors, unconnected items, parity errors,
 missing sourcing fields, or BOM/CPL disagreement stop the export and leave the
 previous production directory intact.
+
+`assembly-report.md` lists the four PCBWay quote fields per single board:
+unique parts (distinct LCSC codes), SMD components, BGA/QFP-category components,
+and through-hole components. It follows PCBWay's tooltip definitions: the fields
+count parts, despite the site's “SMT Pads” image labels. BGA/QFP includes ICs with
+more than 16 pins (including QFN/SOP) and other SMD parts with more than 10 pins;
+it is a subset of SMD. Only exported BOM/CPL references count, so hand-installed
+connectors/modules excluded from those files do not enter the assembly quote.
+The report includes a separate SMT contact count for reference. Repeated numbered
+exposed-pad segments count once. Details are also stored under
+`assembly.pcbway_quote` in `validation.json`. KiCad's Python bindings (`pcbnew`)
+must be available to the task's Python interpreter. This report is published
+alongside the fabrication ZIP and is covered by the validation manifest hash.
 
 The bottom silkscreen's `BUILD_DATE` and `SHORT_HASH` variables are baked from
 the source commit. KiCad CAM timestamps are normalized to that same commit time

@@ -14,6 +14,34 @@ import export_pcb_production as production
 
 
 class ProductionExportUnitTests(unittest.TestCase):
+    def test_quote_counts_follow_bom_scope_and_pcbway_thresholds(self) -> None:
+        def part(mount="smd", pins=2, footprint="R_0603"):
+            return {"mount": mount, "pin_count": pins, "footprint": footprint,
+                    "smt_contacts": pins if mount == "smd" else 0}
+
+        footprints = {
+            "R1": part(), "R2": part(), "U1": part(pins=16),
+            "U2": part(pins=17), "J1": part(pins=10),
+            "J2": part(pins=11), "J3": part("through_hole", 20),
+            "TP1": part(), "LOGO": part(), "U99": part(pins=100),
+        }
+        rows = [{"Designator": ref, "LCSC Part #": code} for ref, code in
+                [("R1", "C1"), ("R2", "C1"), ("U1", "C2"), ("U2", "C3"),
+                 ("J1", "C4"), ("J2", "C5"), ("J3", "C6")]]
+        counts = production.assembly_counts(rows, footprints)
+        self.assertEqual(counts["unique_parts"], 6)
+        self.assertEqual(counts["smd_parts"], 6)
+        self.assertEqual(counts["through_hole_parts"], 1)
+        self.assertEqual(counts["bga_qfp_parts"], 2)
+        self.assertEqual(counts["smt_contacts"], 58)
+        self.assertEqual([p["reference"] for p in counts["parts"] if p["pcbway_bga_qfp"]], ["J2", "U2"])
+        with self.assertRaisesRegex(RuntimeError, "cannot find"):
+            production.assembly_counts(rows, {})
+        with self.assertRaisesRegex(RuntimeError, "Duplicate"):
+            production.assembly_counts(rows + rows[:1], footprints)
+        with self.assertRaisesRegex(RuntimeError, "attribute"):
+            production.assembly_counts(rows, {**footprints, "R1": part("unspecified")})
+
     def test_natural_reference_order(self) -> None:
         references = ["R11", "R2", "C1", "R1"]
         self.assertEqual(
@@ -70,6 +98,18 @@ class ProductionExportUnitTests(unittest.TestCase):
                         }
                     self.assertEqual(position_references, references)
                     self.assertGreater(len(references), 0)
+                    counts = production.export_assembly_report(
+                        config, board_output / "bom.csv", board_output / "assembly-report.md"
+                    )
+                    self.assertEqual({p["reference"] for p in counts["parts"]}, references)
+                    self.assertEqual(counts["smd_parts"] + counts["through_hole_parts"], len(references))
+                    parts = {p["reference"]: p for p in counts["parts"]}
+                    # TI's exposed pad has four copper segments with one number.
+                    self.assertEqual(parts["U2"]["pin_count"], 9)
+                    self.assertEqual(parts["U2"]["smt_contacts"], 9)
+                    self.assertTrue(parts["U1"]["pcbway_bga_qfp"])
+                    self.assertNotIn("MOD1", parts)
+                    self.assertNotIn("LOGO_PCBWAY", parts)
 
     def test_cam_timestamps_are_canonicalized(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
