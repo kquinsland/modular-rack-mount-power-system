@@ -36,7 +36,7 @@ jobs:
           submodules: recursive
 
       - name: Install uv
-        uses: jdx/mise-action@7e36c90d9ab29c415a2384db3006f3ec8a8cc654 # v4.2.4
+        uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
         with:
           install_args: uv
 
@@ -55,7 +55,7 @@ jobs:
         run: python scripts/build_pcb_release.py preview --board "${{ matrix.board }}" --output "build/preview-${{ matrix.board }}"
 
       - name: Upload preview and provenance
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: ${{ matrix.board }}-pcb-webp
           path: build/preview-${{ matrix.board }}/
