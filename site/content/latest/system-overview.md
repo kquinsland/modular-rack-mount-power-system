@@ -27,10 +27,9 @@ DC input
           └── Carrier 6 ── USB-C PD module
 ```
 
-The second-generation backplane consolidates functions that previously lived
-on separate backplane and controller boards. Older backpack-to-backplane I²C
-designs remain in the repository as project history but are not the current
-architecture.
+The backplane and carriers communicate directly on the shared CAN-FD trunk.
+Local I²C buses end on their own PCB; there is no inter-board I²C bus or control
+proxy.
 
 ## Current design targets
 
@@ -45,6 +44,8 @@ architecture.
 | Inter-board communication | CAN-FD |
 | Backplane-local monitoring | INA237 over local I²C |
 | Cooling | Two independently switched 3-wire fans |
+| Local status | One NeoPixel on each backplane and carrier |
+| Firmware updates | Host directly to one node over CAN; bootloader via SWD |
 
 There is no below-24 V nominal input specification. The current carrier is the
 first revision's voltage limit, not the intended limit of the backplane. Never

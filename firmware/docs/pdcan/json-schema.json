@@ -1,130 +1,94 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://pdcan.invalid/schemas/pdcan-output-pre-v1.json",
-  "title": "pdcan pre-v1 JSON Lines record",
+  "$id": "https://pdcan.invalid/schemas/pdcan-output-v1.json",
+  "title": "pdcan JSON record v1",
+  "description": "One JSON value emitted by the Generation-2 pdcan host utility. Successful commands which do not yet declare JSON output continue to use their documented human output.",
   "oneOf": [
     { "$ref": "#/$defs/discovery" },
-    { "$ref": "#/$defs/commandResponse" },
-    { "$ref": "#/$defs/portState" },
-    { "$ref": "#/$defs/boardTemperature" },
-    { "$ref": "#/$defs/commissioningResult" },
-    { "$ref": "#/$defs/operationalFrame" },
-    { "$ref": "#/$defs/commissioningFrame" }
+    { "$ref": "#/$defs/errorEnvelope" }
   ],
   "$defs": {
-    "uid": { "type": "string", "pattern": "^[0-9a-f]{24}$" },
-    "node": { "type": "integer", "minimum": 1, "maximum": 254 },
-    "state": {
-      "enum": ["Uncommissioned", "Claiming", "Commissioned", "AddressConflict"]
+    "uid": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{24}$"
     },
-    "result": {
-      "enum": [
-        "Ok", "OkPending", "InvalidArgument", "InvalidTarget", "Unsupported",
-        "Busy", "NoModule", "NotReady", "I2cError", "PdControllerError",
-        "Timeout", "VerifyFailed", "AddressConflict", "PersistFailed",
-        "EmergencyLatched", "InternalError"
-      ]
+    "node": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 254
     },
     "discovery": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["kind", "uid", "node_id", "state", "protocol", "firmware", "hardware_revision", "supported_ports", "compatible"],
+      "required": [
+        "uid",
+        "node",
+        "role",
+        "profile",
+        "update_impact",
+        "capabilities",
+        "protocol"
+      ],
       "properties": {
-        "kind": { "const": "discovery" },
         "uid": { "$ref": "#/$defs/uid" },
-        "node_id": { "oneOf": [{ "$ref": "#/$defs/node" }, { "type": "null" }] },
-        "state": { "$ref": "#/$defs/state" },
-        "protocol": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+$" },
-        "firmware": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
-        "hardware_revision": { "type": "integer", "minimum": 0, "maximum": 255 },
-        "supported_ports": { "type": "integer", "minimum": 0, "maximum": 255 },
-        "compatible": { "type": "boolean" }
+        "node": {
+          "oneOf": [
+            { "$ref": "#/$defs/node" },
+            { "type": "null" }
+          ]
+        },
+        "role": {
+          "enum": ["backplane", "carrier"]
+        },
+        "profile": {
+          "oneOf": [
+            { "enum": ["basic", "sw3538", "accessory", "high_power_240w"] },
+            { "type": "null" }
+          ]
+        },
+        "update_impact": {
+          "enum": ["live", "interrupt"]
+        },
+        "capabilities": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 18446744073709551615
+        },
+        "protocol": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+$"
+        }
       }
     },
-    "commandResponse": {
+    "errorEnvelope": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["kind", "node", "requester", "request_id", "opcode", "target", "result", "detail"],
+      "required": ["ok", "error"],
       "properties": {
-        "kind": { "const": "command_response" },
-        "node": { "$ref": "#/$defs/node" },
-        "requester": { "type": "integer", "minimum": 1, "maximum": 15 },
-        "request_id": { "type": "string", "pattern": "^[0-9]+$" },
-        "opcode": { "type": "integer", "minimum": 0, "maximum": 63 },
-        "target": { "type": "integer", "minimum": 0, "maximum": 15 },
-        "result": { "$ref": "#/$defs/result" },
-        "detail": { "type": "integer", "minimum": 0, "maximum": 4294967295 }
-      }
-    },
-    "portState": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["kind", "node", "port", "sequence", "flags", "faults", "uptime_seconds", "active_profile", "slot_generation"],
-      "properties": {
-        "kind": { "const": "port_state" },
-        "node": { "$ref": "#/$defs/node" },
-        "port": { "type": "integer", "minimum": 0, "maximum": 7 },
-        "sequence": { "type": "integer", "minimum": 0, "maximum": 65535 },
-        "flags": { "type": "integer", "minimum": 0, "maximum": 65535 },
-        "faults": { "type": "integer", "minimum": 0, "maximum": 4294967295 },
-        "uptime_seconds": { "type": "integer", "minimum": 0, "maximum": 4294967295 },
-        "active_profile": { "type": "integer", "minimum": 0, "maximum": 255 },
-        "slot_generation": { "type": "integer", "minimum": 0, "maximum": 255 }
-      }
-    },
-    "boardTemperature": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["kind", "node", "sequence", "temperature_centi_c"],
-      "properties": {
-        "kind": { "const": "board_temperature" },
-        "node": { "$ref": "#/$defs/node" },
-        "sequence": { "type": "integer", "minimum": 0, "maximum": 65535 },
-        "temperature_centi_c": { "type": "integer", "minimum": -32768, "maximum": 32767 }
-      }
-    },
-    "commissioningResult": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["kind", "uid", "node_id", "state", "request_id", "result"],
-      "properties": {
-        "kind": { "const": "commissioning_result" },
-        "uid": { "$ref": "#/$defs/uid" },
-        "node_id": { "oneOf": [{ "$ref": "#/$defs/node" }, { "type": "null" }] },
-        "state": { "$ref": "#/$defs/state" },
-        "request_id": { "type": "string", "pattern": "^[0-9]+$" },
-        "result": { "$ref": "#/$defs/result" }
-      }
-    },
-    "operationalFrame": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["kind", "id", "priority", "class", "node", "target", "requester", "opcode", "data"],
-      "properties": {
-        "kind": { "const": "operational_frame" },
-        "id": { "type": "string", "pattern": "^0x[0-9a-f]{8}$" },
-        "priority": { "type": "integer", "minimum": 0, "maximum": 7 },
-        "class": { "enum": ["Control", "Response", "State", "Telemetry", "Management", "Configuration", "Debug"] },
-        "node": { "type": "integer", "minimum": 0, "maximum": 254 },
-        "target": { "type": "integer", "minimum": 0, "maximum": 15 },
-        "requester": { "type": "integer", "minimum": 0, "maximum": 15 },
-        "opcode": { "type": "integer", "minimum": 0, "maximum": 63 },
-        "data": { "type": "string", "pattern": "^(?:[0-9a-f]{2}){0,64}$" }
-      }
-    },
-    "commissioningFrame": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["kind", "id", "priority", "class", "token", "requester", "opcode", "data"],
-      "properties": {
-        "kind": { "const": "commissioning_frame" },
-        "id": { "type": "string", "pattern": "^0x[0-9a-f]{8}$" },
-        "priority": { "const": 6 },
-        "class": { "const": "Commissioning" },
-        "token": { "type": "integer", "minimum": 0, "maximum": 4095 },
-        "requester": { "type": "integer", "minimum": 0, "maximum": 15 },
-        "opcode": { "type": "integer", "minimum": 0, "maximum": 63 },
-        "data": { "type": "string", "pattern": "^(?:[0-9a-f]{2}){0,64}$" }
+        "ok": { "const": false },
+        "error": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["code", "message"],
+          "properties": {
+            "code": {
+              "enum": [
+                "invalid_input",
+                "artifact",
+                "transport",
+                "timeout",
+                "codec",
+                "node_rejected",
+                "interruption_required",
+                "internal"
+              ]
+            },
+            "message": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
       }
     }
   }

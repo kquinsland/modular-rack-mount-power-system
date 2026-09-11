@@ -1,67 +1,68 @@
 # Firmware
 
-The implemented firmware target is the STM32C092FCP6 on the legacy Backplane
-Backpack. Its KiCad project is retired; the current hardware is the consolidated
-[`backplane`](../hardware/boards/backplane/). This firmware has not yet been
-ported to that board's pinout and direct-CAN slot architecture.
-Board-specific embedded code lives under
-[`backplane-backpack/`](backplane-backpack/), while reusable `no_std` types,
-business logic, protocol code, and drivers live in [`crates/`](crates/).
+This Cargo workspace targets the finalized Generation-2 hardware. Every backplane
+and carrier is an independent STM32C092GCU6 CAN-FD node. I2C is board-local; the
+host addresses nodes directly for control, telemetry, commissioning, and
+application firmware updates.
 
-## Workspace and commands
+## Workspace
 
-This directory is the Cargo workspace root. It contains the pinned toolchain,
-Cargo configuration/lockfile, shared crates, [`tools/`](tools/) (`pdcan` and
-`pdcan-sim`), [`xtask/`](xtask/), and [`docs/pdcan/`](docs/pdcan/) (including the
-generated DBC). All direct Cargo commands below run from `firmware/`, not the
-repository root:
+- `backplane/`: backplane hardware contract and Embassy application target.
+- `carrier/`: current SW3538 carrier contract and Embassy application target.
+- `bootloader/`: common Embassy Boot swap/rollback bootloader.
+- `crates/pdcan-types/`: shared role, capability, policy, telemetry, and update types.
+- `crates/pdcan-protocol/`: strict CAN-FD codecs and message catalog.
+- `crates/pdcan-core/`: transport-independent safety, commissioning, and update state machines.
+- `crates/pdcan-drivers/`: INA237, DS18B20, and SW3538 drivers plus flash records.
+- `crates/pdcan-artifact/`: versioned, signed-ready application update bundles.
+- `tools/pdcan/`: Clap-based SocketCAN host utility with `clap_schema` discovery.
+- `tools/pdcan-sim/`: deterministic Generation-2 backplane/carrier simulator.
+- `xtask/`: CI, embedded builds, size gates, bundle construction, and DBC generation.
+
+## Commands
+
+Run Cargo commands from this directory:
 
 ```sh
-cd firmware
-mise install
 cargo xtask ci
-cargo run --package pdcan -- --help
-cargo run --package pdcan-sim -- --help
+cargo xtask firmware build backplane --release
+cargo xtask firmware build carrier --release
+cargo xtask firmware build bootloader --release
 cargo xtask dbc --check
+cargo run --package pdcan -- --help
+cargo run --package pdcan -- schema --full
+cargo run --package pdcan-sim -- --help
 ```
 
-The repository root retains thin `mise run firmware:check`,
-`mise run firmware:build`, and `mise run firmware:dbc` shortcuts. Actual task
-definitions and the Rust tool pin live in [`mise.toml`](mise.toml). The GitHub
-Actions entry point must remain in `.github/workflows/firmware-rust.yml`; it runs
-inside this workspace and caches `firmware/target/`. Cross-cutting hardware
-contracts, datasheets, and architectural decisions remain in the repository's
-top-level `docs/`.
+Build an unsigned application bundle after converting the linked application to
+the raw ACTIVE-partition image expected by Embassy Boot:
 
-`cargo xtask ci` runs host tests, both legacy board-feature test/Clippy builds,
-DBC drift checks, and both embedded release builds with flash/RAM budgets. The
-SocketCAN integration tests additionally require an existing virtual CAN
-interface and `PDCAN_VCAN_INTERFACE=vcan0`; CI provisions one, while local runs
-without that variable skip the interface-dependent tests. No physical CAN bus
-or board is needed for the remaining checks.
+```sh
+cargo xtask firmware bundle carrier 1.0.0 carrier.bin carrier-1.0.0.pdcan
+cargo run --package pdcan -- firmware inspect carrier-1.0.0.pdcan
+```
 
-## Legacy board selection
+Only Linux builds open SocketCAN interfaces. Host tests, artifact inspection,
+Clap help, and schema discovery work on macOS. Embedded binaries use
+`thumbv6m-none-eabi` and the `stm32c092gc` Embassy feature.
 
-The firmware and PDCAN protocol support eight logical ports. Backplane Backpack
-Rev A exposes ports 0 through 5 and reports ports 6 and 7 as unsupported.
-The Rev B prototype exposes the same six logical ports and adds per-slot input
-power control through a PCA9554/high-side-FET stage on the shared upstream I2C
-bus. The backpack connector carries only SDA/SCL plus duplicated 3.3 V and
-ground; the backplane owns both I2C devices and all slot-local circuitry. Build
-it explicitly with
-`cargo xtask firmware build --board rev-b --release`.
+## Safety and update contract
 
-The former WT32 controller firmware architecture is superseded and is not an
-implementation target.
+Carrier outputs start disabled. A persisted enable is restored only after local
+hardware checks and a deterministic UID-derived startup delay. Emergency and
+fault handling always override policy. Backplane fans start at the safe 100%
+duty state.
 
-References:
+The host stages an image directly to the target node over CAN, verifies its
+SHA-256 digest, and activates it separately. The current SW3538 profile advertises
+`interrupt`, so `pdcan firmware activate` and the convenience `update` command
+require `--allow-interruption`. A future profile may advertise `live` only after
+its complete activation, trial-boot, failure, and rollback sequence has passed
+profile-specific hardware-in-the-loop continuity testing.
 
-- [`plan.md`](plan.md): reviewed implementation and repository integration plan.
-- [`backplane-backpack/backplane-plan.md`](backplane-backpack/backplane-plan.md):
-  original detailed design input.
-- [`../docs/interfaces.md`](../docs/interfaces.md): active electrical and logical
-  interface contract.
-- [`docs/pdcan/firmware-architecture.md`](docs/pdcan/firmware-architecture.md):
-  implemented task/peripheral boundaries.
-- [`docs/pdcan/hardware-validation.md`](docs/pdcan/hardware-validation.md):
-  explicit bring-up and HIL checklist.
+The bootloader itself is SWD-only. Initial unsigned bundles provide transfer
+integrity, not sender authentication; the artifact reserves Ed25519 algorithm,
+key-ID, and signature fields for later enforcement.
+
+See [plan.md](plan.md), [the firmware architecture](docs/pdcan/firmware-architecture.md),
+and [the protocol specification](docs/pdcan/protocol.md).

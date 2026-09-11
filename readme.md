@@ -11,23 +11,23 @@ Hardware, firmware, and host tooling for a modular mini-rack power system.
 
 ## Boards
 
-- `backplane`: Consolidated STM32C092/CAN-FD backplane, formerly named
-  `backplane-prototype`; hosts six carrier slots, power distribution, current
-  monitoring, fan control, and status LED.
+- `backplane`: STM32C092/CAN-FD backplane with six carrier slots, power
+  distribution, aggregate current monitoring, fan control, and a status
+  NeoPixel.
 - `carrier`: Mates with one backplane slot and hosts an SW3538 USB-C PD module.
 
-The former split backplane/backpack and WT32 controller projects are retired;
-their sources remain in Git history. Shared symbols are kept in the common
-library directory. The existing backpack firmware is retained as a legacy
-target; moving/renaming the hardware does not port its pinout or peripheral model
-to the consolidated board.
+Every backplane and carrier is an independent STM32C092 CAN-FD node. There is no
+I2C mux and no controller/proxy relationship between nodes. Earlier hardware and
+firmware were research prototypes and are not compatibility targets.
 
 ## Layout
 
 ```text
 firmware/
   Cargo.toml
-  backplane-backpack/
+  backplane/
+  carrier/
+  bootloader/
   crates/
   tools/
   xtask/
@@ -50,7 +50,7 @@ releases/
 `build/` is for generated local outputs. `releases/` is for fabrication packages that should be preserved exactly as sent to a board house.
 
 See [`firmware/README.md`](firmware/README.md) for workspace commands and the
-legacy firmware's hardware limitations. Run `mise run firmware:check` from this
+current hardware/firmware contract. Run `mise run firmware:check` from this
 directory, or run Cargo commands from `firmware/`. The reviewed implementation
 plan is kept in [`firmware/plan.md`](firmware/plan.md).
 

@@ -1,5 +1,5 @@
 use embedded_hal_async::i2c::I2c;
-use pdcan_types::{PolicyValidationError, PortPolicy};
+use pdcan_types::{CarrierPolicy, InvalidPdLimits, PdLimits};
 
 /// Register addresses confirmed by SW3538 register-list revision `RG108_3_v1.2`.
 pub mod register {
@@ -143,8 +143,11 @@ pub struct FixedPdoPlan {
 }
 
 impl FixedPdoPlan {
-    pub fn from_policy(policy: PortPolicy) -> Result<Self, PolicyValidationError> {
-        policy.validate()?;
+    pub fn from_policy(policy: CarrierPolicy) -> Result<Self, PolicyError> {
+        let limits = policy.pd_limits.ok_or(PolicyError::PdLimitsRequired)?;
+        limits
+            .validate_for(PdLimits::SW3538_SAFE_MAX)
+            .map_err(PolicyError::Limits)?;
         if !policy.enabled {
             return Ok(Self {
                 pd_enabled: false,
@@ -157,15 +160,14 @@ impl FixedPdoPlan {
             });
         }
 
-        let current_for = |voltage_mv: u16| {
-            let power_limited_ma =
-                policy.max_power_mw.saturating_mul(1_000) / u32::from(voltage_mv);
-            let current_ma = u32::from(policy.max_current_ma).min(power_limited_ma);
+        let current_for = |voltage_mv: u32| {
+            let power_limited_ma = limits.max_power_mw.saturating_mul(1_000) / voltage_mv;
+            let current_ma = limits.max_current_ma.min(power_limited_ma);
             u16::try_from(current_ma / 10)
                 .unwrap_or(u16::MAX)
                 .min(0x03FF)
         };
-        let enabled = |voltage_mv| policy.max_voltage_mv >= voltage_mv;
+        let enabled = |voltage_mv| limits.max_voltage_mv >= voltage_mv;
 
         Ok(Self {
             pd_enabled: true,
@@ -222,14 +224,24 @@ pub const fn encode_forced_current_limit(
     })
 }
 
-pub const fn validate_v1_policy(policy: PortPolicy) -> Result<PortPolicy, PolicyValidationError> {
-    policy.validate()
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum PolicyError {
+    PdLimitsRequired,
+    Limits(InvalidPdLimits),
 }
 
-/// Async register driver. Construct it only when external reasoning says bank 0
-/// is active. Any I2C failure makes the tracked bank unknown. Resetting the mux
-/// does not reset the SW3538; the bus owner may call [`Self::assume_base_bank`]
-/// only after separately establishing that the assumption is safe.
+pub fn validate_v1_policy(policy: CarrierPolicy) -> Result<CarrierPolicy, PolicyError> {
+    let limits = policy.pd_limits.ok_or(PolicyError::PdLimitsRequired)?;
+    limits
+        .validate_for(PdLimits::SW3538_SAFE_MAX)
+        .map(|_| policy)
+        .map_err(PolicyError::Limits)
+}
+
+/// Async local-I2C register driver. Construct it only when external reasoning
+/// says bank 0 is active. Any I2C failure makes the tracked bank unknown; the
+/// bus owner may call [`Self::assume_base_bank`] only after separately
+/// establishing that the assumption is safe.
 pub struct Sw3538 {
     address: u8,
     bank: Bank,
@@ -536,6 +548,7 @@ mod tests {
         type Error = Infallible;
     }
 
+    #[allow(clippy::unused_async_trait_impl)]
     impl I2c for FakeBus {
         async fn write(&mut self, address: u8, bytes: &[u8]) -> Result<(), Self::Error> {
             assert_eq!(address, DEVICE_ADDRESS);
@@ -594,15 +607,17 @@ mod tests {
 
     #[test]
     fn nonstandard_seven_amp_policy_is_rejected() {
-        let policy = PortPolicy {
+        let policy = CarrierPolicy {
             enabled: true,
-            max_voltage_mv: 20_000,
-            max_current_ma: 7_000,
-            max_power_mw: 100_000,
+            pd_limits: Some(PdLimits {
+                max_voltage_mv: 20_000,
+                max_current_ma: 7_000,
+                max_power_mw: 100_000,
+            }),
         };
         assert_eq!(
             validate_v1_policy(policy),
-            Err(PolicyValidationError::CurrentTooHigh)
+            Err(PolicyError::Limits(InvalidPdLimits::Current))
         );
     }
 
@@ -658,11 +673,13 @@ mod tests {
 
     #[test]
     fn fixed_pdo_plan_never_exceeds_current_power_or_voltage_policy() {
-        let plan = FixedPdoPlan::from_policy(PortPolicy {
+        let plan = FixedPdoPlan::from_policy(CarrierPolicy {
             enabled: true,
-            max_voltage_mv: 20_000,
-            max_current_ma: 5_000,
-            max_power_mw: 60_000,
+            pd_limits: Some(PdLimits {
+                max_voltage_mv: 20_000,
+                max_current_ma: 5_000,
+                max_power_mw: 60_000,
+            }),
         })
         .unwrap();
         assert_eq!(plan.enabled_voltage_bits, 0x0F);
@@ -672,14 +689,13 @@ mod tests {
         assert_eq!(plan.current_15v_10ma, 400);
         assert_eq!(plan.current_20v_10ma, 300);
 
-        let lower_voltage = FixedPdoPlan::from_policy(PortPolicy {
-            max_voltage_mv: 12_000,
-            ..PortPolicy {
-                enabled: true,
-                max_voltage_mv: 20_000,
+        let lower_voltage = FixedPdoPlan::from_policy(CarrierPolicy {
+            enabled: true,
+            pd_limits: Some(PdLimits {
+                max_voltage_mv: 12_000,
                 max_current_ma: 5_000,
                 max_power_mw: 60_000,
-            }
+            }),
         })
         .unwrap();
         assert_eq!(lower_voltage.enabled_voltage_bits, 0x03);

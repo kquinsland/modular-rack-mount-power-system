@@ -8,6 +8,9 @@ rust-version.workspace = true
 pdcan-core.workspace = true
 pdcan-protocol.workspace = true
 pdcan-types.workspace = true
+sha2 = "0.10"
+
+[target.'cfg(target_os = "linux")'.dependencies]
 socketcan = { version = "4.0.0", default-features = false }
 
 [lints]

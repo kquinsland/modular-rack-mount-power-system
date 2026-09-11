@@ -1,8 +1,7 @@
 # Consolidated Backplane Interfaces
 
 This document describes the active second-generation backplane hardware in
-`hardware/boards/backplane`. The former backpack-to-backplane I2C
-boundary is superseded; the controller and all six slots now live on one PCB.
+`hardware/boards/backplane`. The controller and all six slots live on one PCB.
 
 ## DC Input
 
@@ -20,7 +19,7 @@ connections must be Kelvin-routed directly to the shunt pads.
 
 ## External CAN-FD
 
-Backplane `J2` uses the XINLAIYA XY308-2.54-3P footprint, LCSC `C557686`, and
+Backplane `J7` uses the XINLAIYA XY308-2.54-3P footprint, LCSC `C557686`, and
 is intentionally DNP for manual installation.
 
 | Pin | Signal | Direction | Notes |
@@ -48,11 +47,11 @@ The six carrier slots use the carrier-authoritative AMASS
 | Slot | Reference |
 | ---: | --- |
 | 1 | `J1` |
-| 2 | `J3` |
-| 3 | `J4` |
-| 4 | `J6` |
-| 5 | `J7` |
-| 6 | `J8` |
+| 2 | `J2` |
+| 3 | `J3` |
+| 4 | `J4` |
+| 5 | `J5` |
+| 6 | `J6` |
 
 | Physical pin | Signal | Direction | Notes |
 | ---: | --- | --- | --- |
@@ -69,9 +68,7 @@ The PCB layout must implement a short shared CAN trunk with short slot stubs.
 
 `I2C_SDA` and `I2C_SCL` use STM32 PA6 and PA7 respectively on I2C2 and connect
 only the STM32C092GCU6 and INA237 on the backplane. They use 2.2 kohm pull-ups
-to 3.3 V. No I2C signal reaches a carrier
-slot, and the old TCA9548A mux, PCA9554 expander, slot pull-ups, and slot I2C ESD
-parts are not used.
+to 3.3 V. No I2C signal reaches a carrier slot.
 
 ## Fans
 
@@ -91,6 +88,9 @@ wire used by 4-wire PWM fans. Both connectors share the 1 A LM5164 12 V rail;
 combined continuous current, simultaneous startup, and stall behavior require
 first-article validation.
 
+Fan 0 uses STM32 PA2 for supply PWM and PB8 for tach capture. Fan 1 uses PA0
+for supply PWM and PA8 for tach capture.
+
 ## External Temperature Sensor
 
 `J12` is a standard vertical 2.54 mm 1x3 header for an externally powered
@@ -106,7 +106,7 @@ DS18B20:
 supply arrangement; no parasite-power strong-pull-up circuit is provided. Any
 cable-end bypass capacitor should be placed next to the sensor.
 
-The backplane status NeoPixel (`LED1`) is driven from STM32 `PB8` through a
+The backplane status NeoPixel (`LED1`) is driven from STM32 `PA1` through a
 100 ohm series resistor and has a dedicated 100 nF local bypass capacitor.
 
 ## SWD

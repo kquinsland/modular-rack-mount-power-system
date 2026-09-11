@@ -1,0 +1,29 @@
+[package]
+name = "pdcan-bootloader"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+build = "build.rs"
+
+[dependencies]
+cortex-m = { version = "0.7", features = ["critical-section-single-core"] }
+cortex-m-rt = "0.7"
+embassy-boot-stm32 = "0.8"
+embassy-sync = "0.8"
+embassy-stm32 = { version = "0.6", default-features = false, features = ["rt", "stm32c092gc"] }
+panic-halt = "1"
+
+[[bin]]
+name = "pdcan-bootloader"
+path = "src/main.rs"
+test = false
+bench = false
+
+[lints.rust]
+# Embassy Boot's final vector-table/stack-pointer handoff is necessarily unsafe.
+# Keep this exception confined to the bootloader binary.
+unsafe_code = "allow"
+
+[lints.clippy]
+all = { level = "warn", priority = -1 }
+pedantic = { level = "warn", priority = -1 }

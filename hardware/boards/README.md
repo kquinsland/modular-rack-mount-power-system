@@ -7,11 +7,10 @@ Current boards:
 - `backplane`
 - `carrier`
 
-`backplane` is the consolidated project formerly called `backplane-prototype`.
-The earlier split `backplane`, `backplane-backpack`, and WT32 `controller`
-projects have been retired; their sources remain available in Git history.
-Shared CAN/protection symbols were preserved in
-`hardware/libraries/symbols/backplane-backpack.kicad_sym`. That library nickname
-is retained for compatibility and does not imply a separate active board.
+Both active boards use the same STM32C092GCU6 and direct CAN-FD architecture.
+The backplane and carrier directories are the only product board definitions;
+earlier research layouts are not compatibility targets. Some shared library
+nicknames retain their original internal name so the finalized KiCad references
+remain stable.
 
 Future boards should follow the same pattern: `hardware/boards/<board-name>/<board-name>.kicad_pro`.

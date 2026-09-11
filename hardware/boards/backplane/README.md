@@ -1,12 +1,10 @@
 # Consolidated backplane
 
-This project is the working second-generation backplane. It consolidates the
-former `backplane`, `backplane-prototype`, and `backplane-backpack` projects onto
-one PCB. The active files are now `backplane.kicad_pro`, `backplane.kicad_sch`,
-`backplane.kicad_pcb`, and `backplane.kicad_dru`; the retired projects are
-available only in Git history.
+This directory contains the finalized Generation-2 backplane:
+`backplane.kicad_pro`, `backplane.kicad_sch`, `backplane.kicad_pcb`, and
+`backplane.kicad_dru`.
 
-The existing PCB in this directory is the mechanical authority for the board
+The PCB in this directory is the mechanical authority for the board
 outline, airflow cutouts, mounting holes, and six slot-connector footprints and
 placement. The carrier is the electrical authority for circuitry shared between
 the two boards, including the slot pinout, STM32, CAN transceiver, current
@@ -27,8 +25,8 @@ The root schematic is divided into five sheets:
   PCB; and
 - `05_buck_converters.kicad_sch`: separate LM5164 3.3 V and 12 V converters.
 
-The Rust `backplane-backpack-firmware` target remains a legacy board target.
-It has not been ported to this consolidated board by the project rename.
+The Rust `backplane-firmware` target implements this board. Earlier firmware
+targets and their hardware assumptions are not supported.
 
 Both regulators use LM5164DDAR, LCSC C477928, with
 PSPMAA0805-101M-ANP 100 uH inductors, LCSC C2962892. The output-specific
@@ -43,9 +41,8 @@ netlist, designator inventory, and validation manifest with
 manifest; it does not by itself supersede the fabrication-readiness status
 below.
 
-The local I2C2 bus uses STM32 PA6/PA7 and exists only between the STM32 and INA237. The old TCA9548A,
-PCA9554, per-slot I2C protection, and per-slot power-switch sheets are not part
-of this design. Carrier communication is CAN-FD.
+The local I2C2 bus uses STM32 PA6/PA7 and exists only between the STM32 and
+INA237. Carrier communication is CAN-FD.
 
 ## Connectors
 
@@ -98,13 +95,10 @@ lengths do not describe a meaningful point-to-point signal path.
 2. DQ (`DS18B20_DATA`, pulled up to 3.3 V through `R24`)
 3. +3V3
 
-The DS18B20 data signal uses STM32 `PA15`. The local status NeoPixel uses `PB8`
+The DS18B20 data signal uses STM32 `PA15`. The local status NeoPixel uses `PA1`
 through a 100 ohm series resistor and has a dedicated 100 nF bypass capacitor.
-Fan 1 uses `PB4`/`TIM3_CH1` for PWM and `PB3`/`TIM3_CH2` for tach capture in
-the hardware pin allocation. Fan 2 uses `PA0`/`TIM2_CH1` for PWM and
-`PA1`/`TIM17_CH1` for tach capture. Firmware that reserves TIM3 for timekeeping
-must instead treat the Fan 1 pins as GPIOs or move the time driver to another
-timer.
+Fan 0 uses `PA2` for supply PWM and `PB8` for tach capture. Fan 1 uses `PA0` for
+supply PWM and `PA8` for tach capture.
 
 ## Power assumptions
 
@@ -134,10 +128,9 @@ second connector does not increase the regulator's 1 A output rating.
 
 ## PCB status
 
-The consolidated schematic is synchronized into a fully placed and routed PCB.
-The current design passes ERC and PCB DRC and can be released for prototype
-fabrication after its design inputs are committed and the production package is
-regenerated from that commit.
+The schematic is synchronized into a fully placed and routed PCB. The finalized
+design passes ERC and PCB DRC. Its operating limits remain conditional on the
+first-article validation below.
 
 Before ordering and assigning a production current rating:
 

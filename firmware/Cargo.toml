@@ -2,19 +2,25 @@
 resolver = "3"
 members = [
     "crates/pdcan-core",
+    "crates/pdcan-artifact",
     "crates/pdcan-drivers",
     "crates/pdcan-protocol",
     "crates/pdcan-types",
-    "backplane-backpack",
+    "backplane",
+    "carrier",
+    "bootloader",
     "tools/pdcan",
     "tools/pdcan-sim",
     "xtask",
 ]
 default-members = [
+    "crates/pdcan-artifact",
     "crates/pdcan-core",
     "crates/pdcan-drivers",
     "crates/pdcan-protocol",
     "crates/pdcan-types",
+    "backplane",
+    "carrier",
     "tools/pdcan",
     "tools/pdcan-sim",
     "xtask",
@@ -25,6 +31,7 @@ edition = "2024"
 rust-version = "1.97"
 
 [workspace.dependencies]
+pdcan-artifact = { path = "crates/pdcan-artifact" }
 pdcan-core = { path = "crates/pdcan-core" }
 pdcan-drivers = { path = "crates/pdcan-drivers" }
 pdcan-protocol = { path = "crates/pdcan-protocol" }

@@ -58,8 +58,7 @@ supply tolerance and harness drop; they are not additional nominal ratings.
 The carrier UVLO turn-on corner can reach approximately 22.56 V at 25 °C,
 so specify the minimum voltage at the carrier and validate cold/hot startup.
 
-The consolidated backplane does not retain the old PCA9554-controlled per-slot
-FETs. All six slot feeds are present whenever `VIN_BUS` is energized, so upstream
+All six slot feeds are present whenever `VIN_BUS` is energized, so upstream
 and/or per-slot hardware fault protection must be resolved independently of
 firmware.
 
@@ -82,7 +81,7 @@ So now we only need to handle about 30A at 24V for the backplane which is a LOT 
 Detailed calculations, qualifications, and sources are in
 [SW3538 USB-C/PD Module Power-Input and Thermal Budget](sw3538_usb_c_pd_power_budget.md).
 
-## Prototype Backplane Copper Sizing
+## Backplane Copper Sizing
 
 For the simplified backplane, assume a 30 A maximum shared input current, 2 oz external copper (nominally 70 µm or 2.756 mil), and a 10 °C conductor temperature rise.
 The IPC-2221 relationship used by KiCad is:
@@ -93,7 +92,7 @@ For an external conductor, `k = 0.048`.
 Solving for width at 30 A gives approximately 644.5 mil, or 16.37 mm, on one external layer.
 KiCad's own [formula notes](https://gitlab.com/kicad/code/kicad/-/blob/10.0/pcb_calculator/tracks_width_versus_current_formula.md) state that the model is valid only up to a 400 mil (10 mm) width, so that single-layer result is an extrapolation and should be treated as a rough engineering estimate.
 
-The prototype therefore uses matching F.Cu and B.Cu pours in parallel. An ideal
+The backplane therefore uses matching F.Cu and B.Cu pours in parallel. An ideal
 50/50 split at 30 A is 15 A per layer, which requires 247.8 mil or 6.29 mm per
 layer. The stated 28.5 A maximum sustained load requires approximately 5.86 mm
 per layer under the same assumptions.

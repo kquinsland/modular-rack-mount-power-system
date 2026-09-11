@@ -1,0 +1,43 @@
+[package]
+name = "carrier-firmware"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+build = "build.rs"
+
+[features]
+default = []
+firmware-bin = [
+    "dep:cortex-m",
+    "dep:cortex-m-rt",
+    "dep:embassy-boot-stm32",
+    "dep:embassy-executor",
+    "dep:embassy-stm32",
+    "dep:embassy-sync",
+    "dep:embassy-time",
+    "dep:panic-halt",
+]
+
+[dependencies]
+cortex-m = { version = "0.7", features = ["critical-section-single-core"], optional = true }
+cortex-m-rt = { version = "0.7", optional = true }
+embassy-boot-stm32 = { version = "0.8", optional = true }
+embassy-executor = { version = "0.10", features = ["executor-thread", "platform-cortex-m"], optional = true }
+embassy-stm32 = { version = "0.6", default-features = false, features = ["rt", "stm32c092gc", "time", "time-driver-tim1"], optional = true }
+embassy-sync = { version = "0.8", optional = true }
+embassy-time = { version = "0.5", optional = true }
+panic-halt = { version = "1", optional = true }
+pdcan-core.workspace = true
+pdcan-drivers.workspace = true
+pdcan-protocol.workspace = true
+pdcan-types.workspace = true
+
+[[bin]]
+name = "carrier"
+path = "src/main.rs"
+required-features = ["firmware-bin"]
+test = false
+bench = false
+
+[lints]
+workspace = true

@@ -5,9 +5,8 @@ weight: 1
 ---
 
 The second-generation backplane combines the controller and six-slot power
-distribution on one PCB. The prototype board outline, airflow cutouts, mounting
-features, and slot locations provide the mechanical foundation for the current
-design.
+distribution on one finalized PCB. Its outline, airflow cutouts, mounting
+features, and slot locations define the mechanical design.
 
 ![Consolidated backplane, top side](backplane.webp)
 
@@ -26,6 +25,7 @@ _Generated from the committed PCB. Render provenance is recorded in
 - Generate local 3.3 V for control electronics and 12 V for cooling.
 - Control two independent 3-wire fan power switches and read both tachometers.
 - Support an externally powered DS18B20 temperature sensor.
+- Drive one local status NeoPixel.
 - Expose SWD for controller programming and debug.
 
 The backplane is designed for 24–48 V nominal input. The current SW3538 carrier
@@ -39,11 +39,9 @@ supply.
 
 ## Status
 
-The consolidated schematic has been synchronized into the PCB, but placement,
-routing, high-current copper, regulator loops, CAN topology, thermal paths, and
-test access still require release review. The current board must not be treated
-as fabrication-ready merely because production-export tooling can generate an
-archive.
+The finalized schematic is synchronized into a placed and routed PCB and passes
+ERC and PCB DRC. Current rating, thermal performance, CAN margins, fan loading,
+and protection behavior still require first-article validation.
 
 Detailed implementation notes remain in the
 [backplane README](https://github.com/kquinsland/modular-rack-power/blob/main/hardware/boards/backplane/README.md).
