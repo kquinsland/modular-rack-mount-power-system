@@ -130,10 +130,10 @@ failure stops both vendor branches.
 Generate normalized component data and render the top and bottom of each PCB.
 This is the first image checkpoint and produces the most useful Hugo images:
 
-- `site/content/latest/hardware/modules/carrier/carrier.webp`;
-- `site/content/latest/hardware/modules/carrier/carrier-bottom.webp`;
-- `site/content/latest/hardware/backplane/backplane.webp`; and
-- `site/content/latest/hardware/backplane/backplane-bottom.webp`.
+- `site/content/system/hardware/modules/_files/carrier.webp`;
+- `site/content/system/hardware/modules/_files/carrier-bottom.webp`;
+- `site/content/system/hardware/backplane/_files/backplane.webp`; and
+- `site/content/system/hardware/backplane/_files/backplane-bottom.webp`.
 
 The renderer may use a temporary format internally. The publishing boundary
 accepts only validated WebP files.
@@ -147,7 +147,7 @@ origin. Do not apply vendor-specific silkscreen filtering yet.
 ### 7. Validate and render the common panel
 
 Run panel DRC and structural checks, then render an overview such as
-`site/content/latest/hardware/panel.webp`. This second image checkpoint is useful
+`site/content/system/hardware/_files/panel.webp`. This second image checkpoint is useful
 for both release review and the Hugo site.
 
 ### 8. Fork vendor variants
@@ -302,20 +302,23 @@ build/pcb-release/
       pcbway-bottom.webp
   manifest.json
 
-site/content/latest/hardware/
+site/content/system/hardware/
   _index.md
-  panel.webp
-  renders.json
+  _files/
+    panel.webp
+    renders.json
   backplane/
-    index.md
-    backplane.webp
-    backplane-bottom.webp
-    renders.json
-  modules/carrier/
     _index.md
-    carrier.webp
-    carrier-bottom.webp
-    renders.json
+    _files/
+      backplane.webp
+      backplane-bottom.webp
+      renders.json
+  modules/
+    _index.md
+    _files/
+      carrier.webp
+      carrier-bottom.webp
+      renders.json
 ```
 
 The release validator should explicitly compare each vendor upload ZIP against

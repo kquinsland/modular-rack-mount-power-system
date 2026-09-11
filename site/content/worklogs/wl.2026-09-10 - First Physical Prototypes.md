@@ -1,19 +1,35 @@
 ---
-title: Second-generation hardware consolidation
-date: 2026-09-07
-description: The controller and six-slot distribution are moving onto one backplane while each carrier takes ownership of its local power path.
+title: 'First Physical Prototypes'
+date: 2026-09-10
+description: After a lot of re architecture, the second-generation design is now ready for first-article prototypes.
 tags:
   - hardware
-  - backplane
-  - carrier
-slug: 2026-09-07-second-generation-hardware-consolidation
+slug: '2026-09-10-first-physical-prototypes'
 draft: false
 ---
 
-The second generation of Modular Rack Power now has a much clearer boundary
-between the shared backplane and each removable carrier.
+Journaling about progress on long-term projects is not new to me... but doing it publicly, in the repo is. Let's see how this goes!
 
-The backplane is being consolidated into a single six-slot board. It owns the
+---
+
+Please see {{< ref "system/overview.md" >}} for a high-level overview of the goal/purpose, and architecture.
+
+After some early and initial feedback on prototypes...
+Lots of contention between initial goals, future plans, and trying to keep things simple but powerful and cheap... all at the same time.
+
+//TODO: multi axis graph to illustrate the tradeoffs/tension?
+
+Finally a nice mid-point that should make for a usable v1.0 system that can be extended somewhat w/ software.
+
+Two backplanes are about the right number for a 1U rack.
+
+A few limiting factors are keeping things at the ~100W/port level.
+Highly motivated by telemetry; I want to see what's going on / measure all the things!
+Modular so a part can be swapped out if it fails or if a new module is developed.
+Individual port control so I can remotely reboot a node as needed.
+
+
+It owns the
 system DC input, aggregate current measurement, CAN-FD connection, local
 controller, two fan channels, and external temperature-sensor interface. This
 supersedes the older architecture where a separate controller backpack reached
@@ -38,3 +54,7 @@ a controlled first-article build.
 Firmware will be redesigned after this hardware stabilizes. Existing firmware
 in the repository should be treated as project history, not as the behavior of
 the second-generation system.
+
+## PCBWay
+
+// TODO: brief "yep, they're sponsoring..."

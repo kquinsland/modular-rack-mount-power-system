@@ -1,20 +1,17 @@
 ---
-title: Modular Rack Power
-description: Development journal and technical documentation for a modular mini-rack power system.
+title: Modular Rack Power Supply
+description: Development journal and technical documentation repository for a modern, modular USB-C based power supply.
 ---
 
-Modular Rack Power is an evolving backplane-and-carrier system for distributing
-DC power in a compact compute rack. This site separates the living technical
-reference from the informal record of how the design develops.
+Modular Rack Power Supply (MRPS) is a creatively named system for distributing DC power via USB-C/[Power Delivery](https://en.wikipedia.org/wiki/USB_hardware#USB_Power_Delivery) in a compact compute rack.
 
-The hardware is still under active development. Values described here are
-design targets unless a page explicitly identifies them as tested or released.
+// TODO: banner image or similar
+
+> [!WARNING]
+> Everything about this project is still under active development.
+
+You can think of it as a "do-over" for [this](https://karlquinsland.com/home-lab-consolidated-psu/) project with some inspiration from Shrike Lab's [HomeLab PDU V1](https://github.com/Shrike-Lab/HomeLab-PDU-V1) and some intentional design choices to make it more modular, flexible, and maintainable.
+
+There's also a research / prototype component to this; some of what gets built here will be used in a future project.
 
 <!--more-->
-
-## Inspiration
-
-One source of inspiration is Shrike Lab's
-[HomeLab PDU V1](https://github.com/Shrike-Lab/HomeLab-PDU-V1), an open hardware
-power-distribution project for home-lab racks. More detail about the ideas and
-lessons carried into Modular Rack Power will be added here later.

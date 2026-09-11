@@ -31,10 +31,11 @@ BOARDS = {
     "backplane": "hardware/boards/backplane/backplane.kicad_pcb",
 }
 BUNDLES = {
-    "carrier": Path("site/content/latest/hardware/modules/carrier"),
-    "backplane": Path("site/content/latest/hardware/backplane"),
-    "panel": Path("site/content/latest/hardware"),
+    "carrier": Path("site/content/system/hardware/modules/_files"),
+    "backplane": Path("site/content/system/hardware/backplane/_files"),
+    "panel": Path("site/content/system/hardware/_files"),
 }
+ASSEMBLY_FILES = Path("site/static/guides/assembly/_files")
 
 
 def git(*args: str, root: Path = ROOT) -> str:
@@ -267,7 +268,7 @@ def _publish_bundles(render_dir: Path, metadata_dir: Path) -> None:
             source = render_dir / view["file"]
             if sha256(source) != view["sha256"]:
                 raise ValueError(f"iBOM hash mismatch: {source}")
-            files[ROOT / "site/static/assembly" / source.name] = source
+            files[ROOT / ASSEMBLY_FILES / source.name] = source
         local_manifest = metadata_dir / f"{board}-renders.json"
         write_json(
             local_manifest,
@@ -413,7 +414,7 @@ def build(args: argparse.Namespace) -> Path:
             assembly_views[board] = {
                 "file": target.name,
                 "sha256": sha256(target),
-                "site_url": f"/assembly/{target.name}",
+                "site_url": f"/guides/assembly/_files/{target.name}",
             }
     if args.panel or args.command == "release":
         worker(work, "panel")
@@ -498,7 +499,7 @@ def main() -> None:
     parser.add_argument(
         "--ibom",
         action="store_true",
-        help="Include interactive assembly HTML (published under site/static/assembly)",
+        help="Include interactive assembly HTML in the assembly guide's _files directory",
     )
     parser.add_argument("--output", type=Path)
     parser.add_argument("-D", "--define", type=variable, action="append", default=[])
