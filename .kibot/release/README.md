@@ -50,11 +50,11 @@ PEP 723. No host KiCad Python installation or GUI is needed.
 
 | Artifact | Destination |
 | --- | --- |
-| Carrier top/bottom | `site/content/latest/hardware/modules/carrier/carrier.webp`, `carrier-bottom.webp` |
-| Backplane top/bottom | `site/content/latest/hardware/backplane/backplane.webp`, `backplane-bottom.webp` |
-| Panel overview | `site/content/latest/hardware/panel.webp` |
-| Render provenance | `renders.json` in each owning Hugo bundle |
-| Optional interactive BOM | `site/static/assembly/carrier-ibom.html` / `backplane-ibom.html` |
+| Carrier top/bottom | `site/content/system/hardware/modules/_files/carrier.webp`, `carrier-bottom.webp` |
+| Backplane top/bottom | `site/content/system/hardware/backplane/_files/backplane.webp`, `backplane-bottom.webp` |
+| Panel overview | `site/content/system/hardware/_files/panel.webp` |
+| Render provenance | `renders.json` in each owning page's `_files/` directory |
+| Optional interactive BOM | `site/static/guides/assembly/_files/carrier-ibom.html` / `backplane-ibom.html` |
 | Manufacturing files | `<output>/<vendor>/upload/` and `<vendor>-upload.zip` |
 | Vendor proof images | `<output>/<vendor>/proofs/<vendor>-{top,bottom}.webp` |
 | Review metadata | `<output>/manifest.json`, `panel-info.json`, `checks/`, vendor order notes/netlist |

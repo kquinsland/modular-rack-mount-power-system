@@ -29,7 +29,7 @@ while IFS= read -r -d '' worklog; do
     echo "worklog date does not match filename: $worklog" >&2
     failure=1
   fi
-done < <(find site/content/worklog -maxdepth 1 -type f -name '*.md' ! -name '_index.md' -print0)
+done < <(find site/content/worklogs -maxdepth 1 -type f -name '*.md' ! -name '_index.md' -print0)
 
 if (( failure != 0 )); then
   exit 1
@@ -40,10 +40,16 @@ if [[ "$check_outputs" == true ]]; then
     site/public/index.html
     site/public/index.md
     site/public/llms.txt
-    site/public/latest/index.html
-    site/public/latest/index.md
-    site/public/worklog/index.html
-    site/public/worklog/index.md
+    site/public/system/index.html
+    site/public/system/index.md
+    site/public/guides/index.html
+    site/public/guides/index.md
+    site/public/worklogs/index.html
+    site/public/worklogs/index.md
+    site/public/system/hardware/_files/panel.webp
+    site/public/system/hardware/backplane/_files/renders.json
+    site/public/system/hardware/modules/_files/carrier.webp
+    site/public/guides/assembly/_files/backplane-ibom.html
   )
   for output in "${required_outputs[@]}"; do
     if [[ ! -f "$output" ]]; then
@@ -57,20 +63,22 @@ if [[ "$check_outputs" == true ]]; then
     failure=1
   fi
 
-  if ! grep -Eq 'rel=("alternate"|alternate)' site/public/latest/system-overview/index.html; then
+  if ! grep -Eq 'rel=("alternate"|alternate)' site/public/system/overview/index.html; then
     echo "technical page does not advertise an alternate representation" >&2
     failure=1
   fi
 
-  if ! grep -q 'View source on GitHub' site/public/latest/system-overview/index.html; then
+  if ! grep -q 'View source on GitHub' site/public/system/overview/index.html; then
     echo "technical page does not include its source link" >&2
     failure=1
   fi
 
-  if ! grep -Eq 'id=("current-version"|current-version)' site/public/index.html; then
-    echo "home page does not include the version selector" >&2
-    failure=1
-  fi
+  for obsolete in site/public/latest site/public/worklog; do
+    if [[ -e "$obsolete" ]]; then
+      echo "obsolete documentation output exists: $obsolete" >&2
+      failure=1
+    fi
+  done
 fi
 
 exit "$failure"

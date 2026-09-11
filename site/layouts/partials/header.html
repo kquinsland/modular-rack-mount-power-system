@@ -1,11 +1,6 @@
 {{- $logo := site.Params.main_logo -}}
 {{- $mainIcon := site.Params.main_icon | default "book-open" -}}
 {{- $title := site.Title | title -}}
-{{- $versions := site.Params.versions | default (slice "latest") -}}
-{{- $currentVersion := "Versions" -}}
-{{- if in $versions .Section -}}
-  {{- $currentVersion = .Section -}}
-{{- end -}}
 
 <div class="container">
   <div class="header-wrapper flex items-center relative">
@@ -40,8 +35,9 @@
 
     <div class="header-right">
       <nav class="project-nav" aria-label="Project navigation">
-        <a href='{{ "/latest/" | relLangURL }}'>Docs</a>
-        <a href='{{ "/worklog/" | relLangURL }}'>Worklog</a>
+        <a href='{{ "/system/" | relLangURL }}'>System</a>
+        <a href='{{ "/guides/" | relLangURL }}'>Guides</a>
+        <a href='{{ "/worklogs/" | relLangURL }}'>Worklogs</a>
         <a href="{{ site.Params.github_repository }}">GitHub</a>
       </nav>
 
@@ -56,9 +52,6 @@
         </a>
       {{- end }}
 
-      <button class="toggle-version" data-outside="docs-versions" aria-label="Browse documentation versions" id="current-version">
-        {{ $currentVersion }}
-      </button>
     </div>
 
     <div class="dropdown" id="docs-mode">
@@ -75,15 +68,6 @@
           {{ partial "svg" (dict "icon" "moon") }}
           {{ i18n "dark" }}
         </button>
-      </div>
-    </div>
-
-    <div class="dropdown" id="docs-versions">
-      <div class="list fw-500">
-        {{- range $versions }}
-          <a class="list-link" href="{{ printf "/%s/" . | relLangURL }}">{{ . }}</a>
-        {{- end }}
-        <a class="list-link" href='{{ "/#versions" | relLangURL }}'>Browse all versions</a>
       </div>
     </div>
   </div>

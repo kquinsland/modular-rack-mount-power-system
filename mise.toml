@@ -39,12 +39,18 @@ run = "mise -C firmware run build"
 description = "Regenerate the PDCAN DBC from protocol definitions"
 run = "mise -C firmware run dbc"
 
+[tasks."site:init"]
+description = "Initialize the documentation site theme submodule"
+run = "git submodule update --init --recursive -- site/themes/hudocs"
+
 [tasks."site:build"]
 description = "Validate and build the documentation site"
+depends = ["site:init"]
 run = "site/scripts/build.sh"
 
 [tasks."site:serve"]
 description = "Run the local documentation server with drafts"
+depends = ["site:init"]
 run = "hugo server --source site --buildDrafts"
 
 [tasks."site:validate"]

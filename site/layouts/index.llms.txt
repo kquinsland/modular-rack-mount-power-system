@@ -9,39 +9,47 @@
 {{- with .OutputFormats.Get "markdown" }}
 - [Home]({{ .Permalink }}): Project overview and documentation entry points.
 {{- end }}
-{{- with .Site.GetPage "/worklog" }}
+{{- with .Site.GetPage "/system" }}
   {{- with .OutputFormats.Get "markdown" }}
-- [Worklog]({{ .Permalink }}): Version-independent project journal and development updates.
+- [System]({{ .Permalink }}): Architecture, hardware, interfaces, power, and firmware.
+  {{- end }}
+{{- end }}
+{{- with .Site.GetPage "/guides" }}
+  {{- with .OutputFormats.Get "markdown" }}
+- [Guides]({{ .Permalink }}): Practical assembly, build, and bring-up instructions.
+  {{- end }}
+{{- end }}
+{{- with .Site.GetPage "/worklogs" }}
+  {{- with .OutputFormats.Get "markdown" }}
+- [Worklogs]({{ .Permalink }}): Project journal and development updates.
   {{- end }}
 {{- end }}
 
-## Technical documentation versions
+## System documentation
 
-{{- range .Site.Params.versions }}
-  {{- $version := . -}}
-  {{- with site.GetPage (printf "/%s" $version) }}
-    {{- with .OutputFormats.Get "markdown" }}
-- [{{ $version }}]({{ .Permalink }}): Technical documentation for {{ $version }}.
-    {{- end }}
-  {{- end }}
-{{- end }}
-
-## Latest technical documentation
-
-{{- with .Site.GetPage "/latest" }}
-  {{- $latestPages := where site.Pages "Section" "latest" -}}
-  {{- $latestPages = where $latestPages "RelPermalink" "ne" .RelPermalink -}}
-  {{- range $latestPages.ByLinkTitle }}
-    {{- $page := . -}}
-    {{- with .OutputFormats.Get "markdown" }}
+{{- $systemPages := where site.Pages "Section" "system" -}}
+{{- $systemPages = where $systemPages "RelPermalink" "ne" "/system/" -}}
+{{- range $systemPages.ByLinkTitle }}
+  {{- $page := . -}}
+  {{- with .OutputFormats.Get "markdown" }}
 - [{{ $page.Title }}]({{ .Permalink }}){{ with $page.Description }}: {{ . | htmlUnescape | safeHTML }}{{ end }}
-    {{- end }}
+  {{- end }}
+{{- end }}
+
+## Guides
+
+{{- $guidePages := where site.Pages "Section" "guides" -}}
+{{- $guidePages = where $guidePages "RelPermalink" "ne" "/guides/" -}}
+{{- range $guidePages.ByLinkTitle }}
+  {{- $page := . -}}
+  {{- with .OutputFormats.Get "markdown" }}
+- [{{ $page.Title }}]({{ .Permalink }}){{ with $page.Description }}: {{ . | htmlUnescape | safeHTML }}{{ end }}
   {{- end }}
 {{- end }}
 
 ## Worklog entries
 
-{{- range (where .Site.RegularPages "Section" "worklog").ByDate.Reverse }}
+{{- range (where .Site.RegularPages "Section" "worklogs").ByDate.Reverse }}
   {{- $page := . -}}
   {{- with .OutputFormats.Get "markdown" }}
 - [{{ $page.Title }}]({{ .Permalink }}){{ with $page.Description }}: {{ . | htmlUnescape | safeHTML }}{{ end }}
@@ -55,4 +63,4 @@
 ## Notes
 
 - Every page publishes Markdown as `index.md` beside its rendered `index.html`.
-- Worklogs are version-independent; technical documentation is organized by version.
+- Git history is the archive for earlier versions of the documentation.

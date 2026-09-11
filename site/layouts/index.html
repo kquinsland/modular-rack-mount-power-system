@@ -8,12 +8,16 @@
     <div class="article-body markdown home-intro">{{ .Summary }}</div>
 
     <div class="home-cards">
-      <a class="home-card" href='{{ "/latest/" | relLangURL }}'>
-        <strong>Technical documentation</strong>
+      <a class="home-card" href='{{ "/system/" | relLangURL }}'>
+        <strong>System</strong>
         <span>Architecture, hardware assemblies, interfaces, and power design.</span>
       </a>
-      <a class="home-card" href='{{ "/worklog/" | relLangURL }}'>
-        <strong>Project worklog</strong>
+      <a class="home-card" href='{{ "/guides/" | relLangURL }}'>
+        <strong>Guides</strong>
+        <span>Practical assembly, build, and bring-up instructions.</span>
+      </a>
+      <a class="home-card" href='{{ "/worklogs/" | relLangURL }}'>
+        <strong>Worklogs</strong>
         <span>Informal development updates and expanded release notes.</span>
       </a>
       <a class="home-card" href="{{ site.Params.github_repository }}">
@@ -21,15 +25,6 @@
         <span>Hardware design files, engineering notes, scripts, and firmware workspace.</span>
       </a>
     </div>
-
-    <section class="version-browser" id="versions">
-      <h2>Browse technical documentation by version</h2>
-      <ul class="section-list">
-        {{- range site.Params.versions }}
-          <li><a href="{{ printf "/%s/" . | relLangURL }}">{{ . }}</a></li>
-        {{- end }}
-      </ul>
-    </section>
 
     <section class="article-body markdown inspiration">
       {{ .ContentWithoutSummary }}

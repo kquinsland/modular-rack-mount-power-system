@@ -8,12 +8,13 @@ The site uses the pinned HuDocs submodule in `themes/hudocs`.
 From the repository root:
 
 ```sh
-git submodule update --init --recursive
+mise run site:init
 mise run site:serve
 ```
 
-Run `mise run site:build` to validate the source and create a production build
-in `site/public/`.
+The build and development-server tasks also run `site:init` automatically, so the pinned theme is available before Hugo starts.
+
+Run `mise run site:build` to validate the source and create a production build in `site/public/`.
 
 Create a worklog with:
 
@@ -21,36 +22,36 @@ Create a worklog with:
 mise run worklog:new -- "Concise Summary"
 ```
 
-The helper creates `site/content/worklog/wl.YYYY-MM-DD - Concise Summary.md`.
+The helper creates `site/content/worklogs/wl.YYYY-MM-DD - Concise Summary.md`.
 The filename date and front-matter date must agree.
 
 ## Content organization
 
-Use Hugo page bundles for documentation with page-specific assets. Leaf pages
-use `page-name/index.md`; section pages remain branch bundles with `_index.md`.
-Store renders and other page-specific files beside the owning Markdown file and
-reference them with relative paths. Reserve `static/` for assets shared across
-multiple pages.
+The permanent top-level sections are `system/`, `guides/`, and `worklogs/`.
+Git history is the archive for older versions of the documentation.
 
-PCB images are generated with `mise run docs:pcb-renders` and stored as WebP
-beside each board's Markdown. Carrier and backplane bundles contain top and
-bottom views plus `renders.json`; the hardware section owns `panel.webp`.
-`mise run docs:pcb-iboms` also publishes interactive assembly HTML under
-`static/assembly/` (Hugo otherwise interprets HTML as content). Preview
-images do not imply that the PCB passed release checks. See the
-[release tooling guide](../.kibot/release/README.md) for the validated build.
+Use Hugo page bundles for nested documentation: branch bundles for sections and
+leaf bundles for standalone pages. Keep images, generated metadata, and other
+supporting files in an owning page's `_files/` directory and reference them
+with relative paths. Reserve `static/` for shared assets and files Hugo would
+otherwise interpret as content.
 
-## Documentation versions
+PCB images are generated with `mise run docs:pcb-renders` and stored as WebP.
+Carrier and backplane `_files/` directories contain top and bottom views plus
+`renders.json`; `system/hardware/_files/` owns `panel.webp`.
 
-`content/latest/` is the moving technical reference. Worklogs live separately
-and are never versioned. A future release process may copy `latest` to an
-immutable version directory and add that version to `params.versions` in
-`hugo.toml`.
+The `mise run docs:pcb-iboms` task publishes interactive assembly HTML under
+`static/guides/assembly/_files/`, which serves it at
+`/guides/assembly/_files/`. HTML is kept under `static/` because Hugo otherwise
+interprets it as content.
+
+Preview images do not imply that the PCB passed release checks.
+See the [release tooling guide](../.kibot/release/README.md) for the validated build.
 
 ## Deployment
 
-The Pages workflow is intentionally manual. Inspect repository state with the
-authenticated GitHub CLI before changing Pages configuration:
+The [Pages workflow](../.github/workflows/pages.yml) is intentionally manual, initially.
+Inspect repository state with the authenticated GitHub CLI before changing Pages configuration:
 
 ```sh
 export GH_REPO="kquinsland/modular-rack-power"
@@ -59,4 +60,5 @@ gh api "repos/${GH_REPO}/pages"
 ```
 
 Once Pages uses GitHub Actions, dispatch the workflow with the Git ref to
-publish. DNS for `mrp.karlquinsland.com` is managed outside this repository.
+publish.
+DNS for `mrp.karlquinsland.com` is managed outside this repository.

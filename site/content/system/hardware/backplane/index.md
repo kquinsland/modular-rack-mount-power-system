@@ -1,5 +1,5 @@
 ---
-title: Consolidated backplane
+title: Backplane
 description: Six-slot power distribution, aggregate monitoring, CAN-FD, and cooling control.
 weight: 1
 ---
@@ -9,14 +9,14 @@ distribution on one PCB. The prototype board outline, airflow cutouts, mounting
 features, and slot locations provide the mechanical foundation for the current
 design.
 
-![Consolidated backplane, top side](backplane.webp)
+![Consolidated backplane, top side](_files/backplane.webp)
 
-![Consolidated backplane, bottom side](backplane-bottom.webp)
+![Consolidated backplane, bottom side](_files/backplane-bottom.webp)
 
 _Generated from the committed PCB. Render provenance is recorded in
-[renders.json](renders.json); a preview does not establish fabrication readiness._
+[renders.json](_files/renders.json); a preview does not establish fabrication readiness._
 
-[Interactive assembly BOM](/assembly/backplane-ibom.html)
+[Interactive assembly BOM](/guides/assembly/_files/backplane-ibom.html)
 
 ## Responsibilities
 

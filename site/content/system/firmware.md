@@ -1,7 +1,7 @@
 ---
 title: Firmware
 description: Placeholder for the firmware redesign that follows Gen-2 hardware stabilization.
-weight: 5
+weight: 3
 badge: true
 badge_text: Planned
 ---

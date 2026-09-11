@@ -178,8 +178,8 @@ digest-pinned container. `panel_layout.py` owns the six-carrier/one-backplane
 geometry. `convert_pcb_render.py` is the PEP 723 lossless WebP converter, and
 `validate_pcb_release.py` checks assembly and archive invariants.
 
-Renders and per-board manifests publish into the Hugo content bundles under
-`site/content/latest/hardware/`. Vendor proof WebPs stay outside fabrication
+Renders and per-board manifests publish into each page's `_files/` directory
+under `site/content/system/hardware/`. Vendor proof WebPs stay outside fabrication
 upload ZIPs. Preview mode never produces fabrication packages. Release mode
 requires both source boards, the panel, and vendor variants to pass their gates.
 

@@ -13,7 +13,7 @@ if [[ "$summary" == *$'\n'* || "$summary" == */* || "$summary" == *\\* ]]; then
 fi
 
 entry_date="$(date +%F)"
-relative_path="worklog/wl.${entry_date} - ${summary}.md"
+relative_path="worklogs/wl.${entry_date} - ${summary}.md"
 absolute_path="site/content/${relative_path}"
 
 if [[ -e "$absolute_path" ]]; then

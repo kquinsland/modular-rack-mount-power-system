@@ -9,7 +9,7 @@
 {{ define "tree-list" }}
   {{- $currentNode := .CurrentPage -}}
   {{- $pages := where .Section.Pages "Params.hidden" "ne" true -}}
-  {{- if eq .CurrentPage.Section "worklog" -}}
+  {{- if eq .CurrentPage.Section "worklogs" -}}
     {{- $pages = $pages.ByDate.Reverse -}}
   {{- end -}}
   <ul class="menu-list">
