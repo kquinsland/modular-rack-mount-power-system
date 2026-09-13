@@ -1,0 +1,313 @@
+{
+  "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)\nbinary: rustc\ncommit-hash: 48a229ceaefd4985c50990b14116b6d856af0985\ncommit-date: 2026-09-01\nhost: x86_64-unknown-linux-gnu\nrelease: 1.98.1\nLLVM version: 22.1.8\n",
+  "platform": "Linux-7.2.3-arch1-3-x86_64-with-glibc2.44",
+  "processor": "",
+  "base_commit": "9680cd3992865a311ab963fa6192fc00b31434e8",
+  "benchmark": {
+    "batches": 21,
+    "iterations_per_batch": 100000,
+    "warmup_iterations": 100000,
+    "process_runs": 3,
+    "inputs": 256,
+    "profile": "Cargo default bench/release"
+  },
+  "variants": {
+    "manual": {
+      "corpus_sha256": "da462110e5835a25b8ddf316a192802f66a9c36521c3b15421953241b0cb6c32",
+      "corpus_lines": 54128,
+      "sizes": {
+        "backplane": {
+          "text": 13704,
+          "data": 24,
+          "bss": 224,
+          "flash": 13728,
+          "static_ram": 248
+        },
+        "carrier": {
+          "text": 13680,
+          "data": 24,
+          "bss": 224,
+          "flash": 13704,
+          "static_ram": 248
+        },
+        "pdcan-bootloader": {
+          "text": 14732,
+          "data": 0,
+          "bss": 32,
+          "flash": 14732,
+          "static_ram": 32
+        },
+        "codec-size": {
+          "text": 8676,
+          "data": 24,
+          "bss": 0,
+          "flash": 8700,
+          "static_ram": 24
+        },
+        "codec-size-lto-z": {
+          "text": 5356,
+          "data": 24,
+          "bss": 0,
+          "flash": 5380,
+          "static_ram": 24
+        }
+      },
+      "host_runs": [
+        {
+          "encode_power": {
+            "median_ns": 8.23,
+            "min_ns": 7.901,
+            "max_ns": 9.533
+          },
+          "decode_power": {
+            "median_ns": 10.605,
+            "min_ns": 10.489,
+            "max_ns": 12.138
+          },
+          "encode_policy": {
+            "median_ns": 22.965,
+            "min_ns": 22.673,
+            "max_ns": 25.819
+          },
+          "decode_policy": {
+            "median_ns": 13.748,
+            "min_ns": 13.672,
+            "max_ns": 14.179
+          },
+          "reject_power_reserved": {
+            "median_ns": 7.597,
+            "min_ns": 7.52,
+            "max_ns": 7.615
+          },
+          "reject_policy_reserved": {
+            "median_ns": 11.169,
+            "min_ns": 11.109,
+            "max_ns": 11.22
+          }
+        },
+        {
+          "encode_power": {
+            "median_ns": 8.454,
+            "min_ns": 8.415,
+            "max_ns": 9.813
+          },
+          "decode_power": {
+            "median_ns": 10.661,
+            "min_ns": 10.588,
+            "max_ns": 10.81
+          },
+          "encode_policy": {
+            "median_ns": 22.257,
+            "min_ns": 22.011,
+            "max_ns": 23.986
+          },
+          "decode_policy": {
+            "median_ns": 13.777,
+            "min_ns": 13.677,
+            "max_ns": 14.024
+          },
+          "reject_power_reserved": {
+            "median_ns": 7.596,
+            "min_ns": 7.542,
+            "max_ns": 7.741
+          },
+          "reject_policy_reserved": {
+            "median_ns": 11.169,
+            "min_ns": 11.108,
+            "max_ns": 11.308
+          }
+        },
+        {
+          "encode_power": {
+            "median_ns": 8.099,
+            "min_ns": 8.064,
+            "max_ns": 10.009
+          },
+          "decode_power": {
+            "median_ns": 10.589,
+            "min_ns": 10.363,
+            "max_ns": 12.676
+          },
+          "encode_policy": {
+            "median_ns": 19.221,
+            "min_ns": 19.0,
+            "max_ns": 19.825
+          },
+          "decode_policy": {
+            "median_ns": 13.777,
+            "min_ns": 13.695,
+            "max_ns": 13.993
+          },
+          "reject_power_reserved": {
+            "median_ns": 7.602,
+            "min_ns": 7.56,
+            "max_ns": 7.725
+          },
+          "reject_policy_reserved": {
+            "median_ns": 11.175,
+            "min_ns": 11.109,
+            "max_ns": 11.346
+          }
+        }
+      ],
+      "deku_features": "pdcan-protocol v0.1.0 (/mnt/sync/Projects/modular-rack-power/firmware/crates/pdcan-protocol)\n\u2514\u2500\u2500 pdcan-types feature \"default\"\n    \u2514\u2500\u2500 pdcan-types v0.1.0 (/mnt/sync/Projects/modular-rack-power/firmware/crates/pdcan-types)\n",
+      "host_median_ns": {
+        "encode_power": 8.23,
+        "decode_power": 10.605,
+        "encode_policy": 22.257,
+        "decode_policy": 13.777,
+        "reject_power_reserved": 7.597,
+        "reject_policy_reserved": 11.169
+      }
+    },
+    "deku": {
+      "corpus_sha256": "da462110e5835a25b8ddf316a192802f66a9c36521c3b15421953241b0cb6c32",
+      "corpus_lines": 54128,
+      "sizes": {
+        "backplane": {
+          "text": 13700,
+          "data": 24,
+          "bss": 224,
+          "flash": 13724,
+          "static_ram": 248
+        },
+        "carrier": {
+          "text": 13680,
+          "data": 24,
+          "bss": 224,
+          "flash": 13704,
+          "static_ram": 248
+        },
+        "pdcan-bootloader": {
+          "text": 14732,
+          "data": 0,
+          "bss": 32,
+          "flash": 14732,
+          "static_ram": 32
+        },
+        "codec-size": {
+          "text": 21112,
+          "data": 24,
+          "bss": 0,
+          "flash": 21136,
+          "static_ram": 24
+        },
+        "codec-size-lto-z": {
+          "text": 6456,
+          "data": 24,
+          "bss": 0,
+          "flash": 6480,
+          "static_ram": 24
+        }
+      },
+      "host_runs": [
+        {
+          "encode_power": {
+            "median_ns": 8.283,
+            "min_ns": 7.728,
+            "max_ns": 10.552
+          },
+          "decode_power": {
+            "median_ns": 9.627,
+            "min_ns": 9.577,
+            "max_ns": 9.684
+          },
+          "encode_policy": {
+            "median_ns": 31.768,
+            "min_ns": 31.519,
+            "max_ns": 34.226
+          },
+          "decode_policy": {
+            "median_ns": 14.719,
+            "min_ns": 14.663,
+            "max_ns": 14.802
+          },
+          "reject_power_reserved": {
+            "median_ns": 7.6,
+            "min_ns": 7.56,
+            "max_ns": 7.634
+          },
+          "reject_policy_reserved": {
+            "median_ns": 11.168,
+            "min_ns": 11.075,
+            "max_ns": 11.22
+          }
+        },
+        {
+          "encode_power": {
+            "median_ns": 8.05,
+            "min_ns": 7.969,
+            "max_ns": 8.573
+          },
+          "decode_power": {
+            "median_ns": 9.36,
+            "min_ns": 9.27,
+            "max_ns": 11.025
+          },
+          "encode_policy": {
+            "median_ns": 34.053,
+            "min_ns": 33.826,
+            "max_ns": 37.035
+          },
+          "decode_policy": {
+            "median_ns": 17.367,
+            "min_ns": 17.323,
+            "max_ns": 17.426
+          },
+          "reject_power_reserved": {
+            "median_ns": 7.59,
+            "min_ns": 7.521,
+            "max_ns": 7.644
+          },
+          "reject_policy_reserved": {
+            "median_ns": 11.167,
+            "min_ns": 11.097,
+            "max_ns": 11.207
+          }
+        },
+        {
+          "encode_power": {
+            "median_ns": 8.142,
+            "min_ns": 7.987,
+            "max_ns": 9.37
+          },
+          "decode_power": {
+            "median_ns": 9.501,
+            "min_ns": 9.384,
+            "max_ns": 9.561
+          },
+          "encode_policy": {
+            "median_ns": 31.581,
+            "min_ns": 31.409,
+            "max_ns": 33.249
+          },
+          "decode_policy": {
+            "median_ns": 14.809,
+            "min_ns": 14.75,
+            "max_ns": 15.6
+          },
+          "reject_power_reserved": {
+            "median_ns": 7.603,
+            "min_ns": 7.56,
+            "max_ns": 7.832
+          },
+          "reject_policy_reserved": {
+            "median_ns": 11.18,
+            "min_ns": 11.153,
+            "max_ns": 11.464
+          }
+        }
+      ],
+      "deku_features": "pdcan-protocol v0.1.0 (/mnt/sync/Projects/modular-rack-power/firmware/crates/pdcan-protocol)\n\u251c\u2500\u2500 deku v0.20.3\n\u2502   \u251c\u2500\u2500 deku_derive v0.20.3 (proc-macro)\n\u2502   \u2502   \u251c\u2500\u2500 darling feature \"default\"\n\u2502   \u2502   \u2502   \u251c\u2500\u2500 darling v0.21.3\n\u2502   \u2502   \u2502   \u2502   \u251c\u2500\u2500 darling_core feature \"default\"\n\u2502   \u2502   \u2502   \u2502   \u2502   \u2514\u2500\u2500 darling_core v0.21.3\n\u2502   \u2502   \u2502   \u2502   \u2502       \u251c\u2500\u2500 fnv feature \"default\"\n\u2502   \u2502   \u2502   \u2502   \u2502       \u2502   \u251c\u2500\u2500 fnv v1.0.7\n\u2502   \u2502   \u2502   \u2502   \u2502       \u2502   \u2514\u2500\u2500 fnv feature \"std\"\n\u2502   \u2502   \u2502   \u2502   \u2502       \u2502       \u2514\u2500\u2500 fnv v1.0.7\n\u2502   \u2502   \u2502   \u2502   \u2502       \u251c\u2500\u2500 ident_case feature \"default\"\n\u2502   \u2502   \u2502   \u2502   \u2502       \u2502   \u2514\u2500\u2500 ident_case v1.0.1\n\u2502   \u2502   \u2502   \u2502   \u2502       \u251c\u2500\u2500 proc-macro2 feature \"default\"\n\u2502   \u2502   \u2502   \u2502   \u2502       \u2502   \u251c\u2500\u2500 proc-macro2 v1.0.107\n\u2502   \u2502   \u2502   \u2502   \u2502       \u2502   \u2502   \u2514\u2500\u2500 unicode-ident feature \"default\"\n\u2502   \u2502   \u2502   \u2502   \u2502       \u2502   \u2502       \u2514\u2500\u2500 unicode-ident v1.0.24\n\u2502   \u2502   \u2502   \u2502   \u2502       \u2502   \u2514\u2500\u2500 proc-macro2 feature \"proc-macro\"\n\u2502   \u2502   \u2502   \u2502   \u2502       \u2502       \u2514\u2500\u2500 proc-macro2 v1.0.107 (*)\n\u2502   \u2502   \u2502   \u2502   \u2502       \u251c\u2500\u2500 quote feature \"default\"\n\u2502   \u2502   \u2502   \u2502   \u2502       \u2502   \u251c\u2500\u2500 quote v1.0.47\n\u2502   \u2502   \u2502   \u2502   \u2502       \u2502   \u2502   \u2514\u2500\u2500 proc-macro2 v1.0.107 (*)\n\u2502   \u2502   \u2502   \u2502   \u2502       \u2502   \u2514\u2500\u2500 quote feature \"proc-macro\"\n\u2502   \u2502   \u2502   \u2502   \u2502       \u2502       \u251c\u2500\u2500 quote v1.0.47 (*)\n\u2502   \u2502   \u2502   \u2502   \u2502       \u2502       \u2514\u2500\u2500 proc-macro2 feature \"proc-macro\" (*)\n\u2502   \u2502   \u2502   \u2502   \u2502       \u251c\u2500\u2500 strsim feature \"default\"\n\u2502   \u2502   \u2502   \u2502   \u2502       \u2502   \u2514\u2500\u2500 strsim v0.11.1\n\u2502   \u2502   \u2502   \u2502   \u2502       \u251c\u2500\u2500 syn feature \"default\"\n\u2502   \u2502   \u2502   \u2502   \u2502       \u2502   \u251c\u2500\u2500 syn v2.0.119\n\u2502   \u2502   \u2502   \u2502   \u2502       \u2502   \u2502   \u251c\u2500\u2500 proc-macro2 v1.0.107 (*)\n\u2502   \u2502   \u2502   \u2502   \u2502       \u2502   \u2502   \u251c\u2500\u2500 quote v1.0.47 (*)\n\u2502   \u2502   \u2502   \u2502   \u2502       \u2502   \u2502   \u2514\u2500\u2500 unicode-ident feature \"default\" (*)\n\u2502   \u2502   \u2502   \u2502   \u2502       \u2502   \u251c\u2500\u2500 syn feature \"clone-impls\"\n\u2502   \u2502   \u2502   \u2502   \u2502       \u2502   \u2502   \u2514\u2500\u2500 syn v2.0.119 (*)\n\u2502   \u2502   \u2502   \u2502   \u2502       \u2502   \u251c\u2500\u2500 syn feature \"derive\"\n\u2502   \u2502   \u2502   \u2502   \u2502       \u2502   \u2502   \u2514\u2500\u2500 syn v2.0.119 (*)\n\u2502   \u2502   \u2502   \u2502   \u2502       \u2502   \u251c\u2500\u2500 syn feature \"parsing\"\n\u2502   \u2502   \u2502   \u2502   \u2502       \u2502   \u2502   \u2514\u2500\u2500 syn v2.0.119 (*)\n\u2502   \u2502   \u2502   \u2502   \u2502       \u2502   \u251c\u2500\u2500 syn feature \"printing\"\n\u2502   \u2502   \u2502   \u2502   \u2502       \u2502   \u2502   \u2514\u2500\u2500 syn v2.0.119 (*)\n\u2502   \u2502   \u2502   \u2502   \u2502       \u2502   \u2514\u2500\u2500 syn feature \"proc-macro\"\n\u2502   \u2502   \u2502   \u2502   \u2502       \u2502       \u251c\u2500\u2500 syn v2.0.119 (*)\n\u2502   \u2502   \u2502   \u2502   \u2502       \u2502       \u251c\u2500\u2500 proc-macro2 feature \"proc-macro\" (*)\n\u2502   \u2502   \u2502   \u2502   \u2502       \u2502       \u2514\u2500\u2500 quote feature \"proc-macro\" (*)\n\u2502   \u2502   \u2502   \u2502   \u2502       \u251c\u2500\u2500 syn feature \"extra-traits\"\n\u2502   \u2502   \u2502   \u2502   \u2502       \u2502   \u2514\u2500\u2500 syn v2.0.119 (*)\n\u2502   \u2502   \u2502   \u2502   \u2502       \u2514\u2500\u2500 syn feature \"full\"\n\u2502   \u2502   \u2502   \u2502   \u2502           \u2514\u2500\u2500 syn v2.0.119 (*)\n\u2502   \u2502   \u2502   \u2502   \u2514\u2500\u2500 darling_macro feature \"default\"\n\u2502   \u2502   \u2502   \u2502       \u2514\u2500\u2500 darling_macro v0.21.3 (proc-macro)\n\u2502   \u2502   \u2502   \u2502           \u251c\u2500\u2500 darling_core feature \"default\" (*)\n\u2502   \u2502   \u2502   \u2502           \u251c\u2500\u2500 quote feature \"default\" (*)\n\u2502   \u2502   \u2502   \u2502           \u2514\u2500\u2500 syn feature \"default\" (*)\n\u2502   \u2502   \u2502   \u2514\u2500\u2500 darling feature \"suggestions\"\n\u2502   \u2502   \u2502       \u251c\u2500\u2500 darling v0.21.3 (*)\n\u2502   \u2502   \u2502       \u2514\u2500\u2500 darling_core feature \"suggestions\"\n\u2502   \u2502   \u2502           \u251c\u2500\u2500 darling_core v0.21.3 (*)\n\u2502   \u2502   \u2502           \u2514\u2500\u2500 darling_core feature \"strsim\"\n\u2502   \u2502   \u2502               \u2514\u2500\u2500 darling_core v0.21.3 (*)\n\u2502   \u2502   \u251c\u2500\u2500 proc-macro2 feature \"default\" (*)\n\u2502   \u2502   \u251c\u2500\u2500 quote feature \"default\" (*)\n\u2502   \u2502   \u2514\u2500\u2500 syn feature \"default\" (*)\n\u2502   \u251c\u2500\u2500 no_std_io2 v0.9.4\n\u2502   \u2502   \u2514\u2500\u2500 memchr v2.8.3\n\u2502   \u2514\u2500\u2500 rustversion feature \"default\"\n\u2502       \u2514\u2500\u2500 rustversion v1.0.23 (proc-macro)\n\u2514\u2500\u2500 pdcan-types feature \"default\"\n    \u2514\u2500\u2500 pdcan-types v0.1.0 (/mnt/sync/Projects/modular-rack-power/firmware/crates/pdcan-types)\n",
+      "host_median_ns": {
+        "encode_power": 8.142,
+        "decode_power": 9.501,
+        "encode_policy": 31.768,
+        "decode_policy": 14.809,
+        "reject_power_reserved": 7.6,
+        "reject_policy_reserved": 11.168
+      }
+    }
+  },
+  "corpus_identical": true
+}

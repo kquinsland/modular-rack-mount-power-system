@@ -19,6 +19,11 @@ application firmware updates.
 - `tools/pdcan-sim/`: deterministic Generation-2 backplane/carrier simulator.
 - `xtask/`: CI, embedded builds, size gates, bundle construction, and DBC generation.
 
+Firmware retains manual binary codecs; **Deku is not adopted**. See
+[decision 0002](../docs/decisions/0002-do-not-use-deku-in-firmware.md) for the
+rationale and supporting tests. The [benchmark report](docs/pdcan/deku-benchmark.md)
+preserves the completed POWER and carrier-policy trial and reproduction commands.
+
 ## Commands
 
 Run Cargo commands from this directory:
