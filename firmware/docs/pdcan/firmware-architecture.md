@@ -32,6 +32,11 @@ Protocol behavior branches on advertised capability bits. Profile identifiers
 select hardware-specific implementations and compatibility, but clients must
 not infer capabilities from a profile name.
 
+Firmware uses explicit, heap-free binary codecs. Deku was evaluated and rejected
+for adoption; see [decision 0002](../../../docs/decisions/0002-do-not-use-deku-in-firmware.md)
+for the tests, flash measurements, host benchmarks, and rationale. The rejected
+implementation is preserved as an archived trial patch, outside the firmware build.
+
 ## Final pin contracts
 
 Both boards use FDCAN1 RX on PB0 and TX on PB1. TCAN3413 standby is tied low on

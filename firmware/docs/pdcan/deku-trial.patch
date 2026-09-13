@@ -1,0 +1,828 @@
+diff --git a/firmware/Cargo.lock b/firmware/Cargo.lock
+index 0f40808..65915f0 100644
+--- a/firmware/Cargo.lock
++++ b/firmware/Cargo.lock
+@@ -353,8 +353,18 @@ version = "0.20.11"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "fc7f46116c46ff9ab3eb1597a45688b6715c6e628b5c133e288e709a29bcb4ee"
+ dependencies = [
+- "darling_core",
+- "darling_macro",
++ "darling_core 0.20.11",
++ "darling_macro 0.20.11",
++]
++
++[[package]]
++name = "darling"
++version = "0.21.3"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "9cdf337090841a411e2a7f3deb9187445851f91b309c0c0a29e05f74a00a48c0"
++dependencies = [
++ "darling_core 0.21.3",
++ "darling_macro 0.21.3",
+ ]
+ 
+ [[package]]
+@@ -371,13 +381,61 @@ dependencies = [
+  "syn 2.0.119",
+ ]
+ 
++[[package]]
++name = "darling_core"
++version = "0.21.3"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "1247195ecd7e3c85f83c8d2a366e4210d588e802133e1e355180a9870b517ea4"
++dependencies = [
++ "fnv",
++ "ident_case",
++ "proc-macro2",
++ "quote",
++ "strsim",
++ "syn 2.0.119",
++]
++
+ [[package]]
+ name = "darling_macro"
+ version = "0.20.11"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "fc34b93ccb385b40dc71c6fceac4b2ad23662c7eeb248cf10d529b7e055b6ead"
+ dependencies = [
+- "darling_core",
++ "darling_core 0.20.11",
++ "quote",
++ "syn 2.0.119",
++]
++
++[[package]]
++name = "darling_macro"
++version = "0.21.3"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "d38308df82d1080de0afee5d069fa14b0326a88c14f15c5ccda35b4a6c414c81"
++dependencies = [
++ "darling_core 0.21.3",
++ "quote",
++ "syn 2.0.119",
++]
++
++[[package]]
++name = "deku"
++version = "0.20.3"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "ebf55291257a2a5c90cf50ae17b6bbaabc3fd13642cf3895a71c412513c19630"
++dependencies = [
++ "deku_derive",
++ "no_std_io2",
++ "rustversion",
++]
++
++[[package]]
++name = "deku_derive"
++version = "0.20.3"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "bec2a42b511fc5efd9183f4f71c17885d627b17e7fd9a61a92089406caa4397e"
++dependencies = [
++ "darling 0.21.3",
++ "proc-macro2",
+  "quote",
+  "syn 2.0.119",
+ ]
+@@ -476,7 +534,7 @@ version = "0.8.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "d11a246f53de5f97a387f40ac24726817cd0b6f833e7603baac784f29d6ff276"
+ dependencies = [
+- "darling",
++ "darling 0.20.11",
+  "proc-macro2",
+  "quote",
+  "syn 2.0.119",
+@@ -983,6 +1041,15 @@ dependencies = [
+  "memoffset",
+ ]
+ 
++[[package]]
++name = "no_std_io2"
++version = "0.9.4"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "418abd1b6d34fbf6cae440dc874771b0525a604428704c76e48b29a5e67b8003"
++dependencies = [
++ "memchr",
++]
++
+ [[package]]
+ name = "nu-ansi-term"
+ version = "0.50.3"
+@@ -1081,6 +1148,7 @@ dependencies = [
+ name = "pdcan-protocol"
+ version = "0.1.0"
+ dependencies = [
++ "deku",
+  "pdcan-types",
+ ]
+ 
+diff --git a/firmware/carrier/Cargo.toml b/firmware/carrier/Cargo.toml
+index 0a8787d..834f4a8 100644
+--- a/firmware/carrier/Cargo.toml
++++ b/firmware/carrier/Cargo.toml
+@@ -41,3 +41,9 @@ bench = false
+ 
+ [lints]
+ workspace = true
++
++[[example]]
++name = "codec-size"
++required-features = ["firmware-bin"]
++test = false
++bench = false
+diff --git a/firmware/carrier/examples/codec-size.rs b/firmware/carrier/examples/codec-size.rs
+new file mode 100644
+index 0000000..ca017c7
+--- /dev/null
++++ b/firmware/carrier/examples/codec-size.rs
+@@ -0,0 +1,47 @@
++//! Link-only size probe. This is not an application image for flashing.
++#![no_std]
++#![no_main]
++
++use core::hint::black_box;
++use cortex_m_rt::entry;
++use embassy_stm32 as _;
++use panic_halt as _;
++use pdcan_protocol::{
++    ControlCommand, ControlRequest, PowerTelemetry, decode_control_request, decode_power,
++    encode_control_request, encode_power,
++};
++use pdcan_types::{CarrierPolicy, PowerReading, PowerSource, RequestId, RequesterId};
++
++#[entry]
++fn main() -> ! {
++    loop {
++        let power = black_box(PowerTelemetry {
++            node: 7,
++            reading: PowerReading {
++                source: PowerSource::CarrierInput,
++                sequence: 42,
++                voltage_mv: 24000,
++                current_ma: -1000,
++                power_mw: -24000,
++            },
++        });
++        let policy = black_box(ControlRequest {
++            node: 7,
++            requester: RequesterId::PDCAN_DEFAULT,
++            request_id: RequestId(42),
++            command: ControlCommand::SetCarrierPolicy(CarrierPolicy::SW3538_SAFE_DISABLED),
++        });
++        if let Ok(frame) = black_box(encode_power(power)) {
++            let _ = black_box(decode_power(
++                black_box(frame.id()),
++                black_box(frame.payload()),
++            ));
++        }
++        if let Ok(frame) = black_box(encode_control_request(policy)) {
++            let _ = black_box(decode_control_request(
++                black_box(frame.id()),
++                black_box(frame.payload()),
++            ));
++        }
++    }
++}
+diff --git a/firmware/crates/pdcan-protocol/Cargo.toml b/firmware/crates/pdcan-protocol/Cargo.toml
+index e875874..7002614 100644
+--- a/firmware/crates/pdcan-protocol/Cargo.toml
++++ b/firmware/crates/pdcan-protocol/Cargo.toml
+@@ -4,8 +4,17 @@ version = "0.1.0"
+ edition.workspace = true
+ rust-version.workspace = true
+ 
++[features]
++default = []
++deku-codec = ["dep:deku"]
++
+ [dependencies]
++deku = { version = "=0.20.3", default-features = false, optional = true }
+ pdcan-types.workspace = true
+ 
+ [lints]
+ workspace = true
++
++[[bench]]
++name = "codec"
++harness = false
+diff --git a/firmware/crates/pdcan-protocol/benches/codec.rs b/firmware/crates/pdcan-protocol/benches/codec.rs
+new file mode 100644
+index 0000000..3714de7
+--- /dev/null
++++ b/firmware/crates/pdcan-protocol/benches/codec.rs
+@@ -0,0 +1,162 @@
++//! Full public-codec benchmark; `PDCAN_CORPUS` emits an exact differential corpus.
++#![allow(clippy::cast_possible_truncation, clippy::cast_possible_wrap)]
++use std::{hint::black_box, time::Instant};
++
++use pdcan_protocol::{
++    ControlCommand, ControlRequest, ExtendedId, PowerTelemetry, decode_control_request,
++    decode_power, encode_control_request, encode_power,
++};
++use pdcan_types::{CarrierPolicy, PdLimits, PowerReading, PowerSource, RequestId, RequesterId};
++
++fn inputs(seed: u32) -> (PowerTelemetry, ControlRequest) {
++    let value = seed.wrapping_mul(0x9e37_79b9);
++    (
++        PowerTelemetry {
++            node: (seed % 254 + 1) as u8,
++            reading: PowerReading {
++                source: if seed & 1 == 0 {
++                    PowerSource::CarrierInput
++                } else {
++                    PowerSource::BackplaneInput
++                },
++                sequence: value as u16,
++                voltage_mv: value,
++                current_ma: value as i32,
++                power_mw: value.rotate_left(13) as i32,
++            },
++        },
++        ControlRequest {
++            node: (seed % 254 + 1) as u8,
++            requester: RequesterId::new(1).unwrap(),
++            request_id: RequestId(u64::from(value) << 32 | u64::from(seed)),
++            command: ControlCommand::SetCarrierPolicy(CarrierPolicy {
++                enabled: seed & 1 != 0,
++                pd_limits: (seed & 2 != 0).then_some(PdLimits {
++                    max_voltage_mv: value,
++                    max_current_ma: value.rotate_left(11),
++                    max_power_mw: value.rotate_left(23),
++                }),
++            }),
++        },
++    )
++}
++
++fn corpus() {
++    for seed in 0..4096 {
++        let (power, policy) = inputs(seed);
++        let p = encode_power(power).unwrap();
++        let c = encode_control_request(policy).unwrap();
++        assert_eq!(decode_power(p.id(), p.payload()), Ok(power));
++        assert_eq!(decode_control_request(c.id(), c.payload()), Ok(policy));
++        println!("{p:?} {:?}", decode_power(p.id(), p.payload()));
++        println!("{c:?} {:?}", decode_control_request(c.id(), c.payload()));
++        if seed < 4 {
++            for frame in [&p, &c] {
++                for offset in 0..frame.payload().len() {
++                    for value in 0..=255 {
++                        let mut bytes = frame.payload().to_vec();
++                        bytes[offset] = value;
++                        println!(
++                            "{:?} {:?}",
++                            decode_power(frame.id(), &bytes),
++                            decode_control_request(frame.id(), &bytes)
++                        );
++                    }
++                }
++                for len in 0..=80 {
++                    let mut bytes = frame.payload().to_vec();
++                    bytes.resize(len, 0);
++                    println!(
++                        "{:?} {:?}",
++                        decode_power(frame.id(), &bytes),
++                        decode_control_request(frame.id(), &bytes)
++                    );
++                }
++                for bit in 0..29 {
++                    let id = ExtendedId::new(frame.id().get() ^ (1 << bit)).unwrap();
++                    println!(
++                        "{:?} {:?}",
++                        decode_power(id, frame.payload()),
++                        decode_control_request(id, frame.payload())
++                    );
++                }
++            }
++        }
++        // Deterministic arbitrary payloads and identifiers, including malformed headers.
++        let mut state = seed.wrapping_add(1);
++        let bytes: [u8; 24] = std::array::from_fn(|_| {
++            state ^= state << 13;
++            state ^= state >> 17;
++            state ^= state << 5;
++            state as u8
++        });
++        let id = ExtendedId::new(state & 0x1fff_ffff).unwrap();
++        println!(
++            "{:?} {:?}",
++            decode_power(id, &bytes[..16]),
++            decode_control_request(id, &bytes)
++        );
++    }
++}
++
++fn measure<T>(name: &str, mut operation: impl FnMut(usize) -> T) {
++    const ITERATIONS: usize = 100_000;
++    for i in 0..ITERATIONS {
++        black_box(operation(i));
++    }
++    let mut samples = Vec::new();
++    for _ in 0..21 {
++        let start = Instant::now();
++        for i in 0..ITERATIONS {
++            black_box(operation(i));
++        }
++        samples.push(
++            start.elapsed().as_secs_f64() * 1e9 / f64::from(u32::try_from(ITERATIONS).unwrap()),
++        );
++    }
++    samples.sort_by(f64::total_cmp);
++    println!(
++        "{name},{:.3},{:.3},{:.3}",
++        samples[10], samples[0], samples[20]
++    );
++}
++
++fn main() {
++    if std::env::var_os("PDCAN_CORPUS").is_some() {
++        return corpus();
++    }
++    let inputs: Vec<_> = (0..256).map(inputs).collect();
++    let powers: Vec<_> = inputs
++        .iter()
++        .map(|(p, _)| encode_power(*p).unwrap())
++        .collect();
++    let policies: Vec<_> = inputs
++        .iter()
++        .map(|(_, c)| encode_control_request(*c).unwrap())
++        .collect();
++    let mut bad_power = powers[0].payload().to_vec();
++    bad_power[3] = 1;
++    let mut bad_policy = policies[0].payload().to_vec();
++    bad_policy[10] = 1;
++    println!("operation,median_ns,min_ns,max_ns");
++    measure("encode_power", |i| {
++        encode_power(black_box(inputs[i & 255].0))
++    });
++    measure("decode_power", |i| {
++        let f = &powers[i & 255];
++        decode_power(black_box(f.id()), black_box(f.payload()))
++    });
++    measure("encode_policy", |i| {
++        encode_control_request(black_box(inputs[i & 255].1))
++    });
++    measure("decode_policy", |i| {
++        let f = &policies[i & 255];
++        decode_control_request(black_box(f.id()), black_box(f.payload()))
++    });
++    measure("reject_power_reserved", |_| {
++        decode_power(black_box(powers[0].id()), black_box(&bad_power))
++    });
++    measure("reject_policy_reserved", |_| {
++        decode_control_request(black_box(policies[0].id()), black_box(&bad_policy))
++    });
++}
+diff --git a/firmware/crates/pdcan-protocol/src/deku_codec.rs b/firmware/crates/pdcan-protocol/src/deku_codec.rs
+new file mode 100644
+index 0000000..e17bcc5
+--- /dev/null
++++ b/firmware/crates/pdcan-protocol/src/deku_codec.rs
+@@ -0,0 +1,80 @@
++//! Opt-in experiment: byte-aligned layouts without std, alloc, or bitvec.
++//! Callers retain all semantic checks and validate lengths before decoding.
++
++use deku::prelude::*;
++use pdcan_types::{CarrierPolicy, PdLimits, PowerReading, PowerSource};
++
++#[derive(DekuRead, DekuWrite)]
++#[deku(endian = "little")]
++struct PolicyBody {
++    enabled: u8,
++    has_limits: u8,
++    reserved: [u8; 2],
++    max_voltage_mv: u32,
++    max_current_ma: u32,
++    max_power_mw: u32,
++}
++
++pub(super) fn encode_policy(policy: CarrierPolicy, output: &mut [u8]) {
++    let limits = policy.pd_limits.unwrap_or(PdLimits {
++        max_voltage_mv: 0,
++        max_current_ma: 0,
++        max_power_mw: 0,
++    });
++    PolicyBody {
++        enabled: u8::from(policy.enabled),
++        has_limits: u8::from(policy.pd_limits.is_some()),
++        reserved: [0; 2],
++        max_voltage_mv: limits.max_voltage_mv,
++        max_current_ma: limits.max_current_ma,
++        max_power_mw: limits.max_power_mw,
++    }
++    .to_slice(output)
++    .expect("fixed policy layout fits 16-byte output");
++}
++
++pub(super) fn decode_policy_limits(input: &[u8]) -> PdLimits {
++    let (_, body) = PolicyBody::from_bytes((input, 0))
++        .expect("validated 16-byte policy body contains only raw integers");
++    PdLimits {
++        max_voltage_mv: body.max_voltage_mv,
++        max_current_ma: body.max_current_ma,
++        max_power_mw: body.max_power_mw,
++    }
++}
++
++#[derive(DekuRead, DekuWrite)]
++#[deku(endian = "little")]
++struct PowerBody {
++    sequence: u16,
++    source: u8,
++    reserved: u8,
++    voltage_mv: u32,
++    current_ma: i32,
++    power_mw: i32,
++}
++
++pub(super) fn encode_power(reading: PowerReading, output: &mut [u8; 16]) {
++    PowerBody {
++        sequence: reading.sequence,
++        source: reading.source as u8,
++        reserved: 0,
++        voltage_mv: reading.voltage_mv,
++        current_ma: reading.current_ma,
++        power_mw: reading.power_mw,
++    }
++    .to_slice(output)
++    .expect("fixed power layout fits 16-byte output");
++}
++
++pub(super) fn decode_power(input: &[u8], source: PowerSource) -> PowerReading {
++    let (_, body) = PowerBody::from_bytes((input, 0))
++        .expect("validated 16-byte power body contains only raw integers");
++    PowerReading {
++        source,
++        sequence: body.sequence,
++        voltage_mv: body.voltage_mv,
++        current_ma: body.current_ma,
++        power_mw: body.power_mw,
++    }
++}
+diff --git a/firmware/crates/pdcan-protocol/src/lib.rs b/firmware/crates/pdcan-protocol/src/lib.rs
+index e8c8468..1bcc337 100644
+--- a/firmware/crates/pdcan-protocol/src/lib.rs
++++ b/firmware/crates/pdcan-protocol/src/lib.rs
+@@ -1,16 +1,22 @@
+ #![no_std]
+ 
++#[cfg(feature = "deku-codec")]
++mod deku_codec;
++
+ #[cfg(test)]
+ extern crate std;
+ 
+ use pdcan_types::{
+     CapabilityFlags, CarrierBinding, CarrierPolicy, CarrierProfile, CommissioningState, FanConfig,
+     FanId, FaultFlags, FirmwareVersion, HardwareRevision, ImageTarget, NodeDescriptor, NodeId,
+-    NodeRole, NodeUid, PdLimits, PowerReading, PowerSource, RequestId, RequesterId, SampleStatus,
++    NodeRole, NodeUid, PowerReading, PowerSource, RequestId, RequesterId, SampleStatus,
+     ServiceState, Sha256Digest, SlotIndex, TemperatureReading, TemperatureSensorId,
+     TemperatureSource, UpdateError, UpdateImpact, UpdateManifest, UpdateSessionId, UpdateState,
+ };
+ 
++#[cfg(any(not(feature = "deku-codec"), test))]
++use pdcan_types::PdLimits;
++
+ pub const EXTENDED_ID_MASK: u32 = 0x1FFF_FFFF;
+ pub const BROADCAST_NODE: u8 = 0;
+ pub const INVALID_NODE: u8 = 0xFF;
+@@ -734,12 +740,17 @@ pub fn encode_control_request(request: ControlRequest) -> Result<WireFrame, Code
+         | ControlCommand::AcknowledgeEmergency
+         | ControlCommand::RequestStatus => 8,
+         ControlCommand::SetCarrierPolicy(policy) => {
+-            payload[8] = u8::from(policy.enabled);
+-            if let Some(limits) = policy.pd_limits {
+-                payload[9] = 1;
+-                payload[12..16].copy_from_slice(&limits.max_voltage_mv.to_le_bytes());
+-                payload[16..20].copy_from_slice(&limits.max_current_ma.to_le_bytes());
+-                payload[20..24].copy_from_slice(&limits.max_power_mw.to_le_bytes());
++            #[cfg(feature = "deku-codec")]
++            deku_codec::encode_policy(policy, &mut payload[8..24]);
++            #[cfg(not(feature = "deku-codec"))]
++            {
++                payload[8] = u8::from(policy.enabled);
++                if let Some(limits) = policy.pd_limits {
++                    payload[9] = 1;
++                    payload[12..16].copy_from_slice(&limits.max_voltage_mv.to_le_bytes());
++                    payload[16..20].copy_from_slice(&limits.max_current_ma.to_le_bytes());
++                    payload[20..24].copy_from_slice(&limits.max_power_mw.to_le_bytes());
++                }
+             }
+             24
+         }
+@@ -766,6 +777,8 @@ pub fn encode_control_request(request: ControlRequest) -> Result<WireFrame, Code
+     WireFrame::new(header.encode(), &payload[..len]).map_err(Into::into)
+ }
+ 
++// The experimental feature adds a second field-decoding path.
++#[allow(clippy::too_many_lines)]
+ pub fn decode_control_request(
+     id: ExtendedId,
+     payload: &[u8],
+@@ -794,11 +807,15 @@ pub fn decode_control_request(
+                 require_zero_range(payload, 12, 24)?;
+                 None
+             } else {
+-                Some(PdLimits {
++                #[cfg(feature = "deku-codec")]
++                let limits = deku_codec::decode_policy_limits(&payload[8..24]);
++                #[cfg(not(feature = "deku-codec"))]
++                let limits = PdLimits {
+                     max_voltage_mv: read_u32(payload, 12),
+                     max_current_ma: read_u32(payload, 16),
+                     max_power_mw: read_u32(payload, 20),
+-                })
++                };
++                Some(limits)
+             };
+             ControlCommand::SetCarrierPolicy(CarrierPolicy {
+                 enabled: payload[8] != 0,
+@@ -1105,11 +1122,16 @@ pub fn encode_power(telemetry: PowerTelemetry) -> Result<WireFrame, CodecError>
+         telemetry_opcode::POWER,
+     )?;
+     let mut payload = [0; 16];
+-    payload[..2].copy_from_slice(&telemetry.reading.sequence.to_le_bytes());
+-    payload[2] = telemetry.reading.source as u8;
+-    payload[4..8].copy_from_slice(&telemetry.reading.voltage_mv.to_le_bytes());
+-    payload[8..12].copy_from_slice(&telemetry.reading.current_ma.to_le_bytes());
+-    payload[12..16].copy_from_slice(&telemetry.reading.power_mw.to_le_bytes());
++    #[cfg(feature = "deku-codec")]
++    deku_codec::encode_power(telemetry.reading, &mut payload);
++    #[cfg(not(feature = "deku-codec"))]
++    {
++        payload[..2].copy_from_slice(&telemetry.reading.sequence.to_le_bytes());
++        payload[2] = telemetry.reading.source as u8;
++        payload[4..8].copy_from_slice(&telemetry.reading.voltage_mv.to_le_bytes());
++        payload[8..12].copy_from_slice(&telemetry.reading.current_ma.to_le_bytes());
++        payload[12..16].copy_from_slice(&telemetry.reading.power_mw.to_le_bytes());
++    }
+     WireFrame::new(header.encode(), &payload).map_err(Into::into)
+ }
+ 
+@@ -1123,20 +1145,23 @@ pub fn decode_power(id: ExtendedId, payload: &[u8]) -> Result<PowerTelemetry, Co
+         16,
+     )?;
+     require_zero(payload, 3)?;
++    let source = PowerSource::try_from(payload[2]).map_err(|error| PayloadError::InvalidValue {
++        offset: 2,
++        value: error.0,
++    })?;
++    #[cfg(feature = "deku-codec")]
++    let reading = deku_codec::decode_power(payload, source);
++    #[cfg(not(feature = "deku-codec"))]
++    let reading = PowerReading {
++        source,
++        sequence: read_u16(payload, 0),
++        voltage_mv: read_u32(payload, 4),
++        current_ma: read_i32(payload, 8),
++        power_mw: read_i32(payload, 12),
++    };
+     Ok(PowerTelemetry {
+         node: header.node,
+-        reading: PowerReading {
+-            source: PowerSource::try_from(payload[2]).map_err(|error| {
+-                PayloadError::InvalidValue {
+-                    offset: 2,
+-                    value: error.0,
+-                }
+-            })?,
+-            sequence: read_u16(payload, 0),
+-            voltage_mv: read_u32(payload, 4),
+-            current_ma: read_i32(payload, 8),
+-            power_mw: read_i32(payload, 12),
+-        },
++        reading,
+     })
+ }
+ 
+@@ -2428,6 +2453,7 @@ fn read_u32(bytes: &[u8], offset: usize) -> u32 {
+     ])
+ }
+ 
++#[cfg(not(feature = "deku-codec"))]
+ fn read_i32(bytes: &[u8], offset: usize) -> i32 {
+     i32::from_le_bytes([
+         bytes[offset],
+diff --git a/firmware/crates/pdcan-protocol/tests/codec_vectors.rs b/firmware/crates/pdcan-protocol/tests/codec_vectors.rs
+new file mode 100644
+index 0000000..d3c9bbc
+--- /dev/null
++++ b/firmware/crates/pdcan-protocol/tests/codec_vectors.rs
+@@ -0,0 +1,97 @@
++use pdcan_protocol::{
++    CodecError, ControlCommand, ControlRequest, PayloadError, PowerTelemetry,
++    decode_control_request, decode_power, encode_control_request, encode_power,
++};
++use pdcan_types::{CarrierPolicy, PdLimits, PowerReading, PowerSource, RequestId, RequesterId};
++
++#[test]
++fn power_matches_independent_little_endian_vector() {
++    let input = PowerTelemetry {
++        node: 7,
++        reading: PowerReading {
++            source: PowerSource::CarrierInput,
++            sequence: 0x1234,
++            voltage_mv: 0x1234_5678,
++            current_ma: -2,
++            power_mw: i32::MIN,
++        },
++    };
++    let frame = encode_power(input).unwrap();
++    let bytes = [
++        0x34, 0x12, 2, 0, 0x78, 0x56, 0x34, 0x12, 0xfe, 0xff, 0xff, 0xff, 0, 0, 0, 0x80,
++    ];
++    assert_eq!(frame.payload(), bytes);
++    assert_eq!(decode_power(frame.id(), &bytes), Ok(input));
++    for source in 0..=255 {
++        let mut invalid = bytes;
++        invalid[2] = source;
++        if source != 1 && source != 2 {
++            assert_eq!(
++                decode_power(frame.id(), &invalid),
++                Err(CodecError::Payload(PayloadError::InvalidValue {
++                    offset: 2,
++                    value: source
++                }))
++            );
++        }
++    }
++}
++
++#[test]
++fn policy_matches_vector_and_rejects_noncanonical_encodings() {
++    let input = ControlRequest {
++        node: 7,
++        requester: RequesterId::PDCAN_DEFAULT,
++        request_id: RequestId(0x0807_0605_0403_0201),
++        command: ControlCommand::SetCarrierPolicy(CarrierPolicy {
++            enabled: true,
++            pd_limits: Some(PdLimits {
++                max_voltage_mv: 0x1234_5678,
++                max_current_ma: 0x90ab_cdef,
++                max_power_mw: u32::MAX,
++            }),
++        }),
++    };
++    let frame = encode_control_request(input).unwrap();
++    let bytes = [
++        1, 2, 3, 4, 5, 6, 7, 8, 1, 1, 0, 0, 0x78, 0x56, 0x34, 0x12, 0xef, 0xcd, 0xab, 0x90, 0xff,
++        0xff, 0xff, 0xff,
++    ];
++    assert_eq!(frame.payload(), bytes);
++    assert_eq!(decode_control_request(frame.id(), &bytes), Ok(input));
++    for offset in [8, 9] {
++        for value in 2..=255 {
++            let mut invalid = bytes;
++            invalid[offset] = value;
++            assert!(decode_control_request(frame.id(), &invalid).is_err());
++        }
++    }
++    for offset in [10, 11] {
++        for value in 1..=255 {
++            let mut invalid = bytes;
++            invalid[offset] = value;
++            assert!(decode_control_request(frame.id(), &invalid).is_err());
++        }
++    }
++    let mut absent = bytes;
++    absent[9] = 0;
++    assert!(decode_control_request(frame.id(), &absent).is_err());
++    absent[12..].fill(0);
++    let decoded = decode_control_request(frame.id(), &absent).unwrap();
++    assert_eq!(
++        decoded.command,
++        ControlCommand::SetCarrierPolicy(CarrierPolicy {
++            enabled: true,
++            pd_limits: None
++        })
++    );
++    assert_eq!(encode_control_request(decoded).unwrap().payload(), absent);
++    for len in 0..=80 {
++        if len == 24 {
++            continue;
++        }
++        let mut malformed = bytes.to_vec();
++        malformed.resize(len, 0);
++        assert!(decode_control_request(frame.id(), &malformed).is_err());
++    }
++}
+diff --git a/firmware/scripts/bench_deku.py b/firmware/scripts/bench_deku.py
+new file mode 100644
+index 0000000..226cfbe
+--- /dev/null
++++ b/firmware/scripts/bench_deku.py
+@@ -0,0 +1,110 @@
++#!/usr/bin/env python3
++"""Compare the opt-in Deku trial against manual codecs; run from any directory.
++
++Writes machine-readable measurements under target/deku-bench/results.json.
++Corpus and host benchmark executables use separate target directories. Never flashes hardware.
++"""
++import hashlib
++import json
++import os
++from pathlib import Path
++import platform
++import statistics
++import subprocess
++import tomllib
++
++ROOT = Path(__file__).resolve().parents[1]
++OUT = ROOT / "target/deku-bench"
++TARGET = "thumbv6m-none-eabi"
++TOOLCHAIN = tomllib.loads((ROOT / "rust-toolchain.toml").read_text())["toolchain"]["channel"]
++
++
++def run(args, *, env=None):
++    if args[0] in {"cargo", "rustc"}:
++        args = [args[0], f"+{TOOLCHAIN}", *args[1:]]
++    print("+ " + " ".join(map(str, args)), flush=True)
++    return subprocess.run(args, cwd=ROOT, env=env, text=True, stdout=subprocess.PIPE, check=True).stdout
++
++
++def size(path, llvm_size):
++    fields = run([str(llvm_size), str(path)]).splitlines()[-1].split()
++    text, data, bss = map(int, fields[:3])
++    return {"text": text, "data": data, "bss": bss, "flash": text + data, "static_ram": data + bss}
++
++
++def main():
++    OUT.mkdir(parents=True, exist_ok=True)
++    rustc = run(["rustc", "-vV"])
++    host = next(line.removeprefix("host: ") for line in rustc.splitlines() if line.startswith("host: "))
++    sysroot = run(["rustc", "--print", "sysroot"]).strip()
++    llvm_size = Path(sysroot) / "lib/rustlib" / host / "bin/llvm-size"
++    results = {"rustc": rustc, "platform": platform.platform(), "processor": platform.processor(),
++               "base_commit": "9680cd3992865a311ab963fa6192fc00b31434e8",
++               "benchmark": {"batches": 21, "iterations_per_batch": 100000, "warmup_iterations": 100000,
++                             "process_runs": 3, "inputs": 256, "profile": "Cargo default bench/release"}, "variants": {}}
++    executables = {}
++    corpora = {}
++    for variant in ["manual", "deku"]:
++        features = ["--features", "pdcan-protocol/deku-codec"] if variant == "deku" else []
++        target_dir = OUT / variant
++        common = ["--target-dir", str(target_dir)]
++        run(["cargo", "test", "--locked", "-p", "pdcan-protocol", *features, *common])
++        build = run(["cargo", "bench", "--locked", "-p", "pdcan-protocol", "--bench", "codec", "--no-run",
++                     "--message-format=json", *features, *common])
++        artifacts = [json.loads(line) for line in build.splitlines() if line.startswith("{")]
++        executable = next(a["executable"] for a in artifacts if a.get("executable") and a.get("target", {}).get("name") == "codec")
++        executables[variant] = executable
++        corpus = run([executable], env={**os.environ, "PDCAN_CORPUS": "1"})
++        corpora[variant] = corpus
++        measurements = {"corpus_sha256": hashlib.sha256(corpus.encode()).hexdigest(),
++                        "corpus_lines": len(corpus.splitlines()), "sizes": {}, "host_runs": []}
++        for package, binary, firmware_feature in [
++            ("backplane-firmware", "backplane", True),
++            ("carrier-firmware", "carrier", True),
++            ("pdcan-bootloader", "pdcan-bootloader", False),
++        ]:
++            # Selecting protocol explicitly also allows enabling its feature for the bootloader control build.
++            args = ["cargo", "build", "--locked", "--release", "--target", TARGET, "-p", package,
++                    "-p", "pdcan-protocol", "--bin", binary, *features, *common]
++            if firmware_feature:
++                args += ["--features", f"{package}/firmware-bin"]
++            run(args)
++            measurements["sizes"][binary] = size(target_dir / TARGET / "release" / binary, llvm_size)
++        run(["cargo", "build", "--locked", "--release", "--target", TARGET, "-p", "carrier-firmware",
++             "--example", "codec-size", "--features", "firmware-bin", *features, *common])
++        probe = target_dir / TARGET / "release/examples/codec-size"
++        measurements["sizes"]["codec-size"] = size(probe, llvm_size)
++        run(["cargo", "build", "--locked", "--release", "--target", TARGET, "-p", "carrier-firmware",
++             "--example", "codec-size", "--features", "firmware-bin", *features, *common,
++             "--config", 'profile.release.opt-level="z"', "--config", "profile.release.lto=true",
++             "--config", "profile.release.codegen-units=1"])
++        measurements["sizes"]["codec-size-lto-z"] = size(probe, llvm_size)
++        # A linked image with no allocator plus this feature tree establishes the no-alloc configuration.
++        measurements["deku_features"] = run(["cargo", "tree", "--locked", "-p", "pdcan-protocol", "-e", "features", *features])
++        results["variants"][variant] = measurements
++    if corpora["manual"] != corpora["deku"]:
++        for variant, corpus in corpora.items():
++            (OUT / f"{variant}-corpus.txt").write_text(corpus)
++        raise RuntimeError("Differential corpus mismatch; inspect saved corpora")
++    results["corpus_identical"] = True
++    # Alternate process order to reduce systematic warmup/load bias.
++    for repetition in range(3):
++        for variant in (["manual", "deku"] if repetition % 2 == 0 else ["deku", "manual"]):
++            output = run([executables[variant]])
++            sample = {}
++            for line in output.splitlines()[1:]:
++                operation, median, minimum, maximum = line.split(",")
++                sample[operation] = {"median_ns": float(median), "min_ns": float(minimum), "max_ns": float(maximum)}
++            results["variants"][variant]["host_runs"].append(sample)
++    for values in results["variants"].values():
++        values["host_median_ns"] = {
++            operation: statistics.median(run[operation]["median_ns"] for run in values["host_runs"])
++            for operation in values["host_runs"][0]
++        }
++    path = OUT / "results.json"
++    path.write_text(json.dumps(results, indent=2) + "\n")
++    print(f"Exact corpus comparison passed. Results: {path}")
++
++
++if __name__ == "__main__":
++    main()
