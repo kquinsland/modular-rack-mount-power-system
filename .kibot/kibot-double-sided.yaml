@@ -1,0 +1,23 @@
+kibot:
+  version: 1
+
+global:
+  output: '@NAME@-%r-%i.%x'
+
+outputs:
+  - name: pcb_top_image
+    comment: PNG of the top side of the PCB
+    type: pcbdraw
+    options:
+      output: '@NAME@-%r-Top.%x'
+      dpi: 1200
+      format: png
+
+  - name: pcb_bottom_image
+    comment: PNG of the bottom side of the PCB
+    type: pcbdraw
+    options:
+      output: '@NAME@-%r-Bottom.%x'
+      dpi: 1200
+      format: png
+      bottom: true

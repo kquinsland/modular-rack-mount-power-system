@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#MISE description="Render WebP PCB views and interactive BOMs into Hugo bundles"
+set -euo pipefail
+cd "${MISE_PROJECT_ROOT:?}"
+exec python scripts/build_pcb_release.py preview --panel --ibom --publish-site "$@"

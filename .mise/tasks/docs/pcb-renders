@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#MISE description="Render committed PCBs as WebP images into Hugo content bundles"
+
+set -euo pipefail
+cd "${MISE_PROJECT_ROOT:?}"
+
+exec python scripts/build_pcb_release.py preview --panel --publish-site "$@"

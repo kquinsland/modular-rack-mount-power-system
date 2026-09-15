@@ -1,0 +1,23 @@
+{{- $copyright := replace site.Params.copyright "{{Year}}" (now.Year | string) -}}
+{{- $date := .Lastmod -}}
+{{- if .GitInfo }}
+  {{- $date = .GitInfo.AuthorDate -}}
+{{- end }}
+<footer class="footer">
+  <div class="footer-wrapper">
+    {{- if not $date.IsZero }}
+      <div class="footer-item">{{ i18n "edited" }}: {{ $date.Format (site.Params.date_format | default "2006-01-02") }}</div>
+    {{- end }}
+    {{- with .File }}
+      {{- $ref := "main" -}}
+      {{- with $.GitInfo }}{{ $ref = .Hash }}{{ end -}}
+      {{- $sourcePath := printf "site/content/%s" (.Path | replaceRE `\\` "/") -}}
+      {{- $sourcePath = replace $sourcePath " " "%20" -}}
+      {{- $sourceURL := printf "%s/%s/%s" site.Params.github_source_base $ref $sourcePath -}}
+      <div class="footer-item"><a href="{{ $sourceURL }}">View source on GitHub</a></div>
+    {{- end }}
+    {{- with $copyright }}
+      <div class="footer-item">{{ . | markdownify }}</div>
+    {{- end }}
+  </div>
+</footer>

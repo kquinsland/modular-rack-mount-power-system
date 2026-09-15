@@ -1,0 +1,63 @@
+(version 1)
+
+# The actual high-current trunk is implemented with VIN_RAW/VCC copper zones.
+# Match those zones directly so project-settings rewrites cannot disable the
+# clearance check.  Narrow tracks on these nets are intentional low-current
+# INA237 and buck-input branches, so a net-wide track-width rule is incorrect.
+(rule "High-current DC zone clearance"
+    (condition "(A.Type == 'Zone' && (A.NetName == 'VIN_RAW' || A.NetName == 'VCC')) || (B.Type == 'Zone' && (B.NetName == 'VIN_RAW' || B.NetName == 'VCC'))")
+    (constraint clearance (min 0.5mm)))
+
+# CANH is the P member and CANL is the N member on both sides of L3. Keep the
+# actual coupled routes tight. Whole-net skew is intentionally not constrained:
+# CAN_BUS is a branched multidrop bus, so its aggregate P/N lengths are not a
+# meaningful electrical path comparison.
+(rule "CAN coupled routing"
+    (condition "A.inDiffPair('/CAN-FD and Six Slots/CAN_BUS') || A.inDiffPair('/CAN-FD and Six Slots/CAN_EXT')")
+    (constraint diff_pair_gap (min 0.20mm) (opt 0.25mm) (max 0.30mm))
+    (constraint diff_pair_uncoupled (max 35mm)))
+
+# Connector, choke, and transceiver pin pitch require short fan-outs wider than
+# the coupled-trunk limit. These named rule areas cover only those breakouts.
+# This exception is later in the file because KiCad evaluates rules in reverse.
+(rule "CAN localized breakouts"
+    (condition "(A.inDiffPair('/CAN-FD and Six Slots/CAN_BUS') || A.inDiffPair('/CAN-FD and Six Slots/CAN_EXT')) && (A.intersectsArea('CAN_BREAKOUT_LEFT_B') || A.intersectsArea('CAN_BREAKOUT_EXT_J7') || A.intersectsArea('CAN_BREAKOUT_EXT_L3') || A.intersectsArea('CAN_BREAKOUT_BUS_LEFT') || A.intersectsArea('CAN_BREAKOUT_SLOTS_B') || A.intersectsArea('CAN_BREAKOUT_SLOTS_P') || A.intersectsArea('CAN_BREAKOUT_SLOTS_N'))")
+    (constraint diff_pair_gap (min 0.20mm) (opt 0.25mm) (max 2.40mm))
+    (constraint diff_pair_uncoupled (max 35mm)))
+
+# JLCPCB supports through vias for this process, not blind, buried, or microvias.
+(rule "JLCPCB through vias only"
+    (condition "A.Type == 'Via' && A.Via_Type != 'Through'")
+    (constraint disallow via))
+
+# The board uses 2 oz outer copper. JLCPCB specifies a 0.254 mm PTH
+# annular ring for 2 oz copper, so use a slightly conservative 0.255 mm.
+(rule "JLCPCB 2 oz PTH fabrication"
+    (condition "A.Type == 'Pad' && A.Pad_Type == 'Through-hole'")
+    (constraint annular_width (min 0.255mm))
+    (constraint hole_clearance (min 0.3mm)))
+
+(rule "JLCPCB pad hole to hole clearance"
+    (condition "A.Type == 'Pad' && B.Type == 'Pad'")
+    (constraint hole_to_hole (min 0.45mm)))
+
+(rule "JLCPCB minimum round NPTH"
+    (condition "A.Pad_Type == 'NPTH, mechanical' && A.Hole_Size_X == A.Hole_Size_Y")
+    (constraint hole_size (min 0.5mm)))
+
+(rule "JLCPCB minimum plated slot"
+    (condition "A.isPlated() && A.Hole_Size_X != A.Hole_Size_Y")
+    (constraint hole_size (min 0.4mm)))
+
+(rule "JLCPCB minimum non-plated slot"
+    (condition "A.Pad_Type == 'NPTH, mechanical' && A.Hole_Size_X != A.Hole_Size_Y")
+    (constraint hole_size (min 1.0mm)))
+
+(rule "JLCPCB legend text"
+    (condition "(A.Layer == 'F.Silkscreen' || A.Layer == 'B.Silkscreen') && (A.Type == 'Text' || A.Type == 'Text Box')")
+    (constraint text_height (min 1.0mm))
+    (constraint text_thickness (min 0.15mm)))
+
+(rule "JLCPCB legend graphic line width"
+    (condition "A.Type == 'Graphic' && (A.Layer == 'F.Silkscreen' || A.Layer == 'B.Silkscreen') && A.Line_Width > 0mm")
+    (constraint assertion "A.Line_Width >= 0.15mm"))

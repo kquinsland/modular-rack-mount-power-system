@@ -1,0 +1,91 @@
+{
+  "assembly_views": {
+    "backplane": {
+      "file": "backplane-ibom.html",
+      "sha256": "830ddb2a783772d79680cd856a84ce5fac0d17552e604624aeb016c5de2f12dd",
+      "site_url": "/guides/assembly/_files/backplane-ibom.html"
+    }
+  },
+  "producer": "mrp-pcb-release",
+  "renders": {
+    "backplane-bottom": {
+      "alpha": false,
+      "board": "backplane",
+      "bytes": 15100,
+      "encoder": {
+        "libwebp": "1.6.0",
+        "pillow": "12.1.0"
+      },
+      "file": "backplane-bottom.webp",
+      "format": "webp",
+      "height": 872,
+      "lossless": true,
+      "sha256": "2301acc130ff44bed38a1cb6fb0a8e84be2f78d14904eeb72601496ec7f66fc7",
+      "side": "bottom",
+      "source_board": "hardware/boards/backplane-prototype/backplane-prototype.kicad_pcb",
+      "width": 1568
+    },
+    "backplane-top": {
+      "alpha": false,
+      "board": "backplane",
+      "bytes": 18052,
+      "encoder": {
+        "libwebp": "1.6.0",
+        "pillow": "12.1.0"
+      },
+      "file": "backplane.webp",
+      "format": "webp",
+      "height": 872,
+      "lossless": true,
+      "sha256": "a32a6d08bda87594d59dda48c222ab2f2b7d8e4884328e725bce95e373b97537",
+      "side": "top",
+      "source_board": "hardware/boards/backplane-prototype/backplane-prototype.kicad_pcb",
+      "width": 1568
+    }
+  },
+  "schema_version": 1,
+  "source": {
+    "build_date": "26.09.07",
+    "commit_time": "2026-09-07T18:48:56+00:00",
+    "epoch": 1788806936,
+    "git_commit": "caad93779da628f5c4707c940a6b3697e0dc3f6b",
+    "short_hash": "caad93779da6"
+  },
+  "status": "preview-unchecked",
+  "toolchain_image": "ghcr.io/inti-cmnb/kicad10_auto:1.9.0@sha256:493666a06d900ed3352c50b0f75a76ccdfe194999c097d455021cab9e3c723fa",
+  "tooling_sha256": {
+    ".kibot/docs-ibom.kibot.yaml": "838e7d3da7c583ce10e016566ce901c5d854a0e3a958b64905cc934c4dc3aa68",
+    ".kibot/release/board.kibot.yaml": "cac53ca9ce3f07315a58f7a3e3662f21b30948f6aec52005265fd5a19c296dee",
+    ".kibot/release/cam.kibot.yaml": "c7dc0c326b2d8d7d5a968d497832e1c5b4b79a474819081c4fa0d7d87941714a",
+    ".kibot/release/checks.kibot.yaml": "7061091a236e9e403a8f17f06cfae4675bc06a0b129572d48706d07524dcd08f",
+    ".kibot/release/jlcpcb.kibot.yaml": "90299eb57d848834eae5c4e020fde4f127401c51b6b41de031400e502bf0ee25",
+    ".kibot/release/panel-checks.kibot.yaml": "6ce9eb49ed0b264c5f89acc9ed75970d7bd8ff4a924609598a891ea42e6726c6",
+    ".kibot/release/pcbway.kibot.yaml": "277f02095d01e965473e6bb762e74207ea5c38e4098cbd4e5541d45bf1d9682a",
+    ".kibot/release/proofs.kibot.yaml": "af8df44f924117fd629761495b27177a88b81202f2de8ec5d6aa50c5ed3c6003",
+    "scripts/build_carrier_backplane_panel.py": "6934c9cc8828236f062c5e35445c65ed1e097494977eaeeb41c9b3a52b81dc58",
+    "scripts/build_pcb_release.py": "7bb5eb84c968a53bff7720c0fb269a65468365839e7d99e22be735a0b23b2823",
+    "scripts/convert_pcb_render.py": "cc91d4bdd4d2484b8fdba1338134af39c28928741a13b10bffef5419a55940c7",
+    "scripts/export_pcb_production.py": "ec40f4697d7435bd023ff4cdd3d7076df1b77f4f100d5eb4f141ffa94fcfafac",
+    "scripts/panel_layout.py": "8f6ed6a1f98f29cff8d9e83cd8ee45cbb77437ba9bd155262adf2e052606a337",
+    "scripts/pcb_power_capacity.py": "e2ed2b234797304ec1b9cc7c8513108957615103864ef388f3cd737a17c9a77b",
+    "scripts/pcb_release_worker.py": "633ee2f506819a51a78e1172bddb494a2e616c90bea944fceaefeb483ea80a28",
+    "scripts/validate_pcb_release.py": "4fcf225d6fe80bfb81d425511f99573d277034ae203b2682d2765eac96403fc8"
+  },
+  "variables": {
+    "backplane": {
+      "BOARD_NAME": "backplane",
+      "BOARD_VERSION": "2.1",
+      "BUILD_DATE": "26.09.07",
+      "PROJECT_FAMILY": "mrp",
+      "SHORT_HASH": "caad93779da6"
+    },
+    "carrier": {
+      "BOARD_NAME": "carrier",
+      "BOARD_ROLE": "Carrier PCB for one backplane slot and one fixed-address DC/USB-C PD module",
+      "BOARD_VERSION": "2.1",
+      "BUILD_DATE": "26.09.07",
+      "PROJECT_FAMILY": "mrp",
+      "SHORT_HASH": "caad93779da6"
+    }
+  }
+}

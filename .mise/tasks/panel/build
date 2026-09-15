@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#MISE description="Build the KiBot/KiKit panel release and publish Hugo renders"
+
+set -euo pipefail
+cd "${MISE_PROJECT_ROOT:?}"
+
+exec python scripts/build_pcb_release.py release \
+  --output releases/pcb-release --publish-site "$@"

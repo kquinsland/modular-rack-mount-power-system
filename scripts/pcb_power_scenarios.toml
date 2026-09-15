@@ -1,0 +1,55 @@
+[scenarios.backplane-vcc]
+board = "hardware/boards/backplane/backplane.kicad_pcb"
+net = "VCC"
+source = "RSH1.2"
+supply_voltage_v = 24
+temperature_rises_c = [10, 20]
+scan_pitch_mm = 0.25
+layers = ["F.Cu", "In1.Cu", "In2.Cu", "B.Cu"]
+
+[[scenarios.backplane-vcc.stackups]]
+name = "2oz-1oz"
+label = "2 oz outer / 1 oz inner"
+copper_overrides_um = { "F.Cu" = 70, "In1.Cu" = 35, "In2.Cu" = 35, "B.Cu" = 70 }
+
+[[scenarios.backplane-vcc.stackups]]
+name = "1oz-0.5oz"
+label = "1 oz outer / 0.5 oz inner"
+copper_overrides_um = { "F.Cu" = 35, "In1.Cu" = 17.5, "In2.Cu" = 17.5, "B.Cu" = 35 }
+
+[[scenarios.backplane-vcc.sinks]]
+pad = "J1.1"
+current_a = 5.5
+
+[[scenarios.backplane-vcc.sinks]]
+pad = "J2.1"
+current_a = 5.5
+
+[[scenarios.backplane-vcc.sinks]]
+pad = "J3.1"
+current_a = 5.5
+
+[[scenarios.backplane-vcc.sinks]]
+pad = "J4.1"
+current_a = 5.5
+
+[[scenarios.backplane-vcc.sinks]]
+pad = "J5.1"
+current_a = 5.5
+
+[[scenarios.backplane-vcc.sinks]]
+pad = "J6.1"
+current_a = 5.5
+
+[scenarios.carrier-vcc]
+board = "hardware/boards/carrier/carrier.kicad_pcb"
+net = "VCC"
+source = "J1.1"
+supply_voltage_v = 24
+temperature_rises_c = [10, 20]
+scan_pitch_mm = 0.1
+layers = ["F.Cu", "In1.Cu", "In2.Cu", "B.Cu"]
+
+[[scenarios.carrier-vcc.sinks]]
+pad = "R1.1"
+current_a = 5.5

@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#MISE description="Generate and validate carrier Gerber, STEP, BOM, CPL, and assembly counts"
+
+set -euo pipefail
+cd "${MISE_PROJECT_ROOT:?}"
+
+exec python scripts/export_pcb_production.py carrier "$@"

@@ -1,0 +1,146 @@
+# Consolidated backplane
+
+This directory contains the finalized Generation-2 backplane:
+`backplane.kicad_pro`, `backplane.kicad_sch`, `backplane.kicad_pcb`, and
+`backplane.kicad_dru`.
+
+The PCB in this directory is the mechanical authority for the board
+outline, airflow cutouts, mounting holes, and six slot-connector footprints and
+placement. The carrier is the electrical authority for circuitry shared between
+the two boards, including the slot pinout, STM32, CAN transceiver, current
+sensor, and slot connector pinout.
+
+## Implemented schematic
+
+The root schematic is divided into five sheets:
+
+- `01_power_input.kicad_sch`: DC input, 1 mOhm high-side current shunt,
+  INA237 monitor;
+- `02_control.kicad_sch`: STM32C092GCU6, reset/decoupling, SWD, and test points;
+- `03_can_slots.kicad_sch`: TCAN3413 CAN-FD interface, external CAN protection,
+  optional termination, and the six carrier slots;
+- `04_fan_status.kicad_sch`: two independent 3-wire fan supply-PWM switches and
+  tachometer inputs, plus an externally powered DS18B20 interface. Per-slot
+  addressable LEDs were removed to keep automated assembly on one side of the
+  PCB; and
+- `05_buck_converters.kicad_sch`: separate LM5164 3.3 V and 12 V converters.
+
+The Rust `backplane-firmware` target implements this board. Earlier firmware
+targets and their hardware assumptions are not supported.
+
+Both regulators use LM5164DDAR, LCSC C477928, with
+PSPMAA0805-101M-ANP 100 uH inductors, LCSC C2962892. The output-specific
+feedback, on-time, ripple-injection, and capacitor networks remain separate.
+
+The PCB stackup specifies 2 oz outer copper, 1 oz inner copper, and an ENIG
+surface finish.
+
+Generate the backplane BOM, placement file, Gerber/drill archive, IPC-D-356
+netlist, designator inventory, and validation manifest with
+`mise run production:backplane`. A successful export records warnings in the
+manifest; it does not by itself supersede the fabrication-readiness status
+below.
+
+The local I2C2 bus uses STM32 PA6/PA7 and exists only between the STM32 and
+INA237. Carrier communication is CAN-FD.
+
+## Connectors
+
+`J8` is the main DC input:
+
+1. GND
+2. VIN_RAW
+
+`J7` is a XINLAIYA XY308-2.54-3P three-position screw terminal, LCSC
+`C557686`:
+
+1. GND
+2. CANL
+3. CANH
+
+`J7` is intentionally marked DNP and excluded from pick-and-place output because
+the user installs it by hand after assembly. D1 and L3 protect only this external
+CAN boundary. Each carrier has its own connector-side CAN protection, so the
+backplane does not duplicate ESD parts at every slot. `SJ1` and `R17` provide
+normally-open 120 ohm termination for use only when this backplane is at a
+physical bus end.
+
+`J8` is likewise marked DNP and excluded from pick-and-place output for hand
+installation after assembly.
+
+The six carrier slots retain the authoritative combined XT30 plus two-signal
+footprint. Their physical pinout is:
+
+1. VIN_BUS — power contact furthest from the two low-voltage signal contacts
+2. GND — power contact between pin 1 and the two low-voltage signal contacts
+3. CANH
+4. CANL
+
+The slot references are `J1` through `J6`, from slot 1 through slot 6. `J9` and
+`J11` are independently controlled 3-wire fan connections: GND, switched 12 V,
+and tach.
+
+CAN differential nets use KiCad's `_P`/`_N` naming convention on both sides of
+the common-mode choke: `CAN_BUS_P`/`CAN_BUS_N` and
+`CAN_EXT_P`/`CAN_EXT_N`, with `P = CANH` and `N = CANL`. Custom DRC rules
+enforce a 0.20-0.30 mm gap on coupled routes and a 35 mm maximum uncoupled
+length. Narrowly scoped breakout areas permit up to 2.40 mm pair spacing at
+connector, choke, and transceiver fan-outs. Whole-net skew is intentionally not
+constrained because the six-drop `CAN_BUS` trunk is branched; aggregate P/N net
+lengths do not describe a meaningful point-to-point signal path.
+
+`J12` is the externally powered DS18B20 header:
+
+1. GND
+2. DQ (`DS18B20_DATA`, pulled up to 3.3 V through `R24`)
+3. +3V3
+
+The DS18B20 data signal uses STM32 `PA15`. The local status NeoPixel uses `PA1`
+through a 100 ohm series resistor and has a dedicated 100 nF bypass capacitor.
+Fan 0 uses `PA2` for supply PWM and `PB8` for tach capture. Fan 1 uses `PA0` for
+supply PWM and `PA8` for tach capture.
+
+## Power assumptions
+
+The backplane is designed for a **24–48 V nominal system**, compatible with
+24 V and future 48 V carrier generations. The current SW3538 carrier is the
+limiting factor: **24 V nominal, 30 V maximum input**. A second-generation
+carrier with a suitably rated module and protection is required for 48 V use.
+Slot feeds are unswitched and do not provide voltage conversion; never connect
+a 48 V supply while any current-generation carrier is fitted. No nominal
+backplane voltage below 24 V is specified. Supply tolerance, harness drop,
+startup, fault protection, and thermal performance remain qualification items.
+
+The first population targets a nominal 24 V input and up to 100 W output per
+slot. Six fully loaded slots produce a working input budget of approximately
+30 A. `RSH1` is 1 mOhm, giving 30 mV and 0.9 W at 30 A; configure the INA237 for
+its narrow shunt range and route the sense pair as true Kelvin connections.
+
+The later design goal is 48 V nominal with a new carrier revision and up to
+240 W per slot.
+That is a future characterization target, not a released rating, until the
+input-protection, current-path, thermal, transient, and first-article tests are
+complete.
+
+Both fan channels share the LM5164 12 V rail. Its combined continuous,
+startup, and stall load must be tested with the intended pair of fans; adding a
+second connector does not increase the regulator's 1 A output rating.
+
+## PCB status
+
+The schematic is synchronized into a fully placed and routed PCB. The finalized
+design passes ERC and PCB DRC. Its operating limits remain conditional on the
+first-article validation below.
+
+Before ordering and assigning a production current rating:
+
+- verify the mirrored `J1`-`J6` mating geometry, power polarity, and CANH/CANL
+  ordering against a carrier;
+- confirm the hand-installed `J7`, `J8`, `J9`, `J11`, and `J12` footprints and
+  entry directions against the sourced parts;
+- review the generated BOM, placement, Gerber, drill, and validation files; and
+- perform first-article high-current, thermal, fan startup/stall, CAN-FD, and
+  protection testing under the intended enclosure and airflow conditions.
+
+See `../../../docs/interfaces.md`, `../../../docs/system-overview.md`, and
+`../../../docs/power-budget.md` for the system-level definitions.

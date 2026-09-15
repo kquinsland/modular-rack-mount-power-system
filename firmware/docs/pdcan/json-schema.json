@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pdcan.invalid/schemas/pdcan-output-v1.json",
+  "title": "pdcan JSON record v1",
+  "description": "One JSON value emitted by the Generation-2 pdcan host utility. Successful commands which do not yet declare JSON output continue to use their documented human output.",
+  "oneOf": [
+    { "$ref": "#/$defs/discovery" },
+    { "$ref": "#/$defs/errorEnvelope" }
+  ],
+  "$defs": {
+    "uid": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{24}$"
+    },
+    "node": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 254
+    },
+    "discovery": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "uid",
+        "node",
+        "role",
+        "profile",
+        "update_impact",
+        "capabilities",
+        "protocol"
+      ],
+      "properties": {
+        "uid": { "$ref": "#/$defs/uid" },
+        "node": {
+          "oneOf": [
+            { "$ref": "#/$defs/node" },
+            { "type": "null" }
+          ]
+        },
+        "role": {
+          "enum": ["backplane", "carrier"]
+        },
+        "profile": {
+          "oneOf": [
+            { "enum": ["basic", "sw3538", "accessory", "high_power_240w"] },
+            { "type": "null" }
+          ]
+        },
+        "update_impact": {
+          "enum": ["live", "interrupt"]
+        },
+        "capabilities": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 18446744073709551615
+        },
+        "protocol": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+$"
+        }
+      }
+    },
+    "errorEnvelope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ok", "error"],
+      "properties": {
+        "ok": { "const": false },
+        "error": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["code", "message"],
+          "properties": {
+            "code": {
+              "enum": [
+                "invalid_input",
+                "artifact",
+                "transport",
+                "timeout",
+                "codec",
+                "node_rejected",
+                "interruption_required",
+                "internal"
+              ]
+            },
+            "message": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    }
+  }
+}

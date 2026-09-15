@@ -1,0 +1,66 @@
+# {{ .Site.Title }}
+
+> {{ .Site.Params.description }}
+
+{{ .Site.BaseURL }}
+
+## Site
+
+{{- with .OutputFormats.Get "markdown" }}
+- [Home]({{ .Permalink }}): Project overview and documentation entry points.
+{{- end }}
+{{- with .Site.GetPage "/system" }}
+  {{- with .OutputFormats.Get "markdown" }}
+- [System]({{ .Permalink }}): Architecture, hardware, interfaces, power, and firmware.
+  {{- end }}
+{{- end }}
+{{- with .Site.GetPage "/guides" }}
+  {{- with .OutputFormats.Get "markdown" }}
+- [Guides]({{ .Permalink }}): Practical assembly, build, and bring-up instructions.
+  {{- end }}
+{{- end }}
+{{- with .Site.GetPage "/worklogs" }}
+  {{- with .OutputFormats.Get "markdown" }}
+- [Worklogs]({{ .Permalink }}): Project journal and development updates.
+  {{- end }}
+{{- end }}
+
+## System documentation
+
+{{- $systemPages := where site.Pages "Section" "system" -}}
+{{- $systemPages = where $systemPages "RelPermalink" "ne" "/system/" -}}
+{{- range $systemPages.ByLinkTitle }}
+  {{- $page := . -}}
+  {{- with .OutputFormats.Get "markdown" }}
+- [{{ $page.Title }}]({{ .Permalink }}){{ with $page.Description }}: {{ . | htmlUnescape | safeHTML }}{{ end }}
+  {{- end }}
+{{- end }}
+
+## Guides
+
+{{- $guidePages := where site.Pages "Section" "guides" -}}
+{{- $guidePages = where $guidePages "RelPermalink" "ne" "/guides/" -}}
+{{- range $guidePages.ByLinkTitle }}
+  {{- $page := . -}}
+  {{- with .OutputFormats.Get "markdown" }}
+- [{{ $page.Title }}]({{ .Permalink }}){{ with $page.Description }}: {{ . | htmlUnescape | safeHTML }}{{ end }}
+  {{- end }}
+{{- end }}
+
+## Worklog entries
+
+{{- range (where .Site.RegularPages "Section" "worklogs").ByDate.Reverse }}
+  {{- $page := . -}}
+  {{- with .OutputFormats.Get "markdown" }}
+- [{{ $page.Title }}]({{ .Permalink }}){{ with $page.Description }}: {{ . | htmlUnescape | safeHTML }}{{ end }}
+  {{- end }}
+{{- end }}
+
+## Source
+
+- [GitHub repository]({{ .Site.Params.github_repository }}): Hardware, engineering notes, scripts, firmware workspace, and site source.
+
+## Notes
+
+- Every page publishes Markdown as `index.md` beside its rendered `index.html`.
+- Git history is the archive for earlier versions of the documentation.

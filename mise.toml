@@ -1,0 +1,62 @@
+[settings]
+activate_aggressive = true
+env_cache = true
+exec_auto_install = true
+lockfile = true
+pin = true
+slsa = true
+
+# Don't need windows support, just arm64/x64 mac/linux
+lockfile_platforms = ["macos-arm64", "linux-x64", "linux-arm64"]
+
+[env]
+GH_REPO = "kquinsland/modular-rack-power"
+
+[settings.python]
+uv_venv_auto = "create|source" # create .venv if missing, then activate
+
+[settings.pipx]
+uvx = true
+
+[tools]
+hugo-extended = "0.166.0"
+prek = "latest"
+uv = "0.12.15"
+rust = "1.98.1"
+"github:mixelpixx/Konnect" = { version = "0.11.1", matching_regex = "^konnect-v", os = ["linux/x64", "macos/arm64"] }
+"pipx:easyeda2kicad" = "1.0.1"
+ripgrep = "15.2.0"
+
+[tasks."firmware:check"]
+description = "Check host crates and all Generation-2 firmware images"
+run = "mise -C firmware run check"
+
+[tasks."firmware:build"]
+description = "Build all Generation-2 firmware images"
+run = "mise -C firmware run check"
+
+[tasks."firmware:dbc"]
+description = "Regenerate the PDCAN DBC from protocol definitions"
+run = "mise -C firmware run dbc"
+
+[tasks."site:init"]
+description = "Initialize the documentation site theme submodule"
+run = "git submodule update --init --recursive -- site/themes/hudocs"
+
+[tasks."site:build"]
+description = "Validate and build the documentation site"
+depends = ["site:init"]
+run = "site/scripts/build.sh"
+
+[tasks."site:serve"]
+description = "Run the local documentation server with drafts"
+depends = ["site:init"]
+run = "hugo server --source site --buildDrafts"
+
+[tasks."site:validate"]
+description = "Validate documentation source and generated outputs"
+run = "site/scripts/validate.sh"
+
+[tasks."worklog:new"]
+description = "Create a dated worklog entry with the required filename"
+run = "site/scripts/new-worklog.sh"

@@ -1,0 +1,27 @@
+Mini Rack Power carrier/backplane Rev A panel
+
+Vendor: jlcpcb
+Panel: 6 carrier PCBs + 1 backplane prototype PCB
+Panel dimensions: 163.800 mm x 237.350 mm
+Panel build Git revision: 35e47c0
+Construction: FR-4, 4 layers, 1.6 mm, ENIG
+Copper: 2 oz outer layers, 1 oz inner layers
+Separation: routed gaps (2 mm minimum) with 5 mm mouse-bite tabs
+Mouse bites: 0.6 mm NPTH, 0.95 mm pitch (0.35 mm edge-to-edge)
+Assembly side: top only
+Different designs in panel: 2
+
+Upload the nested Gerber ZIP for PCB fabrication, then upload BOM.csv and
+positions.csv in the assembly step. Do not ask the vendor to re-panelize or
+depanelize before assembly. Ask CAM engineering to preserve the supplied
+customer panel, tooling holes, fiducials, routed gaps, and mouse bites.
+
+Select 'Panelized PCBs already in Gerber' / customer-supplied panel and set
+'Different Designs' to 2. For PCBA, use the complete panel BOM/CPL option and
+prefer Standard PCBA; ask engineering to confirm the 2 oz outer / 1 oz inner
+stack-up before payment.
+
+Order quantity is the number of complete panels. Each panel yields six carrier
+boards and one backplane board. Do not permit component substitutions without
+approval; PCBWay BOM rows marked 'Not specified in released BOM' must be matched
+to the exact LCSC part stated in the Customer Notes field.

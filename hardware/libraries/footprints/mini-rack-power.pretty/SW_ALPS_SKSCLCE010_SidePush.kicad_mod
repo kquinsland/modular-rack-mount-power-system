@@ -1,0 +1,214 @@
+(footprint "SW_ALPS_SKSCLCE010_SidePush"
+	(version 20240108)
+	(generator "pcbnew")
+	(layer "F.Cu")
+	(descr "ALPS Alpine SKSCLCE010 low-profile side-push tactile switch, SPST-NO, 3.5x2.9x1.25 mm; manufacturer recommended land pattern")
+	(tags "tactile switch side push right angle SPST-NO C139799")
+	(property "Reference" "SW**"
+		(at 0 -2.55 0)
+		(layer "F.SilkS")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Value" "SKSCLCE010"
+		(at 0 3 0)
+		(layer "F.Fab")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" "https://datasheet.lcsc.com/datasheet/pdf/a3d9c3c84b96b16ebda6f9dac2fc041f.pdf?productCode=C139799"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+	)
+	(property "Description" "Low-profile right-angle side-push tactile switch, SPST-NO, 3.5 x 2.9 x 1.25 mm"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+	)
+	(property "MPN" "SKSCLCE010"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(effects
+			(font
+				(size 1 1)
+			)
+		)
+	)
+	(property "Manufacturer" "ALPSALPINE"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(effects
+			(font
+				(size 1 1)
+			)
+		)
+	)
+	(property "LCSC" "C139799"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(effects
+			(font
+				(size 1 1)
+			)
+		)
+	)
+	(attr smd)
+	(fp_line
+		(start -1.75 -1.45)
+		(end 1.75 -1.45)
+		(stroke
+			(width 0.15)
+			(type default)
+		)
+		(layer "F.SilkS")
+	)
+	(fp_line
+		(start -1.75 1.45)
+		(end -0.85 1.45)
+		(stroke
+			(width 0.15)
+			(type default)
+		)
+		(layer "F.SilkS")
+	)
+	(fp_line
+		(start -0.85 1.45)
+		(end -0.85 2.15)
+		(stroke
+			(width 0.15)
+			(type default)
+		)
+		(layer "F.SilkS")
+	)
+	(fp_line
+		(start -0.85 2.15)
+		(end 0.85 2.15)
+		(stroke
+			(width 0.15)
+			(type default)
+		)
+		(layer "F.SilkS")
+	)
+	(fp_line
+		(start 0.85 2.15)
+		(end 0.85 1.45)
+		(stroke
+			(width 0.15)
+			(type default)
+		)
+		(layer "F.SilkS")
+	)
+	(fp_line
+		(start 0.85 1.45)
+		(end 1.75 1.45)
+		(stroke
+			(width 0.15)
+			(type default)
+		)
+		(layer "F.SilkS")
+	)
+	(fp_circle
+		(center -2.55 1.45)
+		(end -2.4 1.45)
+		(stroke
+			(width 0.15)
+			(type default)
+		)
+		(fill none)
+		(layer "F.SilkS")
+	)
+	(fp_rect
+		(start -1.75 -1.45)
+		(end 1.75 1.45)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(fill none)
+		(layer "F.Fab")
+	)
+	(fp_rect
+		(start -0.8 1.45)
+		(end 0.8 2.15)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(fill none)
+		(layer "F.Fab")
+	)
+	(fp_rect
+		(start -2.65 -1.6)
+		(end 2.65 2.3)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(fill none)
+		(layer "F.CrtYd")
+	)
+	(fp_text user "${REFERENCE}"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.12)
+			)
+		)
+	)
+	(pad "1" smd rect
+		(at -1.8 0.65)
+		(size 1.4 0.9)
+		(layers "F.Cu" "F.Paste" "F.Mask")
+	)
+	(pad "1" smd rect
+		(at 1.8 0.65)
+		(size 1.4 0.9)
+		(layers "F.Cu" "F.Paste" "F.Mask")
+	)
+	(pad "2" smd rect
+		(at -1.8 -0.65)
+		(size 1.4 0.9)
+		(layers "F.Cu" "F.Paste" "F.Mask")
+	)
+	(pad "2" smd rect
+		(at 1.8 -0.65)
+		(size 1.4 0.9)
+		(layers "F.Cu" "F.Paste" "F.Mask")
+	)
+	(embedded_fonts no)
+	(model "${KIPRJMOD}/../../libraries/3dmodels/SKSCLCE010.step"
+		(offset
+			(xyz 0 0 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 0 0)
+		)
+	)
+)

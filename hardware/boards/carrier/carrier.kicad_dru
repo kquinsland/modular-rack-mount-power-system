@@ -1,0 +1,87 @@
+(version 1)
+
+# Ported from backplane-prototype for the same JLCPCB process.
+# The conservative annular-ring rule is retained for the selected 1 oz outer copper.
+
+# MOD1 is mounted above the carrier PCB. KiCad's courtyard DRC is two-dimensional,
+# so it cannot verify the physical Z clearance. Only footprints deliberately assigned
+# to the Under_PD_Module component class in the project settings may overlap MOD1's
+# courtyard. Their assembled height above the carrier PCB, including tolerances, must
+# not exceed 2.75 mm.
+
+(rule "Allow qualified low-profile parts below MOD1"
+    (condition "(A.Reference == 'MOD1' && B.hasComponentClass('Under_PD_Module')) || (B.Reference == 'MOD1' && A.hasComponentClass('Under_PD_Module'))")
+    (constraint courtyard_clearance (min -1mm)))
+
+# J1, D2, and H9 are intentionally placed at the board interface. Keep these
+# exceptions reference-specific so other connector, TVS, and tooling-hole
+# courtyard conflicts remain visible.
+(rule "Allow intentional J1 D2 courtyard overlap"
+    (condition "(A.Reference == 'J1' && B.Reference == 'D2') || (A.Reference == 'D2' && B.Reference == 'J1')")
+    (constraint courtyard_clearance (min -1mm)))
+
+(rule "Allow intentional J1 H9 courtyard overlap"
+    (condition "(A.Reference == 'J1' && B.Reference == 'H9') || (A.Reference == 'H9' && B.Reference == 'J1')")
+    (constraint courtyard_clearance (min -1mm)))
+
+# JLCPCB supports through vias for this process, not blind, buried, or microvias.
+(rule "JLCPCB through vias only"
+    (condition "A.Type == 'Via' && A.Via_Type != 'Through'")
+    (constraint disallow via))
+
+# Retain a conservative 0.255 mm PTH annular-ring minimum for fabrication.
+(rule "JLCPCB conservative PTH fabrication"
+    (condition "A.Type == 'Pad' && A.Pad_Type == 'Through-hole'")
+    (constraint annular_width (min 0.255mm))
+    (constraint hole_clearance (min 0.3mm)))
+
+(rule "JLCPCB pad hole to hole clearance"
+    (condition "A.Type == 'Pad' && B.Type == 'Pad'")
+    (constraint hole_to_hole (min 0.45mm)))
+
+(rule "JLCPCB minimum round NPTH"
+    (condition "A.Pad_Type == 'NPTH, mechanical' && A.Hole_Size_X == A.Hole_Size_Y")
+    (constraint hole_size (min 0.5mm)))
+
+(rule "JLCPCB minimum plated slot"
+    (condition "A.isPlated() && A.Hole_Size_X != A.Hole_Size_Y")
+    (constraint hole_size (min 0.4mm)))
+
+(rule "JLCPCB minimum non-plated slot"
+    (condition "A.Pad_Type == 'NPTH, mechanical' && A.Hole_Size_X != A.Hole_Size_Y")
+    (constraint hole_size (min 1.0mm)))
+
+(rule "JLCPCB legend text"
+    (condition "(A.Layer == 'F.Silkscreen' || A.Layer == 'B.Silkscreen') && (A.Type == 'Text' || A.Type == 'Text Box')")
+    (constraint text_height (min 1.0mm))
+    (constraint text_thickness (min 0.15mm)))
+
+(rule "JLCPCB legend graphic line width"
+    (condition "A.Type == 'Graphic' && (A.Layer == 'F.Silkscreen' || A.Layer == 'B.Silkscreen') && A.Line_Width > 0mm")
+    (constraint assertion "A.Line_Width >= 0.15mm"))
+
+# CANH is the P member and CANL is the N member on both sides of L3.
+# The P/N suffixes enable KiCad's differential-pair router. Scope coupling and
+# skew checks to the signal trunks so the intentional D2, termination, and test
+# point branches are not counted as uncoupled differential-pair routing. Named
+# rule areas on the PCB identify the fixed-pitch package and connector fan-outs.
+(rule "CAN differential pair coupling"
+    (condition "A.fromTo('J1-3', 'L3-2') || A.fromTo('J1-4', 'L3-1') || A.fromTo('L3-3', 'U5-7') || A.fromTo('L3-4', 'U5-6')")
+    (constraint diff_pair_gap (min 0.20mm) (opt 0.25mm) (max 0.30mm))
+    (constraint diff_pair_uncoupled (max 5mm)))
+
+# These short breakouts cannot meet the trunk gap because the J1, L3, and U5
+# pad pitches are fixed. Keep them visibly scoped instead of weakening the rule
+# for the tightly coupled portion of the routes.
+(rule "Allow fixed-pitch CAN fan-outs"
+    (severity ignore)
+    (condition "(A.fromTo('J1-3', 'L3-2') || A.fromTo('J1-4', 'L3-1') || A.fromTo('L3-3', 'U5-7') || A.fromTo('L3-4', 'U5-6')) && (A.enclosedByArea('CAN_BUS_L3_BREAKOUT') || A.enclosedByArea('CAN_BUS_J1_BREAKOUT') || A.enclosedByArea('CAN_PHY_BREAKOUT'))")
+    (constraint diff_pair_gap (min 0.20mm) (opt 0.25mm) (max 0.30mm))
+    (constraint diff_pair_uncoupled (max 5mm)))
+
+# The fixed connector and package pitches contribute to the end-to-end path
+# lengths. A 2 mm limit remains conservative for these short local CAN-FD paths
+# while keeping small layout edits from creating unactionable skew violations.
+(rule "CAN differential pair path skew"
+    (condition "A.fromTo('J1-3', 'L3-2') || A.fromTo('J1-4', 'L3-1') || A.fromTo('L3-3', 'U5-7') || A.fromTo('L3-4', 'U5-6')")
+    (constraint skew (max 2mm) (within_diff_pairs)))

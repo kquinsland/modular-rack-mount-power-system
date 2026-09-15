@@ -1,0 +1,74 @@
+{{- $logo := site.Params.main_logo -}}
+{{- $mainIcon := site.Params.main_icon | default "book-open" -}}
+{{- $title := site.Title | title -}}
+
+<div class="container">
+  <div class="header-wrapper flex items-center relative">
+    <div class="header-left flex items-center">
+      {{- with .Section }}
+        <button class="header-toggle" data-outside="docs-sidebar" aria-label="toggle navigation">
+          {{ partial "svg" (dict "icon" "bars") }}
+        </button>
+      {{- end }}
+      <div class="header-logo flex items-center fw-500">
+        <a class="has-icon i-md" href='{{ "/" | relLangURL }}'>
+          {{- if $logo }}
+            <img class="header-logo-image" src="{{ $logo }}" alt="{{ $title }}">
+          {{- else }}
+            {{- with $mainIcon }}
+              {{ partial "svg" (dict "icon" . "class" "flex-none header-logo-icon") }}
+            {{- end }}
+            {{- $title }}
+          {{- end }}
+        </a>
+      </div>
+    </div>
+
+    {{- with .Section }}
+      <div class="header-middle">
+        <button class="search-toggle has-icon" data-outside="search-box" aria-label='{{ i18n "search" }}'>
+          {{ partial "svg" (dict "icon" "search" "class" "flex-none") }}
+          <span>{{ i18n "search_in_doc" }}</span>
+        </button>
+      </div>
+    {{- end }}
+
+    <div class="header-right">
+      <nav class="project-nav" aria-label="Project navigation">
+        <a href='{{ "/system/" | relLangURL }}'>System</a>
+        <a href='{{ "/guides/" | relLangURL }}'>Guides</a>
+        <a href='{{ "/worklogs/" | relLangURL }}'>Worklogs</a>
+        <a href="{{ site.Params.github_repository }}">GitHub</a>
+      </nav>
+
+      <button class="toggle-theme" data-outside="docs-mode" aria-label='{{ i18n "system" }}'>
+        {{ partial "svg" (dict "icon" "sun") }}
+        {{ partial "svg" (dict "icon" "moon") }}
+      </button>
+
+      {{- with .Section }}
+        <a class="toc-toggle" href="#doc" aria-label='{{ i18n "table_of_contents_toogle" }}'>
+          {{ partial "svg" (dict "icon" "bars-sort") }}
+        </a>
+      {{- end }}
+
+    </div>
+
+    <div class="dropdown" id="docs-mode">
+      <div class="list fw-500 theme-handle">
+        <button class="list-link has-icon" data-theme="system">
+          {{ partial "svg" (dict "icon" "desktop") }}
+          {{ i18n "system" }}
+        </button>
+        <button class="list-link has-icon" data-theme="light">
+          {{ partial "svg" (dict "icon" "sun") }}
+          {{ i18n "light" }}
+        </button>
+        <button class="list-link has-icon" data-theme="dark">
+          {{ partial "svg" (dict "icon" "moon") }}
+          {{ i18n "dark" }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

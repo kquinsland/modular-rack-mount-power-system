@@ -1,0 +1,39 @@
+name: Firmware and PDCAN
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test-and-build:
+    name: Host tests, protocol drift, and Rev A/B builds
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: firmware
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Install pinned Rust toolchain
+        run: rustup show
+
+      - name: Cache Cargo build data
+        uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2.9.2
+        with:
+          workspaces: firmware -> target
+
+      - name: Create SocketCAN integration interface
+        run: |
+          sudo modprobe vcan
+          sudo ip link add dev vcan0 type vcan
+          sudo ip link set up vcan0
+
+      - name: Validate workspace and firmware
+        env:
+          PDCAN_VCAN_INTERFACE: vcan0
+        run: cargo xtask ci

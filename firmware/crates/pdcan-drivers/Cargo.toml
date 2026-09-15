@@ -1,0 +1,15 @@
+[package]
+name = "pdcan-drivers"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+embedded-hal-async = "1.0"
+pdcan-types.workspace = true
+
+[dev-dependencies]
+futures-lite = "2.6"
+
+[lints]
+workspace = true

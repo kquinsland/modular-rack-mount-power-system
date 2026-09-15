@@ -1,0 +1,51 @@
+name: Build PCB release artifacts
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Commit or tag to manufacture
+        required: true
+        default: main
+        type: string
+permissions:
+  contents: read
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out requested revision
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+          submodules: recursive
+          ref: ${{ inputs.ref }}
+      - name: Install uv
+        uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
+        with:
+          install_args: uv
+      - name: Install Podman
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y podman
+      - name: Install pinned PCB tools
+        run: mise run release:setup
+      - name: Test release helpers
+        run: mise run release:test
+      - name: Build gated fabrication release
+        run: mise run release:build
+      - name: Upload complete reviewed artifact set
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: pcb-release
+          path: build/pcb-release/
+          if-no-files-found: error
+      - name: Upload diagnostic logs
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: pcb-release-diagnostics
+          path: |
+            build/pcb-release-work/*/logs/
+            build/pcb-release-work/*/checks/
+            build/pcb-release-work/*/vendors/*/checks/
