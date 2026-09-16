@@ -12,7 +12,7 @@ Journaling about progress on long-term projects is not new to me... but doing it
 
 ---
 
-Please see {{< ref "system/overview.md" >}} for a high-level overview of the goal/purpose, and architecture.
+Please see {{< ref "system/_index.md" >}} for a high-level overview of the goal/purpose, and architecture.
 
 After some early and initial feedback on prototypes...
 Lots of contention between initial goals, future plans, and trying to keep things simple but powerful and cheap... all at the same time.
