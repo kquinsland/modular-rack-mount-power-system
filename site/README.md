@@ -22,8 +22,22 @@ Create a worklog with:
 mise run worklog:new -- "Concise Summary"
 ```
 
-The helper creates `site/content/worklogs/wl.YYYY-MM-DD - Concise Summary.md`.
-The filename date and front-matter date must agree.
+The helper creates `site/content/worklogs/YYYY/MM/DD - Concise Summary/index.md`
+using today's date, plus an adjacent `_files/` directory for images and other
+page resources. For example:
+
+```text
+site/content/worklogs/2026/09/10 - First Physical Prototypes/
+├── index.md
+└── _files/
+    ├── early_prototype_01.webp
+    └── early_prototype_02.webp
+```
+
+The bundle's year/month/day and front-matter date must agree. New entries start
+as drafts with an empty `resources` list; add image metadata there and insert
+the `figure` shortcodes described below. The generated slug keeps the day and
+summary in the URL, e.g. `/worklogs/2026/09/10-first-physical-prototypes/`.
 
 ## Content organization
 
