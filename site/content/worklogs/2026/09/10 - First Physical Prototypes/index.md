@@ -4,8 +4,23 @@ date: 2026-09-10
 description: After a lot of re architecture, the second-generation design is now ready for first-article prototypes.
 tags:
   - hardware
-slug: '2026-09-10-first-physical-prototypes'
+slug: '10-first-physical-prototypes'
+aliases:
+  - /worklogs/2026-09-10-first-physical-prototypes/
 draft: false
+resources:
+  - src: _files/early_prototype_01.webp
+    name: early_prototype_01
+    title: Early enclosure prototype
+    params:
+      alt: CAD view of the open rack enclosure with a power supply and a row of carrier modules
+      caption: Early enclosure layout with the power supply and carrier modules.
+  - src: _files/early_prototype_02.webp
+    name: early_prototype_02
+    title: Early rack layout
+    params:
+      alt: CAD view of two computers mounted above the power enclosure, with colored lines indicating cable routes
+      caption: Early rack layout showing the computers above the power enclosure and proposed cable routing.
 ---
 
 Journaling about progress on long-term projects is not new to me... but doing it publicly, in the repo is. Let's see how this goes!
@@ -22,6 +37,10 @@ Lots of contention between initial goals, future plans, and trying to keep thing
 Finally a nice mid-point that should make for a usable v1.0 system that can be extended somewhat w/ software.
 
 Two backplanes are about the right number for a 1U rack.
+
+{{< figure name="early_prototype_01" >}}
+
+{{< figure name="early_prototype_02" >}}
 
 A few limiting factors are keeping things at the ~100W/port level.
 Highly motivated by telemetry; I want to see what's going on / measure all the things!
@@ -58,3 +77,6 @@ the second-generation system.
 ## PCBWay
 
 // TODO: brief "yep, they're sponsoring..."
+
+
+// TODO: some of the early assembly and testing notes.

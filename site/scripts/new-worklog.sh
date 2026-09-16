@@ -7,13 +7,13 @@ if [[ -z "$summary" ]]; then
   exit 2
 fi
 
-if [[ "$summary" == *$'\n'* || "$summary" == */* || "$summary" == *\\* ]]; then
-  echo "summary must be one line and cannot contain path separators" >&2
+if [[ ! "$summary" =~ ^[A-Za-z0-9][A-Za-z0-9._+\ -]*$ ]]; then
+  echo "summary must start with a letter or number and contain only letters, numbers, spaces, dots, underscores, plus signs, or hyphens" >&2
   exit 2
 fi
 
 entry_date="$(date +%F)"
-relative_path="worklogs/wl.${entry_date} - ${summary}.md"
+relative_path="worklogs/${entry_date:0:4}/${entry_date:5:2}/${entry_date:8:2} - ${summary}/index.md"
 absolute_path="site/content/${relative_path}"
 
 if [[ -e "$absolute_path" ]]; then
@@ -22,4 +22,5 @@ if [[ -e "$absolute_path" ]]; then
 fi
 
 hugo new content --source site --kind worklog "$relative_path"
+mkdir -p "${absolute_path%/*}/_files"
 echo "created $absolute_path"

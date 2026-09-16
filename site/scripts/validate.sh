@@ -16,20 +16,20 @@ while IFS= read -r image; do
 done < <(find site/content docs/assets/generated/pcbs -type f \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' \))
 
 while IFS= read -r -d '' worklog; do
-  filename="${worklog##*/}"
-  if [[ ! "$filename" =~ ^wl\.([0-9]{4}-[0-9]{2}-[0-9]{2})\ -\ [A-Za-z0-9][A-Za-z0-9._+\ -]*\.md$ ]]; then
-    echo "invalid worklog filename: $worklog" >&2
+  relative_path="${worklog#site/content/worklogs/}"
+  if [[ ! "$relative_path" =~ ^([0-9]{4})/(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])\ -\ [A-Za-z0-9][A-Za-z0-9._+\ -]*/index\.md$ ]]; then
+    echo "invalid worklog path (expected YYYY/MM/DD - Summary/index.md): $worklog" >&2
     failure=1
     continue
   fi
 
-  filename_date="${BASH_REMATCH[1]}"
+  path_date="${BASH_REMATCH[1]}-${BASH_REMATCH[2]}-${BASH_REMATCH[3]}"
   frontmatter_date="$(sed -nE "s/^date:[[:space:]]*['\"]?([0-9]{4}-[0-9]{2}-[0-9]{2}).*/\\1/p" "$worklog")"
-  if [[ "$frontmatter_date" != "$filename_date" ]]; then
-    echo "worklog date does not match filename: $worklog" >&2
+  if [[ "$frontmatter_date" != "$path_date" ]]; then
+    echo "worklog date does not match bundle path: $worklog" >&2
     failure=1
   fi
-done < <(find site/content/worklogs -maxdepth 1 -type f -name '*.md' ! -name '_index.md' -print0)
+done < <(find site/content/worklogs -type d -name '_files' -prune -o -type f -name '*.md' ! -name '_index.md' -print0)
 
 if (( failure != 0 )); then
   exit 1
