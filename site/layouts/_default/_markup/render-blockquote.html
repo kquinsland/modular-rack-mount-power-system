@@ -1,0 +1,23 @@
+{{- if eq .Type "alert" -}}
+<blockquote class="callout callout-{{ .AlertType }}">
+  <p class="callout-title">
+    <svg class="callout-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      {{- if eq .AlertType "tip" -}}
+      <path d="M9 18h6m-5 3h4M9 15a7 7 0 1 1 6 0v3H9z"/>
+      {{- else if eq .AlertType "warning" -}}
+      <path d="M12 3 2 21h20L12 3zm0 6v5m0 3v.01"/>
+      {{- else if eq .AlertType "caution" -}}
+      <path d="m8 2-6 6v8l6 6h8l6-6V8l-6-6H8zm4 5v6m0 4v.01"/>
+      {{- else if eq .AlertType "important" -}}
+      <path d="M4 3h16v14H9l-5 4V3zm8 4v4m0 3v.01"/>
+      {{- else -}}
+      <circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10v.01"/>
+      {{- end -}}
+    </svg>
+    {{ with .AlertTitle }}{{ . }}{{ else }}{{ .AlertType | title }}{{ end }}
+  </p>
+  {{ .Text }}
+</blockquote>
+{{- else -}}
+<blockquote>{{ .Text }}</blockquote>
+{{- end -}}

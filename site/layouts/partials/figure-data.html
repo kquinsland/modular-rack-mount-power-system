@@ -1,0 +1,40 @@
+{{- /* Share resource metadata and overrides between HTML and Markdown outputs. */ -}}
+{{- $data := dict -}}
+{{- $name := .Get "name" -}}
+{{- $src := .Get "src" -}}
+{{- $resource := false -}}
+{{- if $name -}}
+  {{- $resource = .Page.Resources.GetMatch $name -}}
+  {{- if not $resource -}}
+    {{- errorf "figure: resource %q not found at %s" $name .Position -}}
+  {{- end -}}
+{{- else if $src -}}
+  {{- $resource = .Page.Resources.GetMatch $src -}}
+{{- else -}}
+  {{- errorf "figure: provide name or src at %s" .Position -}}
+{{- end -}}
+{{- with $resource -}}
+  {{- $src = .RelPermalink -}}
+  {{- $data = dict "title" .Title "alt" .Params.alt "caption" .Params.caption "attr" .Params.attr "attrlink" .Params.attr_link -}}
+  {{- if eq .MediaType.MainType "image" -}}
+    {{- if ne .MediaType.SubType "svg" -}}
+      {{- $data = merge $data (dict "width" .Width "height" .Height) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- range slice "title" "alt" "caption" "attr" "attrlink" "width" "height" "link" "class" "loading" -}}
+  {{- if isset $.Params . -}}
+    {{- $data = merge $data (dict . ($.Get .)) -}}
+  {{- end -}}
+{{- end -}}
+{{- if isset .Params "attr_link" -}}
+  {{- $data = merge $data (dict "attrlink" (.Get "attr_link")) -}}
+{{- end -}}
+{{- if not (isset .Params "alt") -}}
+  {{- $data = merge $data (dict "alt" (or $data.alt $data.caption $data.title $name "" | plainify)) -}}
+{{- end -}}
+{{- $showTitle := and (not $name) (isset .Params "title") -}}
+{{- if isset .Params "show_title" -}}
+  {{- $showTitle = eq (printf "%v" (.Get "show_title")) "true" -}}
+{{- end -}}
+{{- return (merge $data (dict "src" $src "showTitle" $showTitle)) -}}
