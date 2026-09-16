@@ -63,12 +63,12 @@ if [[ "$check_outputs" == true ]]; then
     failure=1
   fi
 
-  if ! grep -Eq 'rel=("alternate"|alternate)' site/public/system/overview/index.html; then
+  if ! grep -Eq 'rel=("alternate"|alternate)' site/public/system/index.html; then
     echo "technical page does not advertise an alternate representation" >&2
     failure=1
   fi
 
-  if ! grep -q 'View source on GitHub' site/public/system/overview/index.html; then
+  if ! grep -q 'View source on GitHub' site/public/system/index.html; then
     echo "technical page does not include its source link" >&2
     failure=1
   fi
