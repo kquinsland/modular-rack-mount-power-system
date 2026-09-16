@@ -2,6 +2,20 @@
 title: Modules
 description: Carrier-based and direct-connect power-output assemblies supported by the system.
 weight: 2
+resources:
+  - src: _files/carrier.webp
+    name: carrier-top
+    title: Carrier, top side
+    params:
+      alt: Carrier PCB, top side
+  - src: _files/carrier-bottom.webp
+    name: carrier-bottom
+    title: Carrier, bottom side
+    params:
+      alt: Carrier PCB, bottom side
+      caption: >-
+        Generated from the committed PCB. Render provenance is recorded in
+        [renders.json](_files/renders.json); a preview does not establish fabrication readiness.
 ---
 
 Modules turn a backplane slot's shared DC and CAN-FD connection into a useful
@@ -14,12 +28,9 @@ One carrier mates with each backplane slot and hosts one user-installed power
 output module. It receives unswitched DC plus CAN-FD from the backplane and
 generates its own 3.3 V housekeeping rail.
 
-![Carrier PCB, top side](_files/carrier.webp)
+{{< figure name="carrier-top" >}}
 
-![Carrier PCB, bottom side](_files/carrier-bottom.webp)
-
-_Generated from the committed PCB. Render provenance is recorded in
-[renders.json](_files/renders.json); a preview does not establish fabrication readiness._
+{{< figure name="carrier-bottom" >}}
 
 [Interactive assembly BOM](/guides/assembly/_files/carrier-ibom.html)
 

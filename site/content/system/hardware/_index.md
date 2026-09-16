@@ -2,18 +2,29 @@
 title: Hardware
 description: The backplane, carrier, and initial USB-C Power Delivery module.
 weight: 2
+resources:
+  - src: _files/hardware-assemblies.webp
+    name: hardware-assemblies
+    title: Early hardware-assembly concept
+    params:
+      alt: Early hardware-assembly concept showing the backplane and installed modules
+      caption: >-
+        Early mechanical concept image. A current assembly render will replace it as
+        the release pipeline is completed.
+  - src: _files/panel.webp
+    name: fabrication-panel
+    title: Fabrication-panel preview
+    params:
+      alt: Six-carrier, one-backplane fabrication panel
+      caption: >-
+        Fabrication-panel preview, not an assembled-system model. See
+        [render provenance](_files/renders.json).
 ---
 
 The current system has two custom PCB assemblies and one user-installed output
 module. The backplane supplies shared infrastructure; each carrier owns its
 local protection, measurement, control, and output module.
 
-![Early hardware-assembly concept showing the backplane and installed modules](_files/hardware-assemblies.webp)
+{{< figure name="hardware-assemblies" >}}
 
-_Early mechanical concept image. A current assembly render will replace it as
-the release pipeline is completed._
-
-![Six-carrier, one-backplane fabrication panel](_files/panel.webp)
-
-_Fabrication-panel preview, not an assembled-system model. See
-[render provenance](_files/renders.json)._
+{{< figure name="fabrication-panel" >}}

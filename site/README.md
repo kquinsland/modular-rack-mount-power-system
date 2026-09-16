@@ -48,6 +48,59 @@ interprets it as content.
 Preview images do not imply that the PCB passed release checks.
 See the [release tooling guide](../.kibot/release/README.md) for the validated build.
 
+## Callouts and figures
+
+Use GitHub-style callouts in Markdown:
+
+```markdown
+> [!WARNING]
+> Everything about this project is still under active development.
+```
+
+`NOTE`, `TIP`, `IMPORTANT`, `WARNING`, and `CAUTION` have distinct colors and
+icons in both light and dark mode. Callout bodies support normal Markdown,
+including lists and multiple paragraphs. Ordinary blockquotes keep their usual
+appearance. The implementation uses Hugo's
+[blockquote render hook](https://gohugo.io/render-hooks/blockquotes/).
+
+The `figure` shortcode accepts the same named page resources as the blog.
+Define image metadata in the owning page's front matter:
+
+```yaml
+resources:
+  - src: _files/carrier.webp
+    name: carrier-top
+    title: Carrier, top side
+    params:
+      alt: Carrier PCB viewed from above
+      caption: "Generated preview; see [render provenance](_files/renders.json)."
+      attr: Karl Quinsland
+      attr_link: https://karlquinsland.com/
+```
+
+Then insert the image:
+
+```go-html-template
+{{< figure name="carrier-top" >}}
+{{< figure name="carrier-top" show_title="true" link="_files/carrier.webp" >}}
+```
+
+Titles are hidden by default for named resources, matching the blog. Captions
+support Markdown. Optional shortcode arguments override resource metadata:
+`title`, `alt`, `caption`, `attr`, and `attr_link` (or `attrlink`). An explicit
+`alt=""` marks a decorative image. `class`, `width`, `height`, and `loading`
+are also available; images are responsive and lazy-loaded by default.
+Missing named resources fail the build with the shortcode's source location.
+
+For a direct image path or URL, use `src` instead of `name`:
+
+```go-html-template
+{{< figure src="_files/carrier.webp" alt="Carrier PCB" title="Carrier" caption="Top view" >}}
+```
+
+Both HTML and the site's alternate Markdown output include the image and its
+caption, visible title, attribution, and optional link.
+
 ## Deployment
 
 The [Pages workflow](../.github/workflows/pages.yml) is intentionally manual, initially.

@@ -1,0 +1,13 @@
+{{- $figure := partial "figure-data.html" . -}}
+<figure class="content-figure{{ with $figure.class }} {{ . }}{{ end }}">
+  {{- with $figure.link }}<a href="{{ . }}">{{ end -}}
+  <img src="{{ $figure.src }}" alt="{{ $figure.alt }}" loading="{{ $figure.loading | default "lazy" }}" decoding="async"{{ with $figure.width }} width="{{ . }}"{{ end }}{{ with $figure.height }} height="{{ . }}"{{ end }}>
+  {{- if $figure.link }}</a>{{ end -}}
+  {{- if or (and $figure.showTitle $figure.title) $figure.caption $figure.attr }}
+  <figcaption>
+    {{- if and $figure.showTitle $figure.title }}<p class="figure-title">{{ $figure.title }}</p>{{ end -}}
+    {{- with $figure.caption }}<p>{{ . | $.Page.RenderString }}</p>{{ end -}}
+    {{- with $figure.attr }}<p class="figure-attribution">{{ with $figure.attrlink }}<a href="{{ . }}">{{ end }}{{ . }}{{ if $figure.attrlink }}</a>{{ end }}</p>{{ end -}}
+  </figcaption>
+  {{- end }}
+</figure>

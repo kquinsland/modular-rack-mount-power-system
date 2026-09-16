@@ -2,18 +2,29 @@
 title: Backplane
 description: Six-slot power distribution, aggregate monitoring, CAN-FD, and cooling control.
 weight: 1
+resources:
+  - src: _files/backplane.webp
+    name: backplane-top
+    title: Backplane, top side
+    params:
+      alt: Consolidated backplane, top side
+  - src: _files/backplane-bottom.webp
+    name: backplane-bottom
+    title: Backplane, bottom side
+    params:
+      alt: Consolidated backplane, bottom side
+      caption: >-
+        Generated from the committed PCB. Render provenance is recorded in
+        [renders.json](_files/renders.json); a preview does not establish fabrication readiness.
 ---
 
 The second-generation backplane combines the controller and six-slot power
 distribution on one finalized PCB. Its outline, airflow cutouts, mounting
 features, and slot locations define the mechanical design.
 
-![Consolidated backplane, top side](_files/backplane.webp)
+{{< figure name="backplane-top" >}}
 
-![Consolidated backplane, bottom side](_files/backplane-bottom.webp)
-
-_Generated from the committed PCB. Render provenance is recorded in
-[renders.json](_files/renders.json); a preview does not establish fabrication readiness._
+{{< figure name="backplane-bottom" >}}
 
 [Interactive assembly BOM](/guides/assembly/_files/backplane-ibom.html)
 
