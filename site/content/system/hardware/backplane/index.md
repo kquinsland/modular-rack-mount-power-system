@@ -2,6 +2,8 @@
 title: Backplane
 description: Six-slot power distribution, aggregate monitoring, CAN-FD, and cooling control.
 weight: 1
+badge: true
+badge_text: BETA
 resources:
   - src: _files/backplane.webp
     name: backplane-top

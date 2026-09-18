@@ -2,6 +2,8 @@
 title: Hardware
 description: The backplane, carrier, and initial USB-C Power Delivery module.
 weight: 2
+badge: true
+badge_text: BETA
 resources:
   - src: _files/hardware-assemblies.webp
     name: hardware-assemblies
