@@ -50,9 +50,16 @@ supporting files in an owning page's `_files/` directory and reference them
 with relative paths. Reserve `static/` for shared assets and files Hugo would
 otherwise interpret as content.
 
+`system/hardware/modules/_index.md` is the module overview, and
+`system/hardware/modules/carrier/_index.md` owns the carrier documentation.
+Both are branch bundles: add other modules beneath `modules/` and carrier-specific
+pages beneath `modules/carrier/`. Use `_index.md` for any new page that will
+also have children.
+
 PCB images are generated with `mise run docs:pcb-renders` and stored as WebP.
-Carrier and backplane `_files/` directories contain top and bottom views plus
-`renders.json`; `system/hardware/_files/` owns `panel.webp`.
+`system/hardware/modules/carrier/_files/` and `system/hardware/backplane/_files/`
+contain top and bottom views plus `renders.json`;
+`system/hardware/_files/` owns `panel.webp`.
 
 The `mise run docs:pcb-iboms` task publishes interactive assembly HTML under
 `static/guides/assembly/_files/`, which serves it at

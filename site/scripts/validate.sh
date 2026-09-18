@@ -46,9 +46,15 @@ if [[ "$check_outputs" == true ]]; then
     site/public/guides/index.md
     site/public/worklogs/index.html
     site/public/worklogs/index.md
+    site/public/system/hardware/modules/index.html
+    site/public/system/hardware/modules/index.md
+    site/public/system/hardware/modules/carrier/index.html
+    site/public/system/hardware/modules/carrier/index.md
     site/public/system/hardware/_files/panel.webp
     site/public/system/hardware/backplane/_files/renders.json
-    site/public/system/hardware/modules/_files/carrier.webp
+    site/public/system/hardware/modules/carrier/_files/carrier.webp
+    site/public/system/hardware/modules/carrier/_files/carrier-bottom.webp
+    site/public/system/hardware/modules/carrier/_files/renders.json
     site/public/guides/assembly/_files/backplane-ibom.html
   )
   for output in "${required_outputs[@]}"; do

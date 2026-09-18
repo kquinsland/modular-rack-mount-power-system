@@ -1,7 +1,7 @@
 ---
-title: Modules
-description: Carrier-based and direct-connect power-output assemblies supported by the system.
-weight: 2
+title: Carrier
+description: Reusable backplane carrier with local protection, measurement, control, and a user-installed power-output module.
+weight: 1
 resources:
   - src: _files/carrier.webp
     name: carrier-top
@@ -18,12 +18,6 @@ resources:
         [renders.json](_files/renders.json); a preview does not establish fabrication readiness.
 ---
 
-Modules turn a backplane slot's shared DC and CAN-FD connection into a useful
-power output. The initial design uses a reusable carrier, but future module
-variants may connect directly without that carrier.
-
-## Carrier
-
 One carrier mates with each backplane slot and hosts one user-installed power
 output module. It receives unswitched DC plus CAN-FD from the backplane and
 generates its own 3.3 V housekeeping rail.
@@ -34,7 +28,7 @@ generates its own 3.3 V housekeeping rail.
 
 [Interactive assembly BOM](/guides/assembly/_files/carrier-ibom.html)
 
-### Responsibilities
+## Responsibilities
 
 - Switch the high-current branch to the output module under local MCU control.
 - Limit inrush and handle short-circuit, overload, undervoltage, and

@@ -50,7 +50,7 @@ PEP 723. No host KiCad Python installation or GUI is needed.
 
 | Artifact | Destination |
 | --- | --- |
-| Carrier top/bottom | `site/content/system/hardware/modules/_files/carrier.webp`, `carrier-bottom.webp` |
+| Carrier top/bottom | `site/content/system/hardware/modules/carrier/_files/carrier.webp`, `carrier-bottom.webp` |
 | Backplane top/bottom | `site/content/system/hardware/backplane/_files/backplane.webp`, `backplane-bottom.webp` |
 | Panel overview | `site/content/system/hardware/_files/panel.webp` |
 | Render provenance | `renders.json` in each owning page's `_files/` directory |

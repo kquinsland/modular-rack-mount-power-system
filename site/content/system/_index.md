@@ -9,7 +9,7 @@ The core design principle of MRPS is to separate shared infrastructure from repl
 
 1. At least one high current DC supply is wired to a [backplane]({{% ref "/system/hardware/backplane/" %}}).
 2. The backplane  distributes the DC bus to six slots, measures aggregate current, powers local control electronics and fans.
-3. Each [carrier](./carrier/) mates with the backplane at a slot. Each carrier hosts a power-output module or accessory.
+3. Each [carrier]({{< ref "/system/hardware/modules/carrier/" >}}) mates with the backplane at a slot. Each carrier hosts a power-output module or accessory.
 4. The backplane and every carrier have their own STM32 controller and CAN-FD transceiver. CAN-FD is the only inter-board communication bus.
 
 ```text
