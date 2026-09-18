@@ -7,10 +7,10 @@ weight: 1
 
 The core design principle of MRPS is to separate shared infrastructure from replaceable output modules in a scalable and modular manner.
 
-1. At least one high current DC supply is wired to a [backplane]({{% ref "/system/hardware/backplane/" %}}).
+1. At least one high current DC supply is wired to a [backplane]({{< ref "/system/hardware/backplane/" >}}).
 2. The backplane  distributes the DC bus to six slots, measures aggregate current, powers local control electronics and fans.
-3. Each [carrier]({{< ref "/system/hardware/modules/carrier/" >}}) mates with the backplane at a slot. Each carrier hosts a power-output module or accessory.
-4. The backplane and every carrier have their own STM32 controller and CAN-FD transceiver. CAN-FD is the only inter-board communication bus.
+3. Each [module]({{< ref "/system/hardware/modules/" >}}) mates with the backplane and occupies a slot. Each hosts a power-output module or accessory.
+4. The backplane and every carrier have their own microcontroller to manage local peripherals and a CAN-FD transceiver to communicate with the rest of the system. CAN-FD is the only inter-board communication bus.
 
 ```text
 DC input
@@ -26,19 +26,28 @@ DC input
 
 This repo is going "live" with the second-generation backplane, which consolidates functions that previously lived on separate backplane and controller boards.
 
+At least for _now_ there is only one "supported" carrier/module but there are plans to expand the range of compatible modules in the future.
+
 ## Current design targets
+
+To make a very long story short, the first iteration of the design is targeting a DC input of _at most_ 30V, nominally somewhere around 24V.
+This is because the [current/only carrier module]({{< ref "/system/hardware/modules/carrier/#sw3538-usb-c-pd-module" >}}) has a maximum input voltage of 30V.
+Furthermore, the `SW3538` based module can't do more than 100 W without using non-standard configurations.
+
+This means that each port is limited to a maximum of 100 W under standard configurations.
+The only way to achieve 100W with USB-C/PD is to use [5A/20V (100W) configuration](https://en.wikipedia.org/wiki/USB_hardware#USB_Power_Delivery).
+
+Just for perspective, a _good quality_ power supply that can do ~ 27v and ~ 30A will cost somewhere in the range of 200-400 USD.
+
+Given all that:
 
 | Property | Current target |
 | --- | --- |
-| System/backplane nominal input | 24–48 V DC |
-| Initial system input | Nominal 24 V DC |
-| Current SW3538 carrier input limit | 30 V maximum; a new carrier revision is required for 48 V |
+| Initial system input | Nominal 24-28 V DC |
 | Carrier slots | Six |
 | Initial USB-C policy ceiling | 20 V, 5 A, 100 W per port |
 | Working aggregate input budget | Approximately 30 A |
-| Inter-board communication | CAN-FD |
-| Backplane-local monitoring | INA237 over local I²C |
-| Cooling | Two independently switched 3-wire fans |
+| Cooling | Two independently switched 3-wire fans per backplane |
 
 There is no below-24 V nominal input specification. The current carrier is the
 first revision's voltage limit, not the intended limit of the backplane. Never

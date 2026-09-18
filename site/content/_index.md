@@ -38,12 +38,15 @@ This project was started independently / before I knew about the
 In no particular order, the values and motivations for this project include:
 
 - USB-C/PD is the future.
-  - AliExpress has a wide variety of USB-C/PD adapters so it's trivial to adapt all the custom / proprietary barrel jacks, square shaped connectors and everything else into a _single_ standard connector.
+  - **Standards Compliance**: I intend to adhere to the USB-C/PD standards.
+    - Only SPR/EPR profiles will be supported.
+  - AliExpress has a wide variety of USB-C/PD adapters
+    - It's trivial to adapt all the custom / proprietary barrel jacks, square shaped connectors and whatever "special" power  everything else into a _single_ standard connector.
   - Instead of a spaghetti mess of different cables and converters, a single consolidated AC->DC supply for greater efficiency and simplicity.
 
-- Want to see how far I an push hardware design with the assistance of an LLM
+- Want to see how far I an push hardware design with the assistance of an LLM.
 
-- I get to learn a few things / develop patterns and skills for future projects
+- I get to learn a few things / develop patterns and skills for future projects.
 
 - A consolidated power supply must be modular and flexible.
   - Workloads are in production so redundancy is important, and a failure should be contained / a single dead port must not bring down the entire system!
@@ -52,7 +55,7 @@ In no particular order, the values and motivations for this project include:
   - Cost efficiency; spend $ where it matters and go for a cheaper alternative where possible.
     - Don't pay for a USB-C port that can deliver 100W if you only need 10W for that particular device.
     - If your power needs grow over time, you can add new modules or upgrade individual modules without replacing the entire system.
-  - A modular system is inherently scalable
+  - A modular system is inherently scalable.
     - If I do this right, it should be straight-forward to adapt this design to different form factors and port counts.
 
 - Telemetry
