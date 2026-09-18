@@ -5,16 +5,12 @@ icon: gear
 weight: 1
 ---
 
-The core design principle of MPRS is to separate shared infrastructure from replaceable output modules:
+The core design principle of MRPS is to separate shared infrastructure from replaceable output modules in a scalable and modular manner.
 
-1. A high current DC supply is wired to A backplane.
-2. A consolidated backplane accepts the system DC input, measures aggregate
-   current, powers the control electronics and fans, and distributes an
-   unswitched DC bus to six slots.
-2. Each carrier connects one slot to a power-output module. The initial carrier
-   hosts an SW3538-based USB-C Power Delivery module.
-3. The backplane and every carrier have their own STM32 controller and CAN-FD
-   transceiver. CAN-FD is the only inter-board communication bus.
+1. At least one high current DC supply is wired to a [backplane]({{% ref "/system/hardware/backplane/" %}}).
+2. The backplane  distributes the DC bus to six slots, measures aggregate current, powers local control electronics and fans.
+3. Each [carrier](./carrier/) mates with the backplane at a slot. Each carrier hosts a power-output module or accessory.
+4. The backplane and every carrier have their own STM32 controller and CAN-FD transceiver. CAN-FD is the only inter-board communication bus.
 
 ```text
 DC input
@@ -23,15 +19,12 @@ DC input
    │
    └── Shared VIN_BUS
           ├── Carrier 1 ── USB-C PD module
-          ├── Carrier 2 ── USB-C PD module
+          ├── Carrier 2 ── Accessory or USB-C PD module
           ├── ...
           └── Carrier 6 ── USB-C PD module
 ```
 
-The second-generation backplane consolidates functions that previously lived
-on separate backplane and controller boards. Older backpack-to-backplane I²C
-designs remain in the repository as project history but are not the current
-architecture.
+This repo is going "live" with the second-generation backplane, which consolidates functions that previously lived on separate backplane and controller boards.
 
 ## Current design targets
 
