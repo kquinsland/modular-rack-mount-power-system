@@ -3,6 +3,13 @@ title: System
 description: Technical documentation for the current Modular Rack Power design.
 icon: gear
 weight: 1
+resources:
+  - src: _files/backplane-power-cap.webp
+    name: backplane-power-cap
+    title: Backplane copper capacity estimate
+    params:
+      alt: Backplane copper-capacity comparison showing layer geometry, current capacity along the bus, and estimated temperature rise for two copper stackups at 33 A
+      caption: IPC-2221 screening estimate at 33 A total load, comparing 2 oz outer / 1 oz inner copper with 1 oz outer / 0.5 oz inner copper. These are calculated estimates, not measured results.
 ---
 
 The core design principle of MRPS is to separate shared infrastructure from replaceable output modules in a scalable and modular manner.
@@ -133,6 +140,8 @@ traces must connect to the shunt as a true Kelvin pair.
 The backplane does not enforce per-slot current limits. Upstream interruption
 and any per-slot fuse, eFuse, current-limiting, or bring-up strategy must be
 resolved independently of software.
+
+{{< figure name="backplane-power-cap" link="_files/backplane-power-cap.webp" >}}
 
 ### Local rails and cooling
 
