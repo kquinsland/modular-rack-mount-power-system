@@ -25,4 +25,3 @@ Relevant docs:
 - `../../../docs/interfaces.md`
 - `../../../docs/power-budget.md`
 - `hardware-handoff.md`
-- `datasheet-audit.md`
