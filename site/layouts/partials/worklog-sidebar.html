@@ -1,0 +1,24 @@
+{{- $current := .CurrentPage -}}
+{{- $entries := where .Section.RegularPagesRecursive "Params.hidden" "ne" true -}}
+{{- $entries = where $entries "Content" "ne" "" -}}
+<a class="menu-link fs-6{{ if eq $current .Section }} is-active{{ end }}" href="{{ .Section.RelPermalink }}"{{ if eq $current .Section }} aria-current="page"{{ end }}>{{ .Section.LinkTitle }}</a>
+<ul class="menu-list worklog-years">
+  {{- range $index, $group := $entries.GroupByDate "2006" "desc" }}
+    {{- $expanded := or (and $current.IsPage (eq $group.Key ($current.Date.Format "2006"))) (and $current.IsSection (eq $index 0)) }}
+    <li class="menu-item">
+      <details class="worklog-year"{{ if $expanded }} open{{ end }}>
+        <summary class="menu-label menu-link fs-6">
+          <span>{{ $group.Key }}</span>
+          {{ partial "svg" (dict "icon" "chevron-down" "class" "menu-arrow") }}
+        </summary>
+        <ul class="menu-list">
+          {{- range $group.Pages }}
+          <li class="menu-item">
+            <a class="menu-link fs-6{{ if eq $current . }} is-active{{ end }}" href="{{ .RelPermalink }}"{{ if eq $current . }} aria-current="page"{{ end }}><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "01-02" }}</time> — {{ .LinkTitle }}{{ if eq .Params.badge true }} <span class="badge">{{ default (i18n "new") .Params.badge_text }}</span>{{ end }}</a>
+          </li>
+          {{- end }}
+        </ul>
+      </details>
+    </li>
+  {{- end }}
+</ul>

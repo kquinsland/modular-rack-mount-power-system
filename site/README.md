@@ -39,6 +39,13 @@ as drafts with an empty `resources` list; add image metadata there and insert
 the `figure` shortcodes described below. The generated slug keeps the day and
 summary in the URL, e.g. `/worklogs/2026/09/10-first-physical-prototypes/`.
 
+The worklog sidebar automatically groups entries by their front-matter year,
+with years and entries sorted newest first. Month folders are omitted from the
+sidebar, and entry labels use `MM-DD — Title`. Year groups can be expanded with
+the mouse or keyboard. The current entry's year opens automatically; the
+worklog index opens the newest year. No year or month `_index.md` files are
+needed. Entries with `hidden: true` are omitted from the sidebar.
+
 ## Content organization
 
 The permanent top-level sections are `system/`, `guides/`, and `worklogs/`.

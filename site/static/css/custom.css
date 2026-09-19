@@ -51,6 +51,17 @@
   max-width: 52rem;
 }
 
+.worklog-years { margin-top: 1rem; }
+
+.worklog-year > summary { list-style: none; }
+.worklog-year > summary::-webkit-details-marker { display: none; }
+.worklog-year > summary:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 4px;
+}
+.worklog-year[open] > summary .menu-arrow { transform: rotate(180deg); }
+.worklog-year time { white-space: nowrap; }
+
 .markdown .callout {
   --callout-color: #0969da;
   border-inline-start: 0.25rem solid var(--callout-color);
