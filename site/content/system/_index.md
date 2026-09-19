@@ -32,31 +32,33 @@ At least for _now_ there is only one "supported" carrier/module but there are pl
 
 To make a very long story short, the first iteration of the design is targeting a DC input of _at most_ 30V, nominally somewhere around 24V.
 This is because the [current/only carrier module]({{< ref "/system/hardware/modules/carrier/#sw3538-usb-c-pd-module" >}}) has a maximum input voltage of 30V.
-Furthermore, the `SW3538` based module can't do more than 100 W without using non-standard configurations.
+Furthermore, the `SW3538` based module can't do more than 100 W without using non-standard configurations so the effective 'ceiling' here is going to be 100 W per port until a new module revision is introduced.
 
-This means that each port is limited to a maximum of 100 W under standard configurations.
 The only way to achieve 100W with USB-C/PD is to use [5A/20V (100W) configuration](https://en.wikipedia.org/wiki/USB_hardware#USB_Power_Delivery).
 
-Just for perspective, a _good quality_ power supply that can do ~ 27v and ~ 30A will cost somewhere in the range of 200-400 USD.
+Just for perspective, a _good quality_ power supply that can do ~ 27v and ~ 30A will cost somewhere in the range of 200-400 USD so there's also a cost reason to keep things at or below the 100 W per port ceiling at this time.
 
 Given all that:
 
 | Property | Current target |
 | --- | --- |
 | Initial system input | Nominal 24-28 V DC |
-| Carrier slots | Six |
+| Module slots | Six |
 | Initial USB-C policy ceiling | 20 V, 5 A, 100 W per port |
 | Working aggregate input budget | Approximately 30 A |
 | Cooling | Two independently switched 3-wire fans per backplane |
 
-There is no below-24 V nominal input specification. The current carrier is the
-first revision's voltage limit, not the intended limit of the backplane. Never
-fit a current-generation carrier to a backplane powered from 48 V.
+And so so so many additional properties that are "theoretical, untested" until I get the first physical articles in hand.
 
-The design does not presently switch or limit each backplane slot. Slot power
-is present whenever the shared input bus is energized. Fault protection and
-safe bring-up therefore remain hardware and system-integration concerns rather
-than firmware guarantees.
+// TODO: link to the first worklog, order sent off.
+
+{{< relref "/system/hardware/backplane/" >}}
+
+Very early prototypes did put per-slot switching on the backplane but that was later abandoned in favor of a simpler, shared input bus design; the current design does not presently switch or limit each backplane slot.
+
+Slot power is present whenever the shared input bus is energized.
+
+Fault protection and safe bring-up therefore remain hardware and system-integration concerns rather than firmware guarantees.
 
 For the underlying engineering record, see the repository's
 [system overview](https://github.com/kquinsland/modular-rack-power/blob/main/docs/system-overview.md).
