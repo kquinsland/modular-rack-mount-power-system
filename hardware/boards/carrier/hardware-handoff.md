@@ -2220,17 +2220,13 @@ Primary references:
 The exact carrier U2 datasheet is archived as
 `docs/data-sheets/TI/LM5164.pdf`. The common carrier/backplane inductor is
 covered by `docs/data-sheets/PROD-Tech/PSPMAA0805-101M-ANP.pdf`.
-`docs/data-sheets/TI/LMR516xx.pdf` is not a carrier substitute and remains in
-the repository for the backpack's populated LMR51610 regulators.
 
-The carrier datasheet audit found that an exact local PDF is still missing for
-C8 `CL21A226MAQNNNE`. The existing Samsung
+An exact local PDF is still missing for C8 `CL21A226MAQNNNE`. The existing Samsung
 `CL21A226MAYNNNE.pdf` is close but is not the exact populated C8 suffix. Local
 manufacturer data is now present for LM5164, the PSPMAA0805 inductor, INA237,
 IPB020N10N5LF, the R1 shunt, and the populated Hongjiacheng SMCJ48A family. Do
-not delete apparently unrelated
-archive files solely because they are unused by the carrier; several are used
-by the backplane/backpack designs.
+not assume that a file unused by the current carrier is obsolete: the archive
+also retains references for the current backplane and the ordered rev-a boards.
 
 ---
 

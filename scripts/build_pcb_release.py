@@ -31,7 +31,7 @@ BOARDS = {
     "backplane": "hardware/boards/backplane/backplane.kicad_pcb",
 }
 BUNDLES = {
-    "carrier": Path("site/content/system/hardware/modules/_files"),
+    "carrier": Path("site/content/system/hardware/modules/carrier/_files"),
     "backplane": Path("site/content/system/hardware/backplane/_files"),
     "panel": Path("site/content/system/hardware/_files"),
 }

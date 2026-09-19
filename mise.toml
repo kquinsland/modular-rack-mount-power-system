@@ -10,7 +10,7 @@ slsa = true
 lockfile_platforms = ["macos-arm64", "linux-x64", "linux-arm64"]
 
 [env]
-GH_REPO = "kquinsland/modular-rack-power"
+GH_REPO = "kquinsland/modular-rack-mount-power-system"
 
 [settings.python]
 uv_venv_auto = "create|source" # create .venv if missing, then activate
@@ -58,5 +58,5 @@ description = "Validate documentation source and generated outputs"
 run = "site/scripts/validate.sh"
 
 [tasks."worklog:new"]
-description = "Create a dated worklog entry with the required filename"
+description = "Create a worklog page bundle under YYYY/MM/DD - Summary"
 run = "site/scripts/new-worklog.sh"

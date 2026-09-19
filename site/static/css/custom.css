@@ -51,6 +51,73 @@
   max-width: 52rem;
 }
 
+.worklog-years { margin-top: 1rem; }
+
+.worklog-year > summary { list-style: none; }
+.worklog-year > summary::-webkit-details-marker { display: none; }
+.worklog-year > summary:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 4px;
+}
+.worklog-year[open] > summary .menu-arrow { transform: rotate(180deg); }
+.worklog-year time { white-space: nowrap; }
+
+.markdown .callout {
+  --callout-color: #0969da;
+  border-inline-start: 0.25rem solid var(--callout-color);
+  background: color-mix(in srgb, var(--callout-color) 6%, transparent);
+  padding: 1rem 1.25rem;
+  border-radius: 0 0.25rem 0.25rem 0;
+}
+
+.markdown .callout-tip { --callout-color: #1a7f37; }
+.markdown .callout-important { --callout-color: #8250df; }
+.markdown .callout-warning { --callout-color: #9a6700; }
+.markdown .callout-caution { --callout-color: #cf222e; }
+
+.dark .markdown .callout { --callout-color: #58a6ff; }
+.dark .markdown .callout-tip { --callout-color: #3fb950; }
+.dark .markdown .callout-important { --callout-color: #bc8cff; }
+.dark .markdown .callout-warning { --callout-color: #d29922; }
+.dark .markdown .callout-caution { --callout-color: #ff7b72; }
+
+.markdown .callout > .callout-title {
+  align-items: center;
+  color: var(--callout-color);
+  display: flex;
+  font-weight: 500;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.callout-icon { flex: none; }
+.markdown .callout > :last-child { margin-bottom: 0; }
+
+.markdown .content-figure {
+  margin-inline: 0;
+  text-align: center;
+}
+
+.markdown .content-figure img {
+  display: block;
+  height: auto;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.markdown .content-figure figcaption {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-top: 0.75rem;
+  overflow-wrap: anywhere;
+}
+
+.markdown .content-figure figcaption p { margin: 0.35rem 0 0; }
+.markdown .content-figure .figure-title {
+  color: var(--color-title);
+  font-weight: 500;
+}
+
 @media (max-width: 760px) {
   .project-nav {
     display: none;

@@ -130,8 +130,8 @@ failure stops both vendor branches.
 Generate normalized component data and render the top and bottom of each PCB.
 This is the first image checkpoint and produces the most useful Hugo images:
 
-- `site/content/system/hardware/modules/_files/carrier.webp`;
-- `site/content/system/hardware/modules/_files/carrier-bottom.webp`;
+- `site/content/system/hardware/modules/carrier/_files/carrier.webp`;
+- `site/content/system/hardware/modules/carrier/_files/carrier-bottom.webp`;
 - `site/content/system/hardware/backplane/_files/backplane.webp`; and
 - `site/content/system/hardware/backplane/_files/backplane-bottom.webp`.
 

@@ -1,6 +1,6 @@
 # Documentation site
 
-This directory contains the Hugo source for <https://mrp.karlquinsland.com/>.
+This directory contains the Hugo source for <https://mrps.karlquinsland.com/>.
 The site uses the pinned HuDocs submodule in `themes/hudocs`.
 
 ## Local development
@@ -22,8 +22,29 @@ Create a worklog with:
 mise run worklog:new -- "Concise Summary"
 ```
 
-The helper creates `site/content/worklogs/wl.YYYY-MM-DD - Concise Summary.md`.
-The filename date and front-matter date must agree.
+The helper creates `site/content/worklogs/YYYY/MM/DD - Concise Summary/index.md`
+using today's date, plus an adjacent `_files/` directory for images and other
+page resources. For example:
+
+```text
+site/content/worklogs/2026/09/10 - First Physical Prototypes/
+├── index.md
+└── _files/
+    ├── early_prototype_01.webp
+    └── early_prototype_02.webp
+```
+
+The bundle's year/month/day and front-matter date must agree. New entries start
+as drafts with an empty `resources` list; add image metadata there and insert
+the `figure` shortcodes described below. The generated slug keeps the day and
+summary in the URL, e.g. `/worklogs/2026/09/10-first-physical-prototypes/`.
+
+The worklog sidebar automatically groups entries by their front-matter year,
+with years and entries sorted newest first. Month folders are omitted from the
+sidebar, and entry labels use `MM-DD — Title`. Year groups can be expanded with
+the mouse or keyboard. The current entry's year opens automatically; the
+worklog index opens the newest year. No year or month `_index.md` files are
+needed. Entries with `hidden: true` are omitted from the sidebar.
 
 ## Content organization
 
@@ -36,9 +57,16 @@ supporting files in an owning page's `_files/` directory and reference them
 with relative paths. Reserve `static/` for shared assets and files Hugo would
 otherwise interpret as content.
 
+`system/hardware/modules/_index.md` is the module overview, and
+`system/hardware/modules/carrier/_index.md` owns the carrier documentation.
+Both are branch bundles: add other modules beneath `modules/` and carrier-specific
+pages beneath `modules/carrier/`. Use `_index.md` for any new page that will
+also have children.
+
 PCB images are generated with `mise run docs:pcb-renders` and stored as WebP.
-Carrier and backplane `_files/` directories contain top and bottom views plus
-`renders.json`; `system/hardware/_files/` owns `panel.webp`.
+`system/hardware/modules/carrier/_files/` and `system/hardware/backplane/_files/`
+contain top and bottom views plus `renders.json`;
+`system/hardware/_files/` owns `panel.webp`.
 
 The `mise run docs:pcb-iboms` task publishes interactive assembly HTML under
 `static/guides/assembly/_files/`, which serves it at
@@ -48,17 +76,99 @@ interprets it as content.
 Preview images do not imply that the PCB passed release checks.
 See the [release tooling guide](../.kibot/release/README.md) for the validated build.
 
-## Deployment
+## Callouts and figures
 
-The [Pages workflow](../.github/workflows/pages.yml) is intentionally manual, initially.
-Inspect repository state with the authenticated GitHub CLI before changing Pages configuration:
+Use GitHub-style callouts in Markdown:
 
-```sh
-export GH_REPO="kquinsland/modular-rack-power"
-gh repo view
-gh api "repos/${GH_REPO}/pages"
+```markdown
+> [!WARNING]
+> Everything about this project is still under active development.
 ```
 
-Once Pages uses GitHub Actions, dispatch the workflow with the Git ref to
-publish.
-DNS for `mrp.karlquinsland.com` is managed outside this repository.
+`NOTE`, `TIP`, `IMPORTANT`, `WARNING`, and `CAUTION` have distinct colors and
+icons in both light and dark mode. Callout bodies support normal Markdown,
+including lists and multiple paragraphs. Ordinary blockquotes keep their usual
+appearance. The implementation uses Hugo's
+[blockquote render hook](https://gohugo.io/render-hooks/blockquotes/).
+
+The `figure` shortcode accepts the same named page resources as the blog.
+Define image metadata in the owning page's front matter:
+
+```yaml
+resources:
+  - src: _files/carrier.webp
+    name: carrier-top
+    title: Carrier, top side
+    params:
+      alt: Carrier PCB viewed from above
+      caption: "Generated preview; see [render provenance](_files/renders.json)."
+      attr: Karl Quinsland
+      attr_link: https://karlquinsland.com/
+```
+
+Then insert the image:
+
+```go-html-template
+{{< figure name="carrier-top" >}}
+{{< figure name="carrier-top" show_title="true" link="_files/carrier.webp" >}}
+```
+
+Titles are hidden by default for named resources, matching the blog. Captions
+support Markdown. Optional shortcode arguments override resource metadata:
+`title`, `alt`, `caption`, `attr`, and `attr_link` (or `attrlink`). An explicit
+`alt=""` marks a decorative image. `class`, `width`, `height`, and `loading`
+are also available; images are responsive and lazy-loaded by default.
+Missing named resources fail the build with the shortcode's source location.
+
+For a direct image path or URL, use `src` instead of `name`:
+
+```go-html-template
+{{< figure src="_files/carrier.webp" alt="Carrier PCB" title="Carrier" caption="Top view" >}}
+```
+
+Both HTML and the site's alternate Markdown output include the image and its
+caption, visible title, attribution, and optional link.
+
+## Deployment
+
+The [Pages workflow](../.github/workflows/pages.yml) deploys when the repository
+becomes public and when site files or build configuration change on `main`.
+Automatic deployment is skipped while the repository is private. Manual
+deployment remains available through `workflow_dispatch`; run it from `main`
+and select the Git ref to publish.
+
+Before making the repository public:
+
+1. Push the reviewed `main` branch, including the Pages workflow. GitHub's
+   visibility-change event only runs workflows already on the default branch.
+2. In repository **Settings → Pages**, select **GitHub Actions** as the source
+   and set **Custom domain** to `mrps.karlquinsland.com`.
+3. At the DNS provider for `karlquinsland.com`, create a **CNAME** record named
+   `mrps` pointing to `kquinsland.github.io` (without the repository name).
+4. Enable **Enforce HTTPS** in Pages settings once GitHub provisions the
+   certificate. Certificate provisioning may take time after DNS is configured.
+5. Ensure the `github-pages` deployment environment permits the `main` branch.
+
+The workflow checks that the Pages hostname and path match Hugo's `baseURL`
+before building, to avoid deploying a site whose links point somewhere else.
+Changing repository visibility alone does not configure the domain or DNS.
+For Actions deployments, a repository `CNAME` file does not configure the domain;
+use Pages settings. See [GitHub's custom-domain instructions](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site).
+
+Inspect deployment state with the authenticated GitHub CLI:
+
+```sh
+export GH_REPO="kquinsland/modular-rack-mount-power-system"
+gh repo view
+gh api "repos/${GH_REPO}/pages"
+gh run list --workflow pages.yml
+```
+
+After making the repository public, wait for the deployment workflow to succeed
+and verify `https://mrps.karlquinsland.com/`, `/system/`, `/worklogs/`, and
+`/llms.txt`. If the visibility-change event was missed or deployment failed
+before domain setup was finished, rerun the workflow or dispatch it manually:
+
+```sh
+gh workflow run pages.yml --ref main -f ref=main
+```

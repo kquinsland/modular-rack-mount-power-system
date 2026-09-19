@@ -1,6 +1,16 @@
 name: Deploy documentation to GitHub Pages
 
 on:
+  public:
+  push:
+    branches: [main]
+    paths:
+      - "site/**"
+      - "docs/assets/generated/pcbs/**"
+      - ".github/workflows/pages.yml"
+      - ".gitmodules"
+      - "mise.toml"
+      - "mise.lock"
   workflow_dispatch:
     inputs:
       ref:
@@ -21,9 +31,11 @@ defaults:
 
 jobs:
   build:
+    if: ${{ !github.event.repository.private || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      pages: read
 
     steps:
       - name: Check out requested ref
@@ -31,8 +43,31 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
-          ref: ${{ inputs.ref }}
+          ref: ${{ inputs.ref || github.sha }}
           submodules: recursive
+
+      - name: Configure Pages
+        id: pages
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
+
+      - name: Verify Pages domain matches Hugo
+        env:
+          PAGES_BASE_URL: ${{ steps.pages.outputs.base_url }}
+        run: |
+          python3 - <<'PY'
+          import os
+          import tomllib
+          from urllib.parse import urlsplit
+
+          with open("site/hugo.toml", "rb") as config:
+              expected = urlsplit(tomllib.load(config)["baseURL"])
+          actual = urlsplit(os.environ["PAGES_BASE_URL"])
+          if (actual.netloc, actual.path.rstrip("/")) != (expected.netloc, expected.path.rstrip("/")):
+              raise SystemExit(
+                  f"Pages is configured for {actual.geturl()}, but Hugo expects {expected.geturl()}. "
+                  "Set the repository's Pages custom domain and DNS as described in site/README.md."
+              )
+          PY
 
       - name: Install Hugo with mise
         uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
@@ -46,9 +81,6 @@ jobs:
 
       - name: Build and validate site
         run: mise run site:build
-
-      - name: Configure Pages
-        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
