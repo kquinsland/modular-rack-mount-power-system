@@ -8,9 +8,9 @@ resources:
     title: Early hardware-assembly concept
     params:
       alt: Early hardware-assembly concept showing the backplane and installed modules
+      # TODO: Fusion360 animation for this
       caption: >-
-        Early mechanical concept image. A current assembly render will replace it as
-        the release pipeline is completed.
+        Render of 6 carriers installed in the backplane.
 ---
 
 Modular Rack Power Supply System (MRPS) is a 'creatively' named system for distributing DC power via USB-C/[Power Delivery](https://en.wikipedia.org/wiki/USB_hardware#USB_Power_Delivery) in a compact compute rack.

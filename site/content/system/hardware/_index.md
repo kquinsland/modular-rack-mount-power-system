@@ -11,8 +11,7 @@ resources:
     params:
       alt: Early hardware-assembly concept showing the backplane and installed modules
       caption: >-
-        Early mechanical concept image. A current assembly render will replace it as
-        the release pipeline is completed.
+        Initial render of the hardware assembly showing the backplane and installed modules.
   - src: _files/panel.webp
     name: fabrication-panel
     title: Fabrication-panel preview
