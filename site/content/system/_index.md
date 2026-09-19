@@ -62,7 +62,7 @@ Very early prototypes did put per-slot switching on the backplane but that was l
 Slot power is present whenever the shared input bus is energized due to the [limited number of pins](#carrier-slots) available on the connector.
 
 For the underlying engineering record, see the repository's
-[system overview](https://github.com/kquinsland/modular-rack-power/blob/main/docs/system-overview.md).
+[system overview](https://github.com/kquinsland/modular-rack-mount-power-system/blob/main/docs/system-overview.md).
 
 ## Interfaces
 
@@ -101,7 +101,7 @@ The backplane does not duplicate an ESD network at every slot.
 - The external DS18B20 header provides ground, 1-Wire data, and 3.3 V.
 - A Tag-Connect SWD footprint for programming and debugging the STM32.
 
-Consult the engineering [interface tables](https://github.com/kquinsland/modular-rack-power/blob/main/docs/interfaces.md) before relying on connector reference designators or fabricating hardware.
+Consult the engineering [interface tables](https://github.com/kquinsland/modular-rack-mount-power-system/blob/main/docs/interfaces.md) before relying on connector reference designators or fabricating hardware.
 
 ## Power and cooling
 
@@ -138,4 +138,4 @@ The estimated 11 W loss from each fully loaded initial USB-C module makes forced
 To facilitate this, each backplane has a dedicated LM5164 converter for a 12V 1A rail meant to power the cooling fans.
 The STM32 is meant to monitor temperature from a few different locations and drive the two fans as needed.
 
-See the engineering [power budget](https://github.com/kquinsland/modular-rack-power/blob/main/docs/power-budget.md) for conductor calculations and open protection questions.
+See the engineering [power budget](https://github.com/kquinsland/modular-rack-mount-power-system/blob/main/docs/power-budget.md) for conductor calculations and open protection questions.

@@ -57,4 +57,4 @@ ERC and PCB DRC. Current rating, thermal performance, CAN margins, fan loading,
 and protection behavior still require first-article validation.
 
 Detailed implementation notes remain in the
-[backplane README](https://github.com/kquinsland/modular-rack-power/blob/main/hardware/boards/backplane/README.md).
+[backplane README](https://github.com/kquinsland/modular-rack-mount-power-system/blob/main/hardware/boards/backplane/README.md).

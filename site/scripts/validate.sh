@@ -64,7 +64,7 @@ if [[ "$check_outputs" == true ]]; then
     fi
   done
 
-  if ! grep -q 'mrp.karlquinsland.com' site/public/llms.txt; then
+  if ! grep -q 'mrps.karlquinsland.com' site/public/llms.txt; then
     echo "llms.txt does not contain the canonical domain" >&2
     failure=1
   fi

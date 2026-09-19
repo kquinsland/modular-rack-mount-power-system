@@ -1,6 +1,6 @@
 # Documentation site
 
-This directory contains the Hugo source for <https://mrp.karlquinsland.com/>.
+This directory contains the Hugo source for <https://mrps.karlquinsland.com/>.
 The site uses the pinned HuDocs submodule in `themes/hudocs`.
 
 ## Local development
@@ -131,15 +131,44 @@ caption, visible title, attribution, and optional link.
 
 ## Deployment
 
-The [Pages workflow](../.github/workflows/pages.yml) is intentionally manual, initially.
-Inspect repository state with the authenticated GitHub CLI before changing Pages configuration:
+The [Pages workflow](../.github/workflows/pages.yml) deploys when the repository
+becomes public and when site files or build configuration change on `main`.
+Automatic deployment is skipped while the repository is private. Manual
+deployment remains available through `workflow_dispatch`; run it from `main`
+and select the Git ref to publish.
+
+Before making the repository public:
+
+1. Push the reviewed `main` branch, including the Pages workflow. GitHub's
+   visibility-change event only runs workflows already on the default branch.
+2. In repository **Settings → Pages**, select **GitHub Actions** as the source
+   and set **Custom domain** to `mrps.karlquinsland.com`.
+3. At the DNS provider for `karlquinsland.com`, create a **CNAME** record named
+   `mrps` pointing to `kquinsland.github.io` (without the repository name).
+4. Enable **Enforce HTTPS** in Pages settings once GitHub provisions the
+   certificate. Certificate provisioning may take time after DNS is configured.
+5. Ensure the `github-pages` deployment environment permits the `main` branch.
+
+The workflow checks that the Pages hostname and path match Hugo's `baseURL`
+before building, to avoid deploying a site whose links point somewhere else.
+Changing repository visibility alone does not configure the domain or DNS.
+For Actions deployments, a repository `CNAME` file does not configure the domain;
+use Pages settings. See [GitHub's custom-domain instructions](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site).
+
+Inspect deployment state with the authenticated GitHub CLI:
 
 ```sh
-export GH_REPO="kquinsland/modular-rack-power"
+export GH_REPO="kquinsland/modular-rack-mount-power-system"
 gh repo view
 gh api "repos/${GH_REPO}/pages"
+gh run list --workflow pages.yml
 ```
 
-Once Pages uses GitHub Actions, dispatch the workflow with the Git ref to
-publish.
-DNS for `mrp.karlquinsland.com` is managed outside this repository.
+After making the repository public, wait for the deployment workflow to succeed
+and verify `https://mrps.karlquinsland.com/`, `/system/`, `/worklogs/`, and
+`/llms.txt`. If the visibility-change event was missed or deployment failed
+before domain setup was finished, rerun the workflow or dispatch it manually:
+
+```sh
+gh workflow run pages.yml --ref main -f ref=main
+```

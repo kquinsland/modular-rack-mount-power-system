@@ -41,5 +41,5 @@ integration and first-article hardware/rollback validation remain in progress,
 so hardware safety must not depend on unvalidated firmware behavior.
 
 See the repository's
-[firmware documentation](https://github.com/kquinsland/modular-rack-power/tree/main/firmware/docs/pdcan)
+[firmware documentation](https://github.com/kquinsland/modular-rack-mount-power-system/tree/main/firmware/docs/pdcan)
 for the engineering contract and validation checklist.

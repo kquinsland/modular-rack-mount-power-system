@@ -57,7 +57,7 @@ plan is kept in [`firmware/plan.md`](firmware/plan.md).
 ## Documentation site
 
 The public-facing project documentation is maintained in [`site/`](site/) and
-is intended for <https://mrp.karlquinsland.com/>. Run `mise run site:serve` for
+is intended for <https://mrps.karlquinsland.com/>. Run `mise run site:serve` for
 local preview or `mise run site:build` for a production build. Create journal
 entries with `mise run worklog:new -- "Concise Summary"` to create
 `site/content/worklogs/YYYY/MM/DD - Concise Summary/index.md` with matching

@@ -51,7 +51,7 @@ current SW3538 population must not be tested at 48 V. Future 240 W operation
 also requires a new end-to-end qualification.
 
 See the detailed
-[carrier hardware handoff](https://github.com/kquinsland/modular-rack-power/blob/main/hardware/boards/carrier/hardware-handoff.md)
+[carrier hardware handoff](https://github.com/kquinsland/modular-rack-mount-power-system/blob/main/hardware/boards/carrier/hardware-handoff.md)
 for component-level design inputs and unresolved validation work.
 
 ## SW3538 USB-C PD module
@@ -90,5 +90,5 @@ the repository. The archived SW3538 material documents the controller family,
 not necessarily every property of the assembled module.
 
 See the detailed
-[power and thermal budget](https://github.com/kquinsland/modular-rack-power/blob/main/docs/sw3538_usb_c_pd_power_budget.md)
+[power and thermal budget](https://github.com/kquinsland/modular-rack-mount-power-system/blob/main/docs/sw3538_usb_c_pd_power_budget.md)
 for calculations and qualifications.
