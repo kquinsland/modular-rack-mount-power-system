@@ -2,6 +2,32 @@
 
 lockfile_version = 1
 
+[[tools."github:gastownhall/beads"]]
+version = "1.3.1"
+backend = "github:gastownhall/beads"
+specifiers = [
+    "1.3.1",
+    "latest",
+]
+
+[tools."github:gastownhall/beads"."platforms.linux-arm64"]
+checksum = "sha256:c3b32c71a6c0cd6358a12c28272b17e6818db991da192f87df52339c222e423a"
+url = "https://github.com/gastownhall/beads/releases/download/v1.3.1/beads_1.3.1_linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/gastownhall/beads/releases/assets/602014963"
+provenance = "github-attestations"
+
+[tools."github:gastownhall/beads"."platforms.linux-x64"]
+checksum = "sha256:3219443a9734b89b93fb16ee8d65844759fa1b3cd3cf139c606b7353cfb0715c"
+url = "https://github.com/gastownhall/beads/releases/download/v1.3.1/beads_1.3.1_linux_amd64.tar.gz"
+url_api = "https://api.github.com/repos/gastownhall/beads/releases/assets/602014936"
+provenance = "github-attestations"
+
+[tools."github:gastownhall/beads"."platforms.macos-arm64"]
+checksum = "sha256:508ba807996e2b9c992c538a6f405f2fc7d2e16cf8b4e5b0d1bf9fe860367007"
+url = "https://github.com/gastownhall/beads/releases/download/v1.3.1/beads_1.3.1_darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/gastownhall/beads/releases/assets/602046065"
+provenance = "github-attestations"
+
 [[tools."github:mixelpixx/Konnect"]]
 version = "0.12.1"
 backend = "github:mixelpixx/Konnect"
@@ -19,6 +45,32 @@ url_api = "https://api.github.com/repos/mixelpixx/Konnect/releases/assets/573933
 checksum = "sha256:758319163ca5dd81210f43a9e1fff9f200027639ac42e1d995952924f3ade8b2"
 url = "https://github.com/mixelpixx/Konnect/releases/download/v0.12.1/konnect-v0.12.1-aarch64-apple-darwin.tar.gz"
 url_api = "https://api.github.com/repos/mixelpixx/Konnect/releases/assets/573933843"
+
+[[tools."github:vanderheijden86/b9s"]]
+version = "1.3.1"
+backend = "github:vanderheijden86/b9s"
+specifiers = [
+    "1.3.1",
+    "latest",
+]
+
+[tools."github:vanderheijden86/b9s"."platforms.linux-arm64"]
+checksum = "sha256:a42daf6de2a6dd03ca284abe9845c3f33a78af5cc9f83fa1d1c1ea1687d8b363"
+url = "https://github.com/vanderheijden86/b9s/releases/download/v1.3.1/b9s_1.3.1_linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/vanderheijden86/b9s/releases/assets/600860837"
+provenance = "github-attestations"
+
+[tools."github:vanderheijden86/b9s"."platforms.linux-x64"]
+checksum = "sha256:0a055d47ea671d3a478ba9dd539b9275d8c5b97c8991e0b7e12bb812668243fa"
+url = "https://github.com/vanderheijden86/b9s/releases/download/v1.3.1/b9s_1.3.1_linux_amd64.tar.gz"
+url_api = "https://api.github.com/repos/vanderheijden86/b9s/releases/assets/600860836"
+provenance = "github-attestations"
+
+[tools."github:vanderheijden86/b9s"."platforms.macos-arm64"]
+checksum = "sha256:f1c40c60da20da4f0ff46eb30b7467ce67f328cb369d62c4fb1273564d65689c"
+url = "https://github.com/vanderheijden86/b9s/releases/download/v1.3.1/b9s_1.3.1_darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/vanderheijden86/b9s/releases/assets/600860835"
+provenance = "github-attestations"
 
 [[tools.hugo-extended]]
 version = "0.166.0"

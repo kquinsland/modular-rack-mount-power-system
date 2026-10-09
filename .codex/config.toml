@@ -6,3 +6,6 @@ max_depth = 1
 # Install the pinned Konnect release binary first with `mise install`.
 command = "mise"
 args = ["exec", "-C", ".", "--", "konnect", "--client", "codex", "--config", "konnect/config.toml"]
+
+[features]
+hooks = true
