@@ -33,10 +33,18 @@ See the [SEGGER 20-pin connector drawing](https://kb.segger.com/20-pin_J-Link_Co
 
 The project includes a [mechanical STEP model of J1](models/SFH11-PBPC-D10-RA-BK.step) with a keyed housing, mating openings, and 20 solder tails. It was drawn from the Sullins dimensions and the assembly outline for this part in the [TI reference design](https://www.ti.com/lit/zip/SWRC397). Internal spring contacts are omitted.
 
-## Revision silkscreen
+## Production export
 
-The project variable `BOARD_VERSION` sets the adapter version. The KiCad editor displays `YY-MM-DD` and `UNRELEASED` as working-copy placeholders, as on the main boards. To plot the current layout with the UTC date and first 12 hex digits of the checked-out commit, run this from the accessory directory after committing the layout being fabricated.
+The project variable `BOARD_VERSION` sets the adapter version. The KiCad editor displays `YY-MM-DD` and `UNRELEASED` as working-copy placeholders, as on the main boards. After committing the layout being fabricated, generate the fabrication files and purchasing BOM with KiCad 10 and the JLCPCB Fabrication Toolkit installed:
 
 ```sh
-./export-gerbers.sh /path/to/gerbers
+mise run production:jlink-swd
 ```
+
+The default output directory is `hardware/accessories/jlink-swd/production/YY.MM.DD-<hash>/`. The directory name and silkscreen both use the commit’s UTC date and first 12 hex digits. To choose a different destination, run `mise run production:jlink-swd /path/to/output`.
+
+Select bare-board fabrication and upload only `jlink-swd.zip`. All connector pads and drills are included for hand soldering. The separate `positions.csv` contains its column headings and zero placement rows. The export also writes the footprint inventory (`designators.csv`) and electrical-test netlist (`netlist.ipc`).
+
+Use `bom.csv` to order one each of J1, J3, and J4 per board for hand assembly. Leave J2 empty.
+
+The task uses `/usr/bin/python3` by default. Set `KICAD_PYTHON` to another interpreter with the KiCad and wxPython bindings if needed.

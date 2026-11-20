@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#MISE description="Export bare-board fabrication files and purchasing BOM for the J-Link SWD adapter"
+
+set -euo pipefail
+cd "${MISE_PROJECT_ROOT:?}"
+
+exporter=hardware/accessories/jlink-swd/export-production.py
+if [[ -n "${KICAD_PYTHON:-}" ]]; then
+    exec "$KICAD_PYTHON" "$exporter" "$@"
+fi
+exec "$exporter" "$@"
