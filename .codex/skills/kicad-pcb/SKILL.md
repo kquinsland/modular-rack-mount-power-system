@@ -16,17 +16,26 @@ ALL modifications go through MCP tools — never edit .kicad_pcb files directly.
 
 ## Prerequisites
 
-Most PCB layout operations require KiCAD to be running with the board file open. The IPC
+PCB layout operations require KiCAD to be running with the board file open. The IPC
 connection communicates with the running KiCAD instance in real-time.
 
-`place_component`, `move_component`, `rotate_component`, and `flip_component` are
-narrow exceptions for closed boards. Placement, move, and rotation fall back when
-IPC is unreachable. Flip intentionally requires IPC to be unreachable because KiCAD's
-typed IPC API has no native footprint-flip command. The file paths use revision-aware
-atomic writes: placement preserves pads, graphics, attributes, and models; moves
-preserve the existing angle; rotations update the footprint and its child angles;
-flips mirror supported geometry and swap front/back layers. If KiCAD is reachable and
-rejects a request, the fallback stays disabled to avoid racing a live editor.
+Some board-construction and component tools have guarded closed-board paths. IPC-first
+tools fall back to the file only when the transport is unreachable and the target board
+has not been observed live during this server session. These paths write atomically:
+placement preserves pads, graphics, attributes, and models. Every reachable rejection
+stays closed instead of racing the editor with a file edit.
+
+`unsafe_file_fallback` is a stop condition. It means Konnect reached this board live
+earlier in the current server session but IPC is now unreachable, so the saved file may
+be older than lost editor state. Pause mutation work, tell the user that Konnect left
+the file unchanged, and ask them to reopen/recover, reconcile, and save the board in
+KiCad. A read-only tool taking `board_source` can return the same kind, where nothing
+was going to be written: reporting the saved file as current would be the unsafe act.
+There, `board_source: "saved"` inspects that snapshot deliberately and says what it
+excludes — offer it instead of retrying the default. Continue through live IPC afterward. Preserve the guard: do not retry-loop,
+restart Konnect automatically, or edit `.kicad_pcb` directly. If the user confirms a
+clean close and an authoritative saved file, they may restart Konnect to deliberately
+begin a new closed-board session.
 
 If connection fails:
 - Tell the user to open KiCAD and load the project
@@ -41,7 +50,7 @@ Before any PCB work, load the required toolsets:
 
 ```
 load_toolset('pcb_board')        # board outline, layers, setup, stackup
-load_toolset('pcb_components')   # place, refresh, move, rotate, align footprints
+load_toolset('pcb_components')   # place, move, rotate, flip, align footprints
 load_toolset('pcb_routing')      # traces, vias, differential pairs
 load_toolset('sch_export')       # update PCB from the saved schematic hierarchy
 ```
@@ -52,10 +61,21 @@ Load additional toolsets as needed:
 
 ```
 load_toolset('config')           # design rule storage: add_design_rule, list_design_rules
-load_toolset('verification')     # run_drc, set_design_rules, set_predefined_sizes, check_clearance
+load_toolset('verification')     # run_drc, rules/sizes, check_clearance (explicit anchor/courtyard mode)
 ```
 
 Always call `get_active_toolsets()` first to see what is already loaded.
+
+### References by decision
+
+- Read [`references/layer-reference.md`](references/layer-reference.md) when
+  selecting a copper, fabrication, user, or mechanical layer or deciding which
+  side owns an item.
+- Read [`references/trace-width-table.md`](references/trace-width-table.md) when
+  sizing a current-carrying trace, via, or controlled-impedance route. It defines
+  the required calculation inputs and acceptance record; it is not a lookup table.
+- Read [`references/design-rules.md`](references/design-rules.md) when creating
+  netclasses, configuring project constraints, or adjudicating DRC results.
 
 ---
 
@@ -71,23 +91,20 @@ Follow this sequence for a clean PCB workflow:
    Apply only with `dry_run: false` and the exact returned
    `expected_plan_revision` value. The saved schematic hierarchy must be closed in the
    schematic editor, and the target board must be open in KiCad. A conflict is
-   non-mutating; resolve it and rerun the dry run. A successful apply is one KiCad
+   non-mutating; resolve it and rerun the dry run. A diagnostic about a library
+   footprint names that footprint and every part that needs it: when the footprint
+   cannot be placed (custom-shape pads are not supported), assign those parts a
+   footprint without them; when the schematic connects a pad the footprint does not
+   have, fix the symbol or the footprint choice. A part the dry run lists among its
+   kept footprints keeps the board's footprint; to take the schematic's, run the
+   dry run and the apply with `differing_footprints: "replace"`, and only when the
+   user asked for it. A successful apply is one KiCad
    undo entry, so Ctrl-Z reverses the whole update.
-3. **Refresh changed libraries** — when a linked footprint library changed, use
-   `update_footprints_from_library`, the MCP equivalent of KiCad **Tools → Update
-   Footprints from Library**. This is distinct from `update_pcb_from_schematic`:
-   it refreshes supported library-owned pads, graphics, attributes, metadata, and
-   3D models without changing references, placement, side, rotation, KIID, symbol
-   metadata, instance overrides, or pad nets. Always call it first with
-   `dry_run: true`; apply only with `dry_run: false` and the exact returned
-   `expected_plan_revision`. The requested board must be open in live KiCad, one
-   apply is one undo entry, and unsupported or stale content returns a non-mutating
-   conflict instead of silently dropping it.
-4. **Place components** — position all footprints
-5. **Route traces** — connect all nets
-6. **Copper pour** — add ground/power zones last
-7. **DRC** — run design rule check
-8. **Save** — `save_project`
+3. **Place components** — position all footprints
+4. **Route traces** — connect all nets
+5. **Copper pour** — add ground/power zones last
+6. **DRC** — run design rule check
+7. **Save** — `save_project`
 
 Do NOT add copper pours before routing is complete — they interfere with interactive routing.
 
@@ -100,6 +117,8 @@ Do NOT add copper pours before routing is complete — they interfere with inter
 - Group components by functional block (power, digital, analog, connectors)
 - Place ICs first, then their associated passives
 - Decoupling caps: within 2mm of their IC power pins, on same layer
+- Cable/EMI filter caps: on the connector's own pins, and judged against that
+  connector rather than the nearest IC
 - Connectors: at board edges, accessible for cables
 - High-frequency components: minimize trace lengths between them
 - Thermal considerations: power components away from sensitive analog
@@ -108,33 +127,146 @@ Do NOT add copper pours before routing is complete — they interfere with inter
 
 | Tool                      | Use Case                                    |
 |---------------------------|---------------------------------------------|
-| `place_component`         | Position one footprint via IPC or safe file fallback |
-| `update_footprints_from_library` | Refresh placed definitions from linked libraries |
-| `move_component`          | Relocate a footprint via IPC or safe file fallback |
-| `rotate_component`        | Rotate a footprint via IPC or safe file fallback |
-| `flip_component`          | Set F.Cu/B.Cu on a closed board with geometry mirroring |
+| `place_component`         | Position a single footprint at x,y          |
+| `move_component`          | Relocate an existing footprint              |
+| `rotate_component`        | Rotate footprint (0/90/180/270)             |
+| `flip_component`          | Move a footprint to the other side (`F.Cu`/`B.Cu`) |
+| `set_placed_footprint_models` | Inspect or edit exact indexed 3D-model entries on a live placed footprint |
 | `align_components`        | Align multiple components (top/bottom/left/right/center) |
 | `place_component_array`   | Grid placement for repeated elements        |
+| `update_footprints_from_library` | Refresh placed footprints from their libraries (live board only) |
 
-### Score-first automation
+### Closed boards and flipping
 
-Load `load_toolset('placement')` for the automation loop. The discipline is
-score, change, re-score — every planner reports the board's score before and
-after its own plan, so a change is judged before it is made:
+`move_component`, `rotate_component` and `flip_component` use KiCad when it
+holds the board. When no running KiCad holds it, they edit the closed board
+file as KiCad would and report `source: "file"` with a `fallback_reason` and
+`warning`; the position, rotation or layer they return is read back from the
+file. They write only if the file is unchanged since it was read, so a
+`conflict` means someone else saved the board: read it again and retry.
 
-1. `score_placement` — 0-100 with named deductions; hard failures (courtyard
-   overlaps, parts outside the outline) decide the verdict regardless of the
-   number, and a board with no outline can never pass.
-2. `auto_place_from_schematic` — deterministic first placement by net
-   clusters; explicitly a starting point, not a final layout.
-3. `refine_placement_force_directed` — deterministic spring embedder; pass
-   `locked` for parts that must not move. Same input, same plan.
-4. `place_decoupling_caps` — plans a row beside an IC, paired by shared nets.
-5. `plan_bga_fanout` — pitch detected from the pad grid; `apply` executes as
-   one KiCad undo commit over live IPC.
+- **Flip** names the side the footprint should end up on (`F.Cu` or
+  `B.Cu`); one already there is left alone with `changed: false`. It flips
+  about the footprint's own position. On a live board it needs KiCad 10.0.6
+  or newer and refuses an older KiCad rather than editing the file under it.
+- **Refused on a closed board:** a footprint with items on inner copper
+  layers or with `private_layers`, and anything else the file edit does not
+  cover. Each refusal names what it found and leaves the file untouched; flip
+  those footprints in KiCad.
+- 3D models keep their offsets and rotations; KiCad does the same.
 
-Every planner is dry-run by default; apply refuses while KiCad holds the
-board open live (fanout apply is the inverse: it REQUIRES the live board).
+### Refreshing footprints from their libraries
+
+KiCad's DRC reports a placed footprint that no longer matches its library
+as `lib_footprint_mismatch`. `update_footprints_from_library` refreshes it
+as KiCad's own Tools > Update Footprints from Library does. It needs the
+board open in KiCad and never edits the file.
+
+1. **Dry run** (the default): it plans and returns `plan_revision`. Each
+   entry in `changes` lists its `changed_domains` (`pads`, `graphics`,
+   `text`, `attributes`, `metadata`, `overrides`, `models`), the
+   `pads_added` and `pads_removed`, and `nets_dropped`: the nets of removed
+   pads, which lose their connection. Narrow it with `references` or
+   `library_ids`.
+2. **Apply** with `dry_run: false` and that `expected_plan_revision`. It
+   re-plans and answers `conflict` with `stale_plan_revision`, changing
+   nothing, if a selected footprint, its library file or the saved board
+   changed in between: run a new dry run. Otherwise it is one KiCad
+   commit, and one undo in KiCad reverses it.
+3. **Save the board in KiCad**, then re-run DRC.
+
+| Kept from the placed footprint | Taken from the library |
+|---|---|
+| Position, rotation, side, lock, ids, group | Pads and drawings |
+| Reference text; the value, unless it was just the footprint's name | Description and keywords; fields the footprint lacks |
+| Each text's and field's content and style; texts and fields the library lacks | Mounting style and allow-solder-mask-bridges |
+| Matched pads' nets and pin data | Clearance and mask/paste overrides |
+| Board-only, exclude-from-position-files, exclude-from-BOM, DNP | 3D models |
+| Schematic link | Net ties and private layers |
+
+A dry run is a `conflict` when a footprint cannot be refreshed here; its
+diagnostic says why, and the others are still listed. The library may
+hold something KiCad's API cannot carry (`unsupported_library_footprint`,
+for example a group, or pad fabrication properties on KiCad older than
+10.0.7), or the saved board may show a component class the refresh would
+drop (`instance_data_not_carried`). Refresh those in KiCad itself.
+
+### Bounded AI-directed placement loop
+
+Load `load_toolset('sch_analysis')`, `load_toolset('placement')`, and
+`load_toolset('verification')`. Complete placement through this ordered loop; a
+proposed coordinate or a successful tool call is not evidence that the requested
+board now has the intended placement:
+
+1. **Recover intent and name the scope.** Read the schematic, connectivity, and
+   current board. Identify the functional reason for each move and list the exact
+   footprint references that may move. Do not infer a capacitor-to-IC relationship
+   from GND alone; use **score_placement.decoupling_associations** as supporting
+   evidence and treat **unproven_decoupling_caps** as unresolved intent.
+2. **Build the held set.** Include every caller-identified intentional
+   placement. A diagnostic `auto_place_from_schematic` dry-run reports saved-board
+   lock records in its **held** list; accept those only when that saved file is
+   known current. `get_component_list` does not expose lock state, so if neither
+   current saved evidence nor the caller establishes the KiCad-locked references,
+   report `BLOCKED` and ask the caller to confirm them. Never send a held
+   reference to `move_component` or `rotate_component`.
+3. **Plan a small explicit batch.** Prefer one functional group and the fewest
+   references needed to test the improvement. `auto_place_from_schematic` is a
+   deprecated diagnostic planner only: its plan is always blocked from apply.
+   `refine_placement_force_directed` is also deprecated; do not weaken its gates
+   or apply a score tie. Make a justified score-neutral change with explicit
+   moves instead.
+4. **Apply only the named moves.** Use `move_component` and
+   `rotate_component`; do not turn a diagnostic whole-board plan into an
+   autonomous bulk mutation.
+5. **Read back the exact requested live board.** After every batch, call
+   `get_component_list` for that board and verify each requested reference's
+   observed position, rotation, and layer. Call `get_board_info` and require
+   `source: "ipc"` before treating this as live-board proof (`score_placement`
+   names the same live authority **source: "live_ipc"**). A saved-file or CLI
+   observation may support a separate check, but report it as saved/CLI evidence
+   and do not present it as live IPC readback.
+6. **Validate the observed result.** Re-run `score_placement` and KiCad DRC.
+   Check the score's hard failures, outline status, deductions, associations,
+   and evidence source—not only its numeric score. Continue with another small
+   batch only when the observed result justifies it.
+7. **Finish with evidence or `BLOCKED`.** Report the exact moved and held
+   references, observed live positions, source for each check, score/DRC result,
+   and remaining findings. Report `BLOCKED` when live source authority,
+   functional intent, containment, or another required fact cannot be proved;
+   never fill an evidence gap with a guessed coordinate or a request value.
+
+Completion requires live readback of every applied move plus placement and DRC
+results from the resulting board. A diagnostic plan, a saved-file snapshot, or
+an unproved outline is not completion evidence.
+
+### Placement diagnostics and planners
+
+- `score_placement` reports a 0-100 score with named deductions. Hard failures
+  (courtyard overlaps, parts outside a proven outline) decide the verdict
+  regardless of the number, and a board with no outline can never pass.
+  **decoupling_associations** names the non-ground, bounded-fanout evidence used
+  for cap-to-IC distance checks; **unproven_decoupling_caps** identifies caps the
+  scorer deliberately did not guess about. `interface_filter_caps` lists caps
+  within their family limit of a connector carrying every one of their nets;
+  do not drag those cable-filtering parts toward an IC.
+- Outside-outline and connector-edge evidence applies only to a provably
+  axis-aligned rectangular outline (`outline_shape: "rectangular"`). Treat
+  `outline_unproven` like `outline_missing`, not like `pass`; validate a
+  non-rectangular board's real fit with KiCad DRC and report `BLOCKED` for the
+  unavailable containment proof.
+- `auto_place_from_schematic` returns a deterministic net-clustered starting
+  plan for diagnosis. It never writes: `dry_run: false` returns structured
+  **plan_blocked**.
+- `refine_placement_force_directed` is deprecated. Its global-net spring model
+  can pull a part toward every footprint sharing a board-wide rail. Dry-run may
+  explain its plan, but blocked, non-improving, and score-tied plans do not
+  apply; use bounded explicit moves instead.
+- `place_decoupling_caps` plans a row beside an IC from exact caller-given
+  `capacitor_references` (never net-inferred). It refuses an out-of-bounds,
+  non-improving, or containment-unproven plan.
+- `plan_bga_fanout` detects pitch from the pad grid; apply executes as one
+  KiCad undo commit over live IPC.
 
 ### Placement Tips
 
@@ -146,6 +278,12 @@ board open live (fanout apply is the inverse: it REQUIRES the live board).
 ---
 
 ## Routing
+
+Before choosing trace approach points, call `get_component_pads` for the
+participating footprints. Use its returned board-space position, effective
+rotation, shape, size, drill, and per-copper-layer geometry; do not estimate
+copper extent from package family or a different pad in the footprint. A null
+geometry field is unavailable evidence, not a zero-size pad.
 
 ### Routing Tools
 
@@ -167,7 +305,7 @@ route_pad_to_pad(board, net_name, ref1, pad1, ref2, pad2, layer?, width?)
 ```
 
 - Emits one segment when the pads already share an X or Y, two otherwise
-- Specify width in mm (e.g., 0.25 for signal, 0.5 for power)
+- Specify the width in mm from the accepted project netclass or sizing record.
 - Routes entirely on `layer` (default `F.Cu`) — it does not add a via. To
   change layer mid-route, place the via yourself with `add_via` and route each
   side separately
@@ -211,22 +349,23 @@ create_netclass(board, name, trace_width?, clearance?, via_drill?, via_diameter?
 The class is written to the project's `.kicad_pro` file, which is where KiCad
 has kept netclasses since v7 — the board file is not modified.
 
-Common netclass configurations:
-- Signal: 0.25mm track, 0.2mm clearance
-- Power: 0.5-1.0mm track, 0.3mm clearance
-- USB: 0.3mm track, 0.15mm spacing (90 ohm differential)
-
-### Via Defaults
-
-- Standard signal via: 0.4mm drill, 0.8mm pad diameter
-- Power via: 0.6mm drill, 1.0mm pad diameter
-- Micro via (HDI): 0.1mm drill, 0.3mm pad diameter
+Before creating or updating a class, read `get_netclasses` and the applicable
+design-rule/trace-sizing references. Derive width, clearance, gap, drill, and
+diameter from the selected fabrication contract, stackup, and electrical
+calculation. Read the classes back after the write and confirm every special net
+resolves through the intended class. Missing inputs make the rule `INCOMPLETE`.
 
 ### Pre-defined sizes
 
 Netclass width is the default. The Track/Via dropdowns are a separate palette
 in the sibling `.kicad_pro`. Fill them with `set_predefined_sizes` so `W` /
 `Shift+W` can step through extra widths without changing netclasses:
+
+The values below show call syntax only; they are not engineering recommendations.
+Replace every value with one from the accepted project sizing record, derived
+from the current fabrication contract, stackup, and electrical requirements. If
+that evidence is unavailable, report the sizing task as `INCOMPLETE` instead of
+reusing these illustrative values.
 
 ```
 set_predefined_sizes(board, track_widths=[0.2, 0.5, 0.8],
@@ -260,8 +399,9 @@ add_zone(board, net_name, layer, points, clearance?, min_width?,
 - With KiCad running on this board the zone is created over IPC and refilled
   for you, so it appears at once and is in KiCad's undo stack. Without a live
   KiCad it goes into the file instead, and the result says so (`source: file`)
-  and carries a `warning` — a file-only edit is invisible to an open pcbnew
-  and is lost on its next save
+  and carries a `warning` describing the process-local evidence and cold-start
+  limitation. A board observed live earlier in this server session fails with
+  `unsafe_file_fallback` instead of writing the file.
 
 ### refill_zones
 
@@ -324,6 +464,27 @@ Common DRC errors and fixes:
 - **Track too close to edge**: move inward from board outline
 - **Courtyard overlap**: increase spacing between components
 - **Zone fill error**: run `refill_zones`
+- **Library mismatch** (`lib_footprint_mismatch`): refresh the footprint
+  with `update_footprints_from_library`
+
+### Read `owner` before deciding on a board-edge violation
+
+Every violation item carries `owner` and `ownership_status`. Read them before
+choosing a fix — `"Circle of J1 on Edge.Cuts"` reads identically whether that
+geometry is the board outline or a cutout the footprint carries itself.
+
+- `owner.kind: "board"` — the item is the board's own geometry. Move the
+  offending copper inward, or change the outline.
+- `owner.kind: "footprint"` — the geometry belongs to that footprint
+  (`owner.reference` names it), typically a connector's locking-peg cutout. It
+  is still real fabrication geometry and the violation is still real, but the
+  pad and the cutout move together, so **repositioning the component cannot fix
+  it**. Review the footprint definition or the rule instead.
+- `ownership_status` other than `"resolved"` (`"uuid_missing"`,
+  `"not_found"`) — ownership is unknown, and `owner` is `null`. Do not assume
+  the board owns it; corroborate first. `list_board_footprint_graphics` lists
+  the artwork a suspected footprint carries, with layers and UUIDs to compare
+  against the violation, or inspect the footprint in KiCad.
 
 ---
 
@@ -335,9 +496,9 @@ Common DRC errors and fixes:
 4. **Refill zones after changes** — stale zone fills cause phantom DRC errors
 5. **Check DRC before finishing** — run `run_drc()` and resolve all errors
 6. **Use netclasses for consistency** — define track widths per net type, not per trace
-7. **KiCAD normally must be running** — `place_component`, `move_component`, and
-   `rotate_component` have safe IPC-unreachable file fallbacks; `flip_component`
-   requires a closed board; other PCB edits still require the live IPC connection
+7. **KiCAD normally must be running** — use guarded closed-board paths only when a
+   tool explicitly offers them. Treat `unsafe_file_fallback` as a human recovery
+   boundary; other PCB edits still require the live IPC connection.
 8. **Save frequently** — call `save_project` after major operations
 9. **Load toolsets first** — check `get_active_toolsets()` and load what you need
 10. **Copper pour last** — add zones only after routing is substantially complete

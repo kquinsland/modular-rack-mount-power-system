@@ -38,6 +38,12 @@ Only to answer questions not available through exports (sheet hierarchy, title b
 
 ## Standard Workflow
 
+Before a mutation, a dependent check, a retry, or a completion claim, read
+[the reliability contract](references/reliability-contract.md), starting with
+"For callers: establish what happened". Apply its outcome, source, coverage and
+recovery rules to the fields this installed server actually returns. Guidance
+does not establish that a missing server-side check ran.
+
 1. **Identify the project** — locate the `.kicad_pro` file
 2. **Classify the task** — read-only (Channel 2 or 3) or write (Channel 1)
 3. **Verify MCP is connected** — call `list_toolboxes` to confirm tools are available
@@ -54,7 +60,7 @@ Only to answer questions not available through exports (sheet hierarchy, title b
 | "What's connected to SCL?" | 2 | `load_toolset("sch_analysis")` then `get_net_connections` |
 | "Add a 100nF cap to U3 VCC" | 1 | `load_toolset("sch_components")` + `load_toolset("sch_wiring")` |
 | "Rename net /CLK to /SYS_CLK" | 1 | Warn about downstream effects, then MCP tools |
-| "Run DRC" | 1 | `load_toolset("verification")` then `run_drc` |
+| "Run DRC" | 1 | `load_toolset("verification")` then `run_drc` — read each item's `owner`/`ownership_status` before advising a fix (board geometry vs. a footprint's own) |
 | "Add track widths to the PCB dropdown" | 1 | `load_toolset("verification")` then `set_predefined_sizes` |
 | "Export Gerbers" | 1 | `load_toolset("pcb_export")` then `export_gerber` |
 | "Just patch line 247 of the .kicad_sch" | REFUSE | Explain risks, offer MCP alternative |
@@ -90,13 +96,30 @@ unload_toolset("name")  → Remove a toolset when done
 |----------|----------|
 | Project | project |
 | Schematic | sch_components, sch_wiring, sch_bus, sch_analysis, sch_batch, sch_export, sch_hierarchy |
-| PCB | pcb_board, pcb_components, pcb_routing, pcb_export |
+| PCB | pcb_board, pcb_components, pcb_routing, pcb_export, placement |
 | Library | library |
 | Integration | integration (JLCPCB parts, Freerouting installation checks, datasheets) |
 | Verification & Review | verification, design_review |
 | Config | config |
 | Templates | templates |
 | Manufacturing | manufacturing |
+
+## Agent Routing and Mutation Ownership
+
+Use one design owner at a time. Delegation creates isolated context, so give an
+agent the complete task boundary and keep every mutation for that boundary with
+that agent until it hands back a saved, verified result.
+
+- Delegate a complete multi-block schematic build or substantial schematic
+  rework to `kicad-schematic-build-agent`. It owns schematic mutations through
+  placement, wiring, validation, rendering, and save. The caller does not make
+  concurrent schematic edits.
+- Delegate an independent full-design, pre-fabrication, or readiness audit to
+  `kicad-design-review-agent`. It gathers and reports evidence without mutating
+  the design. Return fixes to the current design owner, then run a fresh review.
+- Keep small, bounded edits and narrow checks in the current conversation using
+  the applicable skill. Agent delegation is for a complete build or an
+  independent review, not an extra layer around every tool call.
 
 ## Design Rules Quick Reference
 

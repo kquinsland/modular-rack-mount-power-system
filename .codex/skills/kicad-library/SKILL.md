@@ -20,49 +20,12 @@ using Konnect MCP tools. ALL modifications go through MCP tools — never edit
 
 ```
 load_toolset('library')    # search_symbols, search_footprints, create_symbol, create_footprint,
-                           # edit_footprint_pad, set_footprint_graphics, set_footprint_metadata,
-                           # set_footprint_models, get_footprint_info, register_symbol_library,
+                           # set_footprint_metadata, set_footprint_models,
+                           # set_footprint_graphics, register_symbol_library,
                            # register_footprint_library, get_symbol_info
-load_toolset('pcb_components') # update_footprints_from_library for placed instances
 ```
 
 Always call `get_active_toolsets()` first to see what is already loaded.
-
----
-
-## Refresh Placed Footprints
-
-Editing a `.kicad_mod` library file does not change copies already embedded on a
-board. After a library edit, call `update_footprints_from_library`; it is Konnect's
-MCP equivalent of KiCad **Tools → Update Footprints from Library**.
-
-This operation is not `update_pcb_from_schematic`. Schematic sync updates
-schematic-owned fields while preserving artwork. Library refresh replaces supported
-library-owned pads, graphics, attributes, metadata, and 3D models while preserving
-the placed footprint's reference, value, position, rotation, board side, locked
-state, KIID, symbol metadata, instance overrides, and pad nets by logical pad
-number.
-
-Always dry-run first:
-
-```text
-update_footprints_from_library(
-  board,
-  references?,
-  library_ids?,
-  dry_run,
-  expected_plan_revision?
-)
-```
-
-- Use `dry_run=true` and review `status`, `coverage`, `changes`, and
-  `diagnostics`.
-- Apply with `dry_run=false` and the exact returned `expected_plan_revision`.
-- Keep the requested board open in live KiCad; there is no closed-board file
-  fallback.
-- One successful apply is one KiCad undo entry.
-- A stale plan, unresolved library, removed connected pad, or unsupported
-  library content returns a non-mutating conflict for the whole selection.
 
 ---
 
@@ -119,6 +82,55 @@ Before creating or wiring a package-sensitive part:
    rather than trusting what you just wrote.
 7. **Refuse to use the part in a real schematic** while any mirror,
    reversal, duplicate, missing lead or view ambiguity is unresolved.
+
+### Physical pin-map acceptance contract
+
+For every custom or package-sensitive part, complete this record before the
+symbol and footprint are accepted. "Looks sequential" and a matching pin
+count are not evidence.
+
+Record the manufacturer, exact MPN and package suffix, datasheet document
+number/revision, source URL, relevant page numbers, symbol library ID, and
+footprint library ID. Then add one row for **every physical lead**:
+
+| Datasheet lead | Function | Symbol pin / name / type | Footprint pad | X/Y (mm) | Drawing view / direction | Evidence |
+|---|---|---|---|---|---|---|
+| 1 | Example only | 1 / NAME / passive | 1 | 0.00 / 0.00 | bottom view, clockwise from key | datasheet p. N, figure M |
+
+Apply these rules to the table:
+
+- Walk from the datasheet's documented key, notch, dot, flat, bevel, or other
+  datum in the stated direction. State top, bottom, component, solder, pin, or
+  mating view in every row; never silently translate between views.
+- Give repeated physical leads separate rows even when they share one
+  electrical function. List exposed pads, shields, mounting tabs, and
+  mechanical holes separately and state whether each is an electrical pad,
+  a duplicated connection, or intentionally absent from the symbol.
+- Reconcile and record the datasheet physical-lead count, symbol electrical-pin
+  count, footprint electrical-pad count, duplicate-pad count, and
+  mechanical-only feature count. Explain every difference.
+- Treat a symbol pin number and footprint pad number as the same physical lead
+  only when the evidence row proves it. Names such as A/K, G/D/S, B/C/E, COM,
+  or VCC do not establish the physical number.
+
+Acceptance procedure:
+
+1. Create or select the exact symbol and footprint only after completing the
+   source columns above.
+2. Query the symbol back with `get_symbol_info` and the footprint with
+   `get_footprint_info(include_pads=true)`. The returned pad coordinates and
+   rotations are footprint-local. Compare every returned pin/pad number, name,
+   type, coordinate, drill, size, and layer set to the table and datasheet.
+3. Place a **disposable** symbol and footprint in a scratch project. Render the
+   schematic and board, then inspect the pin-1/key marker, numbering direction,
+   top/bottom orientation, pad geometry, drill/slot geometry, courtyard, fab,
+   and silkscreen. For mating parts, inspect the mating view as well.
+4. Read the disposable instances back; do not accept only the values requested
+   during creation as proof they were written.
+5. **Refuse acceptance** and keep the part out of a real schematic or PCB if
+   any lead is missing, duplicated without explanation, mirrored, reversed,
+   assigned to a different function, or ambiguous in view/direction. Record an
+   unavailable datasheet figure, query, or render as `BLOCKED`, never as pass.
 
 The rows below are *starting hypotheses for generic parts only*. Verify each
 against the actual symbol with `get_symbol_info` before relying on it.
@@ -183,37 +195,18 @@ Optional but recommended:
 | `thru_hole`     | Through-hole pads (plated drill)                     |
 | `np_thru_hole`  | Non-plated through hole (mounting holes, slots)      |
 
-### Pad Side and Shape Details
+### Pad Options
 
-`create_footprint` defaults SMD pads to the front-side layer set
-`["F.Cu", "F.Paste", "F.Mask"]`. For bottom-side SMD pads, set
-`layers=["B.Cu", "B.Paste", "B.Mask"]` explicitly. Through-hole pads default to
-`["*.Cu", "*.Mask"]`.
+Each pad given to `create_footprint` may also set:
 
-Each pad may also set:
-
-- `rotation` in degrees; omit it for `0`.
-- `roundrect_rratio` from `0` through `0.5` when `shape="roundrect"`.
-- `layers` using only canonical pad layers: `F.Cu`, `B.Cu`, `F.Paste`, `B.Paste`,
-  `F.Mask`, `B.Mask`, `*.Cu`, and `*.Mask`.
-
-```text
-create_footprint(
-  ...,
-  pads=[{
-    number: "1",
-    type: "smd",
-    shape: "roundrect",
-    x: -8.075,
-    y: 4.7,
-    width: 2.5,
-    height: 2.55,
-    layers: ["B.Cu", "B.Paste", "B.Mask"],
-    rotation: 180,
-    roundrect_rratio: 0.2
-  }]
-)
-```
+- `layers`: the pad's layers, by KiCad file name (`F.Cu`, `F.Mask`, `F.Paste`,
+  `B.Cu`, `*.Cu`, `*.Mask`, `In1.Cu`, ...). They are written in KiCad's own
+  order without duplicates. A pad needs a copper layer, or KiCad drops its
+  number when it saves. Without `layers`, an SMD pad is on
+  `F.Cu F.Mask F.Paste` and a through-hole pad on `*.Cu *.Mask`.
+- `rotation`: degrees, written between 0 and 360 (450 becomes 90).
+- `roundrect_rratio`: the corner ratio of a `roundrect` pad, from 0 to 0.5
+  (default 0.25). It is refused on any other shape.
 
 ### Standard Pad Sizes Reference
 
@@ -246,9 +239,7 @@ create_footprint(
 | F.Cu       | Front copper (pads)                                   |
 | B.Cu       | Back copper (pads for bottom-side components)         |
 | F.Mask     | Front solder mask opening (auto-generated from pads)  |
-| B.Mask     | Back solder mask opening                              |
 | F.Paste    | Front solder paste (stencil openings)                 |
-| B.Paste    | Back solder paste (stencil openings)                  |
 | F.SilkS    | Front silkscreen (component outline, pin 1 marker)    |
 | F.CrtYd    | Front courtyard (assembly spacing)                    |
 | F.Fab      | Front fabrication (true component dimensions)         |
@@ -261,76 +252,114 @@ create_footprint(
 - Reference (`%R`) on F.SilkS, readable at 1.0mm text height
 - Value on F.Fab layer
 
-### Existing Footprint Graphics
+### Existing Footprint Pads
 
-Use `set_footprint_graphics` to add or change line, arc, rectangle, circle, or polygon
-primitives in an existing `.kicad_mod`. Never patch the file directly.
+- `edit_footprint_pad` changes a pad's size, position, drill, shape and zone
+  connection in place, and leaves every other byte of the file as it was.
+- It edits the first pad with `pad_number`. Several pads may share a number
+  (a thermal pad, for example); `match_all: true` edits every one of them.
+- `new_number` renumbers the selected pads. It may be a number other pads
+  already have, since KiCad lets pads share one.
+- Use `zone_connect` (`solid`, `thermal`, `none`) to override how zones
+  connect to the pad, or `inherited` to remove the override.
+- Use `fabrication_property` (`castellated`, `bga`, `testpoint`, `heatsink`,
+  …) to mark a pad for fabrication, or `none` to remove the mark;
+  `create_footprint` takes it per pad too. KiCad saves any value on any pad,
+  and a combination it flags, such as castellated on an SMD pad, comes back
+  in `warnings`.
 
-```text
-set_footprint_graphics(
-  footprint path,
-  selector={layer: "B.CrtYd"},
-  mode="replace",
-  graphics=[...]
-)
+### Editing Footprint Metadata
+
+`set_footprint_metadata` changes a library footprint's description, keywords
+and fabrication attributes, and leaves every other byte of the `.kicad_mod`
+file as it was:
+
+```
+set_footprint_metadata(footprint_path, description?, tags?, attributes?)
 ```
 
-- `append` preserves existing supported graphics on the selected layer.
-- `replace` replaces all supported graphics on the selected layer in one atomic write.
-- `delete` removes all supported graphics on the selected layer.
-- Text, pads, properties, models, groups, and graphics on other layers are preserved.
-- Replacement/deletion stops with a conflict if a selected graphic belongs to a group;
-  do not work around this by editing the file.
-- Polygons close automatically. Supply at least three distinct points; repeating the
-  first point at the end is optional.
-- Use `get_footprint_info` with graphics inclusion enabled and a layer filter to verify
-  the resulting type, geometry, stroke width, fill, and item ID.
+- Supply at least one of `description`, `tags` and `attributes`. An omitted
+  field is left exactly as it is in the file.
+- An empty value removes the item: `""` removes the description, and `[]`
+  removes the keywords or every attribute.
+- `tags` is the complete keyword list, one word per element, with no spaces
+  inside a word. It replaces the existing keywords.
+- `attributes` is the complete set the footprint should have, not an addition
+  to it. The words are `smd` or `through_hole` (the mounting type; give at most
+  one, or neither for unspecified), `board_only` (not in schematic),
+  `exclude_from_pos_files`, `exclude_from_bom`, `allow_missing_courtyard`,
+  `dnp` and `allow_soldermask_bridges`. They are written in KiCad's order,
+  whatever order you give.
+- The response reports what the file now holds; `written` is false and
+  `changed_fields` is empty when the file already had those values.
+- Footprints already placed on a board keep their own copies and are not
+  changed.
 
-### Existing Footprint Metadata
+### Footprint Drawings
 
-Use `set_footprint_metadata` to replace a footprint description, search tags, or
-KiCad footprint attributes without changing pads, graphics, properties, groups, or
-3D models.
+`set_footprint_graphics` adds, replaces or removes the drawn shapes on one
+layer of a `.kicad_mod` file, such as its silkscreen outline or courtyard:
 
-```text
-set_footprint_metadata(
-  footprint_path=".../Part.kicad_mod",
-  description="Optional replacement",
-  tags=["keyboard", "hot_swap"],
-  attributes=["exclude_from_pos_files"]
-)
+```
+set_footprint_graphics(footprint_path, selector, mode, graphics?)
 ```
 
-- Supply at least one metadata field.
-- Only supplied fields change.
-- Empty `tags` or `attributes` removes the corresponding block.
-- `exclude_from_pos_files` omits the footprint from pick-and-place output without
-  implicitly adding `exclude_from_bom`.
-- Use `edit_footprint_pad` with `new_number` and optional `match_all=true` to
-  renumber one or every matching direct-child pad atomically.
+- It works on one layer at a time: `selector` is `{"layer": "F.CrtYd"}`.
+  `append` adds shapes and keeps the layer's others, `replace` removes every
+  shape on the layer and writes the new ones, and `delete` removes every shape
+  on the layer (give no `graphics`). Text and pads are never touched.
+- Layer names are KiCad's file names, such as `F.SilkS`, `F.Fab`, `F.CrtYd`
+  and `Edge.Cuts`, not the display names `F.Silkscreen` or `F.Courtyard`.
+- The five shapes, and every key each one requires:
+  - line: `start`, `end`, `stroke_width_mm`;
+  - arc: `start`, `mid`, `end`, `stroke_width_mm`;
+  - rect: `start`, `end`, `stroke_width_mm`, `fill`;
+  - circle: `center`, `radius_mm`, `stroke_width_mm`, `fill`;
+  - poly: `points` (at least 3), `stroke_width_mm`, `fill`.
 
-### Existing Footprint 3D Models
+  Points are `{x, y}` in millimetres in the footprint's own coordinates, where
+  y grows downward.
+- `fill` is `none` or `solid`. A `stroke_width_mm` of 0 is allowed only on a
+  filled shape.
+- Shapes that would draw nothing (a zero-length line, a flat rectangle, an arc
+  through three points on one line) are refused. Coordinates are rounded to
+  the nanometre, an arc is written in KiCad's direction, and a polygon's
+  closing point is dropped; the response's `added` shows what was written.
+- `replace` and `delete` refuse when a shape on the layer belongs to a group,
+  because KiCad would shrink or delete the group on its next save.
+- To see what a layer holds first, call
+  `get_footprint_info(footprint_path, graphics_layer="F.SilkS")`, or
+  `include_graphics=true` for every layer. Each listed shape has the keys
+  above plus `layer` and `item_id` (and `closed` and `point_count` for a
+  polygon). Drop those extra keys to pass a shape back. A Bézier curve is
+  listed as a `curve` with four `points`; `set_footprint_graphics` cannot
+  write one, but `replace` and `delete` remove it with the layer's other
+  shapes.
 
-Use `set_footprint_models` to append, replace, or delete top-level 3D model
-associations without changing any non-model footprint content.
+### Footprint 3D Models
 
-```text
-set_footprint_models(
-  footprint_path=".../Part.kicad_mod",
-  mode="replace",
-  models=[{
-    path: "../models/Part.step",
-    offset: {x: 0, y: 0, z: 0},
-    scale: {x: 1, y: 1, z: 1},
-    rotate: {x: 0, y: 0, z: 90}
-  }]
-)
+`set_footprint_models` adds, replaces or removes the 3D model references in a
+`.kicad_mod` file, leaving everything else in it unchanged:
+
+```
+set_footprint_models(footprint_path, mode, models?)
 ```
 
-- `append` and `replace` require at least one model.
-- `delete` requires models to be omitted or empty and removes every top-level model.
-- Omitted transforms default to offset `0/0/0`, scale `1/1/1`, and rotation `0/0/0`.
-- Multiple model blocks are written in payload order in one atomic operation.
+- `mode` is `append` (add the models after the existing ones), `replace`
+  (remove every existing model and write these) or `delete` (remove every
+  model; give no `models`).
+- `replace` rewrites the whole set. There is no way to change one model of
+  several, so pass every model the footprint should keep.
+- Each model has a `path` and optional `offset` (mm), `scale` and `rotate`
+  (degrees), each as `{x, y, z}` with all three numbers. They default to 0, 1
+  and 0. No scale may be 0.
+- The model path is written as given and is not checked, so a typo or a
+  missing file only shows up in KiCad's 3D viewer. Check the path yourself
+  first.
+- Hidden or semi-transparent existing models keep those settings on
+  `append`; new models are visible and fully opaque.
+- Footprints already placed on a board keep their own copies; use
+  `set_placed_footprint_models` for one of those.
 
 ---
 
@@ -348,10 +377,22 @@ register_symbol_library(nickname, library_path, scope?, project?, replace_existi
 register_footprint_library(nickname, library_path, scope?, project?, replace_existing?)
 ```
 
-- Registration is idempotent by default: an existing nickname is left unchanged.
-- Set `replace_existing=true` to update a stale URI for that nickname in place.
-- Project-local and same-repository sibling libraries are written as portable
-  `${KIPRJMOD}` URIs; existing options, descriptions, and unrelated entries are preserved.
+### What a Registration Did
+
+Both tools report `state`:
+
+- `inserted`: the nickname was new, and the entry was added (creating the
+  table if there was none);
+- `unchanged`: the nickname was already there. Either it points to the same
+  place, or it points elsewhere and `replace_existing` was not set. Nothing
+  was written;
+- `updated`: it pointed elsewhere and `replace_existing: true` replaced its
+  URI, keeping the entry's type, options and description.
+
+`uri` is the entry's URI in the table after the call and `requested_uri` the
+one this call would have written; when they differ, the table kept another
+location for the nickname. `project` is the `.kicad_pro` file or its
+directory, and a project whose directory does not exist is refused.
 
 ### Scope
 
@@ -431,5 +472,3 @@ Dimension format: `LxW` in mm (body dimensions, not pad-to-pad).
 8. **Use project scope by default** — avoid polluting global libraries
 9. **Name footprints per IPC** — consistent naming helps future reuse
 10. **Load toolsets first** — check `get_active_toolsets()` and load `library` before starting
-11. **Use layer-scoped graphic edits deliberately** — `replace` and `delete` affect every
-    supported primitive on the selected layer
