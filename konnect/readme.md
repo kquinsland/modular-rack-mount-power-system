@@ -1,18 +1,20 @@
-# Konnect
+# Konnect-EDA
 
-This repository uses [Konnect](https://github.com/mixelpixx/Konnect), a Rust MCP
+This repository uses [Konnect-EDA](https://github.com/Orchis-ai-LLC/Konnect-EDA), a Rust MCP
 server, for AI-assisted KiCad work.
 
 Mise downloads the precompiled upstream GitHub release. The version and release
 artifact checksums are pinned in `mise.toml` and `mise.lock`:
 
 ```text
-version: v0.11.0
+version: v0.14.1 (beta)
 ```
 
-Konnect is currently beta software and is licensed AGPL-3.0-only.
-Review Konnect's `LICENSE` and
-`COMMERCIAL.md` before using it in a commercial workflow.
+Konnect-EDA replaces `mixelpixx/Konnect`. It is commercial, closed-source
+software, free for personal and business use during the beta. From 1.0,
+upstream requires license keys and a commercial license for business use. See
+the upstream [license](https://github.com/Orchis-ai-LLC/Konnect-EDA/blob/main/LICENSE)
+and [licensing information](https://konnect-eda.orchis.ai/licensing/).
 
 ## Architecture
 
@@ -29,16 +31,16 @@ mise run konnect:verify
 ```
 
 No Konnect compiler toolchain is required. Mise selects the precompiled GitHub
-release for the host OS and architecture, verifies its release provenance and
+release for the host OS and architecture, verifies its pinned
 checksum, and puts `konnect` on the project tool path.
 
-Konnect v0.11.0 does not publish a standalone Linux ARM64 binary. The mise entry
+Konnect-EDA v0.14.1 does not publish a standalone Linux ARM64 binary. The mise entry
 therefore supports this repository's Linux x86-64 and macOS ARM64 targets and
 deliberately excludes the generic Linux Plugin and Content Manager ZIP from
 standalone asset matching. Other project tools remain available on Linux ARM64;
 only Konnect is skipped.
 
-Restart Codex after the build so it reloads `.codex/config.toml`. Useful checks:
+Restart Codex after installation so it reloads `.codex/config.toml`. Useful checks:
 
 ```shell
 codex mcp list
@@ -66,26 +68,17 @@ ipc_address = "ipc:///tmp/kicad/api.sock"
 ```
 
 The KiCad Plugin and Content Manager package is optional for this repository's
-standalone MCP server. Install the matching `konnect-pcm-v0.11.0-*` release if
+standalone MCP server. Install the matching `konnect-pcm-v0.14.1-*` release if
 you also want Konnect's KiCad GUI integration or native Specctra bridge.
 
-## Optional Codex guidance
+## Codex skills
 
-This repository includes the six v0.11.0 Konnect skills and their references
-in `.codex/skills`. The `.agents/skills` symlink points there so Codex can
-discover them using its repository skill search path.
+The six Konnect-EDA skills and their references live in `.codex/skills/`.
+Codex discovers them through the repository's `.agents/skills` symlink.
+A fresh checkout includes the skills without a user-level installation.
 
-Konnect bundles KiCad skills for Codex. Installing them writes outside this
-repository to `~/.agents/skills`, so it is intentionally not part of the normal
-build or verification tasks:
-
-```shell
-mise run konnect:install-guidance
-konnect status --client codex
-```
-
-Remove those user-level files with:
-
-```shell
-konnect uninstall --client codex
-```
+When upgrading Konnect-EDA, run `mise run konnect:install-guidance` to extract
+the pinned binary's bundle into `~/.agents/skills`. This overwrites any user
+edits to those installed skills. Check the bundle with
+`mise exec -- konnect status --client codex`, then review and copy the six
+updated directories into `.codex/skills/` together with their references.

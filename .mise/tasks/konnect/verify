@@ -6,7 +6,8 @@ cd "${MISE_PROJECT_ROOT:?}"
 
 readonly binary="$(command -v konnect)"
 
-test "$($binary --version)" = "konnect 0.11.0"
+readonly expected_version="$(mise config get 'tools.github:Orchis-ai-LLC/Konnect-EDA.version')"
+test "$("$binary" --version)" = "konnect $expected_version"
 test "$(kicad-cli --version | cut -d. -f1)" = "10"
 
 readonly response="$({
@@ -19,5 +20,5 @@ printf '%s\n' "$response" | grep -Fq '"serverInfo":{"name":"konnect"'
 printf '%s\n' "$response" | grep -Fq '"name":"load_toolset"'
 
 printf 'Verified %s with KiCad CLI %s and a working MCP handshake.\n' \
-  "$($binary --version)" \
+  "$("$binary" --version)" \
   "$(kicad-cli --version)"
