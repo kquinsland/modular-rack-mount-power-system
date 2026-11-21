@@ -11,6 +11,15 @@ on:
       - ".gitmodules"
       - "mise.toml"
       - "mise.lock"
+  pull_request:
+    branches: [main]
+    paths:
+      - "site/**"
+      - "docs/assets/generated/pcbs/**"
+      - ".github/workflows/pages.yml"
+      - ".gitmodules"
+      - "mise.toml"
+      - "mise.lock"
   workflow_dispatch:
     inputs:
       ref:
@@ -20,7 +29,7 @@ on:
         type: string
 
 concurrency:
-  group: pages
+  group: pages-${{ github.event.pull_request.number || 'deploy' }}
   cancel-in-progress: true
 
 permissions: {}
@@ -69,12 +78,12 @@ jobs:
               )
           PY
 
-      - name: Install Hugo with mise
+      - name: Install Hugo and Dart Sass with mise
         uses: jdx/mise-action@90f833d396d0cc3674b631d2d225e306476c303a # v5.2.10
         with:
           version: 2026.11.12
           install: true
-          install_args: hugo-extended
+          install_args: hugo-extended github:sass/dart-sass
           cache: true
           github_token: ${{ github.token }}
           experimental: false
@@ -88,6 +97,7 @@ jobs:
           path: site/public
 
   deploy:
+    if: github.event_name != 'pull_request'
     needs: build
     runs-on: ubuntu-latest
     permissions:
