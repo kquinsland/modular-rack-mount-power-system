@@ -4,31 +4,56 @@
 			"path": ".."
 		}
 	],
+	    "extensions": {
+        "recommendations": [
+            "charliermarsh.ruff",
+            "editorconfig.editorconfig",
+            "hverlin.mise-vscode",
+            "planet57.vscode-beads",
+            "streetsidesoftware.code-spell-checker",
+            "tamasfe.even-better-toml",
+            "rvben.rumdl"
+        ]
+    },
 	"settings": {
 		"rust-analyzer.linkedProjects": ["firmware/Cargo.toml"],
+		        "editor.codeActionsOnSave": {
+            "source.fixAll.rumdl": "explicit"
+        },
+		"[markdown]": {
+            "editor.defaultFormatter": "rvben.rumdl"
+        },
+
 		"cSpell.words": [
 			"backplane",
 			"backplanes",
 			"CANH",
 			"CANL",
+			"datasheet",
 			"easyeda",
 			"gastownhall",
 			"gerbers",
+			"jank",
 			"jlink",
 			"Journaling",
 			"kicad",
 			"konnect",
 			"kquinsland",
+			"manufacturability",
 			"Modbus",
 			"MPRS",
 			"MRPS",
+			"pcbway",
 			"pinact",
 			"pipx",
 			"prek",
 			"relref",
+			"SWCLK",
+			"SWDIO",
 			"Unswitched",
 			"vanderheijden",
 			"venv",
+			"worklog",
 			"worklogs"
 		]
 	}

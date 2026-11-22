@@ -1,0 +1,17 @@
+#schema https://raw.githubusercontent.com/rvben/rumdl/refs/heads/main/docs/schemas/rumdl-output.schema.json
+[global]
+disable = ["MD013", "MD034", "MD059", "MD057", "MD064", "MD076"]
+
+# Add opt-in rules on top of defaults (additive)
+extend-enable = ["MD060", "MD063"]
+
+# Ignore the agent/bead markdown files
+exclude = [".agents/**.md", ".bead/**.md"]
+
+# And whatever git isn't tracking...
+respect-gitignore = true
+
+# As most things will be published to GitHub, use GitHub Flavored Markdown
+flavor = "gfm"
+
+editorconfig = true

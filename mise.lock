@@ -50,22 +50,48 @@ version = "0.32.0"
 backend = "github:probe-rs/probe-rs"
 specifiers = ["0.32.0"]
 
+[tools."github:probe-rs/probe-rs".options]
+matching = "probe-rs-tools"
+
 [tools."github:probe-rs/probe-rs"."platforms.linux-arm64"]
-checksum = "sha256:091c8a1260301ad932a84bee92138bb78f8fc8059814e0a4e36bba0a0f495e07"
-url = "https://github.com/probe-rs/probe-rs/releases/download/v0.32.0/target-gen-aarch64-unknown-linux-gnu.tar.xz"
-url_api = "https://api.github.com/repos/probe-rs/probe-rs/releases/assets/486477501"
+checksum = "sha256:7c818cfd77808e806bf8f4d108c9137910b4fb28e0fe5c464d39782dbbc8af31"
+url = "https://github.com/probe-rs/probe-rs/releases/download/v0.32.0/probe-rs-tools-aarch64-unknown-linux-gnu.tar.xz"
+url_api = "https://api.github.com/repos/probe-rs/probe-rs/releases/assets/486477458"
 provenance = "github-attestations"
 
 [tools."github:probe-rs/probe-rs"."platforms.linux-x64"]
-checksum = "sha256:8cd56c6a2b58535c443374aa5713d1046fc1570fddb417f6069992e30449d7c6"
-url = "https://github.com/probe-rs/probe-rs/releases/download/v0.32.0/target-gen-x86_64-unknown-linux-gnu.tar.xz"
-url_api = "https://api.github.com/repos/probe-rs/probe-rs/releases/assets/486477530"
+checksum = "sha256:c2ccc46049e52a5d403ef212078cd637ecda55b662708327960558f83e851ff5"
+url = "https://github.com/probe-rs/probe-rs/releases/download/v0.32.0/probe-rs-tools-x86_64-unknown-linux-gnu.tar.xz"
+url_api = "https://api.github.com/repos/probe-rs/probe-rs/releases/assets/486477486"
 provenance = "github-attestations"
 
 [tools."github:probe-rs/probe-rs"."platforms.macos-arm64"]
-checksum = "sha256:c6d1c90ee749b457577c6ba7a7c1786442fdb4391c69fb113a9cd0d876ac4f31"
-url = "https://github.com/probe-rs/probe-rs/releases/download/v0.32.0/target-gen-aarch64-apple-darwin.tar.xz"
-url_api = "https://api.github.com/repos/probe-rs/probe-rs/releases/assets/486477498"
+checksum = "sha256:c39631679b83d0c94dc442d05cc4ca974a87c02907a6ddbfce46746ed503152c"
+url = "https://github.com/probe-rs/probe-rs/releases/download/v0.32.0/probe-rs-tools-aarch64-apple-darwin.tar.xz"
+url_api = "https://api.github.com/repos/probe-rs/probe-rs/releases/assets/486477462"
+provenance = "github-attestations"
+
+[[tools."github:sass/dart-sass"]]
+version = "1.108.2"
+backend = "github:sass/dart-sass"
+specifiers = ["1.108.2"]
+
+[tools."github:sass/dart-sass"."platforms.linux-arm64"]
+checksum = "sha256:1c7a587c81467e8f7551d71e5d62845b53270033c5cc3d36aa8fa07330a5d2a9"
+url = "https://github.com/sass/dart-sass/releases/download/1.108.2/dart-sass-1.108.2-linux-arm64.tar.gz"
+url_api = "https://api.github.com/repos/sass/dart-sass/releases/assets/733743006"
+provenance = "github-attestations"
+
+[tools."github:sass/dart-sass"."platforms.linux-x64"]
+checksum = "sha256:32d2eb5b83cbc180fce9657ff3c57401a9006c59eccfe0bfdde0aa755a66d42f"
+url = "https://github.com/sass/dart-sass/releases/download/1.108.2/dart-sass-1.108.2-linux-x64.tar.gz"
+url_api = "https://api.github.com/repos/sass/dart-sass/releases/assets/733743060"
+provenance = "github-attestations"
+
+[tools."github:sass/dart-sass"."platforms.macos-arm64"]
+checksum = "sha256:95b1bbb13f0b38ba8aacefae45ef23f11271231d24fb57b1593c9e2adf65481c"
+url = "https://github.com/sass/dart-sass/releases/download/1.108.2/dart-sass-1.108.2-macos-arm64.tar.gz"
+url_api = "https://api.github.com/repos/sass/dart-sass/releases/assets/733743056"
 provenance = "github-attestations"
 
 [[tools."github:vanderheijden86/b9s"]]
@@ -182,6 +208,29 @@ checksum = "sha256:3750b2e93f37e0c692657da574d7019a101c0084da05a790c83fd335bad97
 checksum_source = "mise-versions"
 url = "https://github.com/BurntSushi/ripgrep/releases/download/15.2.0/ripgrep-15.2.0-aarch64-apple-darwin.tar.gz"
 url_api = "https://api.github.com/repos/BurntSushi/ripgrep/releases/assets/478118851"
+
+[[tools.rumdl]]
+version = "v0.3.4"
+backend = "aqua:rvben/rumdl"
+specifiers = ["v0.3.4"]
+
+[tools.rumdl."platforms.linux-arm64"]
+checksum = "sha256:d51bfff8c4aacebb786f701918389b3b568129cb9c16aee12567ede6869a61ad"
+url = "https://github.com/rvben/rumdl/releases/download/v0.3.4/rumdl-v0.3.4-aarch64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/rvben/rumdl/releases/assets/741227511"
+provenance = "github-attestations"
+
+[tools.rumdl."platforms.linux-x64"]
+checksum = "sha256:36f1524f0cfaf33f5dfe68ac19220e1bd57ded1f0f9205931f6ee1de32f4a040"
+url = "https://github.com/rvben/rumdl/releases/download/v0.3.4/rumdl-v0.3.4-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/rvben/rumdl/releases/assets/741227513"
+provenance = "github-attestations"
+
+[tools.rumdl."platforms.macos-arm64"]
+checksum = "sha256:51f7bce0d56ea632ed65e7e42a99effb7ce7a23923fe0738ecda0e1d11bcb788"
+url = "https://github.com/rvben/rumdl/releases/download/v0.3.4/rumdl-v0.3.4-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/rvben/rumdl/releases/assets/741227518"
+provenance = "github-attestations"
 
 [[tools.rust]]
 version = "1.100.0"

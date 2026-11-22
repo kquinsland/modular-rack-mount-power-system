@@ -82,132 +82,114 @@ resources:
       caption: A single burst captured during LED data probing at 5 µs per division.
 ---
 
-# Update: First Boards Arrived
+# The first boards have arrived!
 
-The [last "work-log" entry]({{< relref "/worklogs/2026/09/10 - First Physical Prototypes/index.md" >}}) was a brief introduction to the project and an announcement of the first batch of boards being on order.
+In my [last worklog entry]({{< relref "/worklogs/2026/09/10 - First Physical Prototypes/index.md" >}}), I introduced the project and wrote that the first batch of boards was on order.
 
-Well, the first set of prototype boards have arrived!
-
-They arrived just hours before heading out for some planned vacation/time off so they've been sitting on my desk until recently... but now I finally have a chance to start examining them, do some initial testing, and document the process.
+They did arrive! ... just hours before I left for vacation.
+Now that I'm back, I finally have a chance to try them out and document how it goes.
 
 {{< figure name="first-boards" >}}
 
 ## We Have Boards!
 
-First, a _big_ thank you to PCBWay for chipping in on the production of these prototype boards.
-They sponsored some of the costs for these prototype boards in exchange for me giving their service a try and providing feedback.
+First, a _big_ thank you to PCBWay for covering part of the cost of these prototypes in exchange for trying their service and giving them feedback.
 
-To start; their sourcing team was incredibly thorough and diligent in tracking down all the necessary components for this build.
+I have never had such a seamless experience with component sourcing before.
 
 I didn't have to chase down any components myself, no consignment stock to manage and no endless back-and-forth with suppliers.
 I sent them the list of parts, they told me how much it was going to cost and about how long it was going to take to get the parts and I approved the order... and then went on to other things while _they_ did all the work of sourcing and procuring the components.
 
-It's hard to over-state particularly how valuable it is to have a sourcing team that takes care of all the component procurement for you... especially when you've based your whole design around a relatively new (read: in short supply) microcontroller.
+It's hard to over-state particularly how valuable it is to have someone else take care of all the component procurement for you... especially when you've based your whole design around a relatively new (read: in short supply) microcontroller.
 
-Second, the boards came out looking excellent.
-The quality of the PCB fabrication and assembly was impressive and exceeded my expectations for a small batch of prototype boards.
+The boards themselves look excellent. The fabrication and assembly exceeded my expectations for a small prototype run, especially around the buck converters. I spent more time than I want to admit on that layout, balancing the electrical and thermal constraints against what I could reasonably ask someone to assemble. The least-bad compromise was to pack the components close together to keep the traces short and the thermal resistance low.
 
-To make a very long story short, I spent more time than I want to admit trying to get the layout for the buck converters right.
-Essentially, I was trying to balance the thermal and electrical constraints while keeping the layout compact and manufacturable.
-The least-bad compromise between several competing constraints was to place components as close together as possible, minimizing trace lengths and thermal resistance above all else.
-
-I can't stress enough how a) _small_ these components are and b) _close together_ they are...
+It's hard to convey just how _small_ these components are and how _close together_ they sit.
 
 {{< figure name="pcbway-backplane" >}}
 
-I was worried that this might be asking too much of the Pick-n-Place machines but it seems they handled it without any issues.
-
+I worried that I was asking too much of the pick-and-place machines. Judging by the boards on my bench, they handled it just fine.
 
 Also, look at that gold plating. 🤩
 
 
-## Let's do bring up!
+## Let's bring them up!
 
-With both free time and boards in hand, it was finally time to start the bring-up process!
 As is tradition, the first iteration _never_ goes perfectly.
-Here's a quick rundown of some issues I encountered during the initial bring-up.
 
-### Wrinkle, the first
+### Getting the debugger connected
 
-I'll admit it; I was too excited to connect the debugger and see if I could talk to the MCU that I completely skipped over characterizing the power rails.
-After all, if I did things right, the programmer will supply enough juice on the 3v3 rail to power the MCU up without needing an external power source and that would be enough to at least get the initial bring-up going.
+I'll admit it. I was so excited to see if I could talk to the MCU that I skipped straight past characterizing the power rails.
+If I'd gotten the design right, the programmer could supply enough juice on the 3.3 V rail to power the MCU for that first check.
 
-I reached for my J-Link and realized that the breakout/adapter that it shipped with did not have the 2x3 header that the tag-connect probe uses.
+I reached for my J-Link and realized its breakout adapter was missing the 2×3 header my Tag-Connect probe uses.
 
-Fortunately, fixing this  is _almost_ a one-shot prompt with modern LLMs :).
+Fortunately, designing an adapter is _almost_ a one-shot prompt with modern LLMs. :)
 
 {{< figure name="jlink-swd" >}}
 
-The `hardware/accessories/jlink-swd` directory has the details for the adapter.
-It was sent off for fabrication and it should be here shortly.
-
-While I wait for the adapter, as long as I am careful, this mess of fiddly jumper wires will suffice for the initial bring-up.
+The adapter design lives in `hardware/accessories/jlink-swd`. 
+While I wait for boards to come back, this mess of fiddly jumper wires does the trick as long as I'm careful.
 
 {{< figure name="jank_wiring" >}}
 
+If you're following along at home:
 
-If you're trying to follow along at home:
+| Signal | Jumper color |
+| ------ | ------------ |
+| GND    | White        |
+| nRESET | Orange       |
+| SWCLK  | Purple       |
+| SWDIO  | Blue         |
+| 3.3 V  | Yellow       |
 
+I wouldn't want to use this harness long term, but it got me my first answer.
+I could talk to the MCU and verify that I didn't mess that part of the design up.
 
-| Pin | Color |
-|-----|-------|
-| GND   | White |
-| nRESET   | Orange |
-| SWCLK   | Purple |
-| SWDIO   | Blue  |
-| 3v3   | Yellow|
+### Sorting out the LED orientation
 
-It's certainly not pretty wiring or even a good idea / long-term solution, but it gets the job done for now.
-And because it gets the job done, I was able to confirm that I can talk to the MCU successfully.
-
-Nothing too exciting yet; I have some hardware/time constraints that prevent me from doing a _full_ test at this stage but some of the basic checks have passed successfully.
-
-
-### Wrinkle, the second
-
-Shortly after getting the "Your order is now being assembled" notification, PCBWay's support team sent me a photo of the assembled boards, highlighting a minor issue with one of the components on both boards.
+Shortly after the “Your order is now being assembled” notification, PCBWay's support team sent me a photo.
+They'd highlighted the same component on both boards:
 
 {{< figure name="led_rotation_issue" >}}
 
-For `$reasons` that I still don't fully understand _one_ component on both boards was rotated 180 degrees.
-It appears fine in KiCad/renders and no other part has this rotation issue so it seems to be an isolated case.
+For `$reasons` I still don't fully understand, the LED on each board was rotated 180°.
+Its orientation looks right in the KiCad renders, and I haven't seen the same issue on any other part so ¯\_(ツ)_/¯.
 
-It was a quick "that should be the other way around, see this render from KiCad..." email exchange and the issue was promptly acknowledged by the support team.
+It was a quick "nope, that should be the other way around, see this render from KiCad..." email exchange and the issue was promptly acknowledged by the support team and corrected in the assembly process.
 
+### First power tests
 
-### First tests
+Once I knew I could talk to the MCU, I breathed a little easier and went back to the power rails.
 
-After confirming that I could talk to the MCU, I felt a sense of relief and moved on to testing the power rails so I could move on to more comprehensive system tests.
-
-I may write more about the methodology later but for now, the initial results show that the buck modules are functioning - more or less - as expected.
-I'm not _exactly_ sure why the 12v rail takes a bit longer to stabilize compared to the other rails, but it does get there eventually.
-It's also exclusively for PC fans so a bit of ripple and/or overshoot / general delay isn't the end of the world.
+I may write more about the methodology later, but so far the buck modules behave more or less as I'd expected.
+The 3.3 V logic rail came up first.
+The 12 V rail took a little longer to settle, and I'm still not sure why.
+That rail only powers the PC fans, so it's not a huge concern; a little ripple or overshoot there would be tolerable, too.
 
 {{< figure name="power-rail-startup" >}}
 
-I was testing what happens to the input voltage during startup, especially with low current limits.
+I also wanted to see what happened to the 24 V input when the bench supply had a low current limit.
+I captured the input and the 12 V output together on two unloaded starts, one with the limit set to 200 mA and one at 100 mA.
 
 {{< figure name="power-input-startup" >}}
 
-The data sheet did have some good formulas for estimating the expected ripple and transient response but you never _know_ until you measure it yourself.
-I was a bit anxious about this as: a) power rails are important for the stability of the system, and b) I had made some compromises in the component selection to simplify the BOM.
+The datasheet gives formulas for estimating ripple and transient response, but you never _know_ until you measure.
+I'd made a few compromises on component selection to simplify the BOM, so I was particularly keen to see how the logic rail looked on the scope.
 
-There's more ripple on the 3v3 rail than I'd like, but it's still within acceptable limits for my application.
-I will keep a close eye on this once it's loaded down and may add a bit more capacitance if necessary.
+There's more ripple on the 3.3 V rail than I'd like, though I can live with what I measured here.
+I'll check again under load before deciding whether to add capacitance.
 
 {{< figure name="power-output-ripple" >}}
 
-The renders above come from raw data gathered through the oscilloscope.
-I did take a few screenshots just after some positive test results came back:
+I made the plots above from raw scope captures and saved a few screenshots along the way. In this early startup capture, the two time cursors are 400 µs apart.
 
 {{< figure name="scope-startup-cursors" >}}
 
-Power rail versus the `P_GOOD` signal:
+Here I was comparing the rising power rail with the `P_GOOD` signal.
 
 {{< figure name="scope-input-ramp" >}}
 
-Debugging the LED; more to come on this later.
+And here's the burst I caught while debugging the LED. More on that one later.
 
 {{< figure name="scope-pulse-burst" >}}
-
-
