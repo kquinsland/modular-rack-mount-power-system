@@ -22,6 +22,8 @@ LAYERS = "F.Cu,B.Cu,F.Mask,B.Mask,F.Silkscreen,B.Silkscreen,F.Paste,B.Paste,Edge
 # Ordering choices for generic headers with no schematic LCSC field.
 HEADER_PARTS = {
     "IDC-Header_2x03_P2.54mm_Vertical": ("BH254V-6P", "C492441"),
+    "PinHeader_2x02_P2.54mm_Vertical": ("PZ2.54-2*2", "C5156675"),
+    "PinHeader_1x02_P2.54mm_Vertical": ("2.54-1*2", "C5116481"),
     "PinHeader_1x03_P2.54mm_Vertical": ("2.54-1*3PPin", "C49257"),
 }
 
@@ -90,7 +92,7 @@ def build(output, date, revision):
                 raise ValueError(f"Conflicting ordering codes for {refs}")
             part["Value"], part["LCSC Part #"] = codes.pop()
         manager.generate_bom(directory)
-        # Every purchased connector is hand-soldered. Overwrite any older CPL
+        # All populated components are hand-soldered. Overwrite any older CPL
         # on re-export so a previous assembly run cannot leave live placements.
         with (work / "positions.csv").open("w", encoding="utf-8-sig", newline="") as table:
             csv.writer(table).writerow(["Designator", "Mid X", "Mid Y", "Rotation", "Layer"])
