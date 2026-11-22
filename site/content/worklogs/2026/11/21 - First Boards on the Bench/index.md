@@ -5,7 +5,7 @@ description: The first batch from PCBWay is on my desk, and I've got a J-Link ad
 tags:
   - hardware
 slug: '21-first-boards-on-the-bench'
-draft: true
+draft: false
 resources:
   - src: _files/power-rail-startup.webp
     name: power-rail-startup
