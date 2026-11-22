@@ -11,6 +11,15 @@ on:
       - ".gitmodules"
       - "mise.toml"
       - "mise.lock"
+  pull_request:
+    branches: [main]
+    paths:
+      - "site/**"
+      - "docs/assets/generated/pcbs/**"
+      - ".github/workflows/pages.yml"
+      - ".gitmodules"
+      - "mise.toml"
+      - "mise.lock"
   workflow_dispatch:
     inputs:
       ref:
@@ -20,7 +29,7 @@ on:
         type: string
 
 concurrency:
-  group: pages
+  group: pages-${{ github.event.pull_request.number || 'deploy' }}
   cancel-in-progress: true
 
 permissions: {}
@@ -88,6 +97,7 @@ jobs:
           path: site/public
 
   deploy:
+    if: github.event_name != 'pull_request'
     needs: build
     runs-on: ubuntu-latest
     permissions:
